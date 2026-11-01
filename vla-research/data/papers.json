@@ -1,0 +1,308 @@
+[
+ {
+  "t": "RT-1 论文精读：把连续动作切成 256 个 bin 的机器人 Transformer",
+  "u": "papers/01-action/rt-1.html",
+  "c": "01-action",
+  "s": "RT-1 重新分配的是“连续控制”与“序列建模”的接口——把每个动作维度均匀切成 256 个 bin，让 Transformer 用分类的方式出动作，而不是回归连续值。"
+ },
+ {
+  "t": "ACT 论文精读：CVAE + 动作分块，51.55M 参数也能做抓取",
+  "u": "papers/01-action/act.html",
+  "c": "01-action",
+  "s": "在“只有几十条示教、没有语言输入、单卡可训”的约束下，ACT 用 10 步动作块降低决策频率，并在训练时用 CVAE 潜变量给动作生成引入随机隐变量，而不是只做确定性回归。【章节】"
+ },
+ {
+  "t": "Dexora 论文精读：把 VLA 推到 36-DoF 双臂双手",
+  "u": "papers/01-action/dexora.html",
+  "c": "01-action",
+  "s": "Dexora 重新分配的是“VLA 的 embodiment 与数据质量接口”——不是只换更强的 VLM，而是让策略直接输出 36-DoF 双臂双手动作，并让训练过程按演示质量加权。【章节】"
+ },
+ {
+  "t": "Galaxea G0.5 论文精读：把推理、记忆与动作 token 放进一条自回归流",
+  "u": "papers/01-action/galaxea-g0-5.html",
+  "c": "01-action",
+  "s": "G0.5 重新分配的是“推理、动作表征、跨本体控制”三者的接口——不再让外部 planner 写推理、另一个 action head 出动作，而是让同一个 transformer decoder 在一条 next-token 序列里写完 CoT 再写动作 token。【章节】"
+ },
+ {
+  "t": "π0 论文精读：在 LeRobot 链路里微调 5 步动作块策略",
+  "u": "papers/01-action/pi0.html",
+  "c": "01-action",
+  "s": "章节回答的是工程问题——如何把预训练 π0 在 20 条语言条件示教上微调，并用比环境 success 更严格的物理口径判断策略是否真的完成抓取-搬运-放置；它没有复述 π0 的内部结构、预训练目标或动作生成机制。【章节】"
+ },
+ {
+  "t": "RT-2 论文精读：把动作写成文本 token 的 VLA 范式",
+  "u": "papers/01-action/rt-2.html",
+  "c": "01-action",
+  "s": "说明：本文按 paper-deep-read 结构生成；事实来自本仓库 RT 系列导读。章节未给论文节号/表号、完整成功率与训练配方；公开入口见 §1，文中只在必要处注明。"
+ },
+ {
+  "t": "EventVLA 论文精读：把关键视觉证据存成原图，需要时再看一次",
+  "u": "papers/02-backbone/eventvla.html",
+  "c": "02-backbone",
+  "s": "EventVLA 重新分配的是“历史信息存在哪里”这个接口——不是把历史压进模型隐状态，而是把少量原图关键帧存在 runtime 侧，等后续决策需要时再作为视觉输入看一次。【章节】"
+ },
+ {
+  "t": "OpenVLA 论文精读：开源 7B 级 VLA 的 LIBERO 复现基线",
+  "u": "papers/02-backbone/openvla.html",
+  "c": "02-backbone",
+  "s": "说明：本文按 paper-deep-read 结构整理，唯一事实来源是本仓库 OpenVLA 导读（下称“本章程”）。口径分两种：章节记录＝章节给出的命令、日志、截图与显存数字；章节转述＝章节对架构的文字说明，未标论文出处。由于章节没有引用论文，本文无法区分“论文作者报告”与“章节作者转述”，凡架构描述一律记为“章节转述”。整理日期 2026-11-01；章节未给论文版本与代码 commit，本文不虚构。"
+ },
+ {
+  "t": "VisualThink-VLA 论文精读：用路由后的视觉证据替代文字 CoT",
+  "u": "papers/02-backbone/visualthink-vla.html",
+  "c": "02-backbone",
+  "s": "VisualThink-VLA 重新分配的是“中间推理的载体”——不生成自然语言 CoT，而是从当前帧、上一帧和指令里提取视觉证据，由 router 每步只选需要的通道，再注入冻结 VLA 预测动作。【章节】"
+ },
+ {
+  "t": "WALL-OSS 论文精读：把预训练 VLM 接到可执行动作空间",
+  "u": "papers/02-backbone/wall-oss.html",
+  "c": "02-backbone",
+  "s": "WALL-OSS 重新分配的是“动作生成放在 VLM 的什么位置”——不是给 VLM 外接一个线性 action head，而是把 embodied reasoning、子任务分解和细粒度动作合成放进同一条紧耦合链路，再用两阶段训练把离散动作先验接到连续控制上。【章节】"
+ },
+ {
+  "t": "RT-X 论文精读：用 22 种机器人的数据换一个更强的单机策略",
+  "u": "papers/03-training/rt-x.html",
+  "c": "03-training",
+  "s": "RT-X 重新分配的是“本体差异”的处理位置——不在每个机器人上各训一个策略，而是先把动作对齐到共享 7-DoF 空间，再用混合本体数据训练一个策略族。"
+ },
+ {
+  "t": "Agentic-VLA 论文精读：给 OpenVLA-OFT 加一个会设计奖励、引导探索、复用权重的在线适应外环",
+  "u": "papers/03-training/agentic-vla.html",
+  "c": "03-training",
+  "s": "Agentic-VLA 重新分配的是“部署后如何继续学习”的接口——不再只靠人工补示教或固定奖励，而是让 Experience Memory、VLM 探索 critic 和语言模型奖励分解共同调度一次在线 RL 适应。【章节】"
+ },
+ {
+  "t": "Dexbotic-RLinf 论文精读：把 VLA 模型入口接到分布式 RL 后训练",
+  "u": "papers/03-training/dexbotic-rlinf.html",
+  "c": "03-training",
+  "s": "Dexbotic-RLinf 重新分配的是“模型开发”和“RL 训练系统”的边界——Dexbotic 继续做 VLA 用户入口，RLinf 做后端，两者通过 model registry 和薄 adapter 连接，而不是把模型代码复制进 RL 仓库，或让模型仓库重写一套 RL 系统。【章节】"
+ },
+ {
+  "t": "LWD 论文精读：把部署变成机群 RL 数据飞轮",
+  "u": "papers/03-training/lwd.html",
+  "c": "03-training",
+  "s": "LWD 重新分配的是“真机部署数据的用途”——不再只把部署当评测，而是把机群产生的成功、失败、恢复和接管轨迹变成离线到在线 RL 的训练信号，持续更新同一个通用策略。【章节】"
+ },
+ {
+  "t": "PRTS 论文精读：把目标可达性对比 RL 放进 VLA 预训练",
+  "u": "papers/03-training/prts.html",
+  "c": "03-training",
+  "s": "PRTS 重新分配的是 VLA 的训练信号——不只让模型拟合“专家在这个状态下做了什么”，还让它显式估计“当前 state-action 距离语言目标还有多远”。【章节】"
+ },
+ {
+  "t": "3DVLA 论文精读：把 3D 实例与遮挡补全做成 VLA 的即插即用 token",
+  "u": "papers/04-3d/3dvla.html",
+  "c": "04-3d",
+  "s": "3DVLA 重新分配的是“3D 感知结果如何进入 VLA”的接口——不换 VLM，也不换动作头，而是把多视角观测整理成与 VLM token 兼容的 3D 实例 token、补全 token 和相对夹爪的空间偏置，拼回原 token 流交给 action expert。【章节】"
+ },
+ {
+  "t": "PhysBrain 1.0 论文精读：先学物理常识，再让双脑 VLA 学控制",
+  "u": "papers/04-3d/physbrain.html",
+  "c": "04-3d",
+  "s": "PhysBrain 1.0 重新分配的是“物理常识”的训练位置——不把常识寄望于机器人轨迹里自然涌现，而是先用人类第一人称视频做一轮结构化物理监督，再在 VLA 适配时用双通路和语言正则把这份常识保护住。【章节】"
+ },
+ {
+  "t": "DM0.5 技术精读：把 VLA 在线执行链路逐段压成低延迟服务",
+  "u": "papers/05-deploy/dm0-5.html",
+  "c": "05-deploy",
+  "s": "DM0.5 重新分配的是“模型语义”和“执行形状”的边界——模型结构保持 Gemma3 VLM + Action Expert + Flow Matching，但把在线执行拆成 prefix 一次编码、suffix 反复采样，再用 TensorRT、FlexAttention、FP8、Triton fused kernels 和 CUDA Graph 压缩固定形状的计算与调度。【章节】"
+ },
+ {
+  "t": "EVA-Client 精读：把“训练完”到“真机能跑、能审计”的工程链路固定下来",
+  "u": "papers/05-deploy/eva-client.html",
+  "c": "05-deploy",
+  "s": "EVA-Client 重新分配的是“模型推理”和“机器人执行”之间的边界——观测格式、动作块调度、动作空间转换和评测记录从训练脚本里拆出来，做成一个可以替换策略后端的客户端。【章节】"
+ },
+ {
+  "t": "SmolVLA 论文精读：在单张 3090 上把 LIBERO 微调跑到 0.71",
+  "u": "papers/05-deploy/smolvla.html",
+  "c": "05-deploy",
+  "s": "章节回答的不是“SmolVLA 为什么这样设计”，而是“怎样把 smolvla_base 在 LIBERO 上单卡跑通并复现一个可核对的成功率”。它重新分配的是工程成本：把不确定性压到环境 pin、动作约定与评测脚本上。"
+ },
+ {
+  "t": "WALL-X 精读：WALL 系列的开源工程栈，不是一篇论文",
+  "u": "papers/05-deploy/wall-x.html",
+  "c": "05-deploy",
+  "s": "WALL-X 重新分配的是“复现工作的起点”——不是从论文方法读起，而是从 checkpoint、LeRobot 数据、YAML 配置、训练脚本和 policy server 这条工程链路跑起。【章节】"
+ },
+ {
+  "t": "DiT4DiT 论文精读：Cosmos 视频 backbone + DiT 动作头，先跑通 LIBERO 链路",
+  "u": "papers/06-world/dit4dit.html",
+  "c": "06-world",
+  "s": "章节不回答“DiT4DiT 有多强”，而回答“在单卡、单 suite、有限磁盘上，如何把视频 backbone、动作扩散头、policy server 与 LIBERO 仿真连起来，并知道每一步是否真的跑通”。【章节】"
+ },
+ {
+  "t": "RAX 深度调研笔记",
+  "u": "papers/07-harness/rax.html",
+  "c": "07-harness",
+  "s": "冻结通用 coding agent 直接连机器人感知/控制接口，把\"在线探索\"做成 scaling law：成功决策编译成程序、版本化入库，能力随探索预算单调增长"
+ },
+ {
+  "t": "AdaHVLA 深度调研笔记",
+  "u": "papers/07-harness/adahvla.html",
+  "c": "07-harness",
+  "s": "在任务级推理器与 VLA 之间加一段可编辑的协调代码，用机器人经验迭代修订它；解耦多 agent 适配（证据分析 / harness 修订 / 行为评估分置于不同上下文）+ 有状态修订图把证据-假设-修订-效果连成图——NaVILA-LH 22.5%→57.5%，操纵任务跨三个 VLA 底座最高 +30.8pp"
+ },
+ {
+  "t": "ASPIRE 深度调研笔记",
+  "u": "papers/07-harness/aspire.html",
+  "c": "07-harness",
+  "s": "让 coding agent 当\"机器人程序员\"：写代码→跑→看 per-primitive 多模态 trace→定位 bug→改→把验证过的修复蒸馏成\"失败签名→修复动作\"技能库；配进化搜索逃出局部修复环"
+ },
+ {
+  "t": "CaP-X 深度调研笔记",
+  "u": "papers/07-harness/capx.html",
+  "c": "07-harness",
+  "s": "Code-as-Policy 的\"研究平台四件套\"：CaP-Gym（187 任务交互环境）+ CaP-Bench（12 模型分层评测）+ CaP-Agent0（免训练 agentic 框架）+ CaP-RL（可验证奖励 GRPO）"
+ },
+ {
+  "t": "DreamSteer 深度调研笔记",
+  "u": "papers/07-harness/dreamsteer.html",
+  "c": "07-harness",
+  "s": "冻结 VLA 采样多候选动作块（外加预定义运动原语），潜变量世界模型\"想象\"每个候选的未来，语言条件价值模型排序，只执行最高分——真机 OOD 成功率 23.75%→66.25%，指令遵循 38.75%→56.25%"
+ },
+ {
+  "t": "EmbodiedSkills 深度调研笔记",
+  "u": "papers/07-harness/embodiedskills.html",
+  "c": "07-harness",
+  "s": "每个技能决策都是提案：guarded runtime 先查前置条件再执行、执行后用新观测验证——六阶段 AgentLoop（Observe/Plan/Preflight/Execute/Verify/Recover），低层 π₀.₅ 出有界 chunk；RoboTwin 2.0 86.20%、LIBERO 97.40%；去掉验证掉到 48.2%"
+ },
+ {
+  "t": "EmbodiedSWE 深度调研笔记",
+  "u": "papers/07-harness/embodiedswe.html",
+  "c": "07-harness",
+  "s": "编程 agent 当\"机器人工程师\"：在仿真里写 Python 控制程序、执行、看反馈、改代码，解出 28 个长程灵巧任务（最长 30 分钟连续交互）；EMBODIEDSWE-GEN 把单个验证解法扩成多样化轨迹训 VLA——仅用 coding-agent 仿真数据微调的 VLA 完成了真机长程台灯拆解"
+ },
+ {
+  "t": "EMERGE-Policy 深度调研笔记",
+  "u": "papers/07-harness/emerge-policy.html",
+  "c": "07-harness",
+  "s": "机器人的\"心智\"不必住在单个策略里——图结构 agentic 框架让感知/推理/预测/执行/验证/记忆各司其职：Main Agent 持任务态，角色化 Sub Agent 在隔离上下文里产出结构化证据，统一技能库把 VLA/WAM/验证器当可调用的技能——零微调打穿多个公开基准 + 真机"
+ },
+ {
+  "t": "GaP 深度调研笔记",
+  "u": "papers/07-harness/gap.html",
+  "c": "07-harness",
+  "s": "策略 = 有向计算图：多 agent 编码 harness 从 51 技能的 MORSL 库合成感知/规划/控制节点图，在 NVIDIA Isaac 内仿真排练中自学习改图改参，再以 edge 解释器持久执行——大位姿变化 VA 任务 0.93–0.99 vs VLA ~0.20"
+ },
+ {
+  "t": "Harness VLA 深度调研笔记",
+  "u": "papers/07-harness/harness-vla.html",
+  "c": "07-harness",
+  "s": "把 Coding-Agent 的 Harness Layer 搬进具身智能：冻结 VLA 降格为库里一个可重试的接触原语 vla_act，配 6+2 个固定解析原语 + 双层记忆，planner 学的是原语的 operating range——词汇锁死、VLA 零微调"
+ },
+ {
+  "t": "Harness² 深度调研笔记",
+  "u": "papers/07-harness/harness2.html",
+  "c": "07-harness",
+  "s": "谷歌的递归 agent harnessing：任务级递归用\"对比式 Propose–Probe–Compose\"在没有真值验证器的开放世界可靠地改 harness；harnessing 级递归再把改法经验写进持续的\"改进 harness\"——改进当前任务，也改进\"改进者本身\"；一步即让 GLM-5 / Gemini 3.5 Flash 全面超越基座 harness"
+ },
+ {
+  "t": "HarnessBank 深度调研笔记",
+  "u": "papers/07-harness/harnessbank.html",
+  "c": "07-harness",
+  "s": "任务 agent + 独立 evolver agent 的 harness 自进化框架：语义基因库按 (改哪里, 为什么改) 归档高质 harness 防搜索坍缩，四道门控筛掉无效/未激活/不显著/无增益的子代——七个 agent 基准 +5.1%~15.4%"
+ },
+ {
+  "t": "HarnessEval-W 深度调研笔记",
+  "u": "papers/07-harness/harnesseval-w.html",
+  "c": "07-harness",
+  "s": "把 LLM 生态的 harness 范式接到世界模型评测：父 agent 解读案例→拆成可测子问题→调度带诊断工具的子 agent 取证→校验汇总成可审计证据树——18 个世界模型 × 330 案例，Intentional 维与人类 Bradley–Terry 排序 Spearman ρ=0.93"
+ },
+ {
+  "t": "HarnessPAI 深度调研笔记",
+  "u": "papers/07-harness/harnesspai.html",
+  "c": "07-harness",
+  "s": "模型/本体无关的 harness：代码是可执行、可演化的接口，把感知原语（SAM3/Molmo）、控制原语（OSC/PyRoki IK）和冻结模型原语（π0.5 VLA、WorldDreamer WAM、GraspNet、PPO）组织成一个程序；rollout 内开环执行、跨 rollout 闭环进化"
+ },
+ {
+  "t": "HumanCLAW 深度调研笔记",
+  "u": "papers/07-harness/humanclaw.html",
+  "c": "07-harness",
+  "s": "把 VLM 的高层决策与运动执行解耦的评测框架：冻结现成 VLM 每 0.5s 发原子全身技能指令，DiT 运动基座 + 每技能 ControlNet 落地成连续动作，Half-Physics 仿真保留重力/碰撞但排除失衡/电机误差——9 个前沿 VLM 最好成绩仅 16.8%"
+ },
+ {
+  "t": "Orchestra 深度调研笔记",
+  "u": "papers/07-harness/orchestra.html",
+  "c": "07-harness",
+  "s": "把任务规划与执行管理从动作生成中分离的 agent harness：完整多模态指令 → 有序子任务分解 + 实体 grounding 更新 + 共享执行上下文；动作策略管\"怎么做\"，独立训练的进度评估器管\"什么时候算完成、何时进入下一步\"——RMBench 九任务 68.22%（超 Mem-0 26.22pp）；RMBench-Compose 的 ASL 达 7.35 个子任务 = HarnessVLA 的 2.46 倍"
+ },
+ {
+  "t": "RATs 深度调研笔记",
+  "u": "papers/07-harness/rats.html",
+  "c": "07-harness",
+  "s": "任务到来之前先\"玩\"：受发展心理学启发，agent 用内在动机自提案\"新颖又不太难\"的探索任务，Write-Execute-Verify-Diagnose 团队练习并把成功行为蒸馏成持久代码技能库，测试期冻结复用"
+ },
+ {
+  "t": "RoboDawn 深度调研笔记",
+  "u": "papers/07-harness/robodawn.html",
+  "c": "07-harness",
+  "s": "冻结 agentic VLM + 人类直觉的离散语义命令（move/rotate/grip，GIP 双指尖中点为统一参考）+ 1 条任务演示 ICL，闭环控制双臂——零机器人训练：RoboTwin 2.0 C2R 零样本 53.2% → 1-shot 73.6%，超 π₀.₅ 的 46.0%"
+ },
+ {
+  "t": "RoboFoundry 深度调研笔记",
+  "u": "papers/07-harness/robofoundry.html",
+  "c": "07-harness",
+  "s": "把支撑模型完成任务的整套系统当策略来进化：系统以文件目录存在（cat/grep 查看，add/modify/delete 修改），内外双循环\"执行—反思—修复—晋升\"；EmbodiedBench 上 GPT-5.5 +27.8%、Qwen3.7-Plus 逼近 GPT-5.5（70.3% vs 72.7%）；RoboMemArena +39.0%；LIBERO-PRO 比 CaP-Agent0 +243.8~679.7%"
+ },
+ {
+  "t": "RoboHarn-Evo 深度调研笔记",
+  "u": "papers/07-harness/roboharn-evo.html",
+  "c": "07-harness",
+  "s": "双循环 harness 从物理经验中演化分层物理知识 HPK：Task Knowledge（做什么子任务、何时算完成）+ Action Knowledge（物体相对几何策略及其物理效果）——RMBench 平均 +24.2pp；80 次 rollout 后 GPT-5.5 留出集 48.3%→75.0%、GPT-6 70.0%→88.3%；知识纠错 83.3%，正确知识保留 95.8%"
+ },
+ {
+  "t": "RoboHarness 深度调研笔记",
+  "u": "papers/07-harness/roboharness.html",
+  "c": "07-harness",
+  "s": "把异构策略（VLA、WAM、RL、TAMP）各自封装成可复用 agentic skill，用多模态执行记忆 + 在线证据刻画\"能力边界\"做任务分解与路由；Memory Bridge 让策略交接时先把机器人带到下一个策略的分布内状态——免联合重训"
+ },
+ {
+  "t": "Zetta 深度调研笔记",
+  "u": "papers/07-harness/zetta.html",
+  "c": "07-harness",
+  "s": "把\"反思\"从大模型身上摘下来交给代码化运行时 critic：冻结 π0.5 出动作，harness H={Critic, Recovery, Tools} 在动作频率上监控执行、毫秒级触发恢复；批量级自进化把验证过的失败蒸馏成新技能"
+ },
+ {
+  "t": "VLA 六年演进：从 RT 系列到部署工程（2020-2026）",
+  "u": "survey/6yr/00-xuexi-rukou.html",
+  "c": "6yr",
+  "s": "学习入口。本文档面向硕士/博士入门：15 分钟建立地图，1 小时读懂主线，之后按专题继续深入。资料来自本目录 19 个章节目录中的 20 篇材料，以及用户提供的三份外部材料；外部条目未独立复核，详见 02-论文与评测.md。"
+ },
+ {
+  "t": "01 技术专题：拆机体检式调研",
+  "u": "survey/6yr/01-jishu-zhuanti.html",
+  "c": "6yr",
+  "s": "眼睛优先 DINOv3（求稳）或 PE（求新），动作头按控制频率选，训练先 SFT 后 RL，3DGS 先做数据引擎，harness 先看 84.2% 的解析原语。"
+ },
+ {
+  "t": "02 论文与评测：全量清单、开源矩阵、数据集与榜单",
+  "u": "survey/6yr/02-lunwen-pingce.html",
+  "c": "6yr",
+  "s": "查阅页，不必顺序读。技术解释见 01-技术专题.md，学习路径见 00-学习入口.md，单篇精读见 papers/README.md。本页的“本目录覆盖”是有本地导读的工作；“外部补充”来自用户提供的调研文件，未独立复核。"
+ },
+ {
+  "t": "03 动手与研究：三条动手路线、三个实验、研究空位与自测",
+  "u": "survey/6yr/03-dongshou-yanjiu.html",
+  "c": "6yr",
+  "s": "本文是 00-学习入口.md 的实践页。目标不是“一键复现论文”，而是用最小成本建立手感：先跑通一条链路，再决定要不要深入某个专题。论文与评测口径见 02-论文与评测.md。"
+ },
+ {
+  "t": "六篇详细对比：RAX · HarnessPAI · ASPIRE · CaP-X · RATs · Zetta",
+  "u": "survey/harness/comparison.html",
+  "c": "harness",
+  "s": "与 2026-07 的 Harness VLA (2607.08448)（清华，冻结 VLA 当可重试原语、词汇锁死、只学 operating range）相比：本簇六篇全部允许外层代码/技能持续增长（CaP-X 语录：\"scaling such systems often still means expanding the primitive or skill library\"），而 Harness VLA 特意反着来——这构成谱系上\"词汇膨胀 vs 词汇锁死\"的对照轴。"
+ },
+ {
+  "t": "2026 具身智能 Harness 全景：18 篇论文的时间线与分类学",
+  "u": "survey/harness/overview-timeline.html",
+  "c": "harness",
+  "s": "2026 年 7 月到 10 月，\"冻结底座模型 + 外面一层可执行、可演化、可审计的 Harness\"从单点想法变成了一条完整的研究光谱：底座从 VLA 扩展到 VLM、世界模型、通用 LLM agent；外层从固定记忆进化到代码化 critic、技能契约、文件系统、甚至递归自我改进的 harness。本文是时间线总览与分类地图，18 篇逐篇深读见系列各篇。"
+ },
+ {
+  "t": "VLA 模型 Action 表示方式深度调研",
+  "u": "survey/action/action-representations.html",
+  "c": "action",
+  "s": "VLA 里\"动作怎么表示\"，是决定精度、多模态性、推理延迟和跨本体泛化的头号设计决策。 主流方法可归为两条主轴——离散 token（自回归 / 向量量化）与连续生成式表示（回归 / 扩散 / 流匹配 / 能量模型），二者都在建模同一个条件概率 $P(A_t \\mid o_t, l)$，差异只在\"如何参数化动作空间\"。"
+ }
+]
