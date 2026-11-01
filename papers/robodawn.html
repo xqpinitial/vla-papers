@@ -1,0 +1,27 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RoboDawn 深读：冻结 VLM + 离散命令 + ICL，零机器人训练打出 73.6%</title><link rel="stylesheet" href="../assets/style.css"></head>
+<body><nav><a class="brand" href="../index.html">🤖 Harness Papers</a><span class="spacer"></span><a class='back' href='../index.html'>← 返回论文库</a></nav>
+<header class="paper-head"><div class="chips"><span class="chip">2026-09-22</span><a class="chip cat" href="../index.html?cat=智能迁移与 ICL">智能迁移与 ICL</a><a class="chip" href="https://arxiv.org/abs/2609.22966">arXiv:2609.22966</a><a class="chip" href="https://github.com/Hugo-AGI/RoboDawn">Code</a><a class="chip" href="https://robodawn.top">Project</a></div>
+<h1>RoboDawn 深读：冻结 VLM + 离散命令 + ICL，零机器人训练打出 73.6%</h1><p class="org">清华 · 腾讯混元</p><p class="metric">⭐ RoboTwin C2R 73.6% &gt; π0.5 46%</p><p class="oneliner">人类直觉的离散语义命令接口（GIP 参考）+ 1 条演示 ICL，冻结 VLM 闭环控制双臂。</p><figure><img loading="lazy" src="../assets/figures/robodawn/fig-01.png" alt="Figure 1（论文原图）"><figcaption>Figure 1（论文原图）</figcaption></figure><figure><img loading="lazy" src="../assets/figures/robodawn/fig-02.png" alt="Figure 2（论文原图）"><figcaption>Figure 2（论文原图）</figcaption></figure></header>
+<main class="paper-body"><h2>RoboDawn 深度调研笔记</h2>
+<h3>速览</h3>
+<table><tr><th>项</th><th>内容</th></tr><tr><td>一句话</td><td>冻结 agentic VLM + <strong>人类直觉的离散语义命令</strong>（move/rotate/grip，GIP 双指尖中点为统一参考）+ 1 条任务演示 ICL，闭环控制双臂——<strong>零机器人训练</strong>：RoboTwin 2.0 C2R 零样本 53.2% → <strong>1-shot 73.6%</strong>，超 π₀.₅ 的 46.0%</td></tr><tr><td>冻结</td><td>VLM 权重全程冻结（主实验 GPT-6 Astra）</td></tr><tr><td>演化</td><td>无参数更新；ICL 上下文内适应（memory M_t 逐轮更新）</td></tr><tr><td>真机</td><td>Franka：block-in-basket、block stacking</td></tr></table>
+<h3>① 动机：智能可以跨域迁移</h3>
+<ul><li>人类能无缝适应物理与数字世界——数字-真实鸿沟存在于本体/环境/任务，但<strong>人类智能本身可迁移</strong>。</li><li>追问：VLM 的智能能否同样从数字世界泛化到物理控制？RoboDawn 的答案：瓶颈不在从头学具身智能，而在<strong>接口 + 在线课</strong>（few-shot 演示 grounding 接口用法与解题策略）。</li></ul>
+<h3>② 架构：命令接口 + 闭环 + ICL</h3>
+<table><tr><th>组件</th><th>设计</th></tr><tr><td>语义命令语法</td><td>离散 translate / rotate / gripper + home/wait/done；步长有界（≤20cm / 90°）；以 <strong>GIP（Gripper Interaction Point，双指尖中点）</strong>统一标注、状态与命令参考</td></tr><tr><td>固定上下文</td><td>环境/相机 profile E + 命令 primer D_prim + 任务演示 D_task（0/1/N 条）</td></tr><tr><td>每轮闭环</td><td>Observe（多视角标注+状态+grid）→ Reason（进度/计划/scratchpad）→ Act（语义命令 batch）→ Execute（规划→运动→反馈 F_t）→ Adapt（更新 memory M_t）</td></tr><tr><td>ICL 构造</td><td>专家轨迹先降为 waypoints，再转写为命令序列；VLM 为每轮补 rationale——接口用法与任务策略一起进上下文</td></tr></table>
+<h3>③ 数据与结果</h3>
+<table><tr><th>基准</th><th>零样本</th><th>1-shot</th><th>对照</th></tr><tr><td>RoboTwin 2.0 C2R</td><td>53.2%</td><td><strong>73.6%</strong></td><td>π₀.₅（全量后训练）46.0%；<strong>Harness VLA 58.4%</strong></td></tr><tr><td>RoboDojo</td><td>35.67%</td><td><strong>47.17%</strong></td><td>DM0.5 19.34%</td></tr><tr><td>Franka 真机</td><td>block-in-basket、block stacking 成功</td><td>—</td><td>—</td></tr></table>
+<ul><li>零样本即超多个在基准专属机器人数据上训练的强策略；单条 in-context 演示再大幅拉升并 SOTA。</li></ul>
+<h3>④ 信息流</h3>
+<pre>固定上下文（E + D_prim + D_task）+ 当前观测 + M_t
+  → 冻结 VLM 推理 → 语义命令 batch（GIP 参考）
+  → 规划→运动→执行 → 反馈 F_t → 更新 M_t → 下一轮</pre>
+<h3>⑤ 例子</h3>
+<p>叠块任务 1-shot：演示把"抓块→移到目标上方→放下"降为 5 条 GIP 命令 + 每步 rationale；VLM 在新随机化场景里按相同语法发命令，偏差时用 Adapt 步修正下一步（如"GIP 偏左 2cm，下轮 move 右移 2cm"）。</p>
+<h3>⑥ 局限</h3>
+<ul><li>离散小步长命令 → 推理轮数多、长程任务时延高；</li><li>依赖 VLM 的空间 grounding 质量（与 HumanCLAW 发现的"自我意识缺失"同源风险）；</li><li>C2R 设定的"有界随机化"仍在分布邻域内，开放世界未证。</li></ul>
+<h3>⑦ 簇内定位</h3>
+<ul><li>与 <strong>RoboDawn 同门的 Harness VLA</strong>（同在 C2R 上有数字）：RoboDawn 73.6% vs 58.4%——<strong>纯 ICL 接口路线打赢了需要全量机器人数据后训练后端的记忆编排路线</strong>（注意 π_RLinf 后端差异，谨慎横比）；</li><li>与 <strong>DreamSteer</strong>：都是"冻结底座 + 部署时增强"，一个加想象力、一个加接口与演示；</li><li>与 <strong>GaP</strong>：同为"人类直觉接口"（离散命令 vs 计算图），GaP 加仿真排练、RoboDawn 加 ICL；</li><li>开源纪律好：710 episode 评测全部可逐步回放。</li></ul></main>
+<footer>本页由论文精读笔记自动生成 · <a href="../index.html">返回论文库</a></footer></body></html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EMERGE-Policy 深读：机器人的心智从单策略中涌现——图结构多智能体框架</title><link rel="stylesheet" href="../assets/style.css"></head>
+<body><nav><a class="brand" href="../index.html">🤖 Harness Papers</a><span class="spacer"></span><a class='back' href='../index.html'>← 返回论文库</a></nav>
+<header class="paper-head"><div class="chips"><span class="chip">2026-08-29</span><a class="chip cat" href="../index.html?cat=冻结模型编排">冻结模型编排</a><a class="chip" href="https://arxiv.org/abs/2608.29896">arXiv:2608.29896</a><a class="chip" href="https://github.com/EMERGE-Policy/EMERGE-Policy">Code</a><a class="chip" href="https://emerge-policy.github.io/EMERGE-Policy">Project</a></div>
+<h1>EMERGE-Policy 深读：机器人的心智从单策略中涌现——图结构多智能体框架</h1><p class="org">清华（李秀团队）等</p><p class="metric">⭐ 零微调打穿 LIBERO/RoboDojo + 真机</p><p class="oneliner">Main Agent 持任务态 + 角色化 Sub Agent 隔离上下文；Operational/Imagination/Evaluation 三类技能。</p><figure><img loading="lazy" src="../assets/figures/emerge-policy/fig-01.png" alt="Figure 1（论文原图）"><figcaption>Figure 1（论文原图）</figcaption></figure><figure><img loading="lazy" src="../assets/figures/emerge-policy/fig-02.png" alt="Figure 2（论文原图）"><figcaption>Figure 2（论文原图）</figcaption></figure></header>
+<main class="paper-body"><h2>EMERGE-Policy 深度调研笔记</h2>
+<h3>速览</h3>
+<table><tr><th>项</th><th>内容</th></tr><tr><td>一句话</td><td>机器人的"心智"不必住在单个策略里——<strong>图结构 agentic 框架</strong>让感知/推理/预测/执行/验证/记忆各司其职：Main Agent 持任务态，角色化 Sub Agent 在隔离上下文里产出结构化证据，统一技能库把 VLA/WAM/验证器当<strong>可调用的技能</strong>——零微调打穿多个公开基准 + 真机</td></tr><tr><td>冻结</td><td>全部异构后端（VLA、WAM、仿真模型等皆作为技能被调用）</td></tr><tr><td>演化</td><td>无参数更新；系统级策略在闭环交互中"涌现"</td></tr><tr><td>命名</td><td>EMERGE = 系统级智能从多组件协同中<strong>涌现</strong></td></tr></table>
+<h3>① 动机：单模型装不下长程任务</h3>
+<ul><li>单一端到端模型面对长程任务时，低级感知的频繁处理、高层规划的上下文思考、细粒度动作输出<strong>互相打架</strong>，导致逻辑混乱或误差级联崩塌。</li><li>引 Annie Murphy Paul《延展的意识》："在头脑之外思考，意味着巧妙地借助头脑之外的实体。"——智能通过<strong>异构器官分工</strong>实现：眼睛感知、双手执行、大脑想象。</li></ul>
+<h3>② 架构：图结构 + 角色化 Sub Agent + 统一技能库</h3>
+<table><tr><th>组件</th><th>职责</th></tr><tr><td><strong>Main Agent</strong></td><td>在活跃上下文窗口内保持任务级状态：计划状态、恢复状态、相关记忆、近期证据、技能签名</td></tr><tr><td><strong>Sub Agents（角色隔离上下文）</strong></td><td>感知 / 执行监控 / 验证 / 记忆固化——各自隔离上下文，只返回<strong>结构化、任务相关</strong>的证据（控制 Main Agent 的信息负载）</td></tr><tr><td><strong>Unified Skill Library</strong></td><td>三类功能技能：<strong>Operational</strong>（VLA、运动原语…策略库）、<strong>Imagination</strong>（WM 预测 rollout、模型仿真）、<strong>Evaluation</strong>（评估进度/完成度、目标判据、失败分析）</td></tr><tr><td><strong>Branch Stack 恢复</strong></td><td>局部化纠错：判据校验 → 文本失败诊断 → 从栈中回退重规划</td></tr><tr><td><strong>token-aware 外部记忆</strong></td><td>保留任务相关状态，防上下文爆炸</td></tr></table>
+<h3>③ 机制：闭环交互 = 系统级策略</h3>
+<pre>任务指令 → Main Agent 层级任务规划（生成 Subgoal 1..n）
+  → 委派：Operational Skill 执行 / Imagination Skill 预演 / Evaluation Skill 判据检查
+  ← Sub Agents 返回结构化证据 → Main Agent 更新状态
+  → 失败：判据驱动的验证 + 文本诊断 + Branch Stack 局部恢复（不全局重来）
+  → 终止 / 重规划</pre>
+<ul><li>关键设计：<strong>Role-specific contexts</strong>——每个 Sub Agent 只暴露决策相关证据，Main Agent 不被原始观测淹没（与 HumanCLAW"紧凑文本历史最优"发现一致）。</li></ul>
+<h3>④ 数据与结果</h3>
+<ul><li>零额外微调：LIBERO 系列、RoboDojo 等多个公开基准 + 真机实验，"outstanding performance"（论文口径）；</li><li>卖点是<strong>系统级范式</strong>：模型即技能、图结构编排、异步并发协作。</li></ul>
+<h3>⑤ 例子</h3>
+<p>叠放任务中：Verification Sub-Agent 用判据"红块完全位于蓝垫内且无倾斜"检查执行证据；不满足时诊断文本指出"释放过早"，Branch Stack 回退到"重新抓取"子目标而不是重跑整个任务；Imagination Skill 先用 WAM 预演"从左侧接近"的后果，预演失败则直接换策略，省一次真实执行。</p>
+<h3>⑥ 局限</h3>
+<ul><li>系统复杂度高：Main/Sub 多 agent + 三类技能的编排与通信开销；</li><li>"涌现"为系统级叙述，组件各自能力上限仍在；</li><li>基准数字以论文表格为准（二手读报未给出统一均值，引用时需回查原文表）。</li></ul>
+<h3>⑦ 簇内定位</h3>
+<ul><li>与 <strong>RoboHarness</strong>：都做异构编排——EMERGE 胜在<strong>角色隔离上下文 + 图结构信息流</strong>，RoboHarness 胜在<strong>交接分布匹配</strong>（Memory Bridge）；</li><li>与 <strong>HarnessPAI</strong>：同样把模型当技能调用，EMERGE 加了 Imagination/Evaluation 两类"认知技能"与多 agent 分工；</li><li>与 <strong>Orchestra</strong>：都在解决"长程谁记账"——EMERGE 用 Main Agent 活跃上下文 + 外部记忆，Orchestra 用共享执行上下文 + 独立进度评估器；</li><li>名字即立场：<strong>具身智能系统的时代命题是"系统"，不是"模型"</strong>。</li></ul></main>
+<footer>本页由论文精读笔记自动生成 · <a href="../index.html">返回论文库</a></footer></body></html>

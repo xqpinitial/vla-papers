@@ -1,0 +1,28 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HumanCLAW 深读：VLM 有眼睛没身体——决策与运动解耦后的真相</title><link rel="stylesheet" href="../assets/style.css"></head>
+<body><nav><a class="brand" href="../index.html">🤖 Harness Papers</a><span class="spacer"></span><a class='back' href='../index.html'>← 返回论文库</a></nav>
+<header class="paper-head"><div class="chips"><span class="chip">2026-07-27</span><a class="chip cat" href="../index.html?cat=评测与基准">评测与基准</a><a class="chip" href="https://arxiv.org/abs/2607.27180">arXiv:2607.27180</a></div>
+<h1>HumanCLAW 深读：VLM 有眼睛没身体——决策与运动解耦后的真相</h1><p class="org">Meta · NTU · UW</p><p class="metric">⭐ 9 个前沿 VLM 最好仅 16.8%</p><p class="oneliner">VLM 决策 × DiT 运动解耦 + Half-Physics 仿真，隔离测量 action intelligence。</p><figure><img loading="lazy" src="../assets/figures/humanclaw/fig-01.png" alt="Figure 1（论文原图）"><figcaption>Figure 1（论文原图）</figcaption></figure><figure><img loading="lazy" src="../assets/figures/humanclaw/fig-02.png" alt="Figure 2（论文原图）"><figcaption>Figure 2（论文原图）</figcaption></figure></header>
+<main class="paper-body"><h2>HumanCLAW 深度调研笔记</h2>
+<h3>速览</h3>
+<table><tr><th>项</th><th>内容</th></tr><tr><td>一句话</td><td>把 <strong>VLM 的高层决策</strong>与<strong>运动执行</strong>解耦的评测框架：冻结现成 VLM 每 0.5s 发原子全身技能指令，DiT 运动基座 + 每技能 ControlNet 落地成连续动作，Half-Physics 仿真保留重力/碰撞但排除失衡/电机误差——9 个前沿 VLM 最好成绩仅 <strong>16.8%</strong></td></tr><tr><td>冻结</td><td>全部被测 VLM（决策者）；运动基座 DiT + ControlNet（执行器，固定）</td></tr><tr><td>演化</td><td>无——这是<strong>评测 harness</strong>，测的是 action intelligence</td></tr><tr><td>基准</td><td>HumanCLAW-Bench：1,218 个 find-navigate-interact 长程第一人称回合，41 个 HSSD 室内场景</td></tr></table>
+<h3>① 动机：失败归因难题</h3>
+<ul><li>具身任务失败时，分不清是 <strong>VLM 决策错了</strong>还是<strong>运动控制没执行好</strong>（比如失衡摔倒）。</li><li>两个极端都有缺陷：code agent 抽掉身体（脚本执行无物理后果）；端到端 VLA 把推理和具身控制纠缠在一起。</li><li>目标：隔离并测量 <strong>action intelligence</strong>——在物理环境里逐步闭环做空间决策的能力。</li></ul>
+<h3>② 架构：三重解耦</h3>
+<table><tr><th>模块</th><th>职责</th></tr><tr><td>VLM skill harness</td><td>渐进式推理脚手架：自我中心感知 → 空间理解 → 动态中级目标（2–3s）→ 原子技能+参数（walk(x,z,ψ)、sit_in_place(h)…）；0.5s 一步</td></tr><tr><td>Verifier</td><td>短上下文 spatial-action outcome QA；accept / reject / renew，拦下不安全或物理不可能的提案</td></tr><tr><td>DiT 运动生成</td><td>技能无关的运动基座 DiT（5 历史姿态 → 15 未来帧 continuation）+ 每技能即插即用 ControlNet 适配器 → 百自由度连续全身运动</td></tr><tr><td>Half-Physics 仿真</td><td>基于 AI Habitat + Bullet：保留重力、碰撞、物体位移等物理后果；用等价运动学速度驱动身体，<strong>排除</strong>失衡与电机跟踪误差 → 失败必然是决策失败</td></tr></table>
+<h3>③ 数据与结果</h3>
+<ul><li>HumanCLAW-Bench：1,218 长程回合（6 类目标家具/物体），分 navigation 子集与 sit 子集；渐进成功指标 FindSR / NavSR / InteractSR。</li><li><strong>9 个前沿 VLM 全军覆没</strong>：最佳 16.8%；同一 VLM FindSR 可达 75%+ 而 InteractSR 普遍个位数。</li></ul>
+<h3>④ 核心发现（六条 findings 的精华）</h3>
+<ol><li><strong>感知不是瓶颈</strong>：目标进视野后识别几乎全对，崩在"看见之后"；</li><li><strong>缺乏具身自我意识（embodied self-awareness）</strong>："机器幽灵"效应——能流利描述周围场景，却不知道自己身体在哪：判断不到"已到达"、空间幻觉、肢体撞翻家具无察觉、"向空气里坐下"（不追踪骨盆与座椅的相对位置）；</li><li><strong>推理脚手架至关重要</strong>：去掉技能 verifier 导航成功率骤降；增加历史图像帧数反而可能掉点——<strong>紧凑文本历史 + 中级目标推理</strong>最有效。</li></ol>
+<h3>⑤ 信息流</h3>
+<pre>高层指令 + 技能注册表 → VLM harness（0.5s 步）
+  ← 自我中心 RGB + 文本/结构化记忆
+  → 原子技能提案 → verifier 校验（reject 则重提案）
+  → DiT + skill ControlNet → 全身 motion chunk
+  → Half-Physics 执行（重力/碰撞生效）→ 新 ego 帧 → 循环</pre>
+<h3>⑥ 局限与边界</h3>
+<ul><li>Half-Physics 刻意抽掉运动控制难度——结论只覆盖决策智能，不能外推到全身动力控制；</li><li>sit 子集与室内场景设定较窄；HSSD-Hab val 资源需授权；</li><li>与同名 <strong>VisionClaw</strong>（可穿戴 always-on agent）无关。</li></ul>
+<h3>⑦ 簇内定位</h3>
+<ul><li>时间线里唯一的<strong>纯评测侧 harness</strong>（另一篇 HarnessEval-W 评世界模型）——共同命题：<strong>harness 不只用来提升能力，也用来让"能力"可被可信地测量</strong>；</li><li>它给整条 harness 路线提供了诊断学基础：为什么"冻结大模型 + 外壳"会有效/无效——因为瓶颈在决策层的具身自我意识，harness 的 verifier/记忆/脚手架恰好在补这一层；</li><li>与 <strong>EmbodiedSkills</strong> 的 verifier、<strong>CaP-X</strong> 的脚手架发现互相印证：<strong>验证与紧凑上下文比堆历史帧更值钱</strong>。</li></ul></main>
+<footer>本页由论文精读笔记自动生成 · <a href="../index.html">返回论文库</a></footer></body></html>

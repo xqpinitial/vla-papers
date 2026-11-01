@@ -1,0 +1,35 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ASPIRE 深读：机器人技能库是怎么在 Debug 中长出来的</title><link rel="stylesheet" href="../assets/style.css"></head>
+<body><nav><a class="brand" href="../index.html">🤖 Harness Papers</a><span class="spacer"></span><a class='back' href='../index.html'>← 返回论文库</a></nav>
+<header class="paper-head"><div class="chips"><span class="chip">2026-06-30</span><a class="chip cat" href="../index.html?cat=技能库与在线探索">技能库与在线探索</a><a class="chip" href="https://arxiv.org/abs/2607.00272">arXiv:2607.00272</a><a class="chip" href="https://github.com/NVlabs/ASPIRE">Code</a><a class="chip" href="https://research.nvidia.com/labs/gear/aspire">Project</a></div>
+<h1>ASPIRE 深读：机器人技能库是怎么在 Debug 中长出来的</h1><p class="org">NVIDIA GEAR · UMich · UIUC · Berkeley · CMU</p><p class="metric">⭐ 超 CaP-X 77pp；Opus 5.5 下 99%</p><p class="oneliner">per-primitive 多模态 trace + 失败签名→修复技能库 + verifier 门控 + 进化搜索。</p><figure><img loading="lazy" src="../assets/figures/aspire/fig-01.png" alt="Figure 1（论文原图）"><figcaption>Figure 1（论文原图）</figcaption></figure><figure><img loading="lazy" src="../assets/figures/aspire/fig-02.png" alt="Figure 2（论文原图）"><figcaption>Figure 2（论文原图）</figcaption></figure></header>
+<main class="paper-body"><h2>ASPIRE 深度调研笔记</h2>
+<h3>速览</h3>
+<table><tr><th>项</th><th>内容</th></tr><tr><td>一句话</td><td>让 coding agent 当"机器人程序员"：写代码→跑→<strong>看 per-primitive 多模态 trace</strong>→定位 bug→改→把验证过的修复蒸馏成"失败签名→修复动作"技能库；配进化搜索逃出局部修复环</td></tr><tr><td>冻结</td><td>底座 LLM（Claude Code；消融 12 模型）与全部环境 API</td></tr><tr><td>演化</td><td>技能库（90+ 技能 / 150+ 任务 / 18 类）</td></tr><tr><td>头部结果</td><td>LIBERO-Pro 扰动超 CaP-X <strong>+77pp</strong>；Robosuite 双臂 +72pp；BEHAVIOR-1K +32pp；Opus 5.5 下 80 任务 <strong>99%</strong>；仿真技能零样本迁移真机 0/20→11/20</td></tr><tr><td>最硬消融</td><td>把 rollout 级 0/1 reward 换成 per-primitive trace：LIBERO-Pro 14%→<strong>62%</strong></td></tr></table>
+<h3>① 动机</h3>
+<ul><li>之前 CaP agent 的三宗罪：失败只有<strong>一个布尔成功位</strong>（不知道为什么失败）；修复经验<strong>不沉淀</strong>（下次同错）；任务间经验<strong>不复利</strong>。</li><li>作者重定义（README 三句）："训练是技能精炼（与梯度无关）"、"训练好的模型是感知-动作技能库（与浮点权重无关）"、"分布式训练是一组 agent 各练各的技能（与分批数据无关）"。</li><li>押注：瓶颈不在"会不会写代码"，在"<strong>看不看得见失败</strong>"。</li></ul>
+<h3>② 架构：三大支柱（§3）</h3>
+<ol><li><strong>闭环执行引擎</strong>：记录 <strong>per-primitive 多模态 trace</strong>——感知叠加图、抓取候选、运动轨迹、碰撞反馈。导航返回 PLANNING_ERROR 时，agent 能翻该 primitive 的日志定位（如"采样落点在桌碰撞缓冲区内"），而不是对着 0/1 猜。</li><li><strong>技能库</strong>：存的不是代码片段，是"<strong>失败签名 → 修复动作</strong>"的条件-动作对。例："当 navigate_to_pose 在桌沿附近反复 PLANNING_ERROR → 以物体为中心按 45°/90°/180° 旋转接近方向重试"。覆盖定位消歧、导航恢复、motion primitive 构造、场景理解等 18 类。</li><li><strong>进化搜索</strong>：每轮提出 K 个候选程序种群，按闭环执行结果选择——专治单条修复路径的死循环。</li></ol>
+<h3>③ 机制：技能入库的两级门控（技能库不腐烂的关键）</h3>
+<pre>actor（coding agent）提交结构化 findings
+    → verifier agent 独立复现该修复          ← 第 1 道门：不同实例重跑
+    → 协调器检查 API 合规性                   ← 第 2 道门：不越 API 边界
+    → 通过才入技能库，供后续任务检索</pre>
+<p>与 RATs 的"可靠性追踪"殊途同归：<strong>都不信任写入者的自我报告</strong>。</p>
+<h3>④ 数据与基准（§5；tex 已验 + 二手读报）</h3>
+<table><tr><th>基准</th><th>结果</th><th>说明</th></tr><tr><td>LIBERO-Pro（位置/目标扰动）</td><td>超 CaP-X <strong>最高 +77pp</strong></td><td>技能库长出定位消歧/导航恢复等能力</td></tr><tr><td>Robosuite 双臂 handover</td><td>最高 <strong>+72pp</strong></td><td>接触-rich，小抓取误差毁全程</td></tr><tr><td>BEHAVIOR-1K 长程家务</td><td>最高 <strong>+32pp</strong></td><td>导航+抓放+状态跟踪</td></tr><tr><td>LIBERO-Pro Long 零样本</td><td><strong>31% vs 4%</strong></td><td>只用 LIBERO-90 上攒的库——技能库跨任务摊销经验的首个强信号</td></tr><tr><td>换强模型</td><td>Opus 5.5：80 个 LIBERO-Pro 任务平均 <strong>99%</strong>，代表性 Robosuite/BEHAVIOR-1K 任务 100%</td><td>"成功率随底座能力 scaling"（v1.0 公告；另测 GPT-6 Astra）</td></tr><tr><td>仿真→真机（双臂 YAM）</td><td>3 条仿真技能作 in-context 指引：开抽屉 tokens 334M→81M，成功 <strong>0/20→11/20</strong></td><td>不同本体、不同 API</td></tr><tr><td>真机在线学习</td><td>GPT-6 Astra 三个 session 解魔方，每步时间/token 递减</td><td>技能以文本形式累积</td></tr></table>
+<h3>⑤ 信息流（一个修复回合）</h3>
+<pre>任务 → agent 写 Python 程序（统一感知/几何/运动 API）
+  → 执行，逐 primitive 落 trace（叠加图/候选/轨迹/碰撞）
+  → 失败：翻 trace 定位 failing primitive（而非 0/1）
+  → 修程序 / 检索相似失败签名 → 重试
+  → 成功：findings → verifier 独立复现 → 协调器 API 合规 → 入库
+  → 局部死循环时：进化搜索出 K 个候选程序并行试</pre>
+<h3>⑥ 例子（二手读报/DAMO 精读）</h3>
+<p>抽屉任务反复 <code>navigate_to_pose → PLANNING_ERROR</code>：trace 显示采样落点在桌沿碰撞缓冲区 → 生成技能"以物体为中心旋转接近方向重试"→ verifier 复现通过入库 → 后续所有含抽屉的任务检索即得。真机端同一技能以 in-context 指引进入 YAM 双臂站，token 降 76%。</p>
+<h3>⑦ 实验·消融·成本·局限</h3>
+<ul><li><strong>最硬消融</strong>：trace 换 0/1 reward，14%→62%（同模型）——"看得见失败"值 48pp。</li><li><strong>进化搜索是补丁不是主力</strong>：Opus 4.6 时代贡献最高 34pp；Opus 5.5 时代 ≤2%——探索能力正被模型能力吃掉。</li><li><strong>成本</strong>：10 个任务 API 费 $40–600；真机一条失败轨迹 334M tokens。</li><li>局限：无安全沙箱（生成代码有全量 import 权限，需隔离主机）；"能跑"到"上产线"之间还隔着成功检测、自动复位、安全监控；v1.0 版本号只存在于 README（无 git tag）。</li><li>开源：Apache 2.0，代码/配置/90+ 技能全开。</li></ul>
+<h3>⑧ 与另外五篇的关系</h3>
+<ul><li>对 <strong>CaP-X</strong>：直接以 CaP-X 为基线（+77pp）；继承了其"测试时计算 scaling"论点并加了"经验沉淀"维度。</li><li>对 <strong>RAX</strong>：同为纯代码探索路线；RAX 用版本化程序+并行探索拿 LIBERO-Pro 84.4（ASPIRE 63.2，RAX 报告口径），ASPIRE 用 trace+verifier 门控+技能库取胜于可迁移性。</li><li>对 <strong>HarnessPAI</strong>：HarnessPAI 在 robosuite Insert 上反超（83 vs ASPIRE 9）——接触-rich 阶段有冻结 VLA 原语兜底的证据。</li><li>对 <strong>RATs</strong>：ASPIRE 的技能来自<strong>任务期</strong>失败修复，RATs 来自<strong>任务前</strong>自玩；两者技能库可互补。</li><li>对 <strong>Zetta</strong>：Zetta 把"看得见失败"做到动作频率（运行时 critic），ASPIRE 做在 primitive 粒度（trace 回看）。</li></ul></main>
+<footer>本页由论文精读笔记自动生成 · <a href="../index.html">返回论文库</a></footer></body></html>

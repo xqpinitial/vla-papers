@@ -1,0 +1,36 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RATs 深读：任务到来之前，先让机器人玩出技能库</title><link rel="stylesheet" href="../assets/style.css"></head>
+<body><nav><a class="brand" href="../index.html">🤖 Harness Papers</a><span class="spacer"></span><a class='back' href='../index.html'>← 返回论文库</a></nav>
+<header class="paper-head"><div class="chips"><span class="chip">2026-06-17</span><a class="chip cat" href="../index.html?cat=技能库与在线探索">技能库与在线探索</a><a class="chip" href="https://arxiv.org/abs/2606.19419">arXiv:2606.19419</a><a class="chip" href="https://playful-rats.github.io">Project</a></div>
+<h1>RATs 深读：任务到来之前，先让机器人玩出技能库</h1><p class="org">UC Berkeley · Impossible Research</p><p class="metric">⭐ LIBERO-PRO +20.6pp；跨环境即插 +8.9</p><p class="oneliner">Goldilocks 内在动机自提案任务，Write-Execute-Verify-Diagnose 团队蒸馏代码技能库。</p><figure><img loading="lazy" src="../assets/figures/rats/fig-01.png" alt="Figure 1（论文原图）"><figcaption>Figure 1（论文原图）</figcaption></figure><figure><img loading="lazy" src="../assets/figures/rats/fig-02.png" alt="Figure 2（论文原图）"><figcaption>Figure 2（论文原图）</figcaption></figure></header>
+<main class="paper-body"><h2>RATs 深度调研笔记</h2>
+<h3>速览</h3>
+<table><tr><th>项</th><th>内容</th></tr><tr><td>一句话</td><td><strong>任务到来之前先"玩"</strong>：受发展心理学启发，agent 用内在动机自提案"新颖又不太难"的探索任务，Write-Execute-Verify-Diagnose 团队练习并把成功行为蒸馏成持久代码技能库，测试期冻结复用</td></tr><tr><td>冻结</td><td>底座 LLM/VLM、测试期技能库（冻结后即插即用）</td></tr><tr><td>演化</td><td>技能库 L=L0∪L_learned + 失败记忆 M（play 期持续写入）</td></tr><tr><td>头部结果</td><td>LIBERO-PRO 23.2→<strong>43.8</strong>（+20.6，CaP-Agent0 基线）；MolmoSpaces +17.0；技能即插回 CaP-Agent0 跨环境 +8.9 / 真机 +8.8</td></tr><tr><td>差异点</td><td>六篇中唯一"<strong>无任务的学习</strong>"——探索由好奇心驱动，不由任务驱动</td></tr></table>
+<h3>① 动机</h3>
+<ul><li>现有 agentic robot 系统能写 CaP 程序、看反馈、多次修正，但都是<strong>任务驱动</strong>的：可复用技能只在明确指令之后才获得。</li><li>发展心理学：幼儿通过无结构自玩发现稳健的物理能力（intrinsic motivation, Oudeyer 2007）。</li><li>押注：把"玩"作为持续技能学习阶段，下游任务到来时白捡一个技能库。</li></ul>
+<h3>② 架构：三个团队（§3，Algorithm 1）</h3>
+<table><tr><th>团队</th><th>组成</th><th>职责</th></tr><tr><td><strong>Task Proposer</strong></td><td>提案 LLM + Environment Creator</td><td>从场景+技能库+失败记忆生成候选任务池，按 Goldilocks 原则选任务</td></tr><tr><td><strong>Execution</strong></td><td>Planning Agent → Policy Writer →（SubAgent）；验证五件套</td><td>写码执行；Planner Verifier（计划是否物理落地）/ Quality Checker（代码安全）/ Goal Verifier（终局）/ Per-Step Verifier（步级）/ Failure Diagnoser（失败模式+修正建议）</td></tr><tr><td><strong>Memory-Management</strong></td><td>Memory Curator + Skill Proposer</td><td>每 K=5 次迭代合并去重技能、删冗余教训；从重复失败中起草辅助函数</td></tr></table>
+<h3>③ 机制</h3>
+<p><strong>Goldilocks 任务选择</strong>（§3.2，公式 tex 已验）：<code>τ_t = argmax [ N(τ)·F(τ) ]</code></p>
+<ul><li>新颖度 <code>N(τ) = (1/|O×S|) Σ 1/√(N(o,s)+1)</code>——偏向罕见"物体×技能"组合；</li><li>能力边界 <code>F(τ) = 4·r̄·(1−r̄)</code>——峰值在 r̄≈0.5 的"半熟区"，排除 trivial（r̄→1）与不可能（r̄→0）。</li></ul>
+<p><strong>技能生命周期</strong>：成功 → 提取自包含函数 + docstring → 入库为 *experimental*；反复成功 → *verified*（检索优先）；反复失败 → *deprecated*（对规划隐藏）。失败回合蒸馏成简短 lesson（缺失前置条件/修正建议）存 M。</p>
+<p><strong>测试期纪律</strong>：Task Proposer 与 Memory Curator <strong>全部禁用</strong>，只检索；两种用法——RATs 全队执行，或把冻结库<strong>直接插进标准 CaP-Agent0</strong>（证明技能本身的独立价值）。</p>
+<h3>④ 数据与基准（§4；tex 已验）</h3>
+<table><tr><th>评测</th><th>RATs</th><th>基线</th><th>增益</th></tr><tr><td>LIBERO-PRO（60 held-out 任务 ×10 init = 600 trials）</td><td><strong>43.8</strong></td><td>CaP-Agent0 23.2；最佳 VLA π0.5 仅 12.8</td><td><strong>+20.6</strong></td></tr><tr><td>MolmoSpaces（4 类 ×10 任务 ×10 trials = 400）</td><td><strong>38.0</strong></td><td>21.0</td><td><strong>+17.0</strong></td></tr><tr><td>RoboSuite 跨环境即插（LIBERO-PRO 玩的技能 → CaP-Agent0）</td><td>49.1</td><td>40.3</td><td><strong>+8.9</strong>；two-arm lifting +24.0（<strong>跨本体</strong>迁移）</td></tr><tr><td>真机（2 任务 ×40 trials）</td><td>38.8</td><td>30.0</td><td><strong>+8.8</strong></td></tr></table>
+<p><strong>消融</strong>（§4.4）：随机玩 50 轮只 +1.5（23.2→24.7），Curious Play +9.1（→32.3）——<strong>好奇心是玩的有效性的关键</strong>；只改执行系统 36.3，只改玩 32.3，两者叠加最优 44.3（RATs Exec，5 trials/任务口径）——<strong>玩与测试时执行互补</strong>。</p>
+<h3>⑤ 信息流（一次 play 迭代）</h3>
+<pre>场景观测 + 技能库 + 失败记忆
+  → Proposer 生成候选池 → Goldilocks 选 τ_t（N·F 最大化）
+  → Planner 出计划（标注可复用技能）→ Planner Verifier 检查
+  → Policy Writer 写码 → 执行 → Goal/Per-Step Verifier 判定
+  → 失败：Failure Diagnoser 反馈 → 重试（预算内）或 SubAgent 单练子动作
+  → 成功：提取函数入 L（experimental）；失败：lesson 入 M
+  → 每 5 轮：Curator 去重合并；Skill Proposer 起草辅助函数</pre>
+<h3>⑥ 例子</h3>
+<p>LIBERO-PRO 的 Object 扰动（指令指向训练里没见过的物体）：play 期 agent 自玩过"抓各种非常见物体"，攒下 verified 的抓取辅助函数与前置条件检查 → 测试期 Planner 检索到这些技能，Object split 拿 61.0/63.0（对比 π0.5 全场 12.8）。</p>
+<h3>⑦ 局限（作者自陈，§Limitations）</h3>
+<ol><li>评测以仿真为主，真机 sim-to-real 稳健性待大规模验证；</li><li>玩的质量受仿真环境多样性限制（物体/动力学/可供性）；</li><li><strong>技能误检索会伤害性能</strong>（检索到不适配下游任务的技能）——需要上下文感知的检索；</li><li>依赖 VLM 验证；primitive 级控制 API 限制灵巧操作；</li><li>推理成本上升。</li></ol>
+<h3>⑧ 与另外五篇的关系</h3>
+<ul><li>对 <strong>CaP-X</strong>：整个 Execution 团队是 CaP-Agent0 的多智能体强化版；技能可直接插回 CaP-Agent0（其跨环境实验设计）。</li><li>对 <strong>ASPIRE/RAX</strong>：同为"经验→代码资产"，但学习时机不同——RATs 在<strong>任务前</strong>（play，内在动机），ASPIRE/RAX 在<strong>任务期</strong>（外在任务驱动）；ASPIRE 重失败诊断，RATs 重成功蒸馏。</li><li>对 <strong>HarnessPAI</strong>：技能库组织的两个极端——扁平函数+docstring vs 四级节点中心；HarnessPAI 用 Fig 11 的消融回应了扁平库的检索短板（正是 RATs 自认局限 3）。</li><li>对 <strong>Zetta</strong>：Zetta 管执行中（动作频率），RATs 管执行前（能力储备）。</li></ul></main>
+<footer>本页由论文精读笔记自动生成 · <a href="../index.html">返回论文库</a></footer></body></html>

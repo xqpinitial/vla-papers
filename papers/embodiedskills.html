@@ -1,0 +1,30 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EmbodiedSkills 深读：skill 契约 + guarded runtime——去掉验证从 86.2% 掉到 48.2%</title><link rel="stylesheet" href="../assets/style.css"></head>
+<body><nav><a class="brand" href="../index.html">🤖 Harness Papers</a><span class="spacer"></span><a class='back' href='../index.html'>← 返回论文库</a></nav>
+<header class="paper-head"><div class="chips"><span class="chip">2026-09-01</span><a class="chip cat" href="../index.html?cat=冻结模型编排">冻结模型编排</a><a class="chip" href="https://arxiv.org/abs/2609.01281">arXiv:2609.01281</a><a class="chip" href="https://github.com/DCDmllm/EmbodiedSkills">Code</a></div>
+<h1>EmbodiedSkills 深读：skill 契约 + guarded runtime——去掉验证从 86.2% 掉到 48.2%</h1><p class="org">浙江大学 等</p><p class="metric">⭐ RoboTwin 86.2% · LIBERO 97.4%；验证值 38pp</p><p class="oneliner">技能决策只是提案：runtime 先查前置再执行、执行后用新观测验证；六阶段 AgentLoop。</p><figure><img loading="lazy" src="../assets/figures/embodiedskills/fig-01.png" alt="Figure 1（论文原图）"><figcaption>Figure 1（论文原图）</figcaption></figure><figure><img loading="lazy" src="../assets/figures/embodiedskills/fig-02.png" alt="Figure 2（论文原图）"><figcaption>Figure 2（论文原图）</figcaption></figure></header>
+<main class="paper-body"><h2>EmbodiedSkills 深度调研笔记</h2>
+<h3>速览</h3>
+<table><tr><th>项</th><th>内容</th></tr><tr><td>一句话</td><td>每个技能决策都是<strong>提案</strong>：guarded runtime 先查前置条件再执行、执行后用新观测验证——六阶段 AgentLoop（Observe/Plan/Preflight/Execute/Verify/Recover），低层 π₀.₅ 出有界 chunk；RoboTwin 2.0 <strong>86.20%</strong>、LIBERO <strong>97.40%</strong>；<strong>去掉验证掉到 48.2%</strong></td></tr><tr><td>冻结/可换</td><td>低层 VLA（OpenPI/π₀.₅，可插拔可任务适配）；高层 Qwen3-VL + 组件 LoRA；AgentLoop 接口固定</td></tr><tr><td>演化</td><td>统一 trajectory schema 记录规划/执行/验证/恢复事件，供组件级 SFT 与可选在线适应</td></tr><tr><td>基准</td><td>RoboTwin 2.0（50 任务）、LIBERO 四套件、RMBench 四个记忆任务（12.5%——记忆仍是短板）</td></tr></table>
+<h3>① 动机：模型生成的技能决策≠可执行</h3>
+<ul><li>端到端 VLA 擅长短时动作预测，但长程任务需要感知、规划、执行、验证、恢复的闭环；模型说"放置"不代表当前状态可放置、也不保证结果会被检查。</li><li>LLM agent 能拆步子但活在文本域，可能提出物理上不可能的动作、依赖过期视觉。</li><li>解法：把"<strong>模型想说</strong>"和"<strong>物理能做</strong>"拆开——policy 只提案，runtime 强制。</li></ul>
+<h3>② 架构：可执行 skill 契约 + 六阶段 AgentLoop</h3>
+<ul><li><strong>skill 契约</strong>：typed 输入/输出、prerequisites、exec 操作、post 状态更新、fail 证据映射；模型输出通过 schema 与前置校验前<strong>只是提案</strong>。</li><li><strong>AgentLoop 六阶段</strong>：Observe → Plan → Preflight（前提/类型/freshness 检查）→ Execute（π₀.₅ 有界 chunk）→ Verify（新观测判进度）→ Recover（修订重入）。非固定流水线，策略可重入各阶段。</li><li><strong>Policy–runtime 分离</strong>：高层 VLM 只发 RunSkill / AdvanceStage / FinishRun；runtime 用 guard 强制 phase 兼容、artifact freshness、动作 schema；被 block 的决策写入 trace 而非静默执行。</li><li>依赖证据变化时 runtime 使相关 artifact 失效——<strong>防陈旧观测授权新动作</strong>。</li></ul>
+<h3>③ 关键消融（5,000 episodes/设置，最硬的证据）</h3>
+<table><tr><th>设置</th><th>宏观成功率</th><th>说明</th></tr><tr><td>完整 AgentLoop</td><td><strong>86.20%</strong></td><td>语义子任务 + 中间验证 + 有界 chunk 可重试</td></tr><tr><td>无验证</td><td>48.2%</td><td>固定子任务序列、同总预算、无结果检查 → <strong>-38pp</strong></td></tr><tr><td>无子任务</td><td>34.4%</td><td>每 chunk 给整任务指令</td></tr><tr><td>每子任务一块</td><td>19.5%</td><td>无 continuation/重试</td></tr></table>
+<ul><li>结论：验证的价值在于<strong>结果条件化的分支</strong>（观察结果并改变后续行为），不是孤立的"verifier 增益"。</li></ul>
+<h3>④ 数据与结果</h3>
+<ul><li>低层任务适配策略：RoboTwin 2.0 五十任务均值 <strong>86.20%</strong>（&gt; 公开 π₀.₅ 参考 82.74%——注意口径为参考列非受控重跑）；LIBERO 四套件宏均 <strong>97.40%</strong>；</li><li><strong>记忆短板</strong>：RMBench 四个记忆依赖任务仅 <strong>12.5%</strong>——每任务单独微调的 specialist 不解决跨回合记忆；</li><li>真机/开源：AgentLoop、三基准适配器、OpenPI 集成、Qwen3-VL LoRA 训练脚本已开源（checkpoint 需自训）。</li></ul>
+<h3>⑤ 信息流</h3>
+<pre>Observe → Plan（语义子目标+预算）→ Preflight（guard 检查）
+  → Execute（π₀.₅ subgoal 条件 chunk）→ Verify（fresh evidence）
+     ├─ Continue/Advance → Execute
+     ├─ Reobserve/Replan → Observe
+     └─ Recover → 修订后重入 Plan
+全程写入结构化 trajectory（planner/verifier/低层可独立 SFT 或替换）</pre>
+<h3>⑥ 例子</h3>
+<p>"把容器放上盘子"：Plan 拆出"抓容器"子目标；Preflight 发现上次抓取证据是 3 步之前的旧帧（freshness 失败）→ 强制 Reobserve；执行中容器滑落，Verify 用新帧判失败，Recover 生成"以更大开度重抓"并写回 trace。</p>
+<h3>⑦ 簇内定位</h3>
+<ul><li>与 <strong>Harness VLA</strong>：互补——Harness VLA 冻结原语+记忆，EmbodiedSkills 冻结接口+guarded runtime（外部读报原话："与 Harness VLA 的冻结原语路线互补"）；</li><li>与 <strong>SERA/AdaHVLA</strong>：runtime 固定 vs harness 可编辑——EmbodiedSkills 证明"哪怕 harness 不学，光有验证分支就值 38 个点"；</li><li>与 <strong>HumanCLAW</strong>：互证 verifier 与紧凑上下文的价值；</li><li>弱点与 <strong>RMBench 记忆类任务</strong>正是 RoboFoundry/RoboHarn-Evo（记忆/知识侧自进化）要补的位。</li></ul></main>
+<footer>本页由论文精读笔记自动生成 · <a href="../index.html">返回论文库</a></footer></body></html>

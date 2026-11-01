@@ -1,0 +1,35 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HarnessBank 深读：LLM Agent 的 Harness 自进化——语义基因库 + 四道门控</title><link rel="stylesheet" href="../assets/style.css"></head>
+<body><nav><a class="brand" href="../index.html">🤖 Harness Papers</a><span class="spacer"></span><a class='back' href='../index.html'>← 返回论文库</a></nav>
+<header class="paper-head"><div class="chips"><span class="chip">2026-07-15</span><a class="chip cat" href="../index.html?cat=通用 Agent Harness">通用 Agent Harness</a><a class="chip" href="https://arxiv.org/abs/2607.13683">arXiv:2607.13683</a></div>
+<h1>HarnessBank 深读：LLM Agent 的 Harness 自进化——语义基因库 + 四道门控</h1><p class="org">恒心智能 EverMind · 盛大</p><p class="metric">⭐ 7 个 agent 基准 +5.1%~15.4%</p><p class="oneliner">任务 agent + 独立 evolver：基因库按(改哪里,为什么)归档防坍缩，四道门控筛真改进。</p><figure><img loading="lazy" src="../assets/figures/harnessbank/fig-01.png" alt="Figure 1（论文原图）"><figcaption>Figure 1（论文原图）</figcaption></figure><figure><img loading="lazy" src="../assets/figures/harnessbank/fig-02.png" alt="Figure 2（论文原图）"><figcaption>Figure 2（论文原图）</figcaption></figure></header>
+<main class="paper-body"><h2>HarnessBank 深度调研笔记</h2>
+<h3>速览</h3>
+<table><tr><th>项</th><th>内容</th></tr><tr><td>一句话</td><td>任务 agent + 独立 evolver agent 的 harness 自进化框架：<strong>语义基因库</strong>按 (改哪里, 为什么改) 归档高质 harness 防搜索坍缩，<strong>四道门控</strong>筛掉无效/未激活/不显著/无增益的子代——七个 agent 基准 +5.1%~15.4%</td></tr><tr><td>冻结</td><td>任务模型权重（主实验 Qwen3.6-27B；跨模型含 397B / Gemini）</td></tr><tr><td>演化</td><td>harness 整体表面：prompt / 知识 / runtime / config（核心 kernel 不可变）</td></tr><tr><td>领域</td><td><strong>通用 LLM agent</strong>（Terminal-Bench 2 等），不是机器人——但它是机器人侧 harness 自进化（Zetta/SHAPER/RoboFoundry/AdaHVLA）的方法论源头之一</td></tr></table>
+<h3>① 动机：自进化的三个失败模式</h3>
+<ol><li><strong>搜索坍缩</strong>：贪心选择只留单一线路，把"高质但语义不同"的 harness 丢掉，也可能记住个别训练任务而非修复失败机制；</li><li><strong>评估噪声</strong>：agent 结果在临界任务上波动，沙箱崩溃/验证器超时等基建问题被误记为 harness 改动的效果；</li><li><strong>过拟合与未激活</strong>：看似成功的补丁可能在执行中从未被触发，或只对筛选用任务过拟合。</li></ol>
+<h3>② 架构：双 agent + 基因库</h3>
+<ul><li><strong>任务 agent</strong> 在当前 harness 下执行环境任务；<strong>evolver agent</strong> 分析执行轨迹、诊断复现失败机制、生成子代 harness（不碰模型参数）。</li><li><strong>Harness Gene Bank（HGB）</strong>：每个库 cell 按<strong>语义坐标</strong>索引——<code>where</code>（改动作用在哪个 harness 组件）× <code>why</code>（针对哪种失败病理）。不同失败机制的 harness 都保留在库中，evolver 可以：从失败轨迹<strong>再造</strong>机制，或<strong>跨 cell 重组</strong>兼容机制；质量偏置的父代选择利用最强线路，语义库保住贪心进化会丢的互补解。</li></ul>
+<h3>③ 机制：四道门控（Gated Harness Screening）</h3>
+<pre>子代 harness
+ ├─ ① 有效性门：剔除被基建故障污染的评估
+ ├─ ② 激活门：验证补丁在执行中真的被触发
+ ├─ ③ 配对显著性门：增益与任务级波动可区分（~2σ）
+ └─ ④ 增益门：必须胜过父代
+ → 过四门才上全量训练集评估 → 竞争入基因库</pre>
+<p>这是把"<strong>可统计验证的筛选</strong>"引入 harness 自进化——与 RAX 的"无人值守成功才入库"、ASPIRE 的 verifier 复现同一哲学，但做成了显式的统计协议。</p>
+<h3>④ 数据与结果</h3>
+<ul><li>七个多样 agent 基准（含 Terminal-Bench 2 等）：一致提升 <strong>+5.1% ~ +15.4%</strong>；</li><li>跨模型实验：进化出的 harness 是<strong>模型特异</strong>的而非普适最优——可迁移的是"失败诊断 + 结构化搜索 + 验证"这套流程本身；</li><li>相关定位：对照 GEPA（prompt 进化）与 Darwin Gödel Machine（开放自改），HarnessBank 把优化面扩展到<strong>全 harness 表面</strong>。</li></ul>
+<h3>⑤ 信息流（一轮进化）</h3>
+<pre>任务 agent 在当前 harness 下跑任务 → 执行轨迹
+  → evolver 诊断复现失败机制 → 生成子代 harness（改 prompt/知识/runtime/config）
+  → 小子集评估 → 四道门控 → 过门者上全量评估 → 质量竞争入库（按 where×why 归档）
+  → 下一轮：再造 or 跨 cell 重组</pre>
+<h3>⑥ 例子</h3>
+<p>补丁类型如 Verify-Finalize（提交前自检，抑制过早收束）：如果轨迹显示 agent 反复"提前宣布完成"，evolver 生成"finalize 前强制 verifier 检查"的 harness 变体；激活门会验证这条补丁路径真的被执行到了，显著性门验证加了它确实赢。</p>
+<h3>⑦ 局限</h3>
+<ul><li>代码"接受后开源"，尚未发布；</li><li>进化成本：每个子代要过多轮评估（门控正是为了省这笔钱）；</li><li>模型特异性意味着换底座要重新进化。</li></ul>
+<h3>⑧ 簇内定位</h3>
+<ul><li>机器人侧自进化 harness（<strong>Zetta 的批量级进化 / RoboFoundry 的外循环 / AdaHVLA 的修订图 / HarnessBank 的基因库</strong>）共享同一套问题：怎么防搜索坍缩、怎么防噪声自评——HarnessBank 是把这套方法论讲得最显式的一篇；</li><li>与 <strong>Harness²</strong>：都做"harness 改 harness"，HarnessBank 靠真值可评的基准门控，Harness² 靠行为对比在<strong>无验证器</strong>的开放世界工作；</li><li>时间线上它是 07 月"自进化"分支的第一篇，随后 08–10 月的机器人化版本连续出现。</li></ul></main>
+<footer>本页由论文精读笔记自动生成 · <a href="../index.html">返回论文库</a></footer></body></html>

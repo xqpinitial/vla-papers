@@ -1,0 +1,31 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DreamSteer 深读：不动 VLA 一根毫毛，世界模型预演挑动作</title><link rel="stylesheet" href="../assets/style.css"></head>
+<body><nav><a class="brand" href="../index.html">🤖 Harness Papers</a><span class="spacer"></span><a class='back' href='../index.html'>← 返回论文库</a></nav>
+<header class="paper-head"><div class="chips"><span class="chip">2026-07-03</span><a class="chip cat" href="../index.html?cat=世界模型与想象">世界模型与想象</a><a class="chip" href="https://arxiv.org/abs/2607.02865">arXiv:2607.02865</a><a class="chip" href="https://dream-steer.github.io">Project</a></div>
+<h1>DreamSteer 深读：不动 VLA 一根毫毛，世界模型预演挑动作</h1><p class="org">Meta FAIR · U Minnesota</p><p class="metric">⭐ 真机 OOD 23.75%→66.25%；潜空间 rollout 39× 加速</p><p class="oneliner">冻结 VLA 采样多候选，潜空间世界模型想象未来、语言价值模型排序，只执行最高分。</p><figure><img loading="lazy" src="../assets/figures/dreamsteer/fig-01.png" alt="Figure 1（论文原图）"><figcaption>Figure 1（论文原图）</figcaption></figure><figure><img loading="lazy" src="../assets/figures/dreamsteer/fig-02.png" alt="Figure 2（论文原图）"><figcaption>Figure 2（论文原图）</figcaption></figure></header>
+<main class="paper-body"><h2>DreamSteer 深度调研笔记</h2>
+<h3>速览</h3>
+<table><tr><th>项</th><th>内容</th></tr><tr><td>一句话</td><td>冻结 VLA 采样多候选动作块（外加预定义运动原语），潜变量世界模型"想象"每个候选的未来，语言条件价值模型排序，只执行最高分——<strong>真机 OOD 成功率 23.75%→66.25%，指令遵循 38.75%→56.25%</strong></td></tr><tr><td>冻结</td><td>VLA（π₀）、DINOv2 视觉编码器、世界模型、价值模型——全部组件冻结；不使用目标环境演示做任何适应</td></tr><tr><td>演化</td><td>无参数更新（纯推理时 steering）</td></tr><tr><td>定位</td><td>harness 谱系里的"世界模型预演排序"支线：harness 不是代码/技能，而是<strong>想象力</strong></td></tr></table>
+<h3>① 动机</h3>
+<ul><li>预训练 VLA 零样本泛化有潜力，但部署时分布偏移下常失败。既有解法是拿目标环境数据微调——<strong>假设你能采到目标域演示</strong>，而这恰是部署场景最缺的。</li><li>LLM 生态的启示：采样多个响应 + 裁判模型挑最好的。VLA 是生成式（随机）策略，第一次尝试失败时，其分布里往往<strong>存在</strong>正确动作——挑战是怎么把它认出来。</li><li>押注：让机器人在物理执行前"先想几条未来"——动作条件潜变量世界模型预演候选后果，价值模型按语言指令排序。</li></ul>
+<h3>② 架构（部署时 steering 管线）</h3>
+<pre>观测 o_t + 指令 ℓ ──▶ 冻结 VLA 采样 K_VLA 个候选 chunk
+                        └─ ⊕ 预定义 Cartesian 运动原语 C_prim（"前进2cm""闭合夹爪"…）
+候选集 C_t = C_VLA ∪ C_prim
+  ──▶ 动作条件潜变量世界模型 W_φ：逐候选在 DINOv2 潜空间自回归预测未来
+  ──▶ 解码未来观测 ──▶ 语言条件价值模型按 ℓ 排序 ──▶ 执行最高分 chunk</pre>
+<table><tr><th>组件</th><th>设计</th></tr><tr><td>候选生成</td><td>冻结 VLA 采样 + 硬编码笛卡尔原语补盲（新环境里"向左微调 1cm"这类基本运动 VLA 也可能失手）</td></tr><tr><td>世界模型</td><td><strong>多本体训练</strong>（DROID 等异构数据：单臂/双臂/灵巧手/人类演示）；共享时空 Transformer + 本体专属 action/state tokenizer；缺失模态 token 级 masking</td></tr><tr><td>潜空间动力学</td><td>在冻结 DINOv2 潜空间预测未来；解码为图像供价值模型评估</td></tr><tr><td>时空分解注意力</td><td>帧内空间 cross-attention + patch 级因果时间 cross-attention → 复杂度对 rollout 长度 H 近线性</td></tr><tr><td>价值模型</td><td>语言条件；轨迹分 = 沿 rollout 逐对相邻观测的进度估计求和</td></tr></table>
+<h3>③ 机制：为什么"潜空间"是关键</h3>
+<ul><li><strong>工程可行性</strong>：同 RTX 4090、H=10、3 帧 320×192 解码——视频扩散 23.12s vs 潜变量 WM <strong>0.59s（~39×）</strong>。多候选想象只有在潜空间才能进部署环。</li><li><strong>价值一致性</strong>：不要求校准奖励，只要求潜空间 rollout <strong>保持相对价值趋势</strong>（真值轨迹与想象轨迹的价值排序一致）。</li><li><strong>功能交互预测</strong>：想象中拨动开关 → 世界模型预测场景光照变化（因果层面而非像素层面）。</li></ul>
+<h3>④ 数据与基准</h3>
+<ul><li>训练：异构交互数据集（DROID 等），跨单臂/双臂/灵巧手/人类；<strong>不含目标环境数据</strong>。</li><li>评测：四组真机 OOD 操纵基准（未见物体；Phone/Mustard/Tape/Eraser + 两个 OOD 场景）+ 指令跟随（IF）场景：</li></ul>
+<p>  - 任务成功率 <strong>23.75% → 66.25%</strong>（基于 π₀ VLA）</p>
+<p>  - 指令遵循准确率 <strong>38.75% → 56.25%</strong></p>
+<h3>⑤ 与同类方法对照（论文 Table 1 摘要）</h3>
+<table><tr><th>方法</th><th>多候选 chunk</th><th>广义 WM</th><th>零样本 steering</th><th>训练无关组合</th></tr><tr><td>V-GPS</td><td>✗</td><td>—</td><td>✓</td><td>✗</td></tr><tr><td>FOREWARN / GPC</td><td>✓</td><td>任务微调（latent/pixel）</td><td>✗</td><td>✗</td></tr><tr><td><strong>DreamSteer</strong></td><td>✓</td><td><strong>广义 latent WM</strong></td><td>✓</td><td>✓</td></tr></table>
+<h3>⑥ 局限与诚实边界</h3>
+<ul><li>是<strong>有限候选集上的 rerank</strong>，不是全局最优规划——候选池里没有的动作永远不会被选中；</li><li>价值模型想象轨迹的评估依赖潜空间保真度，长 horizon 误差会累积；</li><li>部署环内每步要做 K 次想象 + 排序，有推理时延成本（论文以潜空间效率对冲）。</li></ul>
+<h3>⑦ 簇内定位</h3>
+<ul><li>与 <strong>Harness VLA / RoboDawn</strong>：同属"冻结底座 + 系统层补强"，但 DreamSteer 的 harness 是<strong>世界模型+价值模型</strong>（想象力），不是代码/技能/记忆；</li><li>与 <strong>Zetta</strong>：Zetta 的 critic 在执行<strong>中</strong>毫秒级纠错，DreamSteer 在执行<strong>前</strong>用想象排序；</li><li>与 <strong>EmbodiedSWE / HarnessPAI 的数据反哺</strong>：DreamSteer 完全不动训练侧——三者构成"改训练 / 改组织 / 改想象"三种冻结-增强路线；</li><li>是时间线里"<strong>test-time scaling 的 VLA 类比</strong>"代表：采样 + rerank，代价从算力换成想象力。</li></ul></main>
+<footer>本页由论文精读笔记自动生成 · <a href="../index.html">返回论文库</a></footer></body></html>

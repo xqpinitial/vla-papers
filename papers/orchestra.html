@@ -1,0 +1,29 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Orchestra 深读：规划、执行管理与动作生成分离——ASL 达 HarnessVLA 的 2.46 倍</title><link rel="stylesheet" href="../assets/style.css"></head>
+<body><nav><a class="brand" href="../index.html">🤖 Harness Papers</a><span class="spacer"></span><a class='back' href='../index.html'>← 返回论文库</a></nav>
+<header class="paper-head"><div class="chips"><span class="chip">2026-10-13</span><a class="chip cat" href="../index.html?cat=冻结模型编排">冻结模型编排</a><a class="chip" href="https://arxiv.org/abs/2610.18352">arXiv:2610.18352</a><a class="chip" href="https://youpengwen.github.io/Orchestra">Project</a></div>
+<h1>Orchestra 深读：规划、执行管理与动作生成分离——ASL 达 HarnessVLA 的 2.46 倍</h1><p class="org">小米 · 国防科技大学</p><p class="metric">⭐ RMBench-Compose ASL 7.35（2.46×）</p><p class="oneliner">共享执行上下文 + 独立训练的进度评估器管账，防做错对象/重复跳步/过早切换。</p><figure><img loading="lazy" src="../assets/figures/orchestra/fig-01.png" alt="Figure 1（论文原图）"><figcaption>Figure 1（论文原图）</figcaption></figure><figure><img loading="lazy" src="../assets/figures/orchestra/fig-02.png" alt="Figure 2（论文原图）"><figcaption>Figure 2（论文原图）</figcaption></figure></header>
+<main class="paper-body"><h2>Orchestra 深度调研笔记</h2>
+<h3>速览</h3>
+<table><tr><th>项</th><th>内容</th></tr><tr><td>一句话</td><td>把<strong>任务规划与执行管理</strong>从<strong>动作生成</strong>中分离的 agent harness：完整多模态指令 → 有序子任务分解 + 实体 grounding 更新 + 共享执行上下文；动作策略管"怎么做"，<strong>独立训练的进度评估器</strong>管"什么时候算完成、何时进入下一步"——RMBench 九任务 68.22%（超 Mem-0 26.22pp）；RMBench-Compose 的 ASL 达 <strong>7.35 个子任务 = HarnessVLA 的 2.46 倍</strong></td></tr><tr><td>冻结</td><td>动作策略（含 π₀.₅ 系） + 进度评估器为独立训练组件</td></tr><tr><td>演化</td><td>无自进化；卖点是<strong>分工架构</strong>本身</td></tr><tr><td>基准</td><td>RMBench（9 任务）+ 新基准 RMBench-Compose + 4 个真机多步任务</td></tr></table>
+<h3>① 动机：长程失败的三种"记账错"</h3>
+<ul><li>好的局部动作也可能被浪费：<strong>做错对象 / 重复或跳步 / 过早或过晚切换子任务</strong>——编排的瓶颈在 order、grounding、transition 的协调，而非动作能力。</li><li>场景例子：按 3、1、2 顺序把编号名牌摆上蓝垫——必须选对牌、守住顺序、知道每次放置何时完成。</li></ul>
+<h3>② 架构：共享上下文 + 三角色</h3>
+<table><tr><th>组件</th><th>职责</th></tr><tr><td>Task Agent</td><td>接收完整多模态指令（纯语言 / 语言+参考图 / 语言+点框提示）→ 有序子任务分解（含相关实体描述）</td></tr><tr><td>Visual Grounding</td><td>为当前活跃步骤定位并跟踪实体（实现里用 MolmoPoint 出点提示 + SAM3 分割）</td></tr><tr><td><strong>共享执行上下文</strong></td><td>活跃子任务 + 空间 grounding + 近期观测 + 任务记录 + 转换管理</td></tr><tr><td>动作策略</td><td>用共享上下文生成动作</td></tr><tr><td><strong>进度评估器</strong>（独立训练）</td><td>估计当前子任务何时完成 → 决定何时推进下一步</td></tr></table>
+<h3>③ 数据与结果</h3>
+<table><tr><th>评测</th><th>Orchestra</th><th>对照</th></tr><tr><td>RMBench 九任务平均成功率</td><td><strong>68.22%</strong></td><td>Mem-0 42.00%（+26.22pp）</td></tr><tr><td>RMBench-Compose 平均成功长度 ASL</td><td><strong>7.35</strong> 子任务</td><td>HarnessVLA 2.99（<strong>2.46×</strong>）</td></tr><tr><td>真机四任务平均 ASL</td><td><strong>2.75</strong></td><td>Orchestra+裸 π₀.₅ 为 2.20（+25.0%）</td></tr></table>
+<ul><li>RMBench-Compose 专门测"用原子指令与短轨迹训练的机器人能否执行更长的子任务序列"。</li></ul>
+<h3>④ 信息流</h3>
+<pre>多模态指令 → Task Agent：有序子任务分解（实体绑定）
+  → 活跃子任务 → Grounding（MolmoPoint + SAM3）定位实体
+  → 动作策略（读共享上下文）生成动作 → 执行
+  → 进度评估器：完成？→ 推进下一子任务 / 继续
+  → 上下文更新（已完成步骤、物体/目标位置变化）→ 循环</pre>
+<h3>⑤ 例子</h3>
+<p>名牌 3-1-2：Task Agent 拆出"拿 3 号→放蓝垫→拿 1 号→…"；grounding 锁定"3 号"的位置（哪怕场景被打乱后更新位置）；进度评估器在"3 号已放稳"时才允许推进——防重复、防跳步、防过早切换。</p>
+<h3>⑥ 局限</h3>
+<ul><li>进度评估器是<strong>独立训练</strong>的组件——每个域都要训练这个"账房"；</li><li>无自进化：上下文与评估器不随经验成长（对比 RoboHarn-Evo/RoboFoundry）；</li><li>组合泛化仍以 RMBench 族任务为主。</li></ul>
+<h3>⑦ 簇内定位</h3>
+<ul><li>与 <strong>Harness VLA</strong>：直接对比（ASL 2.46×）——同样面向长程记账，Orchestra 把"记账"做成<strong>规划-执行管理-动作生成三者分离 + 独立进度信号</strong>，比记忆引导 agent 的单点方案更彻底；</li><li>与 <strong>RoboHarness/EMERGE-Policy</strong>：都在回答"长程谁负责账本"，Orchestra 的独立进度评估器是独特贡献（其他家用 LLM 判断或判据校验）；</li><li>与 <strong>EmbodiedSkills 的 Verify</strong>：Verify 是每 chunk 后的局部检查，Orchestra 的进度评估器是子任务级的"完成裁判"——两个粒度互补；</li><li>时间线收官：规划/执行管理/动作生成的三分离，是"系统即策略"叙事最清晰的架构表述之一。</li></ul></main>
+<footer>本页由论文精读笔记自动生成 · <a href="../index.html">返回论文库</a></footer></body></html>

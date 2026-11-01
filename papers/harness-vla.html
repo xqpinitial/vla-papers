@@ -1,0 +1,33 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Harness VLA 深度调研：把 Coding-Agent 的 Harness 范式引入具身智能</title><link rel="stylesheet" href="../assets/style.css"></head>
+<body><nav><a class="brand" href="../index.html">🤖 Harness Papers</a><span class="spacer"></span><a class='back' href='../index.html'>← 返回论文库</a></nav>
+<header class="paper-head"><div class="chips"><span class="chip">2026-07-09</span><a class="chip cat" href="../index.html?cat=冻结模型编排">冻结模型编排</a><a class="chip" href="https://arxiv.org/abs/2607.08448">arXiv:2607.08448</a><a class="chip" href="https://github.com/RLinf/RPent">Code</a><a class="chip" href="https://harnessvla.github.io">Project</a></div>
+<h1>Harness VLA 深度调研：把 Coding-Agent 的 Harness 范式引入具身智能</h1><p class="org">清华大学 · 无问芯穹 等</p><p class="metric">⭐ LIBERO-Pro 82.4% vs 冻结 π_RLinf 50%</p><p class="oneliner">冻结 VLA 降格为可重试原语 vla_act，6+2 固定解析原语 + 双层记忆，词汇锁死只学 operating range。</p><figure><img loading="lazy" src="../assets/figures/harness-vla/fig-01.png" alt="Figure 1（论文原图）"><figcaption>Figure 1（论文原图）</figcaption></figure><figure><img loading="lazy" src="../assets/figures/harness-vla/fig-02.png" alt="Figure 2（论文原图）"><figcaption>Figure 2（论文原图）</figcaption></figure></header>
+<main class="paper-body"><h2>Harness VLA 深度调研笔记</h2>
+<h3>速览</h3>
+<table><tr><th>项</th><th>内容</th></tr><tr><td>一句话</td><td>把 Coding-Agent 的 <strong>Harness Layer</strong> 搬进具身智能：冻结 VLA 降格为库里一个<strong>可重试的接触原语 <code>vla_act</code></strong>，配 6+2 个固定解析原语 + 双层记忆，planner 学的是原语的 operating range——<strong>词汇锁死、VLA 零微调</strong></td></tr><tr><td>冻结</td><td>底座 VLA（π_RLinf，flow-matching）+ planner（LLM）</td></tr><tr><td>演化</td><td>无参数更新；探索期把成功轨迹与规则蒸馏进两块记忆</td></tr><tr><td>头部结果</td><td>LIBERO-Pro <strong>82.4%</strong>（同冻结 π_RLinf 直滚 50.0%；RATS 43.8%；Cap-X 18.2%）</td></tr><tr><td>关键纪律</td><td>planner <strong>永不直接输出</strong>力矩/关节目标/action chunk——整个动作空间坍缩为封闭可审计的 JSON 契约</td></tr></table>
+<h3>① 动机</h3>
+<ul><li>端到端 VLA 把语言理解/长程组合/底层接触控制全压进一个策略，部署一遇扰动就崩：π₀.₅ 在 LIBERO 130 任务 ~96%，到只加"目标重绑定+位置交换"扰动的 <strong>LIBERO-Pro 掉到 50%</strong>。</li><li>纯 coding-agent 路线（Code as Policies 系）语义与组合推理强，但<strong>解析原语做不了不规则抓取、受限放置、关节物体交互</strong>。</li><li>押注：不扩技能库，反而<strong>锁死词汇</strong>，让 planner 学会"何时、如何调用冻结 VLA"——把模型能力问题重述为<strong>模型如何被组织和调用</strong>的问题。</li></ul>
+<h3>② 架构（图 1 系统总览）</h3>
+<p><strong>固定原语库 P（评测前冻结，部署时不许新增）</strong>：</p>
+<table><tr><th>原语</th><th>类型</th><th>职责</th></tr><tr><td>move_to / move_pose</td><td>解析</td><td>自由空间运输 / 到位姿</td></tr><tr><td>rotate_wrist / rotate_pitch</td><td>解析</td><td>接触前姿态对齐</td></tr><tr><td>set_gripper / release</td><td>解析</td><td>夹爪开合 / 释放</td></tr><tr><td>navigate_to / move_base（厨房扩展）</td><td>解析</td><td>移动底盘</td></tr><tr><td><strong>vla_act</strong></td><td>冻结 VLA</td><td>局部接触密集：抓、受限放置、按按钮、开抽屉</td></tr></table>
+<p><code>vla_act</code> 契约：planner 给<strong>任务条件化 prompt + 提前返回谓词</strong>；冻结 VLA 输出 action chunk 直到谓词满足或预算耗尽。</p>
+<p><strong>两块记忆</strong>：</p>
+<ul><li><strong>Task Specific Memory</strong>：reference-seed 探索得到的成功命令轨迹（parameterized JSONL，坐标替换为符号感知查询），供 few-shot re-grounding；</li><li><strong>Global Memory</strong>：可复用成功规则与失败模型（空抓检测、视觉误判成功等）。</li></ul>
+<h3>③ 机制：两阶段生命周期 + REPL 契约</h3>
+<ul><li><strong>回合 = planner Π 与物理引擎的自回归回合制交互</strong>：每步消费 o_t=(I_rgb, I_d, q)、ℓ、记忆检索上下文 → 发一个 JSON 调用 <code>c_t = {action, args}</code> → 引擎执行到原语 post-condition → 返回 o_{t+1}。借鉴 CodeAct/SWE-agent 的 REPL 运行时。</li><li><strong>Exploratory Bootstrapping</strong>：单一 reference seed 上自主探索找可行解（有 reset 原语、预算宽松）；成功轨迹序列化入 Task Memory，规则/失败模型入 Global Memory。</li><li><strong>Deployment Evaluation</strong>：未见变体上<strong>reset 禁用、预算缩短</strong>；从记忆取 trace 对实时 RGB-D 动态 re-grounding。<strong>所有 benchmark 数字来自此严格阶段</strong>。</li><li>纪律：原语级 post-condition（"看起来抓住了"）≠ 任务成功；成功永远由 benchmark 谓词 G 决定。</li></ul>
+<h3>④ 数据与结果</h3>
+<table><tr><th>基准</th><th>Harness VLA</th><th>对照</th></tr><tr><td>LIBERO-Pro（8 cell × 100 trials）</td><td><strong>82.4%</strong>（Codex 版 72.1%）</td><td>冻结 π_RLinf 50.0%；RATS 43.8%；Cap-X 18.2%</td></tr><tr><td>RoboCasa365 三子任务</td><td>60.0/21.3/5.0 → <strong>91.6/56.3/15.0</strong></td><td>整体约 55.4%</td></tr><tr><td>RoboTwin C2R（双臂 clean→randomized）</td><td><strong>58.4%</strong></td><td>直接策略 47.9%</td></tr></table>
+<h3>⑤ 信息流（一个回合）</h3>
+<pre>ℓ + RGB-D + q_t ──▶ Planner（冻结 LLM）◀──检索── Task Memory / Global Memory
+  ──▶ JSON 调用 c_t ∈ P ──▶ 物理引擎执行至 post-condition ──▶ o_{t+1}
+  循环至 G=True 或预算耗尽</pre>
+<h3>⑥ 例子（target redirection + grasp recovery，双 Franka 真机 demo 同款）</h3>
+<p>"把蓝色方块放到演示里的第二个目标位"（目标已位置交换）：re-ground 目标（解析原语读 RGB 定位"当前视觉里被指定的方块"）→ move_to 上方 → vla_act 抓（谓词=闭合且离地 2cm）→ Global Memory"空抓检测"判定失败 → move_pose re-stage 到有利观测位 → <strong>再次调用 vla_act</strong>（把脆弱尝试重新框定）→ 成功后 move_to 目标位 → 放置 → release。</p>
+<p><strong>代码实证（官方 RPent 仓库）</strong>：<code>rpent/tools/toolkit.py</code> 的 <code>Toolkit.execute_tool(name, input_dict)</code> = 固定原语库 + JSON 契约；<code>rpent/memory/manager.py</code> 的 <code>MemoryManager</code> 用 <code>SCOPES={"global","task-family"}</code>、<code>KINDS={"primitive","perception","strategy","failure","infra"}</code> 实现两块记忆；仓库含 libero/robocasa/dual_franka/robotwin 后端。</p>
+<h3>⑦ 实验与定位</h3>
+<ul><li>消融：无记忆版本显著掉点（两块记忆一起拿掉）；真机仅 demo 未系统 benchmark；主表无置信区间。</li><li>局限：执行系统更大（多原语+记忆+LLM 时延）；依赖 reference-seed 探索；planner 视觉推理有限；VLA 与 harness 无联合优化。</li><li>框架声称与 WAM 等其他具身基础模型兼容——<strong>action-representation-agnostic 的系统层</strong>。</li></ul>
+<h3>⑧ 簇内定位</h3>
+<ul><li>时间线（07-09）的<strong>命名旗手</strong>："词汇锁死 vs 词汇膨胀"对照轴的一端（另一端是 CaP-X/RAX/ASPIRE 的持续扩充）；</li><li>与 <strong>Zetta</strong>：同一冻结纪律，Zetta 把监控下沉到动作频率且让 harness 本体演化，Harness VLA 的 harness 只在任务回合粒度学习；</li><li>与 <strong>EmbodiedSkills</strong>：guarded runtime 固定 vs 这里记忆可学——互补；</li><li>与 <strong>SERA</strong>（2610.29560）：SERA 主张 harness 本身可自进化，立场相反的姊妹篇。</li></ul></main>
+<footer>本页由论文精读笔记自动生成 · <a href="../index.html">返回论文库</a></footer></body></html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RoboHarness 深读：VLA/RL/TAMP 异构策略编排，Memory Bridge 治交接掉点</title><link rel="stylesheet" href="../assets/style.css"></head>
+<body><nav><a class="brand" href="../index.html">🤖 Harness Papers</a><span class="spacer"></span><a class='back' href='../index.html'>← 返回论文库</a></nav>
+<header class="paper-head"><div class="chips"><span class="chip">2026-07-20</span><a class="chip cat" href="../index.html?cat=冻结模型编排">冻结模型编排</a><a class="chip" href="https://arxiv.org/abs/2607.18060">arXiv:2607.18060</a></div>
+<h1>RoboHarness 深读：VLA/RL/TAMP 异构策略编排，Memory Bridge 治交接掉点</h1><p class="org">Jinbang Huang 等</p><p class="metric">⭐ 5 基准 + 500 任务 + 135 真机</p><p class="oneliner">异构策略封装成可复用技能，执行记忆刻画能力边界；交接前把机器人带到下一策略的分布内状态。</p><figure><img loading="lazy" src="../assets/figures/roboharness/fig-01.png" alt="Figure 1（论文原图）"><figcaption>Figure 1（论文原图）</figcaption></figure><figure><img loading="lazy" src="../assets/figures/roboharness/fig-02.png" alt="Figure 2（论文原图）"><figcaption>Figure 2（论文原图）</figcaption></figure></header>
+<main class="paper-body"><h2>RoboHarness 深度调研笔记</h2>
+<h3>速览</h3>
+<table><tr><th>项</th><th>内容</th></tr><tr><td>一句话</td><td>把<strong>异构策略</strong>（VLA、WAM、RL、TAMP）各自封装成可复用 agentic skill，用多模态执行记忆 + 在线证据刻画"能力边界"做任务分解与路由；<strong>Memory Bridge</strong> 让策略交接时先把机器人带到下一个策略的分布内状态——<strong>免联合重训</strong></td></tr><tr><td>冻结</td><td>全部被编排的策略（独立开发的 VLA/RL/TAMP）</td></tr><tr><td>演化</td><td>理解/记忆/进化三类元技能支撑的路由与桥接</td></tr><tr><td>规模</td><td>5 个公开基准 + 500 定制任务（10 类）+ 135 次真机试验</td></tr></table>
+<h3>① 动机：两个被忽视的问题</h3>
+<ol><li><strong>能力边界不确定</strong>：没有任何单一策略能可靠覆盖长程任务；组合异构策略时，规划器不知道每个策略"在哪好用、在哪失灵"——现有规划方法假设同构、预定义、适用性固定的技能。</li><li><strong>交接分布错配</strong>：策略 A 结束时的机器人状态可能落在策略 B 的分布外，B 一上来就崩——这是异构编排特有的"handoff"难题。</li></ol>
+<h3>② 架构：策略即技能 + 三类元技能</h3>
+<ul><li>每个异构控制系统被封装成<strong>可复用 agentic skill</strong>（框架设计为通用：导航策略、MPC、WAM 都能挂）；</li><li>harness 集成 <strong>理解 / 记忆 / 进化</strong> 三类技能：</li></ul>
+<p>  - <strong>理解</strong>：用多模态执行记忆 + 在线证据推理各策略的能力边界；</p>
+<p>  - <strong>记忆</strong>：执行轨迹库，按策略与场景索引；</p>
+<p>  - <strong>进化</strong>：capability-aware 任务分解与策略路由随证据更新。</p>
+<h3>③ 机制：Memory Bridge（本文最具复用价值的设计）</h3>
+<p>策略 B 接管前：</p>
+<ol><li>从记忆检索<strong>策略 B 相关的执行轨迹</strong>；</li><li>估计 B 的<strong>分布内状态区域</strong>（in-distribution region）；</li><li>引导机器人移动到该区域——例如把物体摆到 B 训练时习惯的方位、把夹爪回到 B 期望的开合度——然后交接。</li><li>插件式、<strong>免联合重训</strong>，专门治"handoff 掉点"。</li></ol>
+<h3>④ 数据与结果</h3>
+<ul><li>三个公开基准 + 500 定制任务 + 135 真机试验（论文 v3 口径为 5 benchmark / 500 tasks / 135 real）；</li><li>长程一致性与执行可靠性显著提升，对 OOD 条件鲁棒；capability-aware 路由与稳定编排是主要增益来源。</li></ul>
+<h3>⑤ 信息流</h3>
+<pre>长程指令 → 理解技能：分解为子任务（按各策略能力边界）
+  → 路由：选策略 S_i → 执行 → 记录轨迹入记忆库
+  → 交接时 Memory Bridge：检索 S_{i+1} 轨迹 → 估计其分布内区域
+     → 引导机器人进入该区域 → 交接 → 重复直至完成</pre>
+<h3>⑥ 例子</h3>
+<p>"把积木装进盒子再放到架子上"：抓取段路由给 VLA，精确插放段路由给 TAMP+RL；VLA 放手时 Memory Bridge 检索 TAMP 惯用的"盒口朝上、物体在上方 5cm"轨迹，先摆好再交接，避免 TAMP 因初始状态分布外而规划失败。</p>
+<h3>⑦ 局限（作者自陈方向）</h3>
+<ul><li>实例化只用 VLA/RL/TAMP 三族，对新策略族的泛化待验证；</li><li>Memory Bridge 依赖轨迹检索与分布估计质量，高动态环境会吃紧；</li><li>大而紧耦合的策略接入有架构开销。</li></ul>
+<h3>⑧ 簇内定位</h3>
+<ul><li>与 <strong>Harness VLA</strong>：Harness VLA 把"一个冻结 VLA"当原语 + 解析原语；RoboHarness 把<strong>多个异构策略</strong>都当原语，重点从"怎么调用"转到"<strong>怎么交接</strong>"；</li><li>与 <strong>EMERGE-Policy</strong>：同为多组件编排，EMERGE 用角色化 Sub-Agent + 图结构，RoboHarness 用能力边界 + Memory Bridge；</li><li>与 <strong>Orchestra</strong>：Orchestra 分离"规划/执行管理"与"动作生成"并用独立进度评估器，RoboHarness 用记忆驱动路由——两者都在回答"长程谁负责记账"。</li></ul></main>
+<footer>本页由论文精读笔记自动生成 · <a href="../index.html">返回论文库</a></footer></body></html>

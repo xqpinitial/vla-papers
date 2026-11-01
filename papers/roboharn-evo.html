@@ -1,0 +1,28 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RoboHarn-Evo 深读：双层物理知识自演化——任务判据与动作判据分开检验</title><link rel="stylesheet" href="../assets/style.css"></head>
+<body><nav><a class="brand" href="../index.html">🤖 Harness Papers</a><span class="spacer"></span><a class='back' href='../index.html'>← 返回论文库</a></nav>
+<header class="paper-head"><div class="chips"><span class="chip">2026-09-27</span><a class="chip cat" href="../index.html?cat=知识与记忆">知识与记忆</a><a class="chip" href="https://arxiv.org/abs/2609.37583">arXiv:2609.37583</a></div>
+<h1>RoboHarn-Evo 深读：双层物理知识自演化——任务判据与动作判据分开检验</h1><p class="org">中国人民大学 · 清华 · XYZ</p><p class="metric">⭐ GPT-5.5 留出 48.3→75.0；知识纠错 83.3%</p><p class="oneliner">HPK = 任务知识（何时算完成）+ 动作知识（几何策略与物理效果），双循环演化与纠错。</p><figure><img loading="lazy" src="../assets/figures/roboharn-evo/fig-01.png" alt="Figure 1（论文原图）"><figcaption>Figure 1（论文原图）</figcaption></figure><figure><img loading="lazy" src="../assets/figures/roboharn-evo/fig-02.png" alt="Figure 2（论文原图）"><figcaption>Figure 2（论文原图）</figcaption></figure></header>
+<main class="paper-body"><h2>RoboHarn-Evo 深度调研笔记</h2>
+<h3>速览</h3>
+<table><tr><th>项</th><th>内容</th></tr><tr><td>一句话</td><td>双循环 harness 从物理经验中演化<strong>分层物理知识 HPK</strong>：Task Knowledge（做什么子任务、何时算完成）+ Action Knowledge（物体相对几何策略及其物理效果）——RMBench 平均 +24.2pp；80 次 rollout 后 GPT-5.5 留出集 48.3%→<strong>75.0%</strong>、GPT-6 70.0%→<strong>88.3%</strong>；<strong>知识纠错 83.3%，正确知识保留 95.8%</strong></td></tr><tr><td>冻结</td><td>基座 VLM 与低层执行器全程不动</td></tr><tr><td>演化</td><td>HPK 知识条目（内容修订 + 适用性更新 + 检索组织）</td></tr><tr><td>迁移</td><td>冻结 HPK 零样本 RMBench→RoboDojo：+35.0 / +25.0pp</td></tr></table>
+<h3>① 动机：局部动作成功 ≠ 任务完成</h3>
+<ul><li>有序积木操作里，机器人可能没确认当前子任务完成就切下一个；也可能选对了目标却在偏移位置释放盖子——<strong>一次成功抓取能支持抓取策略，但不能证明盖子放到了预期位置</strong>。</li><li>核心问题：物理反馈应该在<strong>哪个决策层级</strong>修订什么知识？——两个层级要用各自的判据分别检验：任务级对"子任务完成"，动作级对"预期物理效果"。</li></ul>
+<h3>② 架构：HPK 双层知识 + 双循环</h3>
+<table><tr><th>层</th><th>内容</th><th>检验判据</th></tr><tr><td><strong>Task Knowledge</strong></td><td>执行哪个子任务、完成条件是什么（如"红块之后揭绿块"）</td><td>子任务完成</td></tr><tr><td><strong>Action Knowledge</strong></td><td>物体相对几何策略 + 预期与观测到的物理效果（如"从顶部把手接近盖子，检查何种效果"）</td><td>预期局部物理效果</td></tr></table>
+<ul><li><strong>内循环（执行）</strong>：按任务目标在当前场景检索 Task Knowledge（回答"做什么"）→ 子任务条件下检索 Action Knowledge（回答"怎么做"）→ <strong>几何在当前场景 grounding，不复用存储的机器人位姿</strong>。</li><li><strong>外循环（知识更新）</strong>：观测、工具调用、物理结果 → episode 记录 → reflector 抽取任务/动作条目 → 维护（合并等价、修订受质疑内容、更新技能索引）→ 只有"有支持且无相反证据"的知识才可检索。</li></ul>
+<h3>③ 数据与结果</h3>
+<table><tr><th>指标</th><th>数字</th></tr><tr><td>RMBench 平均成功（HPK vs 无 HPK 同 harness）</td><td><strong>+24.2pp</strong></td></tr><tr><td>80 rollouts 后留出集（知识冻结、评估反馈不更新）</td><td>GPT-5.5 48.3%→<strong>75.0%</strong>；GPT-6 70.0%→<strong>88.3%</strong></td></tr><tr><td>知识纠错（外部 GPT-6 审计 12 条初始错误）</td><td>修复/停用 <strong>83.3%</strong>（GPT-6 达 91.7%）</td></tr><tr><td>有效知识保留（24 条初始正确）</td><td><strong>95.8%</strong></td></tr><tr><td>零样本跨域迁移（RMBench→RoboDojo）</td><td>+35.0 / +25.0pp</td></tr><tr><td>真机</td><td>仿真知识零样本 41.7% → 真机交互继续更新后 <strong>62.5%</strong></td></tr></table>
+<h3>④ 信息流</h3>
+<pre>执行：scene+goal → Task 检索("做什么") → 子任务 → Action 检索("怎么做")
+  → 当前场景 grounding → 执行 → 记录前后观测/工具调用/物理结果
+更新：reflector 抽取 Task/Action 条目 → 按各自判据检验
+  → 修订/合并/停用 → 更新检索索引 → 供下一 episode</pre>
+<h3>⑤ 例子</h3>
+<p>"红块之后揭绿盖"：Task Knowledge 记录顺序与"盖子完全离开绿块"的完成判据；Action Knowledge 记录"抓盖顶把手、垂直上提 5cm、检查盖下无接触"的策略与预期效果。执行中释放偏移 → 外循环修订该 Action 条目的适用条件，而不是笼统记一条"失败"。</p>
+<h3>⑥ 局限</h3>
+<ul><li>知识条目质量依赖 reflector 的抽取与判据设计；</li><li>层级固定为两层（任务/动作），更深的层次结构未探索；</li><li>跨域迁移在 RoboDojo 验证，域差更大时待考。</li></ul>
+<h3>⑦ 簇内定位</h3>
+<ul><li>与 <strong>RoboFoundry</strong>：同月、同为"经验→持久系统改进"，RoboHarn-Evo 演化<strong>知识</strong>（分层判据检验），RoboFoundry 演化<strong>整个系统文件</strong>（上下文面+技能面）；</li><li>与 <strong>RATs/ASPIRE 的技能库</strong>：技能库存"怎么做"，HPK 额外存"怎么判断做完了"——完成判据是被此前工作忽视的一层；</li><li>与 <strong>HarnessBank 的门控</strong>：同源的"入库纪律"——HPK 条目要"有支持且无相反证据"才可检索；</li><li>它回答了 Harness VLA 留下的记忆短板（EmbodiedSkills 的 RMBench 12.5%）如何用<strong>可检验的知识演化</strong>补上。</li></ul></main>
+<footer>本页由论文精读笔记自动生成 · <a href="../index.html">返回论文库</a></footer></body></html>

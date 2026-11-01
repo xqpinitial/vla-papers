@@ -1,0 +1,32 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RoboFoundry 深读：System-as-Policy——像维护代码库一样进化整个机器人系统</title><link rel="stylesheet" href="../assets/style.css"></head>
+<body><nav><a class="brand" href="../index.html">🤖 Harness Papers</a><span class="spacer"></span><a class='back' href='../index.html'>← 返回论文库</a></nav>
+<header class="paper-head"><div class="chips"><span class="chip">2026-09-28</span><a class="chip cat" href="../index.html?cat=编码 Agent 与系统进化">编码 Agent 与系统进化</a><a class="chip" href="https://arxiv.org/abs/2609.32862">arXiv:2609.32862</a><a class="chip" href="https://jingsongliang.com/robofoundry">Project</a></div>
+<h1>RoboFoundry 深读：System-as-Policy——像维护代码库一样进化整个机器人系统</h1><p class="org">Jingsong Liang 等</p><p class="metric">⭐ EmbodiedBench GPT-5.5 +27.8%</p><p class="oneliner">系统以文件目录存在，上下文面+技能面双进化；语义接口隔离本体无关决策。</p><figure><img loading="lazy" src="../assets/figures/robofoundry/fig-01.png" alt="Figure 1（论文原图）"><figcaption>Figure 1（论文原图）</figcaption></figure><figure><img loading="lazy" src="../assets/figures/robofoundry/fig-02.png" alt="Figure 2（论文原图）"><figcaption>Figure 2（论文原图）</figcaption></figure></header>
+<main class="paper-body"><h2>RoboFoundry 深度调研笔记</h2>
+<h3>速览</h3>
+<table><tr><th>项</th><th>内容</th></tr><tr><td>一句话</td><td><strong>把支撑模型完成任务的整套系统当策略来进化</strong>：系统以文件目录存在（cat/grep 查看，add/modify/delete 修改），内外双循环"执行—反思—修复—晋升"；EmbodiedBench 上 <strong>GPT-5.5 +27.8%</strong>、Qwen3.7-Plus 逼近 GPT-5.5（70.3% vs 72.7%）；RoboMemArena <strong>+39.0%</strong>；LIBERO-PRO 比 CaP-Agent0 <strong>+243.8~679.7%</strong></td></tr><tr><td>冻结</td><td>基座模型参数（GPT-5.5 / Qwen3.7-Plus / 冻结 VLA 如 π₀.₅ 后端）</td></tr><tr><td>演化</td><td>两个进化面：<strong>上下文面</strong>（活跃上下文 + 文件系统记忆：SAVE/RETRIEVE/UTILIZE）+ <strong>技能面</strong>（原子技能→组合流程→失败恢复树）</td></tr><tr><td>迁移</td><td>共享语义接口隔离"本体无关决策"与"本体特定执行"——换执行适配层即可跨机器人复用</td></tr></table>
+<h3>① 动机：优化零件 ≠ 优化系统</h3>
+<ul><li>现有方法各改各的零件（memory、context、skills、action 接口），没人把<strong>支撑系统本身当统一策略</strong>；</li><li>且"交互"本身不产生自改进——<strong>执行经验必须被转换成持久、经验证的系统变更</strong>才有意义。</li></ul>
+<h3>② 架构：两层系统 + 双循环 + 语义接口</h3>
+<ul><li><strong>系统即文件</strong>：任务级系统服务当前任务；通用系统跨任务、跨本体持续保留。</li><li><strong>内循环</strong>：执行任务、记录轨迹；<strong>外循环</strong>：按轨迹提出修改 → 后续执行检验 → 只有能修复当前失败的修改才正式提交。</li><li><strong>两个进化面</strong>：</li></ul>
+<p>  1. 上下文面：SAVE / RETRIEVE / UTILIZE 三类操作决定记什么、取什么、怎么用；</p>
+<p>  2. 技能面：原子技能 → "移动—抓取—放置"组合流程 → 失败条件化恢复树（失败时从仍有效的状态重规划）。</p>
+<ul><li><strong>共享语义接口</strong>：语义层只处理跨本体共享的任务逻辑；执行层适配具体机器人（后端可为冻结 VLA、coding agent 生成的函数、CuRobo 视运动接口）。</li></ul>
+<h3>③ 机制：六维归因 + 验证式提交</h3>
+<p>失败/低效先归因到<strong>六大能力维度</strong>——感知/推理/规划（决策能力）+ 保存/检索/利用（记忆管理）；只在对应进化面上提出修改，且必须<strong>验证有效才提交</strong>；复现出现的改进晋升到通用系统。</p>
+<h3>④ 数据与结果</h3>
+<table><tr><th>基准</th><th>结果</th></tr><tr><td>EmbodiedBench</td><td>SOTA：GPT-5.5 <strong>+27.8%</strong>；Qwen3.7-Plus 70.3% ≈ GPT-5.5 72.7%（系统进化抹平模型差距）</td></tr><tr><td>RoboMemArena（长程记忆）</td><td>超所有基线（含外部大模型辅助方法）<strong>至少 +39.0%</strong></td></tr><tr><td>LIBERO-PRO（扰动）</td><td>比 CaP-Agent0 <strong>+243.8%~679.7%</strong>（全扰动类型）</td></tr><tr><td>真机</td><td>跨机器人、跨任务零样本迁移 + 部署后在线进化</td></tr></table>
+<h3>⑤ 信息流</h3>
+<pre>内循环：任务执行 → 轨迹 → 六维归因
+外循环：对应进化面提修改（上下文面 / 技能面）
+  → 后续执行验证 → 有效才提交 → 复现者晋升通用系统（文件目录）
+语义接口（本体无关）→ 执行适配层（本体相关：VLA / 代码 / CuRobo）</pre>
+<h3>⑥ 例子</h3>
+<p>"收拾桌面"任务失败于"忘记抽屉里有遗留物"→ 归因为<strong>检索</strong>能力缺陷 → 上下文面新增规则"进入新区域先 RETRIEVE 该区域的历史记录"→ 下次执行验证有效 → 提交进通用系统 → 换一台机器人只需换执行适配层。</p>
+<h3>⑦ 局限</h3>
+<ul><li>系统文件的增长需要治理（文章强调验证式提交，但长期膨胀待考）；</li><li>语义-执行分离的适配层仍需人工/agent 编写；</li><li>归因六维的划分是否完备待检验。</li></ul>
+<h3>⑧ 簇内定位</h3>
+<ul><li>与 <strong>RoboHarn-Evo</strong>：同月同主题（经验→持久改进），RoboFoundry 面<strong>大</strong>（整个系统文件）、RoboHarn-Evo 面<strong>深</strong>（知识判据分层检验）；</li><li>与 <strong>Zetta</strong>：Zetta 演化 {Critic,Recovery,Tools} 且有代码化 critic 高频在线监控，RoboFoundry 演化文件系统且偏离线外循环；</li><li>与 <strong>HarnessBank</strong>：共同的"验证式提交"纪律；RoboFoundry 把它从通用 agent 搬进具身并加上跨本体语义接口；</li><li>名字即宣言：<strong>System-as-Policy——进化的单位是系统，不是权重</strong>。</li></ul></main>
+<footer>本页由论文精读笔记自动生成 · <a href="../index.html">返回论文库</a></footer></body></html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Harness² 深读：谷歌递归 Agent Harnessing——不训模型训外壳，还改进改进者</title><link rel="stylesheet" href="../assets/style.css"></head>
+<body><nav><a class="brand" href="../index.html">🤖 Harness Papers</a><span class="spacer"></span><a class='back' href='../index.html'>← 返回论文库</a></nav>
+<header class="paper-head"><div class="chips"><span class="chip">2026-10-09</span><a class="chip cat" href="../index.html?cat=通用 Agent Harness">通用 Agent Harness</a><a class="chip" href="https://arxiv.org/abs/2610.14224">arXiv:2610.14224</a><a class="chip" href="https://github.com/google-research/harness2">Code</a></div>
+<h1>Harness² 深读：谷歌递归 Agent Harnessing——不训模型训外壳，还改进改进者</h1><p class="org">Google Research</p><p class="metric">⭐ WorkBuddy-Bench +11.5 分（GLM-5/Gemini）</p><p class="oneliner">对比式 Propose-Probe-Compose 无真值自改 harness；harnessing 级递归沉淀改进经验。</p><figure><img loading="lazy" src="../assets/figures/harness2/fig-01.png" alt="Figure 1（论文原图）"><figcaption>Figure 1（论文原图）</figcaption></figure><figure><img loading="lazy" src="../assets/figures/harness2/fig-02.png" alt="Figure 2（论文原图）"><figcaption>Figure 2（论文原图）</figcaption></figure></header>
+<main class="paper-body"><h2>Harness² 深度调研笔记</h2>
+<h3>速览</h3>
+<table><tr><th>项</th><th>内容</th></tr><tr><td>一句话</td><td>谷歌的<strong>递归 agent harnessing</strong>：任务级递归用"对比式 Propose–Probe–Compose"在没有真值验证器的开放世界可靠地改 harness；harnessing 级递归再把改法经验写进持续的"改进 harness"——<strong>改进当前任务，也改进"改进者本身"</strong>；一步即让 GLM-5 / Gemini 3.5 Flash 全面超越基座 harness</td></tr><tr><td>冻结</td><td>底座模型权重（GLM-5、Gemini 3.5 Flash）</td></tr><tr><td>演化</td><td>可编辑面：系统提示、guardrails、记忆、工具指引、subagents、skills、scripts、plugins</td></tr><tr><td>基准</td><td>WorkBuddy-Bench +11.5 分；JobBench +4.5 分；LAB 部分通过率 +11.8pp</td></tr></table>
+<h3>① 动机：开放世界 RSI 的两个死结</h3>
+<ol><li><strong>没有验证器</strong>：开放世界任务在设计期未见过、测试时是新的，没有 ground-truth 来指导在线 harness 编辑——多数自改进工作偷偷依赖测试集/rubric/答案钥匙；</li><li><strong>任务特化不泛化</strong>：为一个任务改好的 harness，换个任务分布直接失灵；直接继承高度定制的 harness 会造成噪声递归。</li></ol>
+<h3>② 架构：两级递归</h3>
+<p><strong>❶ 任务级递归（改当前任务的 harness）</strong></p>
+<ul><li><strong>对比式 Propose–Probe–Compose</strong>：提出 harness 编辑 → 在<strong>相同条件</strong>下 probe 各版本执行效果 → 从<strong>行为对比</strong>中挑出"像编辑引起"的差异来组合新 harness——用行为对比替代 rubric；</li><li>可扩展：<strong>并行递归</strong>（同时探 k 个通用+领域候选，从共享证据组合）与<strong>顺序递归</strong>（k 步迭代精修，harness 与证据逐级传递）。</li></ul>
+<p><strong>❷ harnessing 级递归（改进"改进者"）</strong></p>
+<ul><li>每个任务被采纳的 harness 及其<strong>有证据支撑的经验</strong>写入持续的"improvement harness"；</li><li>不是继承上一任务的执行 harness，而是<strong>选择性保留可复用组件与"何时为何有效"的经验</strong>，指导未来的提案与组合。</li></ul>
+<h3>③ 数据与结果</h3>
+<table><tr><th>基准</th><th>一步增益</th><th>并行递归再加</th></tr><tr><td>WorkBuddy-Bench（办公/网页/代码）</td><td>最高 <strong>+11.5</strong></td><td>+3.9</td></tr><tr><td>JobBench（专业工作）</td><td>+4.5</td><td>+4.2</td></tr><tr><td>LAB（法律，Harvey）部分通过率</td><td>+11.8pp</td><td>+6.7pp</td></tr></table>
+<ul><li>四种 model-harness 配置全部一致增益；递归预算增大收益继续涨。</li><li>工程事实：executor egress 无限制、Codex 以 sandbox-disabled 运行——开放自改进的安全提示。</li></ul>
+<h3>④ 信息流</h3>
+<pre>任务 → 当前 harness 执行 → 证据
+  → Propose（提编辑）→ Probe（同条件对比执行）→ Compose（行为对比支持的组合）
+  → [并行/顺序递归扩展]
+  → 采纳的 harness + 经验教训 → Improvement Harness（持久）
+  → 下个任务的 Propose 阶段被它引导</pre>
+<h3>⑤ 例子</h3>
+<p>法律备忘录任务没有参考答案可比——Harness² 让 agent 用两个 harness 版本各写一版，对比"引用核查步骤是否出现在工作流里、事实遗漏在哪"这类<strong>行为差异</strong>，组合出带"先核查后撰写"中间步骤的新 harness；这条经验（"专业写作先核查"）随后进入 Improvement Harness，被下一个合同审查任务复用。</p>
+<h3>⑥ 局限（第三方分析的清醒剂）</h3>
+<ul><li>对比可以是<strong>真实的但不相关</strong>：两次执行的差异可能在冗长度/工具调用数，而非正确性——行为对比没有真值锚；</li><li>每次 probe 是真实执行，k 倍算力与墙钟成本（论文报增益未报成本）；</li><li>基准虽"朴素设计"（JobBench/LAB/WorkBuddy），仍是可评任务，真开放世界仍未测。</li></ul>
+<h3>⑦ 簇内定位</h3>
+<ul><li>与 <strong>HarnessBank</strong>：同一"改 harness"问题——HarnessBank 有基准真值可用门控，Harness² 用行为对比在<strong>无验证器</strong>世界工作；结论还互补：HarnessBank 发现"harness 模型特异"，Harness² 发现"改进流程可迁移"；</li><li>与 <strong>SERA/AdaHVLA/RoboFoundry</strong>：机器人侧递归自改进的通用 agent 原型——Propose–Probe–Compose 的对比思想可平移；</li><li>时间线收尾篇的呼应：从 07-09 Harness VLA 的"冻结 VLA 当原语"到 10-13 Orchestra 的"规划/执行管理分离"，再到 Harness² 的"递归 harnessing"——<strong>进化的单位完成了 模型 → 外壳 → 改外壳的方法 三级跳</strong>。</li></ul></main>
+<footer>本页由论文精读笔记自动生成 · <a href="../index.html">返回论文库</a></footer></body></html>

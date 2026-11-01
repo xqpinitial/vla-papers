@@ -1,0 +1,39 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Zetta ζ 深读：慢大脑如何管快身体——动作频率上的运行时 Critic</title><link rel="stylesheet" href="../assets/style.css"></head>
+<body><nav><a class="brand" href="../index.html">🤖 Harness Papers</a><span class="spacer"></span><a class='back' href='../index.html'>← 返回论文库</a></nav>
+<header class="paper-head"><div class="chips"><span class="chip">2026-08-16</span><a class="chip cat" href="../index.html?cat=冻结模型编排">冻结模型编排</a><a class="chip" href="https://arxiv.org/abs/2608.16590">arXiv:2608.16590</a><a class="chip" href="https://github.com/air-embodied-brain/Zetta-Embodiment">Code</a><a class="chip" href="https://air-embodied-brain.github.io/zetta">Project</a></div>
+<h1>Zetta ζ 深读：慢大脑如何管快身体——动作频率上的运行时 Critic</h1><p class="org">清华 AIR</p><p class="metric">⭐ LIBERO-Pro Goal 34.5→90.8</p><p class="oneliner">代码化 critic 毫秒级监控冻结 π0.5，编排 agent 审批恢复；三时间尺度自进化 + Z-Infra。</p><figure><img loading="lazy" src="../assets/figures/zetta/fig-01.png" alt="Figure 1（论文原图）"><figcaption>Figure 1（论文原图）</figcaption></figure><figure><img loading="lazy" src="../assets/figures/zetta/fig-02.png" alt="Figure 2（论文原图）"><figcaption>Figure 2（论文原图）</figcaption></figure></header>
+<main class="paper-body"><h2>Zetta 深度调研笔记</h2>
+<h3>速览</h3>
+<table><tr><th>项</th><th>内容</th></tr><tr><td>一句话</td><td>把"反思"从大模型身上摘下来交给<strong>代码化运行时 critic</strong>：冻结 π0.5 出动作，harness H={Critic, Recovery, Tools} 在动作频率上监控执行、毫秒级触发恢复；批量级自进化把验证过的失败蒸馏成新技能</td></tr><tr><td>冻结</td><td>基座 VLA（π0.5）、编排 agent 的固定逻辑</td></tr><tr><td>演化</td><td>harness 本体 H = {C 运行时 critic（代码写的监控函数）、R 恢复手册（失败机制→可执行策略）、T 异构工具集（规划器/抓取检测/恢复模块）}</td></tr><tr><td>头部结果</td><td>LIBERO-Pro Goal 平均 <strong>34.5→90.8</strong>（Goal-T 31.0→92.5、Goal-S 38.0→89.0）——六篇中对同一底座 VLA 的最大单点提升</td></tr><tr><td>差异点</td><td>六篇中唯一 <strong>VLA 为主</strong>（代码不做动作，只监控/审批/恢复）+ 专属推理基础设施 Z-Infra</td></tr></table>
+<h3>① 动机：核心矛盾——慢大脑 vs 快身体</h3>
+<ul><li>物理交互是毫秒级：抓滑信息要在几十 ms 内响应；LLM 推理一次几百 ms 到秒级。</li><li>此前 harness 大多<strong>开环</strong>：任务启动后按固定脚本/预规划走，全跑完才复盘——"事后诸葛亮"：教训对下一次有用，对这一次无用。</li><li>押注：在线判定交给<strong>代码</strong>（够快），LLM 只做低频裁决与<strong>离线进化</strong>；harness 与基座解耦、可版本化、可审计——不碰已认证权重的能力增长通道。</li></ul>
+<h3>② 架构：H = {C, R, T} + 权威分层</h3>
+<table><tr><th>组件</th><th>内容</th></tr><tr><td>运行时 Critic C</td><td><strong>代码写的</strong>监控函数，在动作频率上扫描执行轨迹（抓取力度、物体偏移…），输出结构化异常报告；<strong>无决策权</strong></td></tr><tr><td>恢复手册 R</td><td>失败机制 → 可执行恢复策略的映射（拉取/重抓/重定位…）</td></tr><tr><td>工具集 T</td><td>规划器、抓取检测、恢复模块等可执行程序</td></tr><tr><td>编排 Agent</td><td>逻辑固定不变，当"审批人"：核实 critic 上报的证据后才批准触发恢复（<strong>authority hierarchy</strong>）</td></tr></table>
+<p>质检员/班组长类比：质检员（critic）眼疾手快但只报警；是否停产（触发恢复、重入 VLA）由班组长（编排 agent）批——防误报滥用，又不失响应速度。</p>
+<h3>③ 机制：三个时间尺度 + 进化门控</h3>
+<ol><li><strong>动作级（在线）</strong>：critic 高频扫描 → 异常报告 → 编排 agent 审批 → 执行恢复剧本。</li><li><strong>批量级（自进化）</strong>：失败按 <strong>EOD（最早可观测发散点）</strong> 聚类——不看结局看"最早在哪一步分岔"；再沿"评估→Critic→状态→规划→恢复→参数"<strong>自上而下诊断</strong>：高层逻辑能修就不动低层参数。</li><li><strong>离线演化</strong>：被验证的失败 → 新 critic 函数 / 新恢复剧本 / 新工具，进 H。</li></ol>
+<p><strong>两道闸门</strong>：</p>
+<ul><li><strong>held-out 回归验证</strong>：新版本 harness 必须过留出集回归才上线（自进化有闸门，非无约束工程流程）；</li><li><strong>VLA 重入契约</strong>：只有失败证据被显式清除<strong>且接触力达到平衡</strong>，控制权才交还基座 VLA——防止"带着脏状态续跑"。</li></ul>
+<h3>④ 数据与基准（tex 已验）</h3>
+<table><tr><th>指标（LIBERO-Pro，底座 π0.5）</th><th>前</th><th>后</th></tr><tr><td>Goal-T</td><td>31.0</td><td><strong>92.5</strong></td></tr><tr><td>Goal-S</td><td>38.0</td><td><strong>89.0</strong></td></tr><tr><td>Goal 平均</td><td>34.5</td><td><strong>90.8</strong></td></tr></table>
+<p>（来自深蓝学院编译的扩展结论，二手：成功率随自探索经验持续提升；学到的技能支持零样本迁移；出现"顿悟时刻"（Aha Moments）式的能力跳变。）</p>
+<h3>⑤ 信息流（一个执行回合 + 进化批次）</h3>
+<pre>执行中（动作频率，毫秒级）：
+  π0.5 输出动作块 → critic 代码扫描（力/位姿/接触） → 异常？
+     ├─ 否 → 继续执行
+     └─ 是 → 结构化报告 → 编排 agent 审批 → 恢复剧本执行
+            → 失败证据清除 + 接触力平衡 → 控制权交还 π0.5（重入契约）
+
+批次后（自进化）：
+  失败 rollout → EOD 聚类（最早分岔点）→ 自上而下归因
+    → 提案新 critic 函数 / 恢复剧本 / 工具
+    → held-out 回归验证 → 通过则更新 H</pre>
+<h3>⑥ 例子</h3>
+<p>抓杯子打滑：critic 在夹爪力信号上毫秒级检出"接触力骤降 + 物体位移"，报告"grasp force insufficient"；编排 agent 核实后不重跑 VLA，而是执行恢复剧本"退 2cm → 张开 15% → 重新闭合抓取"；力平衡后才让 π0.5 继续放置。该失败机制随后被蒸馏成 R 里的一条新剧本，同类场景永久免疫。</p>
+<h3>⑦ 实验·工程·局限</h3>
+<ul><li><strong>Z-Infra</strong>（配套推理设施）：π0.5 模型分区（VLM 与动作专家拆成独立进程，CUDA IPC 传中间激活）+ 按模块 W8A8/W4A16/W4A8 量化——喂饱自进化所需的并行 rollout 吞吐。自进化速度由 rollout 决定，这是六篇中唯一为"探索吞吐"专门造 infra 的。</li><li>局限（基于论文与读报）：仿真为主；critic/恢复剧本的代码本身由进化产生，其正确性依赖 held-out 门控的覆盖度；编排 agent 逻辑固定，长尾失败模式可能超出其审批能力；基座限定为可分区块化的 VLA。</li></ul>
+<h3>⑧ 与另外五篇的关系</h3>
+<ul><li>对 <strong>Harness VLA</strong>（簇外锚点）：同一"冻结 VLA + 词汇纪律"哲学，但 Harness VLA 的 harness 只在任务回合粒度学习（探索期蒸馏记忆），Zetta 把监控下沉到<strong>动作频率</strong>并让 harness 本体持续演化——对同一 π0.5 底座，Goal 34.5→90.8 vs Harness VLA 的 ~82.4（不同协议，不可直接比）。</li><li>对 <strong>RAX/ASPIRE/CaP-X/RATs</strong>（纯代码）：Zetta 反其道——动作全部来自冻结 VLA，代码只做监控与恢复；承认接触-rich 仍是 VLA 强项，但把"失败响应"从 LLM 手里拿走。</li><li>对 <strong>HarnessPAI</strong>：两者都强调"代码可审计 + 门控进化"；分工上 HarnessPAI 用 VLA 做语义难阶段的原语，Zetta 让 VLA 做全部动作。</li><li><strong>独特贡献</strong>：唯一回答"慢大脑怎么管快身体"的——用权威分层 + 代码 critic 实现<strong>在线</strong>闭环，其余五篇的闭环都在回合/批次粒度。</li></ul></main>
+<footer>本页由论文精读笔记自动生成 · <a href="../index.html">返回论文库</a></footer></body></html>

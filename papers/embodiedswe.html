@@ -1,0 +1,31 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EmbodiedSWE 深读：编程 Agent 当教师——把代码解法变成 VLA 训练数据</title><link rel="stylesheet" href="../assets/style.css"></head>
+<body><nav><a class="brand" href="../index.html">🤖 Harness Papers</a><span class="spacer"></span><a class='back' href='../index.html'>← 返回论文库</a></nav>
+<header class="paper-head"><div class="chips"><span class="chip">2026-09-23</span><a class="chip cat" href="../index.html?cat=编码 Agent 与系统进化">编码 Agent 与系统进化</a><a class="chip" href="https://arxiv.org/abs/2609.27308">arXiv:2609.27308</a><a class="chip" href="https://github.com/EmbodiedSWE/EmbodiedSWE">Code</a><a class="chip" href="https://embodiedswe.github.io">Project</a></div>
+<h1>EmbodiedSWE 深读：编程 Agent 当教师——把代码解法变成 VLA 训练数据</h1><p class="org">字节 Seed · 耶鲁 · 普林斯顿 · CMU</p><p class="metric">⭐ GPT-6 Astra 解题 82%；真机台灯拆解</p><p class="oneliner">编程 agent 解 28 个长程灵巧任务（最长 30 分钟），GEN 引擎把解法扩成多样化轨迹训 VLA。</p><figure><img loading="lazy" src="../assets/figures/embodiedswe/fig-01.png" alt="Figure 1（论文原图）"><figcaption>Figure 1（论文原图）</figcaption></figure><figure><img loading="lazy" src="../assets/figures/embodiedswe/fig-02.png" alt="Figure 2（论文原图）"><figcaption>Figure 2（论文原图）</figcaption></figure></header>
+<main class="paper-body"><h2>EmbodiedSWE 深度调研笔记</h2>
+<h3>速览</h3>
+<table><tr><th>项</th><th>内容</th></tr><tr><td>一句话</td><td>编程 agent 当"机器人工程师"：在仿真里写 Python 控制程序、执行、看反馈、改代码，解出 <strong>28 个长程灵巧任务</strong>（最长 30 分钟连续交互）；<strong>EMBODIEDSWE-GEN</strong> 把单个验证解法扩成多样化轨迹训 VLA——仅用 coding-agent 仿真数据微调的 VLA 完成了<strong>真机</strong>长程台灯拆解</td></tr><tr><td>冻结</td><td>coding agent（GPT-6 Astra / Claude 等）；被训的 VLA 是产出</td></tr><tr><td>演化</td><td>两层：agent 解题能力（checkpoint 树/CMA-ES 等工具）→ 数据引擎多样化</td></tr><tr><td>基准</td><td>EMBODIEDSWE-BENCH：接触密集 + 可变形物体 + 长程，5 种本体（Franka/xArm7/Kinova G3/Unitree G1…）</td></tr></table>
+<h3>① 动机：数据瓶颈的三条死路</h3>
+<ul><li>遥操作贵且慢；人类视频有本体错配（人手≠机械爪）；RL 在长程接触密集任务上难收敛。</li><li>押注：<strong>编程 agent 能自主解出这些任务，并提供可扩展的监督</strong>——"写代码 → 仿真执行 → 看物体是否到位 → 修代码"的闭环天然适配 agent。</li></ul>
+<h3>② 架构：Solvers + Data Engine</h3>
+<p><strong>A. Coding Agents as Solvers</strong></p>
+<ul><li>agent 写 Python 控制程序，在仿真执行，检查日志与图像反馈，迭代精修；</li><li>配套工具：<strong>checkpoint 树</strong>（回退到成功的中间状态）、<strong>进化参数搜索</strong>（CMA-ES 调力矩上限/插入增量等常数）、并行策略扫描、场景查看器、评估日志。</li></ul>
+<p><strong>B. EMBODIEDSWE-GEN（数据引擎，五层多样化）</strong></p>
+<p>从单个验证解法扩展：</p>
+<ol><li>替换场景与物体；2. 改变整体策略（组装顺序）；3. 调整任务阶段与中间状态；4. 注入动力学/动作扰动（代码的恢复分支来处理）；5. 改背景/光照/相机。</li><li>关键洞察：朴素域随机化（换贴图/光照）不够——<strong>agent 辅助的逻辑层多样化</strong>才是泛化的来源。</li></ol>
+<h3>③ 数据与结果</h3>
+<table><tr><th>实验</th><th>数字</th></tr><tr><td>最强 agent 解题率（GPT-6 Astra，28 任务）</td><td><strong>82%</strong>（GPT-5.6 Terra 仅 11%——随底座能力 scaling）</td></tr><tr><td>解法迁移</td><td>跨任务 + 跨本体（把旧解当"提示"加速新任务）</td></tr><tr><td>VLA scaling（SmolVLA）</td><td>10 条演示 18% → <strong>400 条 69%</strong></td></tr><tr><td>真机</td><td>仅用 coding-agent 仿真演示微调的 VLA 完成台灯拆解长程任务（500 条轨迹）</td></tr><tr><td>对照</td><td>编程 agent 显著优于 PPO（即便 PPO 给了专家调的稠密奖励）</td></tr></table>
+<h3>④ 信息流</h3>
+<pre>任务 → agent 写控制程序 → 仿真执行 → 日志/图像反馈
+  → 失败：checkpoint 回退 / CMA-ES 调参 / 改逻辑 → 验证通过
+  → EMBODIEDSWE-GEN 五层多样化 → 大规模轨迹
+  → 微调 VLA → 真机长程任务</pre>
+<h3>⑤ 例子</h3>
+<p>双臂装 IKEA 桌：agent 先写"左臂扶稳桌腿、右臂拧螺栓"的程序，执行发现螺栓滑丝 → checkpoint 回退到对齐状态 → CMA-ES 把对齐容差调紧 → 通过；GEN 引擎换 5 种桌面材质、3 种螺栓初始位姿、打乱左右臂分工，扩出上千条轨迹训 VLA。</p>
+<h3>⑥ 局限</h3>
+<ul><li>解题需要大量迭代交互（成本高、慢）；</li><li>单个解法通常只适配当前任务实例——必须靠 GEN 扩散；</li><li>仿真解法到真机的迁移目前只在个别任务上验证。</li></ul>
+<h3>⑦ 簇内定位</h3>
+<ul><li>与 <strong>HarnessPAI 的数据反哺</strong>、<strong>ASPIRE 的技能库</strong>并列"探索→训练数据"路线，但 EmbodiedSWE 的产物是<strong>VLA 权重</strong>而非运行时 harness——"改训练"阵营最完整的一篇；</li><li>与 <strong>RAX</strong>：同是 coding agent 解题，RAX 的产物是<strong>可直接部署的程序</strong>（推理时用），EmbodiedSWE 的产物是<strong>训练监督</strong>（部署时用 VLA）；</li><li>28 任务基准（含叠衣、切菜、双臂拿铁拉花）本身就是社区资产。</li></ul></main>
+<footer>本页由论文精读笔记自动生成 · <a href="../index.html">返回论文库</a></footer></body></html>

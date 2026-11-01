@@ -1,0 +1,27 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HarnessEval-W 深读：把世界模型评测做成可审计的证据树</title><link rel="stylesheet" href="../assets/style.css"></head>
+<body><nav><a class="brand" href="../index.html">🤖 Harness Papers</a><span class="spacer"></span><a class='back' href='../index.html'>← 返回论文库</a></nav>
+<header class="paper-head"><div class="chips"><span class="chip">2026-08-17</span><a class="chip cat" href="../index.html?cat=评测与基准">评测与基准</a><a class="chip" href="https://arxiv.org/abs/2608.16859">arXiv:2608.16859</a><a class="chip" href="https://github.com/mirros-lab/harnesseval-w">Code</a><a class="chip" href="https://mirros-lab.github.io/HarnessEval-W">Project</a></div>
+<h1>HarnessEval-W 深读：把世界模型评测做成可审计的证据树</h1><p class="org">MirroS · NUS · NTU · Berkeley · MIT</p><p class="metric">⭐ 18 模型 × 330 案例；与人类排序 ρ=0.93</p><p class="oneliner">评测工作流 Agent 化：拆子问题、子代理取证、父代理校验，产出可审计证据树。</p><figure><img loading="lazy" src="../assets/figures/harnesseval-w/fig-01.png" alt="Figure 1（论文原图）"><figcaption>Figure 1（论文原图）</figcaption></figure><figure><img loading="lazy" src="../assets/figures/harnesseval-w/fig-02.png" alt="Figure 2（论文原图）"><figcaption>Figure 2（论文原图）</figcaption></figure></header>
+<main class="paper-body"><h2>HarnessEval-W 深度调研笔记</h2>
+<h3>速览</h3>
+<table><tr><th>项</th><th>内容</th></tr><tr><td>一句话</td><td>把 LLM 生态的 harness 范式接到<strong>世界模型评测</strong>：父 agent 解读案例→拆成可测子问题→调度带诊断工具的子 agent 取证→校验汇总成<strong>可审计证据树</strong>——18 个世界模型 × 330 案例，Intentional 维与人类 Bradley–Terry 排序 Spearman <strong>ρ=0.93</strong></td></tr><tr><td>冻结</td><td>被评测的 18 个世界模型；评测管线本身开源（Apache-2.0，harnesseval CLI：eval/plan/generate/verify）</td></tr><tr><td>演化</td><td>开放技能库与评测案例，邀请社区扩展（live benchmark）</td></tr><tr><td>三轴</td><td>Render（观测质量）/ Transition（干预下状态转移）/ Persistence（长程世界持续性）</td></tr></table>
+<h3>① 动机：基准不该只给一个标量分</h3>
+<ul><li>评测的可信度在于<strong>支撑分数的推理链</strong>。世界模型 rollout 的评判需要理解物理、因果、世界状态是否正确演化——人类一眼能发现的违规，现有基准却用暴力指标计算，<strong>没有可检查、可验证的推理链</strong>。</li><li>harness 的定义（本文给得很清楚）：不只是代码包装，而是把"取证/用工具/推理"这类人类评测工作流形式化为<strong>可执行 agent 脚手架</strong>。</li></ul>
+<h3>② 架构：层级 agent 评测工作流</h3>
+<pre>评测案例 → 父 Agent：解读上下文 → 拆成可测子问题（按案例路由技能）
+  → 子 Agent × N：各带定制上下文 + 诊断工具（视觉 grounding 等）
+     对自己的子问题独立取证打分
+  → 父 Agent 校验证据 → 汇总最终判定
+  → 产出 evidence tree：测了什么 / 哪个工具提供视觉依据 / 完整逻辑链</pre>
+<ul><li>技能库：11 个 skill（仓库 src/harnesseval/ 含 planner、runner、metric backends）；</li><li>形式化：未来观测分布由隐状态边缘化——观测似然 S(o_i|s_i)、动作条件转移 T(s_i|s_{i-1},a_{i-1})、由历史推断初态 P(s_0|o_{-T:0})。</li></ul>
+<h3>③ 数据与结果</h3>
+<ul><li><strong>18 个代表性世界模型 × 330 个评测案例</strong>（案例含初始图 + prompt + 干预），数千次打分轨迹；</li><li>与人类偏好对齐：Intentional 维 Bradley–Terry 排序 <strong>Spearman ρ=0.93</strong>；</li><li>细粒度诊断示例：子 agent 能指出"两只夹爪都夹住了勺子，而指令要求左夹爪保持低位 → no-extra-event 0.750 → 整体 0.913"——错误可定位到帧与干预。</li></ul>
+<h3>④ 例子</h3>
+<p>交互式世界模型案例："按住勺子但左夹爪被要求放松"——旧指标只给总分；HarnessEval-W 的证据树显示：Sub-agent "no extra event" 给 0.582/0.750，另一个子问题满分 0.913，最终分数能追溯到底是哪个子问题失败。</p>
+<h3>⑤ 局限与边界</h3>
+<ul><li>全量 330 案例与 HF 托管在归档核查时部分待发布（管线与 demo 已开源）；V1 Leaderboard 当时 Coming Soon；</li><li>评测 agent 自身依赖强 VLM——评测者的偏差需要人类对齐实验兜底（ρ=0.93 是当前证据）；</li><li>面向交互式开放域世界模型，不覆盖操纵 EEF 轴的具身任务。</li></ul>
+<h3>⑥ 簇内定位</h3>
+<ul><li>时间线上与 <strong>HumanCLAW</strong> 同月，共同把"harness"从<strong>提升能力</strong>扩展到<strong>测量能力</strong>：一个测 VLM 决策，一个测世界模型预测；</li><li>与 <strong>CaP-Bench</strong>：CaP-Bench 评 coding agent（固定量表分层），HarnessEval-W 评生成式 rollout（推理链证据树）——评测 agentic 化的两个方向；</li><li>呼应 ASPIRE/HarnessPAI 的门控哲学：<strong>没有可验证的推理链，分数就不可信</strong>——这句话同时适用于评模型和评 harness 改动。</li></ul></main>
+<footer>本页由论文精读笔记自动生成 · <a href="../index.html">返回论文库</a></footer></body></html>
