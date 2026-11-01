@@ -18,6 +18,12 @@
 <pre>固定上下文（E + D_prim + D_task）+ 当前观测 + M_t
   → 冻结 VLM 推理 → 语义命令 batch（GIP 参考）
   → 规划→运动→执行 → 反馈 F_t → 更新 M_t → 下一轮</pre>
+<h3>④A 主结果对比（论文 Table 1/2，tex 已验）</h3>
+<p><strong>RoboTwin 2.0 C2R（成功率 %）</strong></p>
+<table><tr><th>方法</th><th>Shots</th><th>SR</th></tr><tr><td>π0.5</td><td>Full Set</td><td>46.0</td></tr><tr><td>LingBot-VLA</td><td>Full Set</td><td>50.4</td></tr><tr><td>HarnessVLA (CC)</td><td>Full Set</td><td>58.4</td></tr><tr><td><strong>RoboDawn (Gemini-3.8-Flash)</strong></td><td>0 / 1</td><td>47.0 / 62.2</td></tr><tr><td><strong>RoboDawn (GPT-6 Astra)</strong></td><td>0 / 1</td><td><strong>53.2 / 73.6</strong></td></tr></table>
+<p><strong>RoboDojo（成功率 %）：</strong> π0.5 6.91 · Xiaomi-Robotics-1 13.93 · GPT-6 Astra(0-shot) 22.58 → <strong>RoboDawn 0-shot 35.67 / 1-shot 47.17</strong>（零机器人训练）。</p>
+<h3>④B 核心消融（shots 敏感性 + 底座模型）</h3>
+<ul><li><strong>0-shot → 1-shot</strong>：RoboTwin +15.2pp（Flash）/ +20.4pp（Astra）；RoboDojo +11.5pp——一条演示的边际收益极大；</li><li><strong>底座消融</strong>：Flash → Astra 0-shot +6.2pp / 1-shot +11.4pp——agentic VLM 底座越强，零训练管线免费升级；</li><li>对照全量微调基线（X-VLA 20.9 / GR00T-1.7 20.7 / StarVLA 10.6）：零训练 agent 在 C2R 上反超。</li></ul>
 <h3>⑤ 例子</h3>
 <p>叠块任务 1-shot：演示把"抓块→移到目标上方→放下"降为 5 条 GIP 命令 + 每步 rationale；VLM 在新随机化场景里按相同语法发命令，偏差时用 Adapt 步修正下一步（如"GIP 偏左 2cm，下轮 move 右移 2cm"）。</p>
 <h3>⑥ 局限</h3>

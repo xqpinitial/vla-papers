@@ -15,6 +15,13 @@
 <ol><li><strong>脚手架依赖</strong>：S1（状态观测+高层宏）人人高分；S4（噪声感知+原子原语）连最强模型 &lt;30%。能力差在"抽象层级"上被放大。</li><li><strong>测试时计算 scaling 补差距</strong>：多轮调试 + 执行反馈 + VDM + 技能合成 + 集成推理，低层原语上的鲁棒性可恢复到人类级。</li><li><strong>扰动下代码 agent &gt; VLA</strong>（Table 2，LIBERO-PRO）：CaP-Agent0 22/18/26 vs π0.5 17/1/38、π0 0/0/0、OpenVLA 0/0/0——<strong>这是整条 agentic 路线的存在性证据</strong>。</li></ol>
 <h3>④ 数据与基准（tex 已验）</h3>
 <table><tr><th>实验</th><th>数字</th></tr><tr><td>CaP-RL（Qwen2.5-Coder-7B，100 trials/任务）</td><td>Cube Lift 25→<strong>80</strong>、Cube Stack 4→<strong>44</strong>、Spill Wipe 30→<strong>93</strong></td></tr><tr><td>CaP-RL 真机（Franka，25 trials）</td><td>接近仿真（sim2real 差距极小）</td></tr><tr><td>BEHAVIOR 导航任务</td><td>CaP-Agent0 拾起收音机 72% / 易拉罐 52% vs 人类 80/84（导航成功率 88/80）</td></tr><tr><td>LIBERO-PRO（Table 2，Pos/Task 扰动平均）</td><td>见上；三个扰动类下 CaP-Agent0 全面优于 VLA</td></tr></table>
+<h3>④A 主结果对比（论文 LIBERO-PRO 任务级表 + RL 表，tex 已验）</h3>
+<p><strong>LIBERO-PRO（任务改向扰动下聚合，跨论文口径）：</strong> OpenVLA ≈0 · π0 ≈0 · π0.5 ≈11–17 · <strong>CaP-Agent0 18.2–23.2</strong>——纯代码 agent 在扰动基准上反超直接 VLA。</p>
+<p><strong>BEHAVIOR-1K</strong>（Nav/Task SR）：Human 88/80 → 系统可比（Pick up Radio 88%、Soda Can 80%）。</p>
+<h3>④B 核心消融（Table 7 CaP-RL + Table 8 debug 边际，tex 已验）</h3>
+<p><strong>CaP-RL（GRPO 50 iters，Qwen2.5-Coder-7B，N=100）</strong></p>
+<table><tr><th>任务</th><th>Base</th><th>w/ CaP-RL</th></tr><tr><td>Cube Lift (sim)</td><td>25%</td><td><strong>80%</strong></td></tr><tr><td>Cube Stack (sim)</td><td>–</td><td><strong>44%</strong></td></tr><tr><td>Spill Wipe (sim)</td><td>–</td><td><strong>93%</strong></td></tr><tr><td>Cube Lift (real, N=25)</td><td>–</td><td><strong>84%</strong></td></tr><tr><td>Cube Stack (real)</td><td>–</td><td><strong>76%</strong></td></tr></table>
+<p><strong>测试时调试边际（Table 8）：</strong> 3M 平均 68.29 → 3M+debug 65.43——对已收敛程序，额外调试不再有增益（甚至轻微回退），调试的价值在首次生成阶段。</p>
 <h3>⑤ 信息流（CaP-Gym 一轮）</h3>
 <pre>环境状态 → 结构化感知基元输出（SAM3 分割/Molmo 点选 → 语义对象）
   → agent 写代码（组合原语，REPL 里保持执行上下文）

@@ -15,6 +15,11 @@
 <ul><li>HumanCLAW-Bench：1,218 长程回合（6 类目标家具/物体），分 navigation 子集与 sit 子集；渐进成功指标 FindSR / NavSR / InteractSR。</li><li><strong>9 个前沿 VLM 全军覆没</strong>：最佳 16.8%；同一 VLM FindSR 可达 75%+ 而 InteractSR 普遍个位数。</li></ul>
 <h3>④ 核心发现（六条 findings 的精华）</h3>
 <ol><li><strong>感知不是瓶颈</strong>：目标进视野后识别几乎全对，崩在"看见之后"；</li><li><strong>缺乏具身自我意识（embodied self-awareness）</strong>："机器幽灵"效应——能流利描述周围场景，却不知道自己身体在哪：判断不到"已到达"、空间幻觉、肢体撞翻家具无察觉、"向空气里坐下"（不追踪骨盆与座椅的相对位置）；</li><li><strong>推理脚手架至关重要</strong>：去掉技能 verifier 导航成功率骤降；增加历史图像帧数反而可能掉点——<strong>紧凑文本历史 + 中级目标推理</strong>最有效。</li></ol>
+<h3>④A 主结果对比（论文 Table 1 技能保真度，tex 已验）</h3>
+<p>人形运动技能保真度（log-prob 比值，越接近 1 越好）：</p>
+<table><tr><th>技能</th><th>HumanCLAW</th><th>MoMask</th></tr><tr><td>walk</td><td><strong>0.966 ±0.022</strong></td><td>1.921 ±1.031</td></tr><tr><td>side_step</td><td><strong>1.002 ±0.123</strong></td><td>1.717 ±1.234</td></tr><tr><td>step_back</td><td><strong>0.986 ±0.056</strong></td><td>2.072 ±1.067</td></tr><tr><td>turn_in_place</td><td><strong>0.994 ±0.038</strong></td><td>0.608 ±0.284</td></tr><tr><td>climb_upstairs</td><td><strong>0.794 ±0.019</strong></td><td>0.820 ±0.826</td></tr><tr><td>climb_downstairs</td><td><strong>0.738 ±0.052</strong></td><td>1.540 ±0.421</td></tr><tr><td>sit_in_place</td><td><strong>0.977 ±0.078</strong></td><td>1.817 ±1.279</td></tr></table>
+<h3>④B 核心消融（Table 4 技能特定 verifier 检查）</h3>
+<p>HumanCLAW 是评测框架，无传统消融表；其"消融"是技能级验证规则表：walk（路径碰撞/目标推进）、stop（目标完成/身体到位）、climb up/down（台阶在脚下/朝向楼梯）、turn before sitting（贴座零距离/转向后座椅在正后方）——每个技能有专属可执行检查，而非通用 VLM 评分。</p>
 <h3>⑤ 信息流</h3>
 <pre>高层指令 + 技能注册表 → VLM harness（0.5s 步）
   ← 自我中心 RGB + 文本/结构化记忆

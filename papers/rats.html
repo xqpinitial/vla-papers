@@ -19,6 +19,14 @@
 <h3>④ 数据与基准（§4；tex 已验）</h3>
 <table><tr><th>评测</th><th>RATs</th><th>基线</th><th>增益</th></tr><tr><td>LIBERO-PRO（60 held-out 任务 ×10 init = 600 trials）</td><td><strong>43.8</strong></td><td>CaP-Agent0 23.2；最佳 VLA π0.5 仅 12.8</td><td><strong>+20.6</strong></td></tr><tr><td>MolmoSpaces（4 类 ×10 任务 ×10 trials = 400）</td><td><strong>38.0</strong></td><td>21.0</td><td><strong>+17.0</strong></td></tr><tr><td>RoboSuite 跨环境即插（LIBERO-PRO 玩的技能 → CaP-Agent0）</td><td>49.1</td><td>40.3</td><td><strong>+8.9</strong>；two-arm lifting +24.0（<strong>跨本体</strong>迁移）</td></tr><tr><td>真机（2 任务 ×40 trials）</td><td>38.8</td><td>30.0</td><td><strong>+8.8</strong></td></tr></table>
 <p><strong>消融</strong>（§4.4）：随机玩 50 轮只 +1.5（23.2→24.7），Curious Play +9.1（→32.3）——<strong>好奇心是玩的有效性的关键</strong>；只改执行系统 36.3，只改玩 32.3，两者叠加最优 44.3（RATs Exec，5 trials/任务口径）——<strong>玩与测试时执行互补</strong>。</p>
+<h3>④A 主结果对比（论文 Table 1/2，tex 已验）</h3>
+<p><strong>LIBERO-PRO in-domain（平均，%）</strong></p>
+<table><tr><th>OpenVLA</th><th>π0</th><th>π0.5</th><th>CaP-Agent0</th><th><strong>RATs</strong></th></tr><tr><td>0.0</td><td>0.0</td><td>12.8</td><td>23.2</td><td><strong>43.8</strong></td></tr></table>
+<p>（分套件：Object 61/63、Goal 43/36、Spatial 29/31，Pos./Task 两列）</p>
+<p><strong>MolmoSpaces in-domain（平均，%）：</strong> CaP-Agent0 21.0 → <strong>RATs 38.0</strong>（Close 36→73 最显著）。</p>
+<h3>④B 核心消融（Table 3 play 策略 × 测试系统 + Table 13 算力匹配，tex 已验）</h3>
+<table><tr><th>测试系统</th><th>Play 策略</th><th>LIBERO-PRO Avg</th></tr><tr><td>CaP-Agent0</td><td>No Play</td><td>23.2</td></tr><tr><td>CaP-Agent0</td><td>Random Play</td><td>24.7</td></tr><tr><td>CaP-Agent0</td><td>Curious Play</td><td>32.3</td></tr><tr><td>RATs Exec.</td><td>No Play</td><td>36.3</td></tr><tr><td>RATs Exec.</td><td>Random Play</td><td>38.3</td></tr><tr><td>RATs Exec.</td><td><strong>Curious Play</strong></td><td><strong>44.3</strong></td></tr></table>
+<ul><li>两个因素都贡献：好奇 play +13.2pp（RATs Exec 内），RATs 执行系统 +13.1pp（No Play 列）；</li><li><strong>算力匹配对照</strong>：CaP-Agent0 加到 15 turns 也只有 26.0（vs 10 turns 23.2）——增益不是测试算力堆出来的。</li></ul>
 <h3>⑤ 信息流（一次 play 迭代）</h3>
 <pre>场景观测 + 技能库 + 失败记忆
   → Proposer 生成候选池 → Goldilocks 选 τ_t（N·F 最大化）

@@ -23,6 +23,13 @@
   → [并行/顺序递归扩展]
   → 采纳的 harness + 经验教训 → Improvement Harness（持久）
   → 下个任务的 Propose 阶段被它引导</pre>
+<h3>④A 主结果对比（论文 Table 1 WorkBuddy-Bench，tex 已验）</h3>
+<p><strong>底座 Gemini 3.5 Flash（Avg Score / Steps）</strong></p>
+<table><tr><th>方法</th><th>Avg</th></tr><tr><td>OpenCode</td><td>73.4</td></tr><tr><td>ReasoningBank</td><td>73.4</td></tr><tr><td>Meta-Harness†</td><td>76.4</td></tr><tr><td>Harness Scaling</td><td>75.3</td></tr><tr><td><strong>Harness²</strong></td><td><strong>77.5</strong>（+Recursion 再 <strong>+4.3</strong>）</td></tr></table>
+<p><strong>底座 Codex：</strong> Codex 74.5 → <strong>Harness² 77.5</strong>（+Recursion +1.6）；GLM-5 底座同趋势（OpenCode 58.4 → Harness² 显著提升）。</p>
+<h3>④B 核心消融（论文 Table 4 组件价值，tex 已验）</h3>
+<table><tr><th>配置</th><th>Code</th><th>Web</th><th>Office</th><th>Avg</th></tr><tr><td>Base harness</td><td>73.4</td><td>69.9</td><td>74.0</td><td>72.4</td></tr><tr><td>w/o prompt</td><td>78.8</td><td>76.0</td><td>83.1</td><td>79.3</td></tr><tr><td><strong>w/o skills</strong></td><td>77.2</td><td>71.4</td><td>77.9</td><td><strong>75.5</strong></td></tr><tr><td>w/o scripts</td><td>79.3</td><td>76.0</td><td>76.0</td><td>77.1</td></tr><tr><td><strong>Harness² (full)</strong></td><td><strong>80.8</strong></td><td><strong>78.3</strong></td><td><strong>83.4</strong></td><td><strong>80.8</strong></td></tr></table>
+<p><strong>skills 是最大单一贡献</strong>（去掉掉 5.3 分），scripts 次之（3.7），prompt 最小（1.5）。</p>
 <h3>⑤ 例子</h3>
 <p>法律备忘录任务没有参考答案可比——Harness² 让 agent 用两个 harness 版本各写一版，对比"引用核查步骤是否出现在工作流里、事实遗漏在哪"这类<strong>行为差异</strong>，组合出带"先核查后撰写"中间步骤的新 harness；这条经验（"专业写作先核查"）随后进入 Improvement Harness，被下一个合同审查任务复用。</p>
 <h3>⑥ 局限（第三方分析的清醒剂）</h3>

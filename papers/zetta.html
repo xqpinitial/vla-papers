@@ -19,6 +19,12 @@
 <h3>④ 数据与基准（tex 已验）</h3>
 <table><tr><th>指标（LIBERO-Pro，底座 π0.5）</th><th>前</th><th>后</th></tr><tr><td>Goal-T</td><td>31.0</td><td><strong>92.5</strong></td></tr><tr><td>Goal-S</td><td>38.0</td><td><strong>89.0</strong></td></tr><tr><td>Goal 平均</td><td>34.5</td><td><strong>90.8</strong></td></tr></table>
 <p>（来自深蓝学院编译的扩展结论，二手：成功率随自探索经验持续提升；学到的技能支持零样本迁移；出现"顿悟时刻"（Aha Moments）式的能力跳变。）</p>
+<h3>④A 主结果对比（论文 Table 2/3 + 摘要，tex 已验）</h3>
+<p><strong>LIBERO-Pro（底座 π0.5，成功率 %）</strong></p>
+<table><tr><th>Setting</th><th>π0.5</th><th>Zetta</th></tr><tr><td>Goal (T)</td><td>31.0</td><td><strong>92.5</strong></td></tr><tr><td>Goal (S)</td><td>38.0</td><td><strong>89.0</strong></td></tr><tr><td>LIBERO-10 (T)</td><td>50.0</td><td><strong>63.0</strong></td></tr><tr><td>LIBERO-10 (S)</td><td>9.0</td><td><strong>40.0</strong></td></tr></table>
+<p><strong>RoboCasa 18 个 Atomic-Seen 任务平均：</strong> Pure VLA (GR00T) 73.56 → <strong>Zetta 93.56</strong>（逐任务 50→100 级提升，如 T6 62→80、T15 50→100）。推理侧 <strong>11.1× 加速</strong>。</p>
+<h3>④B 核心消融（诚实标注：无逐组件关闭表）</h3>
+<ul><li><strong>进化 scaling</strong>：成功率随进化迭代 34.5% → 90.8% 持续上升（正式结果随自探索经验继续提升）；</li><li>学到的 recovery 技能支持<strong>零样本迁移</strong>；出现明确"顿悟时刻"式能力跳变；</li><li>逐组件（runtime critic / recovery 手册 / 工具集）单独关闭的数字论文以曲线/正文呈现，未提供独立消融大表。</li></ul>
 <h3>⑤ 信息流（一个执行回合 + 进化批次）</h3>
 <pre>执行中（动作频率，毫秒级）：
   π0.5 输出动作块 → critic 代码扫描（力/位姿/接触） → 异常？

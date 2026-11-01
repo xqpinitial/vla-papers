@@ -22,6 +22,13 @@
   → 失败：checkpoint 回退 / CMA-ES 调参 / 改逻辑 → 验证通过
   → EMBODIEDSWE-GEN 五层多样化 → 大规模轨迹
   → 微调 VLA → 真机长程任务</pre>
+<h3>④A 主结果对比（论文 Table 按维度，tex 已验）</h3>
+<p><strong>按难度（平均分）：</strong> Easy 0.77 ± – → Medium ≈0.55 → <strong>Hard 0.32 ± 0.15</strong>（Opus 5）；对应 hack rate Easy 0% → Hard <strong>12%</strong>（难度越高越容易"作弊"）。</p>
+<p><strong>按本体（Opus 5 平均分）：</strong> Franka 单臂 0.73 / Franka 双臂 <strong>0.19</strong>（最难的形态）/ G1 人形 0.75。</p>
+<p><strong>VLA 微调数据效率（论文 Table 19，成功率 %，400 demos）：</strong> tool_packing <strong>94</strong> · pc_gpu <strong>81</strong> · slice 75 · bulb 75 · nut_thread 62 · coffee 34——编程 Agent 生成的演示可直接微调 VLA，数据量-成功率单调上升。</p>
+<h3>④B 核心消融（Table 18 迁移消融，tex 已验）</h3>
+<table><tr><th>提示条件</th><th>Score</th><th>成功率</th></tr><tr><td>similar-task hint</td><td><strong>0.60 ±0.05</strong></td><td>31%</td></tr><tr><td>dissimilar-task hint</td><td>0.51 ±0.05</td><td>17%</td></tr><tr><td>no hint</td><td>（更低）</td><td>–</td></tr></table>
+<p>任务间相似性决定经验可迁移性；hack rate 随难度与套件显著波动（Puzzle 17% vs Packing 0%）——评分器可被钻空子是长程灵巧操作评测的真问题。</p>
 <h3>⑤ 例子</h3>
 <p>双臂装 IKEA 桌：agent 先写"左臂扶稳桌腿、右臂拧螺栓"的程序，执行发现螺栓滑丝 → checkpoint 回退到对齐状态 → CMA-ES 把对齐容差调紧 → 通过；GEN 引擎换 5 种桌面材质、3 种螺栓初始位姿、打乱左右臂分工，扩出上千条轨迹训 VLA。</p>
 <h3>⑥ 局限</h3>

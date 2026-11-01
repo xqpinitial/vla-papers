@@ -19,6 +19,14 @@
 <ul><li><strong>回合 = planner Π 与物理引擎的自回归回合制交互</strong>：每步消费 o_t=(I_rgb, I_d, q)、ℓ、记忆检索上下文 → 发一个 JSON 调用 <code>c_t = {action, args}</code> → 引擎执行到原语 post-condition → 返回 o_{t+1}。借鉴 CodeAct/SWE-agent 的 REPL 运行时。</li><li><strong>Exploratory Bootstrapping</strong>：单一 reference seed 上自主探索找可行解（有 reset 原语、预算宽松）；成功轨迹序列化入 Task Memory，规则/失败模型入 Global Memory。</li><li><strong>Deployment Evaluation</strong>：未见变体上<strong>reset 禁用、预算缩短</strong>；从记忆取 trace 对实时 RGB-D 动态 re-grounding。<strong>所有 benchmark 数字来自此严格阶段</strong>。</li><li>纪律：原语级 post-condition（"看起来抓住了"）≠ 任务成功；成功永远由 benchmark 谓词 G 决定。</li></ul>
 <h3>④ 数据与结果</h3>
 <table><tr><th>基准</th><th>Harness VLA</th><th>对照</th></tr><tr><td>LIBERO-Pro（8 cell × 100 trials）</td><td><strong>82.4%</strong>（Codex 版 72.1%）</td><td>冻结 π_RLinf 50.0%；RATS 43.8%；Cap-X 18.2%</td></tr><tr><td>RoboCasa365 三子任务</td><td>60.0/21.3/5.0 → <strong>91.6/56.3/15.0</strong></td><td>整体约 55.4%</td></tr><tr><td>RoboTwin C2R（双臂 clean→randomized）</td><td><strong>58.4%</strong></td><td>直接策略 47.9%</td></tr></table>
+<h3>④A 主结果对比（论文 Table 1/2/3，tex 已验）</h3>
+<p><strong>标准 LIBERO（成功率 %）</strong></p>
+<table><tr><th>方法</th><th>Spatial</th><th>Object</th><th>Goal</th><th>LIBERO-10</th><th>Overall</th></tr><tr><td>OpenVLA</td><td>84.7</td><td>88.4</td><td>79.2</td><td>53.7</td><td>76.5</td></tr><tr><td>NORA</td><td>85.6</td><td>89.4</td><td>80.0</td><td>63.0</td><td>79.5</td></tr><tr><td>π0</td><td>96.8</td><td>98.8</td><td>95.8</td><td>85.2</td><td>94.2</td></tr><tr><td>πRLinf</td><td>99.0</td><td>96.0</td><td>97.0</td><td>89.0</td><td>95.3</td></tr><tr><td>AtomVLA</td><td>96.4</td><td>99.6</td><td>97.6</td><td>94.4</td><td>97.0</td></tr><tr><td><strong>Harness VLA (CC)</strong></td><td>97.0</td><td>100.0</td><td>94.0</td><td>93.0</td><td>96.0</td></tr></table>
+<p><strong>LIBERO-Pro Overall（扰动基准，%）：</strong> OpenVLA 0.0 · π0 0.3 · π0.5 11.0 · MolmoAct 1.5 · X-VLA 3.8 · AtomVLA 6.3 · Cap-X 18.2 · RATS 43.8 · πRLinf 50.0 · <strong>Harness VLA (Codex) 72.1</strong></p>
+<p><strong>RoboCasa365 Overall（%）：</strong> π0 14.8 · π0.5 16.9 · RLDX-1 30.0 · WorldDreamer 35.3 · HVLA(CC) 48.8 · <strong>HVLA(Codex) 57.2</strong></p>
+<h3>④B 核心消融（Table 20/6，tex 已验）</h3>
+<p><strong>Planner 消融（同一 harness 换规划器，LIBERO-Pro Overall）：</strong> Codex(GPT-5.5) 72.1 → Claude Code(Opus-4.7) 82.4 → <strong>Codex(GPT-6 Astra) 92.63</strong>——harness 增益随底座推理能力免费放大。</p>
+<p><strong>推理模式消融（LIBERO-Pro Overall / 单任务耗时）：</strong> reasoning high 78.5 @ 529s · no reasoning 62.5 @ 344s · <strong>Flash mode 72.63 @ 56s</strong>（≈9.4× 提速仅让 6 个点）。</p>
 <h3>⑤ 信息流（一个回合）</h3>
 <pre>ℓ + RGB-D + q_t ──▶ Planner（冻结 LLM）◀──检索── Task Memory / Global Memory
   ──▶ JSON 调用 c_t ∈ P ──▶ 物理引擎执行至 post-condition ──▶ o_{t+1}

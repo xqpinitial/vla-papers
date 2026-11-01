@@ -18,6 +18,12 @@
 <p>失败/低效先归因到<strong>六大能力维度</strong>——感知/推理/规划（决策能力）+ 保存/检索/利用（记忆管理）；只在对应进化面上提出修改，且必须<strong>验证有效才提交</strong>；复现出现的改进晋升到通用系统。</p>
 <h3>④ 数据与结果</h3>
 <table><tr><th>基准</th><th>结果</th></tr><tr><td>EmbodiedBench</td><td>SOTA：GPT-5.5 <strong>+27.8%</strong>；Qwen3.7-Plus 70.3% ≈ GPT-5.5 72.7%（系统进化抹平模型差距）</td></tr><tr><td>RoboMemArena（长程记忆）</td><td>超所有基线（含外部大模型辅助方法）<strong>至少 +39.0%</strong></td></tr><tr><td>LIBERO-PRO（扰动）</td><td>比 CaP-Agent0 <strong>+243.8%~679.7%</strong>（全扰动类型）</td></tr><tr><td>真机</td><td>跨机器人、跨任务零样本迁移 + 部署后在线进化</td></tr></table>
+<h3>④A 主结果对比（论文 Table 1 RoboMemArena + LIBERO-PRO，tex 已验）</h3>
+<p><strong>RoboMemArena（长程记忆，SR / PS）</strong></p>
+<table><tr><th>方法</th><th>Overall</th><th>Transfer</th><th>Occlusion</th><th>Counting</th><th>Sequence</th></tr><tr><td><strong>RoboFoundry</strong></td><td><strong>53.5 / 72.8</strong></td><td>70.5/78.1</td><td>38.3/57.6</td><td>55.2/82.5</td><td>75.2/92.1</td></tr><tr><td>PrediMem</td><td>38.5 / 55.2</td><td>22.5/45.2</td><td>27.3/38.4</td><td>45.7/69.3</td><td>72.5/89.5</td></tr><tr><td>MemER</td><td>27.3 / 49.1</td><td>20.0/36.1</td><td>16.4/33.2</td><td>27.1/65.1</td><td>65.0/79.1</td></tr><tr><td>π0.5</td><td>21.5 / 38.7</td><td>20.0/42.8</td><td>12.7/17.2</td><td>14.3/50.9</td><td>60.0/71.6</td></tr><tr><td>MemoryVLA</td><td>15.0 / 35.3</td><td>15.0/37.2</td><td>7.3/13.1</td><td>14.3/55.1</td><td>37.5/65.2</td></tr></table>
+<p><strong>LIBERO-PRO</strong>（task-wise 表）：RoboFoundry 各套件 95–100%，而 OpenVLA/π0 大多 0.0、π0.5/CaP-Agent0 在任务改向下大量归零。</p>
+<h3>④B 核心消融（诚实标注）</h3>
+<p>论文无逐组件关闭的独立消融大表（设计选择以图表呈现）；核心对照是 System-as-Policy 整体 vs 记忆/双系统基线（上表 +26.2pp over 最强记忆基线 PrediMem）。</p>
 <h3>⑤ 信息流</h3>
 <pre>内循环：任务执行 → 轨迹 → 六维归因
 外循环：对应进化面提修改（上下文面 / 技能面）

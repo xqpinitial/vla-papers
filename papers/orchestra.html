@@ -20,6 +20,11 @@
   → 动作策略（读共享上下文）生成动作 → 执行
   → 进度评估器：完成？→ 推进下一子任务 / 继续
   → 上下文更新（已完成步骤、物体/目标位置变化）→ 循环</pre>
+<h3>④A 主结果对比（论文 Table 1 RMBench 9 任务平均，tex 已验）</h3>
+<table><tr><th>方法</th><th>平均成功率</th></tr><tr><td>QwenOFT</td><td>5.67%</td></tr><tr><td>DP</td><td>5.78%</td></tr><tr><td>ACT</td><td>5.89%</td></tr><tr><td>MemER</td><td>8.67%</td></tr><tr><td>X-VLA</td><td>9.78%</td></tr><tr><td>π0.5</td><td>10.44%</td></tr><tr><td>MemoryVLA (OpenVLA)</td><td>19.44%</td></tr><tr><td>MemoryVLA (QwenOFT)</td><td>41.78%</td></tr><tr><td>Mem-0</td><td>42.00%</td></tr><tr><td>HarnessVLA</td><td>26.78%</td></tr><tr><td><strong>Orchestra</strong></td><td><strong>68.22%</strong></td></tr></table>
+<p>任务级亮点：Press Button 97%、Rearrange Blocks 95%、Swap Blocks 86%。</p>
+<h3>④B 核心消融（诚实标注）</h3>
+<p>论文消融以图/曲线呈现，无独立组件关闭大表；核心对照是"规划/执行管理/动作生成三分"整体 vs 记忆双系统（68.22 vs 42.00，<strong>+26.2pp</strong>）与 agentic 基线 HarnessVLA（<strong>+41.4pp</strong>）。</p>
 <h3>⑤ 例子</h3>
 <p>名牌 3-1-2：Task Agent 拆出"拿 3 号→放蓝垫→拿 1 号→…"；grounding 锁定"3 号"的位置（哪怕场景被打乱后更新位置）；进度评估器在"3 号已放稳"时才允许推进——防重复、防跳步、防过早切换。</p>
 <h3>⑥ 局限</h3>

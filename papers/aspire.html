@@ -19,6 +19,11 @@
 <p>与 RATs 的"可靠性追踪"殊途同归：<strong>都不信任写入者的自我报告</strong>。</p>
 <h3>④ 数据与基准（§5；tex 已验 + 二手读报）</h3>
 <table><tr><th>基准</th><th>结果</th><th>说明</th></tr><tr><td>LIBERO-Pro（位置/目标扰动）</td><td>超 CaP-X <strong>最高 +77pp</strong></td><td>技能库长出定位消歧/导航恢复等能力</td></tr><tr><td>Robosuite 双臂 handover</td><td>最高 <strong>+72pp</strong></td><td>接触-rich，小抓取误差毁全程</td></tr><tr><td>BEHAVIOR-1K 长程家务</td><td>最高 <strong>+32pp</strong></td><td>导航+抓放+状态跟踪</td></tr><tr><td>LIBERO-Pro Long 零样本</td><td><strong>31% vs 4%</strong></td><td>只用 LIBERO-90 上攒的库——技能库跨任务摊销经验的首个强信号</td></tr><tr><td>换强模型</td><td>Opus 5.5：80 个 LIBERO-Pro 任务平均 <strong>99%</strong>，代表性 Robosuite/BEHAVIOR-1K 任务 100%</td><td>"成功率随底座能力 scaling"（v1.0 公告；另测 GPT-6 Astra）</td></tr><tr><td>仿真→真机（双臂 YAM）</td><td>3 条仿真技能作 in-context 指引：开抽屉 tokens 334M→81M，成功 <strong>0/20→11/20</strong></td><td>不同本体、不同 API</td></tr><tr><td>真机在线学习</td><td>GPT-6 Astra 三个 session 解魔方，每步时间/token 递减</td><td>技能以文本形式累积</td></tr></table>
+<h3>④A 主结果对比（论文 Table 2 LIBERO-Pro + Table 4 BEHAVIOR-1K，tex 已验）</h3>
+<p><strong>LIBERO-Pro（聚合）：</strong> OpenVLA 0.0 · π0 0.0 · π0.5 ≈17 · CaP-Agent0 <strong>22.0</strong> → <strong>ASPIRE 98.0</strong>（Object 套件，Opus 5.5）——比 CaP-X 系基线高 <strong>+77pp</strong> 量级。</p>
+<p><strong>BEHAVIOR-1K（Nav/Task SR）：</strong> Human 88/80 水平的可达性（Radio 88%、Soda Can 80%），CaP-Agent0 显著落后。</p>
+<h3>④B 核心消融（Table 7/8 组件 + Table 18 模型成本，tex 已验）</h3>
+<ul><li><strong>逐任务组件消融</strong>（w/o Engine-Evo / w/o Evo / Evo-search only / ASPIRE）：进化与引擎缺一不可——w/o Evo 大量任务归零，ASPIRE 全列 92–100；</li><li><strong>底座模型消融</strong>（Goal·Position SR）：Opus 5 <strong>35.0</strong> → Opus 5.5 <strong>97.0</strong>；Goal·Task 28.1→86.8；Object·Position 20.1→98.6——<strong>换底座即免费升级</strong>；</li><li>verifier 独立复现门控：不接受 agent 自评（此前对比笔记已核：trace 消融 +14%→62%，二手标注）。</li></ul>
 <h3>⑤ 信息流（一个修复回合）</h3>
 <pre>任务 → agent 写 Python 程序（统一感知/几何/运动 API）
   → 执行，逐 primitive 落 trace（叠加图/候选/轨迹/碰撞）

@@ -20,6 +20,12 @@
 <ul><li>关键设计：<strong>Role-specific contexts</strong>——每个 Sub Agent 只暴露决策相关证据，Main Agent 不被原始观测淹没（与 HumanCLAW"紧凑文本历史最优"发现一致）。</li></ul>
 <h3>④ 数据与结果</h3>
 <ul><li>零额外微调：LIBERO 系列、RoboDojo 等多个公开基准 + 真机实验，"outstanding performance"（论文口径）；</li><li>卖点是<strong>系统级范式</strong>：模型即技能、图结构编排、异步并发协作。</li></ul>
+<h3>④A 主结果对比（论文 Table 1 标准 LIBERO，tex 已验）</h3>
+<table><tr><th>方法</th><th>Goal</th><th>Spatial</th><th>Object</th><th>Long</th><th>Average</th></tr><tr><td>OpenVLA</td><td>79.2</td><td>84.7</td><td>88.4</td><td>53.7</td><td>76.5</td></tr><tr><td>π0-FAST</td><td>88.6</td><td>96.4</td><td>96.8</td><td>60.2</td><td>85.5</td></tr><tr><td>π0</td><td>95.8</td><td>96.8</td><td>98.8</td><td>85.2</td><td>94.2</td></tr><tr><td>OpenVLA-OFT</td><td>97.9</td><td>97.6</td><td>98.4</td><td>94.5</td><td>97.1</td></tr><tr><td>π0.5</td><td>98.0</td><td>98.8</td><td>98.2</td><td>92.4</td><td>96.8</td></tr><tr><td>Fast-WAM</td><td>97.0</td><td>98.2</td><td>100</td><td>95.2</td><td>97.6</td></tr><tr><td>StarVLA-α</td><td>98.6</td><td>98.7</td><td>99.7</td><td>94.2</td><td>97.8</td></tr><tr><td>Cosmos Policy</td><td>98.2</td><td>98.1</td><td>100</td><td>97.6</td><td>98.5</td></tr><tr><td>HarnessVLA</td><td>94.0</td><td>97.0</td><td>100</td><td>93.0</td><td>96.0</td></tr></table>
+<p>EMERGE-Policy 完整版（w/ WM）在消融表中报 <strong>99.2</strong>（四个套件 99.0–100）。RoboDojo 五维（Generalization/Memory/Precision/Long-Horizon/Open）平均 19.98 分 / 11.20%（Memory 维 25.00/22.51% 为最优列）。</p>
+<h3>④B 核心消融（论文 Table 3 LIBERO-Plus，tex 已验）</h3>
+<table><tr><th>配置</th><th>State</th><th>Language</th><th>Sensor</th><th>Camera</th><th>Average</th></tr><tr><td>EMERGE-Policy</td><td>95.0</td><td>98.0</td><td>94.0</td><td>85.0</td><td><strong>93.9</strong></td></tr><tr><td>w/o Eval（去掉评估 agent）</td><td>81.6 (-13.4)</td><td>87.1 (-10.9)</td><td>82.6 (-11.4)</td><td>81.2 (-3.8)</td><td>85.6 (-8.3)</td></tr><tr><td>w/o Sub（去掉子任务 agent）</td><td>89.8</td><td>…</td><td>…</td><td>…</td><td>（论文表内逐列见原文）</td></tr></table>
+<p><strong>w/ WM vs w/o WM（标准 LIBERO avg）：</strong> 99.2 vs 98.8——世界模型分支贡献 +0.4，评估/子任务 agent 贡献更大（-8.3 时）。</p>
 <h3>⑤ 例子</h3>
 <p>叠放任务中：Verification Sub-Agent 用判据"红块完全位于蓝垫内且无倾斜"检查执行证据；不满足时诊断文本指出"释放过早"，Branch Stack 回退到"重新抓取"子目标而不是重跑整个任务；Imagination Skill 先用 WAM 预演"从左侧接近"的后果，预演失败则直接换策略，省一次真实执行。</p>
 <h3>⑥ 局限</h3>

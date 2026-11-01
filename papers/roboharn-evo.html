@@ -19,6 +19,12 @@
   → 当前场景 grounding → 执行 → 记录前后观测/工具调用/物理结果
 更新：reflector 抽取 Task/Action 条目 → 按各自判据检验
   → 修订/合并/停用 → 更新检索索引 → 供下一 episode</pre>
+<h3>④A 主结果对比（论文 §Experiments，tex 已验）</h3>
+<p><strong>RMBench held-out 成功率（80 交互 rollouts 后）：</strong></p>
+<table><tr><th>底座</th><th>初始</th><th>自演化后</th></tr><tr><td>GPT-5.5</td><td>48.3%</td><td><strong>75.0%</strong></td></tr><tr><td>GPT-6</td><td>70.0%</td><td><strong>88.3%</strong></td></tr></table>
+<p>完整 HPK 相对"同 harness 无 HPK"平均提升最多 <strong>+24.2pp</strong>；冻结知识零样本迁移到 RoboDojo：<strong>+35.0pp</strong>（GPT-5.5）/ <strong>+25.0pp</strong>（GPT-6）。</p>
+<h3>④B 核心消融（知识审计 + 组件互补，tex 已验）</h3>
+<ul><li><strong>知识修正</strong>：12 条初始错误知识，修复/停用 10 条（83.3%，GPT-5.5）/ 11 条（91.7%，GPT-6）；</li><li><strong>知识保留</strong>：24 条初始正确知识保留 23 条（<strong>95.8%</strong>）——演化不破坏已有正确经验；</li><li>Task Knowledge 与 Action Knowledge 的互补性由消融支持（具体分解数字在图/正文）。</li></ul>
 <h3>⑤ 例子</h3>
 <p>"红块之后揭绿盖"：Task Knowledge 记录顺序与"盖子完全离开绿块"的完成判据；Action Knowledge 记录"抓盖顶把手、垂直上提 5cm、检查盖下无接触"的策略与预期效果。执行中释放偏移 → 外循环修订该 Action 条目的适用条件，而不是笼统记一条"失败"。</p>
 <h3>⑥ 局限</h3>

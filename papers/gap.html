@@ -19,6 +19,11 @@
 <ol><li>生成内部仿真环境（NVIDIA Isaac Lab），并行排练不同图的多任务实例；</li><li>注册每个节点的前后状态 + 接触反馈 → <strong>失败定位到具体节点</strong>；</li><li>agent 编辑图拓扑/参数直至成功率与吞吐进入平台期。</li><li>案例：Make Popcorn 初图 <strong>33%</strong> → 10 轮仿真排练 <strong>94%（sim）/ 90%（real, 18/20）</strong>；三阶段修复为抓取改进、搬运调整、放置精修。</li></ol>
 <h3>④ 数据与基准（8 项开放 VA benchmark）</h3>
 <ul><li>VA-I 杂货履约、VA-II 杂货打包、VA-III 做爆米花、VA-IV USB-C 插线（UR5+指尖力反馈）、VA-V 工业洗箱（双臂）；前六项 Franka + LIBERO 衍生场景（4 仿真 + 4 真机）。</li><li>关键结果：大位姿变化列 <strong>GaP 0.93–0.99 vs VLA ~0.20</strong>；<strong>π₀.₅ + GaP staging &gt; 2× 裸 VLA</strong>；无图单 agent CaP <strong>0%</strong>。</li></ul>
+<h3>④A 主结果对比（论文 Table 1，5500 trials，成功率，tex 已验）</h3>
+<table><tr><th>方法</th><th>LIBERO</th><th>LIBERO-Pro object_swap</th><th>Fulfill Orders</th><th>Pack Items</th></tr><tr><td>CaP-X</td><td>–</td><td>0.22</td><td>0.07</td><td>0.05</td></tr><tr><td>π0.5</td><td>0.96</td><td>0.24</td><td>0.20</td><td>0.20</td></tr><tr><td>MolmoAct2</td><td>0.97</td><td>0.43</td><td>0.10</td><td>0.20</td></tr><tr><td>TiPToP</td><td>0.22</td><td>0.22</td><td>0.31</td><td>0.24</td></tr><tr><td>π0.5 w/ GaP</td><td>0.85</td><td>0.60</td><td>0.50</td><td>0.39</td></tr><tr><td>MolmoAct2 w/ GaP</td><td>0.70</td><td>0.62</td><td>0.39</td><td>0.66</td></tr><tr><td><strong>GaP（完整）</strong></td><td>0.95</td><td><strong>0.95</strong></td><td><strong>0.93</strong></td><td><strong>0.97</strong></td></tr></table>
+<h3>④B 核心消融（Table 2 自学习前后 + MORSL 对比，tex 已验）</h3>
+<table><tr><th>基准</th><th>TiPToP</th><th>TiPToP w/ MORSL</th><th>GaP(初始)</th><th>GaP(学习后)</th><th>吞吐(初始→学习后, 次/时)</th></tr><tr><td>Fulfill Grocery Orders</td><td>0.24</td><td>0.53</td><td>0.97</td><td>0.97</td><td>49.7 → <strong>124.1</strong></td></tr><tr><td>Pack Grocery Items</td><td>0.34</td><td>0.60</td><td>0.97</td><td>0.97</td><td>7.3 → <strong>16.2</strong></td></tr><tr><td>Make Popcorn</td><td>0.00</td><td>0.00</td><td>0.33</td><td><strong>0.94</strong></td><td>30.5 → <strong>76.6</strong></td></tr></table>
+<p>要点：计算图自学习把"初始跑不通的任务"（popcorn 0.33）练到 0.94，同时吞吐翻倍以上；MORSL 式技能改写远弱于图结构编排。</p>
 <h3>⑤ 信息流（一个排练回合）</h3>
 <pre>自然语言任务 → Orchestration Agent 语义切段
   → Skill Agents 各段合成子图（查 MORSL 声明）→ 类型检查 → 拼图
