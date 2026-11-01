@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>六篇详细对比：RAX · HarnessPAI · ASPIRE · CaP-X · RATs · Zetta</title>
+<meta name="description" content="与 2026-07 的 Harness VLA (2607.08448)（清华，冻结 VLA 当可重试原语、词汇锁死、只学 operating range）相比：本簇六篇全部允许外层代码/技能持续增长（CaP-X 语录：&quot;scaling such systems often still means ">
+<meta property="og:title" content="六篇详细对比：RAX · HarnessPAI · ASPIRE · CaP-X · RATs · Zetta"><meta property="og:type" content="website">
+<link rel="stylesheet" href="../../assets/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%234f46e5'/%3E%3Ctext x='16' y='22' font-size='16' text-anchor='middle' fill='white' font-family='serif'%3EV%3C/text%3E%3C/svg%3E">
+</head><body>
+<div id="progress"></div><nav class="top">
+<a class="brand" href="../../index.html"><span class="dot"></span>VLA Research Hub<small>VLA 研究库</small></a>
+<div class="links">
+<a href="../../index.html">首页</a>
+<a href="../../survey/index.html" class="on">综述</a>
+<a href="../../papers/index.html">论文</a>
+<a href="../../papers/07-harness/index.html">Harness</a>
+</div>
+<span class="spacer"></span>
+<button class="searchbtn" data-search aria-label="搜索"><span>搜索</span><kbd>⌘K</kbd></button>
+<button class="iconbtn" id="themebtn" aria-label="切换明暗主题"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+<button class="iconbtn" id="menubtn" aria-label="菜单"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+</nav><header class="dochead"><div class="wrap"><div class="crumb"><a href="../../index.html">首页</a> / <a href="../../survey/index.html">综述</a> / <a href="../../survey/harness/index.html">Harness / Agentic-VLA 综述</a></div><h1>六篇详细对比：RAX · HarnessPAI · ASPIRE · CaP-X · RATs · Zetta</h1><p class="lede">与 2026-07 的 Harness VLA (2607.08448)（清华，冻结 VLA 当可重试原语、词汇锁死、只学 operating range）相比：本簇六篇全部允许外层代码/技能持续增长（CaP-X 语录：&quot;scaling such systems often still means expanding the primitive or skill library&quot;），而 Harness VLA 特意反着来——这构成谱系上&quot;词汇膨胀 vs 词汇锁死&quot;的对照轴。</p><div class="chips"><a class="chip cat" href="../../survey/harness/index.html">Harness / Agentic-VLA 综述</a><span class="chip">横向 · 同簇对比</span></div><div class="infobox"><div class="irow"><span class="ik">所属综述</span><span class="iv"><a href="../../survey/harness/index.html">Harness / Agentic-VLA 综述</a></span></div><div class="irow"><span class="ik">视角</span><span class="iv">横向 · 同簇对比</span></div><div class="irow"><span class="ik">本组篇数</span><span class="iv">2 篇</span></div><div class="irow"><span class="ik">更新</span><span class="iv">2026-11-02</span></div></div></div></header><div class="docgrid"><aside class="toc"><p class="t">本文目录</p><ul><li><a class="h2" href="#0-六篇一句话-总对比表">0. 六篇一句话 + 总对比表</a></li><li><a class="h3" href="#总对比表">总对比表</a></li><li><a class="h2" href="#1-路线谱系与时间线-谁站在谁肩膀上">1. 路线谱系与时间线（谁站在谁肩膀上）</a></li><li><a class="h2" href="#2-五条光谱轴-快速归类与选型的坐标系">2. 五条光谱轴（快速归类与选型的坐标系）</a></li><li><a class="h2" href="#3-基准数字对照-口径警告">3. 基准数字对照（⚠️ 口径警告）</a></li><li><a class="h2" href="#4-成本与工程量">4. 成本与工程量</a></li><li><a class="h2" href="#5-选型速记">5. 选型速记</a></li><li><a class="h2" href="#6-参考">6. 参考</a></li></ul></aside><main class="prose"><h2 id="0-六篇一句话-总对比表">0. 六篇一句话 + 总对比表</h2>
+<div class="tbl"><table><thead><tr><th>#</th><th>论文</th><th>一句话定位</th></tr></thead><tbody><tr><td>RAX</td><td>Scaling Online Exploration for Robot Agents (2610.22496)</td><td>把&quot;探索&quot;当 scaling law：冻结 coding agent 在线探索机器人 API，成功决策编译成可执行程序并版本化入库，<strong>五大仿真基准平均超 SOTA 37.4pp，真机零演示 &lt;2h 学会精密插孔</strong></td></tr><tr><td>HarnessPAI</td><td>An Evolving Harness for Physical AI (2609.29166)</td><td>代码作为<strong>可执行、可演化的接口</strong>组织感知/控制/<strong>冻结 VLA+WAM</strong> 原语；rollout 内开环、跨 rollout 闭环进化；收敛程序还能<strong>反哺生成 VLA/WAM 微调数据</strong></td></tr><tr><td>ASPIRE</td><td>Agentic Skill Programming (2607.00272)</td><td>把瓶颈从&quot;会不会写代码&quot;改成&quot;看不看得见失败&quot;：per-primitive 多模态 trace + 失败签名→修复技能库 + verifier 独立复现门控 + 进化搜索</td></tr><tr><td>CaP-X</td><td>Benchmarking and Improving Coding Agents (2603.22435)</td><td>Code-as-Policy 的<strong>研究平台四件套</strong>（CaP-Gym/CaP-Bench/CaP-Agent0/CaP-RL）；首次把&quot;agent 能力&quot;与&quot;设计者脚手架&quot;拆开衡量</td></tr><tr><td>RATs</td><td>Playful Agentic Robot Learning (2606.19419)</td><td><strong>任务到来前先&quot;玩&quot;</strong>：内在动机（Goldilocks 原则）自提案任务，Write-Execute-Verify-Diagnose 团队蒸馏代码技能库，测试期即插即用</td></tr><tr><td>Zetta</td><td>Efficient Closed-Loop Embodied Harness (2608.16590)</td><td>把&quot;反思&quot;从大模型摘下来交给<strong>代码化运行时 critic</strong>（动作频率监控冻结 π0.5）+ 恢复剧本，三时间尺度自进化 + Z-Infra 高吞吐 rollout</td></tr></tbody></table></div>
+<h3 id="总对比表">总对比表</h3>
+<div class="tbl"><table><thead><tr><th>维度</th><th>RAX</th><th>HarnessPAI</th><th>ASPIRE</th><th>CaP-X</th><th>RATs</th><th>Zetta</th></tr></thead><tbody><tr><td><strong>机构/时间</strong></td><td>Harvard+NVIDIA+Berkeley+MIT+Stanford，2026-10</td><td>Darwin Agent，2026-09</td><td>NVIDIA GEAR+UMich+UIUC+Berkeley+CMU，2026-06（v1.0 开源 2026-10）</td><td>NVIDIA+Berkeley+Stanford+CMU，2026-03</td><td>Berkeley+Impossible Research，2026-06（CoRL）</td><td>清华 AIR，2026-08</td></tr><tr><td><strong>底座（全部冻结）</strong></td><td>通用 coding agent（Claude Code/Codex）</td><td>GPT-5.6-sol 写码 + Gemini-3.5-Flash 看视频诊断（写/诊分离）</td><td>Claude Code（Opus 4.6 → 5.5 / GPT-6 Astra，消融 12 模型）</td><td>消融 12 个 LLM/VLM</td><td>CaP-Agent0 式多智能体团队</td><td>编排 agent（逻辑固定）+ 代码化 critic</td></tr><tr><td><strong>动作来源</strong></td><td><strong>纯代码</strong>+后端控制器（IK/MPC/全身跟踪），<strong>无 VLA</strong></td><td><strong>混合</strong>：固定代码管 grounding/运输，冻结 π0.5 VLA / WorldDreamer WAM / GraspNet 管语义难阶段</td><td>纯代码（统一感知/几何/运动规划 API）</td><td>纯代码（VLA 可作 API 但主体是 CaP）</td><td>纯代码（Code-as-Policy）</td><td><strong>冻结 VLA（π0.5）为主</strong>，代码只做监控/恢复</td></tr><tr><td><strong>演化对象</strong></td><td>程序 + 版本化技能库（git 式分支，验证后合并）</td><td>代码库 + <strong>四级节点中心技能库</strong>（L1 任务图→L2 节点→L3 problem-repair 对→L4 代码引用）</td><td>技能库：<strong>失败签名→修复动作</strong>的条件-动作对（90+ 技能/150+ 任务/18 类）</td><td>平台本身 + CaP-RL <strong>训练 agent 权重</strong>（GRPO）——六篇中唯一动底座权重</td><td>技能库 L=L0∪L_learned + 失败记忆 M（experimental→verified→deprecated）</td><td>harness 本体 H={Critic, Recovery, Tools}</td></tr><tr><td><strong>学习时机</strong></td><td>任务期在线探索（预算 2→128 episodes，性能单调涨）</td><td>跨 rollout 闭环演化（success contract→写码→预检→多种子 rollout→视频诊断→原子晋升）</td><td>迭代探索 + 进化搜索（K 候选种群）；换更强模型即涨（Opus 5.5 下 99%）</td><td>基准评测 + RL 训练期</td><td><strong>play 期</strong>（任务到来之前，50 次迭代自玩）</td><td>三时间尺度：动作级触发恢复 / 批量级自进化 / 离线演化</td></tr><tr><td><strong>质量门控</strong></td><td>只有<strong>无人值守成功</strong>才入库 + 前置条件 + 验证检查点</td><td>里程碑前缀确定性奖励门控 + <strong>原子晋升</strong>（候选隔离）+ probe 定点回测</td><td>两级门控：verifier agent <strong>独立复现</strong> → 协调器查 API 合规</td><td>CaP-Bench 分层评测（S1-S4/M1-M4）</td><td>可靠性追踪：反复成功→verified，反复失败→deprecated 隐藏</td><td><strong>EOD 聚类</strong>（最早可观测发散点）+ 自上而下诊断 + held-out 回归门控 + VLA 重入契约</td></tr><tr><td><strong>失败处理</strong></td><td>阶段级失败定位待修技能；程序遇不确定 <code>raise Unsure()</code> 交还 agent</td><td>看视频逐节点诊断；失败蒸馏成 how-to-repair 笔记</td><td><strong>多模态执行 trace</strong>（感知叠加/抓取候选/轨迹/碰撞），按 primitive 粒度回看</td><td>结构化执行反馈 + 视觉差分（VDM）</td><td>Failure Diagnoser 总结失败模式 + 失败记忆供重试</td><td>运行时 critic 毫秒级扫异常 → 编排 agent 审批 → 恢复剧本执行</td></tr><tr><td><strong>真机</strong></td><td>Franka FR3 + Rainbow RB-Y1，<strong>零动作演示</strong>，&lt;2h 探索；0.1mm 插孔</td><td>仿真为主（桌面臂/家用/扫地/足式四本体）</td><td>双臂 YAM（3 条仿真技能零样本迁移：tokens 334M→81M，0/20→11/20）；真机解魔方</td><td>Franka（CaP-Agent0 多任务人类级；CaP-RL sim2real 差距极小）</td><td>真机 80 trials：30.0→38.8（+8.8）</td><td>仿真为主</td></tr><tr><td><strong>头部数字</strong></td><td>RoboDojo 78.3 vs 24.9；BEHAVIOR-1K 46.5 vs 8.2；HumanoidArena 89.8（仅 3 演示 vs WB-WAM 100 演示 81.9）；DexJoCo 96.7 vs 65.3；<strong>平均 +37.4</strong></td><td>robosuite 96.3；LIBERO 98.1；LIBERO-PRO 96.5；RoboCasa 92.2 vs 65.0；<strong>π0.5 用其数据 SFT：34.9→73.7</strong></td><td>LIBERO-Pro 超 CaP-X <strong>+77pp</strong>；Robosuite 双臂 +72pp；BEHAVIOR-1K +32pp；零样本 Long 31% vs 4%；Opus 5.5 下 80 任务 <strong>99%</strong></td><td>CaP-Bench：性能随人工抽象升、随抽象撤除降；CaP-RL：Qwen-7B 25/4/30→<strong>80/44/93</strong></td><td>LIBERO-PRO 23.2→43.8（<strong>+20.6</strong>）；MolmoSpaces +17.0；跨环境即插即用 +8.9/+8.8</td><td>LIBERO-Pro Goal <strong>34.5→90.8</strong>（T: 31.0→92.5, S: 38.0→89.0）</td></tr><tr><td><strong>开源</strong></td><td>rax + skills-lib + 全部实验日志（HF）</td><td>Darwin-Agent/HarnessPAI</td><td>NVlabs/ASPIRE（Apache 2.0）</td><td>capgym/cap-x</td><td>playful-rats.github.io（代码）</td><td>air-embodied-brain/Zetta-Embodiment</td></tr><tr><td><strong>最大局限</strong></td><td>深度缺失 -17.3；loco-manip 与域随机化慢；真机每 episode 耗操作员时间</td><td>受限于原语质量；假设环境可 reset；协议差异使对比非受控消融</td><td><strong>贵</strong>（10 任务 $40-600）；进化搜索贡献随模型变强缩水（34pp→≤2%）；无安全沙箱</td><td>是平台不是方法；脚手架依赖被自己证实</td><td>技能误检索会伤害性能；仿真为主；primitive 级 API 限灵巧</td><td>仿真为主；critic 代码本身需演化；依赖固定编排逻辑</td></tr></tbody></table></div>
+<h2 id="1-路线谱系与时间线-谁站在谁肩膀上">1. 路线谱系与时间线（谁站在谁肩膀上）</h2>
+<pre><code>2026.03  CaP-X ──────────── 平台与评测奠基（Gym/Bench/Agent0/RL 四件套）
+            │  「agent 能力 ≠ 设计者脚手架」「测试时计算可补低层原语鲁棒性」
+            ├── 2026.06 RATs ─── 在 CaP-Agent0 之上加&quot;玩&quot;（play 期技能获取），技能可即插回 CaP-Agent0
+            ├── 2026.06 ASPIRE ─ 在 CaP 式写码之上加&quot;看得见失败&quot;（trace）+&quot;存得下经验&quot;（技能库）+&quot;逃得出局部&quot;（进化搜索）
+            │                     （其 LIBERO-Pro 基线就是 CaP-X；RAX 报告 ASPIRE=63.2）
+            └── 2026.10 RAX ──── 把探索推到 scaling law 极致（并行多 agent、版本化技能库、编译加速），
+                                  与 ASPIRE 同台（LIBERO-Pro 84.4 vs 63.2）但走纯代码、零 VLA 路线
+2026.08  Zetta ────────────── 换个冻结对象：底座是 VLA（π0.5）而非 coding agent，
+                              代码退到运行时 critic/恢复层（动作频率监控）
+2026.09  HarnessPAI ───────── 折中与闭环：冻结 VLA/WAM 作为&quot;原语&quot;进代码库，
+                              演化收敛后反哺生成训练数据 → 连回训练侧（六篇中唯一打通&quot;探索→数据→权重&quot;）</code></pre>
+<p>与 2026-07 的 <strong>Harness VLA (2607.08448)</strong>（清华，冻结 VLA 当可重试原语、词汇锁死、只学 operating range）相比：本簇六篇全部<strong>允许外层代码/技能持续增长</strong>（CaP-X 语录：&quot;scaling such systems often still means expanding the primitive or skill library&quot;），而 Harness VLA 特意反着来——这构成谱系上&quot;词汇膨胀 vs 词汇锁死&quot;的对照轴。</p>
+<h2 id="2-五条光谱轴-快速归类与选型的坐标系">2. 五条光谱轴（快速归类与选型的坐标系）</h2>
+<p><strong>轴 1 · 动作来源：纯代码 ←→ 混合 ←→ 冻结 VLA 为主</strong></p>
+<ul>
+<li>纯代码：RAX / ASPIRE / CaP-X / RATs（接触-rich 靠统一 API + 后端控制器；RAX 证明 0.1mm 插孔也行）</li>
+<li>混合：HarnessPAI（语义难阶段 grasp/place 交给冻结 VLA，其余代码）——继承 Harness VLA 的分工但把技能库放开</li>
+<li>VLA 为主：Zetta（VLA 出动作，代码只监控与恢复）</li>
+<li>启示：<strong>&quot;纯代码做不了精细接触&quot;这一 2025 共识正在被 RAX/ASPIRE 的 2026 结果动摇</strong>；但 RAX 依赖极重的后端控制器栈。</li>
+</ul>
+<p><strong>轴 2 · 演化对象：技能库 ←→ 代码库/程序 ←→ harness 本体</strong></p>
+<ul>
+<li>RATs/ASPIRE：技能为中心（函数 / 条件-动作对）</li>
+<li>RAX/HarnessPAI：程序为中心（完整可执行程序 + 引用式技能；HarnessPAI 的四级节点中心存储最精细）</li>
+<li>Zetta：harness 本体为中心（critic/恢复剧本/工具集本身被演化）</li>
+</ul>
+<p><strong>轴 3 · 学习时机：play 期 → 任务期 → 跨 rollout → 反哺训练</strong></p>
+<ul>
+<li>RATs 在任务到来<strong>前</strong>（无外部奖励，Goldilocks 内在动机）</li>
+<li>RAX/ASPIRE 在任务期（探索预算 = 性能）</li>
+<li>HarnessPAI/Zetta 跨 rollout（每个任务一个 success contract）</li>
+<li>HarnessPAI 独有第五阶段：收敛程序当<strong>免费专家数据源</strong>（π0.5 34.9→73.7；DreamZero 5.1→26.5）——&quot;外挂&quot;与&quot;内化&quot;两条路线在此握手。</li>
+</ul>
+<p><strong>轴 4 · 谁动权重</strong>：只有两处——CaP-RL（GRPO 训练 agent 底座，Qwen-7B 20%→72% 级别）与 HarnessPAI 的下游 SFT。其余全部&quot;模型冻结、能力长在工作区&quot;。</p>
+<p>推论：<strong>换更强底座模型 = 免费升级</strong>（ASPIRE 实测 Opus 4.6→5.5 直接把 LIBERO-Pro 打到 99%；RAX 同款结论&quot;模型参数冻结、机器人能力随探索增长&quot;）。</p>
+<p><strong>轴 5 · 质量门控哲学</strong>（决定技能库会不会&quot;腐烂&quot;）</p>
+<ul>
+<li>结果门控：RAX（无人值守成功才合并）</li>
+<li>过程门控：ASPIRE（verifier 独立复现）、HarnessPAI（里程碑前缀奖励 + 写/诊分离防自评分）</li>
+<li>统计门控：RATs（可靠性追踪三态）、Zetta（EOD 聚类 + held-out 回归）</li>
+<li>共同点：<strong>没有一篇信任 LLM 的自我报告</strong>，全部引入了独立于&quot;写代码那个模型&quot;的验证信号。</li>
+</ul>
+<h2 id="3-基准数字对照-口径警告">3. 基准数字对照（⚠️ 口径警告）</h2>
+<p><strong>LIBERO-Pro 家族数字跨论文不可直接比大小</strong>：六篇（+Harness VLA）的任务子集、试验数、扰动 cell 定义各不相同。例如 Harness VLA 论文的 82.4%（8 cell × 100 trials）与 HarnessPAI 引用的 87.7%、RATs 的 43.8%（60 held-out 任务 × 10 init）、ASPIRE 自报的&quot;超 CaP-X 77pp&quot;分属不同协议。<strong>可靠的是各自论文内&quot;相对同协议基线的增益&quot;</strong>：</p>
+<div class="tbl"><table><thead><tr><th>论文内同协议对比</th><th>数字</th></tr></thead><tbody><tr><td>RAX vs VPP2（RoboDojo）</td><td>78.3 vs 24.9（+53.4）</td></tr><tr><td>RAX vs WB-WAM（HumanoidArena，3 vs 100 演示）</td><td>89.8 vs 81.9</td></tr><tr><td>ASPIRE vs CaP-X（LIBERO-Pro 扰动）</td><td>最高 +77pp；Opus 5.5 后 80 任务 99%</td></tr><tr><td>RATs vs CaP-Agent0（LIBERO-PRO）</td><td>43.8 vs 23.2（+20.6）；π0.5 仅 12.8</td></tr><tr><td>Zetta vs π0.5 直滚（LIBERO-Pro Goal）</td><td>90.8 vs 34.5</td></tr><tr><td>HarnessPAI vs π0.5 直滚（LIBERO-PRO）</td><td>96.5 vs ~30-40（Swap 39.7/Task 30.1）</td></tr><tr><td>HarnessPAI 纯代码消融（OpenETA vs 全家桶，LIBERO）</td><td>18.3 vs 98.1（+79.8，后端不同仅作参考）</td></tr><tr><td>CaP-RL 前后（Qwen-7B：Lift/Stack/Wipe）</td><td>25/4/30 → 80/44/93</td></tr></tbody></table></div>
+<p>一个反直觉横向事实：<strong>在扰动基准上，纯代码 agent（CaP-Agent0 22/18/26）全面压过直接 VLA（π0.5 17/1/38，OpenVLA 0）</strong>（CaP-X Table 2）——这是整个&quot;agentic/harness&quot;路线的存在理由。</p>
+<h2 id="4-成本与工程量">4. 成本与工程量</h2>
+<ul>
+<li><strong>token/钱</strong>：ASPIRE 最贵（10 任务 API 成本 $40–600；真机一条失败轨迹 334M tokens）；RATs 附录有 token 成本分析，推理开销被列为局限；RAX 用&quot;编译成程序&quot;对冲——空气炸锅任务 agent 逐步决策 72.3min/262k tokens → 编译后无人值守 <strong>18 秒</strong>（241×），且效率随探索持续下降（123min→4min）。</li>
+<li><strong>infra</strong>：RAX 并行化 4 agents×4 envs（4.9h 得 92.2 vs 单 agent 13.7h 得 63.3）；Zetta 专门造了 Z-Infra（VLM/动作专家分进程 + CUDA IPC + W8A8/W4A16/W4A8 分模块量化）来喂自进化的 rollout 吞吐。</li>
+<li><strong>人</strong>：RAX 真机每 episode 耗操作员时间；ASPIRE 需要隔离主机跑生成的代码（无安全沙箱）。</li>
+</ul>
+<h2 id="5-选型速记">5. 选型速记</h2>
+<ul>
+<li>有昂贵 VLA/WAM 想零微调提鲁棒 → <strong>Zetta</strong>（VLA 为主）或 <strong>HarnessPAI</strong>（混合）；想要&quot;外挂经验反哺训练数据&quot; → HarnessPAI。</li>
+<li>桌面/灵巧/长程操作、能接重控制器栈、追求 SOTA → <strong>RAX</strong>（探索预算换性能，scaling 曲线最完整）。</li>
+<li>想要可复用、可迁移、可审计的技能资产 → <strong>ASPIRE</strong>（失败签名→修复最系统）或 <strong>RATs</strong>（即插即用到别的 CaP agent）。</li>
+<li>要做研究/评测量化 → <strong>CaP-X</strong> 平台（其他五篇的公共地基）。</li>
+<li>任务还没来、想先攒能力 → <strong>RATs</strong> 的 play 范式。</li>
+</ul>
+<h2 id="6-参考">6. 参考</h2>
+<p>各篇 arXiv：2610.22496（RAX）· 2609.29166（HarnessPAI）· 2607.00272（ASPIRE）· 2603.22435（CaP-X）· 2606.19419（RATs）· 2608.16590（Zetta）。</p>
+<p>单篇细节见同目录 <code>rax.md / harnesspai.md / aspire.md / capx.md / rats.md / zetta.md</code>；原始材料与官方代码克隆在 <code>papers/&lt;name&gt;/</code>。</p></main></div><div class="pager"><a class="empty"></a><a class="next" href="overview-timeline.html"><span class="dir">下一篇 →</span><span class="ttl">2026 具身智能 Harness 全景：18 篇论文的时间线与分类学</span></a></div><section class="related"><h2>同分类其他笔记</h2><div class="cards"><article class="pcard"><h3><a href="overview-timeline.html">2026 具身智能 Harness 全景：18 篇论文的时间线与分类学</a></h3><p class="sum">2026 年 7 月到 10 月，&quot;冻结底座模型 + 外面一层可执行、可演化、可审计的 Harness&quot;从单点想法变成了一条完整的研究光谱：底座从 VLA 扩展到 VLM、世界模型、通用 LLM agent；外层从固定记忆进化到代码化 critic、技能契约、文件系统、甚至递归自我改进的 harness。本文是时间线总览与分类地图，18 篇逐篇深读见系列各篇。</p><div class="foot"><span class="chip cat">Harness / Agentic-VLA 综述</span><span class="chip">横向 · 同簇对比</span></div></article></div></section><footer class="site"><div class="in">
+<div><b>VLA Research Hub</b> · 44 篇论文精读 + 7 篇综述 · 更新 2026-11-02</div>
+<div><a href="../../index.html">首页</a> · <a href="../../survey/index.html">综述</a> · <a href="../../papers/index.html">论文</a></div>
+</div></footer>
+<button class="totop" aria-label="回到顶部">↑</button>
+<div id="overlay"><div class="searchbox">
+<div class="hd"><span style="color:var(--faint)">🔍</span><input id="searchinput" placeholder="搜索论文、方向、机构…" autocomplete="off"><span class="hint">ESC</span></div>
+<div id="results"></div></div></div>
+<script>window.__BASE="../../";</script>
+<script src="../../assets/app.js"></script>
+</body></html>
