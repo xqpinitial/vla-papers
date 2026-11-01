@@ -1,8 +1,10 @@
-# 🤖 Harness Papers — 2026 具身智能 Harness 范式精读库
+# 🤖 VLA Papers — 研究库（Harness 精读 + 六年演进 + 44 篇论文）
 
-> **冻结底座，进化外壳。** 25 篇论文/综述的六站深读（动机 → 架构 → 机制 → 基准 → 信息流 → 例子 → 局限），覆盖 VLA、世界模型与通用 Agent 的组织层（Harness）研究全景。
+> **两个站点，一套内容体系**：
+> - 📚 **VLA Research Hub（新版，推荐）**：<https://xqpinitial.github.io/vla-papers/vla-research/> — 7 篇综述 + 44 篇论文精读，按 VLA 七大技术专题分类，带全站搜索（⌘K）、分类筛选与明暗主题。
+> - 🔬 **Harness 精读库（本仓库根目录）**：25 篇 Harness / Agentic-VLA 论文的六站深读，原文见下方时间线。
 >
-> 🌐 **在线阅读**：`https://<YOUR_USERNAME>.github.io/vla-papers/`（启用 Pages 后）
+> 历史站点（VLA 六年演进 4 篇 + 22 篇论文）保留在 <https://xqpinitial.github.io/vla-papers/vla-6yr-survey/>。
 > 📮 同步发布于知乎专栏：[@initial_dream](https://www.zhihu.com/people/initial_dream)
 
 所有数字均对照论文 arXiv 原文（LaTeX 源）核实；每篇附论文原图与原始材料索引。
