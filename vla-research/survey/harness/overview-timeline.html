@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>2026 具身智能 Harness 全景：18 篇论文的时间线与分类学</title>
+<meta name="description" content="2026 年 7 月到 10 月，&quot;冻结底座模型 + 外面一层可执行、可演化、可审计的 Harness&quot;从单点想法变成了一条完整的研究光谱：底座从 VLA 扩展到 VLM、世界模型、通用 LLM agent；外层从固定记忆进化到代码化 critic、技能契约、文件系统、甚至递归自我改进的 harne">
+<meta property="og:title" content="2026 具身智能 Harness 全景：18 篇论文的时间线与分类学"><meta property="og:type" content="website">
+<link rel="stylesheet" href="../../assets/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%234f46e5'/%3E%3Ctext x='16' y='22' font-size='16' text-anchor='middle' fill='white' font-family='serif'%3EV%3C/text%3E%3C/svg%3E">
+</head><body>
+<div id="progress"></div><nav class="top">
+<a class="brand" href="../../index.html"><span class="dot"></span>VLA Research Hub<small>VLA 研究库</small></a>
+<div class="links">
+<a href="../../index.html">首页</a>
+<a href="../../survey/index.html" class="on">综述</a>
+<a href="../../papers/index.html">论文</a>
+<a href="../../papers/07-harness/index.html">Harness</a>
+</div>
+<span class="spacer"></span>
+<button class="searchbtn" data-search aria-label="搜索"><span>搜索</span><kbd>⌘K</kbd></button>
+<button class="iconbtn" id="themebtn" aria-label="切换明暗主题"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+<button class="iconbtn" id="menubtn" aria-label="菜单"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+</nav><header class="dochead"><div class="wrap"><div class="crumb"><a href="../../index.html">首页</a> / <a href="../../survey/index.html">综述</a> / <a href="../../survey/harness/index.html">Harness / Agentic-VLA 综述</a></div><h1>2026 具身智能 Harness 全景：18 篇论文的时间线与分类学</h1><p class="lede">2026 年 7 月到 10 月，&quot;冻结底座模型 + 外面一层可执行、可演化、可审计的 Harness&quot;从单点想法变成了一条完整的研究光谱：底座从 VLA 扩展到 VLM、世界模型、通用 LLM agent；外层从固定记忆进化到代码化 critic、技能契约、文件系统、甚至递归自我改进的 harness。本文是时间线总览与分类地图，18 篇逐篇深读见系列各篇。</p><div class="chips"><a class="chip cat" href="../../survey/harness/index.html">Harness / Agentic-VLA 综述</a><span class="chip">横向 · 同簇对比</span></div><div class="infobox"><div class="irow"><span class="ik">所属综述</span><span class="iv"><a href="../../survey/harness/index.html">Harness / Agentic-VLA 综述</a></span></div><div class="irow"><span class="ik">视角</span><span class="iv">横向 · 同簇对比</span></div><div class="irow"><span class="ik">本组篇数</span><span class="iv">2 篇</span></div><div class="irow"><span class="ik">更新</span><span class="iv">2026-11-02</span></div></div></div></header><div class="docgrid"><aside class="toc"><p class="t">本文目录</p><ul><li><a class="h2" href="#〇-这条时间线在讲什么">〇、这条时间线在讲什么</a></li><li><a class="h2" href="#一-时间线总表">一、时间线总表</a></li><li><a class="h2" href="#二-六条光谱轴-18-篇的分类地图">二、六条光谱轴（18 篇的分类地图）</a></li><li><a class="h2" href="#三-三个月内的范式迁移">三、三个月内的范式迁移</a></li><li><a class="h2" href="#四-给从业者的三句话">四、给从业者的三句话</a></li><li><a class="h2" href="#五-系列导航">五、系列导航</a></li></ul></aside><main class="prose"><h2 id="〇-这条时间线在讲什么">〇、这条时间线在讲什么</h2>
+<p>2026 年 7 月到 10 月，&quot;冻结底座模型 + 外面一层可执行、可演化、可审计的 Harness&quot;从单点想法变成了一条完整的研究光谱：底座从 VLA 扩展到 VLM、世界模型、通用 LLM agent；外层从固定记忆进化到代码化 critic、技能契约、文件系统、甚至递归自我改进的 harness。本文是时间线总览与分类地图，18 篇逐篇深读见系列各篇。</p>
+<h2 id="一-时间线总表">一、时间线总表</h2>
+<div class="tbl"><table><thead><tr><th>日期</th><th>论文</th><th>arXiv</th><th>一句话</th><th>类别</th></tr></thead><tbody><tr><td>07-03</td><td>DreamSteer</td><td>2607.02865</td><td>冻结 VLA + 潜空间世界模型预演排序，真机 OOD 23.8%→66.3%</td><td>WM 预演 steering</td></tr><tr><td>07-06</td><td>GaP</td><td>2607.05369</td><td>策略=有向计算图（MORSL 51 技能），Isaac 排练自学习，VA 任务 0.93–0.99</td><td>图编排/工业</td></tr><tr><td>07-09</td><td><strong>Harness VLA</strong> ★</td><td>2607.08448</td><td>冻结 VLA 当可重试原语 + 双层记忆，词汇锁死学 operating range</td><td>冻结 VLA 编排</td></tr><tr><td>07-15</td><td>HarnessBank</td><td>2607.13683</td><td>LLM-agent harness 自进化：语义基因库 + 四道门控，+5.1~15.4%</td><td>自进化（通用 agent）</td></tr><tr><td>07-20</td><td>RoboHarness</td><td>2607.18060</td><td>VLA/WAM/RL/TAMP 异构策略编排 + Memory Bridge 交接</td><td>异构编排</td></tr><tr><td>07-27</td><td>HumanCLAW</td><td>2607.27180</td><td>VLM 决策 × DiT 运动解耦评测，最好 VLM 仅 16.8%</td><td>评测（具身自我意识）</td></tr><tr><td>08-16</td><td><strong>Zetta ζ</strong> ★</td><td>2608.16590</td><td>代码化 critic 动作频率监控 π₀.₅，三时间尺度自进化，Goal 34.5→90.8</td><td>自进化（VLA 为主）</td></tr><tr><td>08-17</td><td>HarnessEval-W</td><td>2608.16859</td><td>世界模型评测 agentic 化：证据树，18 模型×330 例，ρ=0.93</td><td>评测（世界模型）</td></tr><tr><td>08-29</td><td>EMERGE-Policy</td><td>2608.29896</td><td>图结构多 agent：Main+角色 Sub Agents + 三类技能，系统级涌现</td><td>图编排/多 agent</td></tr><tr><td>09-01</td><td>EmbodiedSkills</td><td>2609.01281</td><td>skill 契约 + guarded runtime，验证消融 86.2%→48.2%</td><td>门控运行时</td></tr><tr><td>09-22</td><td>RoboDawn</td><td>2609.22966</td><td>冻结 VLM + 离散 GIP 命令 + ICL，C2R 73.6% 超 π₀.₅ 46%</td><td>智能迁移/ICL</td></tr><tr><td>09-23</td><td>EmbodiedSWE</td><td>2609.27308</td><td>编程 agent 解 28 长程灵巧任务 → 数据引擎 → VLA 真机</td><td>编码 agent 当教师</td></tr><tr><td>09-24</td><td><strong>HarnessPAI</strong> ★</td><td>2609.29166</td><td>代码接口组织冻结 VLA/WAM 原语，收敛后反哺训练数据</td><td>混合原语+数据反哺</td></tr><tr><td>09-27</td><td>RoboHarn-Evo</td><td>2609.37583</td><td>双层物理知识（任务+动作）自演化，知识纠错 83.3%</td><td>知识演化</td></tr><tr><td>09-28</td><td>RoboFoundry</td><td>2609.32862</td><td>System-as-Policy：文件系统两进化面，EmbodiedBench +27.8%</td><td>系统文件自演化</td></tr><tr><td>09-29</td><td>AdaHVLA</td><td>2609.29204</td><td>依据执行证据修订 harness，修订图管理多版本，22.5%→57.5%</td><td>自适应修订</td></tr><tr><td>10-09</td><td>Harness²</td><td>2610.14224</td><td>谷歌递归 harnessing：Propose-Probe-Compose 无验证器自改，+11.5 分</td><td>递归 RSI（通用 agent）</td></tr><tr><td>10-13</td><td>Orchestra</td><td>2610.18352</td><td>规划/执行管理与动作生成分离 + 独立进度评估器，ASL=HarnessVLA 2.46×</td><td>分离架构/长程记账</td></tr></tbody></table></div>
+<p>（★ = 本系列此前已深读的三篇锚点；HarnessBank 与 Harness² 是通用 LLM-agent 侧，其余 13 篇为具身侧。）</p>
+<h2 id="二-六条光谱轴-18-篇的分类地图">二、六条光谱轴（18 篇的分类地图）</h2>
+<ol>
+<li><strong>底座</strong>：VLA（Harness VLA/Zetta/EmbodiedSkills/AdaHVLA/Orchestra/DreamSteer/RoboDawn 的执行端）· VLM（HumanCLAW/RoboDawn 决策端/EMERGE）· coding agent（GaP/EmbodiedSWE/RAX 系）· 通用 LLM（HarnessBank/Harness²）。</li>
+<li><strong>外层介质</strong>：记忆/知识（Harness VLA/RoboHarn-Evo/RoboFoundry 上下文面）· 代码与技能（CaP 系/GaP 图/EmbodiedSkills 契约/RoboFoundry 技能面）· 想象力（DreamSteer/EMERGE 的 Imagination 技能）· 评测器（HumanCLAW/HarnessEval-W/Orchestra 进度评估器）。</li>
+<li><strong>学习时机</strong>：不学（EmbodiedSkills 固定 runtime/HumanCLAW/Orchestra）→ 探索期学（RAX/ASPIRE/RATs）→ 跨 rollout 学（Zetta/HarnessPAI/AdaHVLA/RoboHarn-Evo/RoboFoundry/HarnessBank/Harness²）→ 反哺权重（HarnessPAI/EmbodiedSWE/CaP-RL）。</li>
+<li><strong>动作来源</strong>：冻结 VLA 出动作（Zetta/Harness VLA/EmbodiedSkills/Orchestra）· 代码出动作（GaP/EmbodiedSWE 解题期）· 混合（HarnessPAI/EMERGE/RoboHarness）。</li>
+<li><strong>门控哲学</strong>：无人值守成功（RAX）· verifier 复现（ASPIRE）· 统计门控（HarnessBank 四道门/Zetta held-out 回归）· 契约前置检查（EmbodiedSkills Preflight）· 知识判据（RoboHarn-Evo 双判据）· 行为对比（Harness²，无真值时的替代）。</li>
+<li><strong>验证vs测量</strong>：提升能力（多数）vs 测量能力（HumanCLAW/HarnessEval-W）——后者是前者的&quot;质检科&quot;。</li>
+</ol>
+<h2 id="三-三个月内的范式迁移">三、三个月内的范式迁移</h2>
+<ul>
+<li><strong>7 月</strong>：立场宣言月——Harness VLA 说&quot;冻结 + 锁死词汇&quot;，DreamSteer 说&quot;冻结 + 想象&quot;，GaP 说&quot;策略即图&quot;，HarnessBank 说&quot;harness 本身可进化&quot;。</li>
+<li><strong>8 月</strong>：评测与编排月——HumanCLAW/HarnessEval-W 建立质检科，EMERGE/RoboHarness 把多组件编排做深。</li>
+<li><strong>9 月</strong>：闭环补全月——skill 契约（EmbodiedSkills）、智能迁移（RoboDawn）、数据反哺（EmbodiedSWE/HarnessPAI）、知识演化（RoboHarn-Evo）、系统演化（RoboFoundry）、修订图（AdaHVLA）。</li>
+<li><strong>10 月</strong>：递归与分离月——Harness² 改&quot;改进者本身&quot;，Orchestra 把规划/执行管理/动作生成三分。</li>
+</ul>
+<h2 id="四-给从业者的三句话">四、给从业者的三句话</h2>
+<ol>
+<li><strong>能力上限看底座，可靠性上限看 harness</strong>——所有 18 篇的共同前提是&quot;底座冻结也能涨点&quot;，涨幅 20~40pp 是常态而非奇迹；</li>
+<li><strong>门控/验证是自进化的生死线</strong>——没有独立于&quot;提出者&quot;的验证信号（verifier/统计门/行为对比/判据），harness 自进化必然坍缩或过拟合；</li>
+<li><strong>记忆与完成判据是下一个主战场</strong>——EmbodiedSkills 的 RMBench 12.5%、Orchestra 的进度评估器、RoboHarn-Evo 的完成判据都指向同一件事：长程失败大多不是&quot;不会做&quot;，而是&quot;不知道做完没&quot;。</li>
+</ol>
+<h2 id="五-系列导航">五、系列导航</h2>
+<p>总览（本篇）→ 15 篇新深读（DreamSteer / GaP / HarnessBank / RoboHarness / HumanCLAW / HarnessEval-W / EMERGE-Policy / EmbodiedSkills / RoboDawn / EmbodiedSWE / RoboHarn-Evo / RoboFoundry / AdaHVLA / Harness² / Orchestra）→ 此前七篇（CaP-X / RATs / ASPIRE / RAX / HarnessPAI / Zetta / Harness VLA 总览）。</p></main></div><div class="pager"><a class="prev" href="comparison.html"><span class="dir">← 上一篇</span><span class="ttl">六篇详细对比：RAX · HarnessPAI · ASPIRE · CaP-X · RATs · Zetta</span></a><a class="empty"></a></div><section class="related"><h2>同分类其他笔记</h2><div class="cards"><article class="pcard"><h3><a href="comparison.html">六篇详细对比：RAX · HarnessPAI · ASPIRE · CaP-X · RATs · Zetta</a></h3><p class="sum">与 2026-07 的 Harness VLA (2607.08448)（清华，冻结 VLA 当可重试原语、词汇锁死、只学 operating range）相比：本簇六篇全部允许外层代码/技能持续增长（CaP-X 语录：&quot;scaling such systems often still means expanding the primitive or skill library&quot;），而 Harness VLA 特意反着来——这构成谱系上&quot;词汇膨胀 vs 词汇锁死&quot;的对照轴。</p><div class="foot"><span class="chip cat">Harness / Agentic-VLA 综述</span><span class="chip">横向 · 同簇对比</span></div></article></div></section><footer class="site"><div class="in">
+<div><b>VLA Research Hub</b> · 44 篇论文精读 + 7 篇综述 · 更新 2026-11-02</div>
+<div><a href="../../index.html">首页</a> · <a href="../../survey/index.html">综述</a> · <a href="../../papers/index.html">论文</a></div>
+</div></footer>
+<button class="totop" aria-label="回到顶部">↑</button>
+<div id="overlay"><div class="searchbox">
+<div class="hd"><span style="color:var(--faint)">🔍</span><input id="searchinput" placeholder="搜索论文、方向、机构…" autocomplete="off"><span class="hint">ESC</span></div>
+<div id="results"></div></div></div>
+<script>window.__BASE="../../";</script>
+<script src="../../assets/app.js"></script>
+</body></html>
