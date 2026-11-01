@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="430" viewBox="0 0 900 430">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+    </marker>
+  </defs>
+  <rect width="900" height="430" fill="#ffffff"/>
+  <text x="28" y="34" font-family="Helvetica, Arial, sans-serif" font-size="21" font-weight="bold" fill="#0f172a">3DVLA：把 3D 实例与遮挡补全注入 VLA</text>
+
+  <!-- input -->
+  <rect x="24" y="82" width="192" height="84" rx="8" fill="#eef4ff" stroke="#3b6fb6"/>
+  <text x="120" y="108" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">多视角 RGB / 深度</text>
+  <text x="120" y="130" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" fill="#1f2937">相机内参与外参</text>
+  <text x="120" y="151" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">统一 3D 坐标的前置条件</text>
+
+  <!-- fusion -->
+  <line x1="216" y1="124" x2="252" y2="124" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="254" y="82" width="200" height="84" rx="8" fill="#e8f7ee" stroke="#2f855a"/>
+  <text x="354" y="108" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">Multi-View</text>
+  <text x="354" y="129" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">Spatial Fusion</text>
+  <text x="354" y="151" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">Continuous 3D RoPE</text>
+
+  <line x1="454" y1="110" x2="492" y2="94" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="454" y1="138" x2="492" y2="198" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- instance -->
+  <rect x="494" y="56" width="192" height="76" rx="8" fill="#fff7e6" stroke="#b7791f"/>
+  <text x="590" y="80" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">3D Instance Module</text>
+  <text x="590" y="102" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">100 probes → ≤16 tokens</text>
+  <text x="590" y="122" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">global 3D matching</text>
+
+  <!-- predictor -->
+  <rect x="494" y="160" width="192" height="76" rx="8" fill="#fff7e6" stroke="#b7791f"/>
+  <text x="590" y="184" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">3D 自监督预测器</text>
+  <text x="590" y="206" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">50% asymmetric masking</text>
+  <text x="590" y="226" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">6 实例 × 5 个补全查询</text>
+
+  <line x1="686" y1="94" x2="714" y2="140" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="686" y1="198" x2="714" y2="168" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- aggregation -->
+  <rect x="716" y="104" width="160" height="100" rx="8" fill="#e8f7ee" stroke="#2f855a"/>
+  <text x="796" y="128" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">Geometry</text>
+  <text x="796" y="149" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">Aggregation</text>
+  <text x="796" y="171" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">夹爪相对 PE</text>
+  <text x="796" y="191" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">uncertainty routing</text>
+
+  <line x1="796" y1="204" x2="796" y2="248" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- output -->
+  <rect x="716" y="250" width="160" height="76" rx="8" fill="#eef4ff" stroke="#3b6fb6"/>
+  <text x="796" y="274" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">冻结 VLM +</text>
+  <text x="796" y="295" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">action expert</text>
+  <text x="796" y="315" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">→ 机器人动作</text>
+
+  <text x="24" y="362" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#475569">实例预算：100 个 state probe 经 matching 与不确定性过滤后，每场景最多 16 个高置信 token。</text>
+  <text x="24" y="384" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#475569">补全预算：最多 6 个遮挡实例，每实例 5 个 completion query；训练用 50% 遮挡掩码。</text>
+  <text x="24" y="406" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#475569">图为自绘信息流，依据本地 3DVLA 导读；不是论文原图。</text>
+</svg>
