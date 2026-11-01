@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>轻量化与部署工程 · 论文</title>
+<meta name="description" content="单卡可训的轻量模型，到低延迟执行服务、可审计真机链路与开源工程栈。">
+<meta property="og:title" content="轻量化与部署工程 · 论文"><meta property="og:type" content="website">
+<link rel="stylesheet" href="../../assets/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%234f46e5'/%3E%3Ctext x='16' y='22' font-size='16' text-anchor='middle' fill='white' font-family='serif'%3EV%3C/text%3E%3C/svg%3E">
+</head><body>
+<div id="progress"></div><nav class="top">
+<a class="brand" href="../../index.html"><span class="dot"></span>VLA Research Hub<small>VLA 研究库</small></a>
+<div class="links">
+<a href="../../index.html">首页</a>
+<a href="../../survey/index.html">综述</a>
+<a href="../../papers/index.html" class="on">论文</a>
+<a href="../../papers/07-harness/index.html">Harness</a>
+</div>
+<span class="spacer"></span>
+<button class="searchbtn" data-search aria-label="搜索"><span>搜索</span><kbd>⌘K</kbd></button>
+<button class="iconbtn" id="themebtn" aria-label="切换明暗主题"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+<button class="iconbtn" id="menubtn" aria-label="菜单"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+</nav><header class="pagehead"><div class="wrap">
+<div class="crumb"><a href="../../index.html">首页</a> / <a href="../../papers/index.html">论文</a> / 轻量化与部署工程</div>
+<h1>轻量化与部署工程</h1><p class="lead">单卡可训的轻量模型，到低延迟执行服务、可审计真机链路与开源工程栈。</p><p class="lead" style="margin-top:10px">配套综述：<a href="../../survey/6yr/01-jishu-zhuanti.html">技术专题 · §5 轻量化 + 真机落地</a></p>
+<div class="meta-chips"><span class="chip cat">§5 轻量化 + 真机落地</span><span class="chip">4 篇</span></div>
+</div></header><main class="wrap"><section class="cards"><article class="pcard" data-cat="05-deploy" data-name="DM0.5 技术精读：把 VLA 在线执行链路逐段压成低延迟服务" data-year="0" data-idx="17" data-hay="dm0.5 技术精读：把 vla 在线执行链路逐段压成低延迟服务 dm0.5 重新分配的是“模型语义”和“执行形状”的边界——模型结构保持 gemma3 vlm + action expert + flow matching，但把在线执行拆成 prefix 一次编码、suffix 反复采样，再用 tensorrt、flexattention、fp8、triton fused kernels 和 cuda graph 压缩固定形状的计算与调度。【章节】 "><h3><a href="dm0-5.html">DM0.5 技术精读：把 VLA 在线执行链路逐段压成低延迟服务</a></h3><p class="sum">DM0.5 重新分配的是“模型语义”和“执行形状”的边界——模型结构保持 Gemma3 VLM + Action Expert + Flow Matching，但把在线执行拆成 prefix 一次编码、suffix 反复采样，再用 TensorRT、FlexAttention、FP8、Triton fused kernels 和 CUDA Graph 压缩固定形状的计算与调度。【章节】</p><div class="foot"><span class="chip cat">轻量化部署</span></div></article><article class="pcard" data-cat="05-deploy" data-name="EVA-Client 精读：把“训练完”到“真机能跑、能审计”的工程链路固定下来" data-year="0" data-idx="18" data-hay="eva-client 精读：把“训练完”到“真机能跑、能审计”的工程链路固定下来 eva-client 重新分配的是“模型推理”和“机器人执行”之间的边界——观测格式、动作块调度、动作空间转换和评测记录从训练脚本里拆出来，做成一个可以替换策略后端的客户端。【章节】 "><h3><a href="eva-client.html">EVA-Client 精读：把“训练完”到“真机能跑、能审计”的工程链路固定下来</a></h3><p class="sum">EVA-Client 重新分配的是“模型推理”和“机器人执行”之间的边界——观测格式、动作块调度、动作空间转换和评测记录从训练脚本里拆出来，做成一个可以替换策略后端的客户端。【章节】</p><div class="foot"><span class="chip cat">轻量化部署</span></div></article><article class="pcard" data-cat="05-deploy" data-name="SmolVLA 论文精读：在单张 3090 上把 LIBERO 微调跑到 0.71" data-year="0" data-idx="19" data-hay="smolvla 论文精读：在单张 3090 上把 libero 微调跑到 0.71 章节回答的不是“smolvla 为什么这样设计”，而是“怎样把 smolvla_base 在 libero 上单卡跑通并复现一个可核对的成功率”。它重新分配的是工程成本：把不确定性压到环境 pin、动作约定与评测脚本上。 "><h3><a href="smolvla.html">SmolVLA 论文精读：在单张 3090 上把 LIBERO 微调跑到 0.71</a></h3><p class="sum">章节回答的不是“SmolVLA 为什么这样设计”，而是“怎样把 smolvla_base 在 LIBERO 上单卡跑通并复现一个可核对的成功率”。它重新分配的是工程成本：把不确定性压到环境 pin、动作约定与评测脚本上。</p><div class="foot"><span class="chip cat">轻量化部署</span></div></article><article class="pcard" data-cat="05-deploy" data-name="WALL-X 精读：WALL 系列的开源工程栈，不是一篇论文" data-year="0" data-idx="20" data-hay="wall-x 精读：wall 系列的开源工程栈，不是一篇论文 wall-x 重新分配的是“复现工作的起点”——不是从论文方法读起，而是从 checkpoint、lerobot 数据、yaml 配置、训练脚本和 policy server 这条工程链路跑起。【章节】 "><h3><a href="wall-x.html">WALL-X 精读：WALL 系列的开源工程栈，不是一篇论文</a></h3><p class="sum">WALL-X 重新分配的是“复现工作的起点”——不是从论文方法读起，而是从 checkpoint、LeRobot 数据、YAML 配置、训练脚本和 policy server 这条工程链路跑起。【章节】</p><div class="foot"><span class="chip cat">轻量化部署</span></div></article></section></main><footer class="site"><div class="in">
+<div><b>VLA Research Hub</b> · 44 篇论文精读 + 7 篇综述 · 更新 2026-11-02</div>
+<div><a href="../../index.html">首页</a> · <a href="../../survey/index.html">综述</a> · <a href="../../papers/index.html">论文</a></div>
+</div></footer>
+<button class="totop" aria-label="回到顶部">↑</button>
+<div id="overlay"><div class="searchbox">
+<div class="hd"><span style="color:var(--faint)">🔍</span><input id="searchinput" placeholder="搜索论文、方向、机构…" autocomplete="off"><span class="hint">ESC</span></div>
+<div id="results"></div></div></div>
+<script>window.__BASE="../../";</script>
+<script src="../../assets/app.js"></script>
+</body></html>
