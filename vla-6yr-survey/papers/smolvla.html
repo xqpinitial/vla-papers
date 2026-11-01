@@ -1,0 +1,107 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SmolVLA 论文精读：在单张 3090 上把 LIBERO 微调跑到 0.71</title><link rel="stylesheet" href="assets/style.css"></head>
+<body><nav><a class="brand" href="index.html">📚 VLA 论文精读</a><span class="nav-sub">22 篇 · 2020–2026</span><span class="spacer"></span><a class="back" href="index.html">← 总览</a></nav>
+<header class="paper-head"><div class="chips"><a class="chip cat" href="index.html">论文精读</a><span class="chip">更新 2026-11-01</span></div>
+<h1>SmolVLA 论文精读：在单张 3090 上把 LIBERO 微调跑到 0.71</h1>
+<div class="infobox"><div class="irow"><span class="ik">📄 篇目</span><span class="iv"><span class="au">smolvla</span></span></div><div class="irow"><span class="ik">🏷️ 系列</span><span class="iv">VLA 论文精读（22 篇）</span></div><div class="irow"><span class="ik">🗓️ 更新</span><span class="iv">2026-11-01</span></div><div class="irow"><span class="ik">🔗 索引</span><span class="iv"><a href="index.html">返回 22 篇总览</a></span></div></div></header>
+<main class="paper-body"><p>SmolVLA 的本地章节不是论文解读，而是一份单卡复现日志：用 <code>lerobot/smolvla_base</code>、LeRobot commit <code>d602e816</code>、LIBERO 与一份 500 episode 的评测，记录总成功率 0.71（356/500）；训练侧是 RTX 3090、batch 64、200k steps、约 10 小时，并给出“170 steps 约 5 分钟”的续训片段。章节没有给论文版本、参数量、backbone、action chunk 或消融，因此本文把“结构”写成“接口契约”，把“实验”写成“评测协议 + 单次日志”。</p>
+<blockquote>来源约定：本文事实只取自本仓库 <a href="../../01SmolVLA-LIBERO/01SmolVLA-libero.md">SmolVLA 导读</a>（下称“本章程”），没有用模型记忆补写论文细节。<br><br>标记约定：<strong>章节记录</strong>＝章节给出的命令、日志与截图；<strong>章节代码</strong>＝章节给出的评估脚本；<strong>章节未给</strong>＝本地章节没有该信息。<br><br>版本：论文题目、arXiv 编号与论文版本章节未给；代码 commit <code>d602e816</code>；评估日志 2025-08-07；续训记录 2026-01-24；查阅日期 2026-11-01。</blockquote>
+<h3>1. 论文与官方资源</h3>
+<table><tr><th>资源</th><th>入口</th><th>阅读用途</th></tr><tr><td>论文</td><td>章节未给</td><td>本地章节没有给论文题目、arXiv 或版本日期</td></tr><tr><td>源码</td><td><a href="https://github.com/huggingface/lerobot">huggingface/lerobot</a></td><td>章节命令；必须 checkout <code>d602e816</code></td></tr><tr><td>权重</td><td><a href="https://huggingface.co/lerobot/smolvla_base">lerobot/smolvla_base</a></td><td>章节下载入口</td></tr><tr><td>项目页</td><td>章节未给</td><td>本地章节没有给项目页</td></tr><tr><td>数据集</td><td><a href="https://huggingface.co/datasets/nikriz/aopoli-lv-libero_combined_no_noops_lerobot_v21">nikriz/aopoli-lv-libero_combined_no_noops_lerobot_v21</a></td><td>章节命令；建议 git lfs clone</td></tr></table>
+<p>评测环境是 <a href="https://github.com/Lifelong-Robot-Learning/LIBERO">Lifelong-Robot-Learning/LIBERO</a>；评估脚本来自 <a href="https://github.com/huggingface/lerobot/issues/1316">lerobot issue #1316</a> 中 @zlw21gxy 的版本，章节做了日志改动。</p>
+<p>论文题目：章节未给；arXiv：章节未给；版本：章节未给；代码 commit：<code>d602e816</code>；查阅日期 2026-11-01。</p>
+<p><strong>版本提示：</strong> 章节同时出现两个 conda 环境名（创建 <code>smolvla</code>、激活 <code>smolvla_new</code>）；评估日志日期（2025-08-07）与续训记录（2026-01-24）不同。0.71 只对应 2025-08-07 的那次日志，不要与后续 checkpoint 的结果混在一张表里。</p>
+<h3>2. 核心问题：把复现成本压到环境与动作约定</h3>
+<p>一句话：章节回答的不是“SmolVLA 为什么这样设计”，而是“怎样把 <code>smolvla_base</code> 在 LIBERO 上单卡跑通并复现一个可核对的成功率”。它重新分配的是工程成本：把不确定性压到环境 pin、动作约定与评测脚本上。</p>
+<figure style="text-align:center;margin:1.4em 0"><img src="assets/smolvla-architecture.svg" alt="SmolVLA 在 LIBERO 上的观测、动作与评测闭环" style="max-width:100%;border:1px solid #e5e7eb;border-radius:8px"><figcaption class="figcap">SmolVLA 在 LIBERO 上的观测、动作与评测闭环</figcaption></figure>
+<p>图 1：SmolVLA × LIBERO 的观测、动作与评测闭环。自绘，依据本地导读；不是论文原图。</p>
+<p>与图对应的信息流：LIBERO 观测（agentview + wrist 256×256、拼接 state、task 文本）→ <code>SmolVLAPolicy.select_action</code> → 7 维动作 → 夹爪 <code>[0,1] → [-1,+1]</code> 与符号翻转 → <code>env.step</code> → 成功判定/日志；每 episode 先 <code>policy.reset()</code>，闭环继续。</p>
+<p>对比主流路径：从零训练一个 VLA → 加载 <code>smolvla_base</code> 的 VLM 权重再微调（<code>--policy.load_vlm_weights True</code>）。章节没有给对照实验，这句话只描述命令，不是消融结论。</p>
+<ul><li>节省了什么：章节记录的是单张 RTX 3090、batch 64、200k steps、约 10 小时的训练；不需要自己预训练 VLM，直接加载 <code>smolvla_base</code> 的权重。</li><li>保留了什么：<code>smolvla_base</code> 的 VLM 权重（<code>load_vlm_weights=True</code>）与 LIBERO 的 7 维动作接口。</li><li>代价是什么：必须固定 LeRobot commit、给 LIBERO 打 <code>torch.load</code> 补丁、对齐夹爪符号与图像翻转；这些都不在模型里。</li><li>读者该学什么：复现的第一个瓶颈通常不是模型，而是环境与动作接口。</li></ul>
+<p>来源：本章程“环境配置”“训练”“评估脚本”三节。</p>
+<h3>3. 模型结构与张量流</h3>
+<p>章节没有展开模型内部；能确认的是 <code>SmolVLAPolicy</code> 这个入口与它接受的 observation 字典。以下“结构”全部是接口契约，不是论文架构。</p>
+<h4>3.1 观测接口</h4>
+<table><tr><th>键</th><th>内容</th><th>预处理</th><th>来源</th></tr><tr><td><code>observation.images.image</code></td><td>agentview RGB</td><td><code>[::-1, ::-1]</code> 旋转 180°、<code>/255</code>、CHW、加 batch</td><td>章节代码</td></tr><tr><td><code>observation.images.wrist_image</code></td><td>wrist RGB</td><td>同上</td><td>章节代码</td></tr><tr><td><code>observation.state</code></td><td><code>eef_pos</code> + <code>quat2axisangle(eef_quat)</code> + <code>gripper_qpos</code></td><td><code>float32</code>、加 batch</td><td>章节代码</td></tr><tr><td><code>task</code></td><td>任务语言</td><td>字符串，来自 <code>task.language</code></td><td>章节代码</td></tr></table>
+<p>章节没有给 <code>observation.state</code> 拼接后的维数；读代码时用 <code>state.shape</code> 确认，不要按常见定义猜。图像分辨率由 <code>LIBERO_ENV_RESOLUTION = 256</code> 决定，章节注释说这是“训练数据使用的渲染分辨率”。</p>
+<h4>3.2 动作接口</h4>
+<table><tr><th>项</th><th>章节值</th><th>说明</th></tr><tr><td>动作维度</td><td>7</td><td><code>LIBERO_DUMMY_ACTION = [0.0] * 6 + [-1.0]</code></td></tr><tr><td>夹爪原始范围</td><td><code>[0, 1]</code></td><td>数据集 wrapper 把夹爪标准化到 <code>[0,1]</code></td></tr><tr><td>夹爪目标范围</td><td><code>[-1, +1]</code></td><td>环境侧约定</td></tr><tr><td>二值化</td><td>可选 <code>sign</code></td><td>评估脚本用 <code>binarize=False</code></td></tr><tr><td>符号翻转</td><td>必须</td><td>章节注释：RLDS 对齐后 <code>0=close, 1=open</code>；环境里 <code>-1=open, +1=close</code></td></tr><tr><td>执行顺序</td><td>先 normalize，再 invert</td><td>章节代码顺序</td></tr></table>
+<p>夹爪归一化公式（章节代码注释给出）：</p>
+<pre>y = 2 × (x - orig_low) / (orig_high - orig_low) - 1</pre>
+<p>其中 <code>orig_low = 0.0</code>、<code>orig_high = 1.0</code>。评估脚本先 <code>normalize_gripper_action(action, binarize=False)</code>，再 <code>invert_gripper_action(action)</code>；顺序反了会把开合语义弄反。</p>
+<h4>3.3 策略生命周期与预处理</h4>
+<p><code>SmolVLAPolicy.from_pretrained(policy_path)</code> → <code>.to("cuda")</code> → <code>.eval()</code>；每个 episode 先 <code>policy.reset()</code>，再在 <code>torch.inference_mode()</code> 里调 <code>select_action(observation)</code>。章节代码没有展开 <code>select_action</code> 内部的动作队列或 chunk 逻辑；读代码时从 <code>lerobot/policies/smolvla/modeling_smolvla.py</code> 入手。</p>
+<p>预处理里最容易漏的是图像旋转 180°：章节用 <code>IMPORTANT: rotate 180 degrees to match train preprocessing</code> 标注。漏掉它，策略看到的画面与训练分布不一致，成功率会无声下降。</p>
+<p>来源：本章程评估脚本与 <code>_get_libero_env</code>。</p>
+<h3>4. 实验结果</h3>
+<h4>4.1 LIBERO 评测协议</h4>
+<table><tr><th>suite</th><th><code>max_steps</code></th><th>章节注释：最长训练 demo</th></tr><tr><td><code>libero_spatial</code></td><td>220</td><td>193</td></tr><tr><td><code>libero_object</code></td><td>280</td><td>254</td></tr><tr><td><code>libero_goal</code></td><td>300</td><td>270</td></tr><tr><td><code>libero_10</code></td><td>520</td><td>505</td></tr><tr><td><code>libero_90</code></td><td>400</td><td>373</td></tr><tr><td>自定义 fallback</td><td>520</td><td>章节未给</td></tr></table>
+<p>协议：<code>num_steps_wait = 10</code>（等物体稳定）；suite 由 <code>--task_suite_name</code> 选择；<code>num_trials_per_task</code> 在完整脚本默认 1、task1 脚本默认 10；seed 默认 7；每 episode 调 <code>policy.reset()</code>；成功由 <code>env.step</code> 返回的 <code>done</code> 判定；视频按 30 fps 保存。</p>
+<h4>4.2 章节能核对的唯一结果</h4>
+<table><tr><th>指标</th><th>值</th><th>口径</th></tr><tr><td>总成功率</td><td>0.71</td><td>2025-08-07 日志</td></tr><tr><td>episodes</td><td>500</td><td>同一日志</td></tr><tr><td>successes</td><td>356</td><td>同一日志</td></tr><tr><td>suite</td><td>章节未给</td><td>脚本默认 <code>libero_spatial</code>，日志未确认</td></tr><tr><td>每任务 trials</td><td>章节未给</td><td>脚本默认值不等于日志口径</td></tr><tr><td>checkpoint</td><td>章节未给</td><td>脚本列出 130k / 140k / 200k / 200170 / 200340</td></tr><tr><td>seed</td><td>章节代码默认 7</td><td>日志未确认</td></tr></table>
+<p>读法：0.71 是章节作者在本地环境的一次评测日志，不是论文报告的多 seed 均值；没有 suite、trials、checkpoint 与标准差，不能与其他 LIBERO 数字横比。500 episodes 与“任务数 × trials”的对应关系章节没有给，不要反推。</p>
+<h4>4.3 训练观察</h4>
+<p>章节说其他人报告 60k 步以上“还不错”，作者提前停止以测试评估脚本；续训从 200000 → 200170 → 200340，170 steps 约 5 分钟。这些是训练过程记录，不是收敛曲线；章节没有给 loss 或分 checkpoint 的成功率。</p>
+<p>来源：本章程“训练”“结果”两节。</p>
+<h3>5. 消融实验</h3>
+<p>章节没有消融表。它给的是可对照的开关，但没有对照结果：</p>
+<ul><li><code>--policy.load_vlm_weights True/False</code>：章节只用 <code>True</code>，没有 <code>False</code> 的结果。</li><li>checkpoint 130k / 140k / 200k / 200170 / 200340：章节只给评测命令，没有逐 checkpoint 成功率。</li><li>1 trial vs 10 trials：两个脚本默认值不同，没有同 checkpoint 的对照。</li><li>suite 间：只给一个总成功率，没有分 suite 数字。</li></ul>
+<p>读者该不该复用：<code>load_vlm_weights=True</code> 是章节唯一验证过的设置；把它当“预训练更好”的消融结论是不成立的。checkpoint 选择也只能当工程经验，不能当收敛结论。</p>
+<p>来源：本章程“训练”“结果”两节。</p>
+<h3>6. 延迟与显存怎么读</h3>
+<table><tr><th>项目</th><th>章节数值</th><th>口径</th></tr><tr><td>训练吞吐</td><td>170 steps ≈ 5 min</td><td>续训片段；章节未说明 batch/卡数</td></tr><tr><td>训练时长</td><td>约 10 h</td><td>RTX 3090</td></tr><tr><td>推理延迟</td><td>章节未给</td><td>—</td></tr><tr><td>推理显存</td><td>章节未给</td><td>—</td></tr><tr><td>评估 episode 上限</td><td>220–520 步</td><td>按 suite</td></tr><tr><td>视频帧率</td><td>30 fps</td><td>只用于写视频</td></tr></table>
+<p>测量协议：章节没有给推理热身、重复次数、中位数、输入是否已在 GPU，也没有说是否包含图像预处理与 <code>env.step</code>。</p>
+<p>区分：170 steps / 5 min 是训练吞吐，不是策略延迟；<code>1000 / 延迟</code> 不能由它换算。章节也没有给控制频率，不能把 7 维动作换算成执行频率。</p>
+<p>口径冲突：若按 170 steps ≈ 5 min 线性外推，200k steps 约 98 小时；章节同时说“训练 10 小时左右”。两者不能同时成立，除非 batch、硬件或统计口径不同；章节没有解释，本文不替它选一个。若按 10 小时反推，约 2 万步。两个数都只能当章节原话，不能当性能结论。</p>
+<p>显存：章节未给，不要用权重体积推算。</p>
+<p>来源：本章程“训练”段与评估脚本。</p>
+<h3>7. 训练资源与卡数</h3>
+<table><tr><th>训练项目</th><th>章节值</th><th>备注</th></tr><tr><td>硬件</td><td>RTX 3090</td><td>章节明说</td></tr><tr><td><code>batch_size</code></td><td>64</td><td>CLI</td></tr><tr><td><code>steps</code></td><td>200000</td><td>CLI；续训到 200170 / 200340</td></tr><tr><td>优化器</td><td>章节未给</td><td>没有配方</td></tr><tr><td>学习率</td><td>章节未给</td><td>没有配方</td></tr><tr><td>warmup</td><td>章节未给</td><td>没有配方</td></tr><tr><td>EMA</td><td>章节未给</td><td>没有配方</td></tr><tr><td>梯度累积</td><td>章节未给</td><td>没有配方</td></tr><tr><td>GPU 数</td><td>章节未给</td><td><code>CUDA_VISIBLE_DEVICES="0"</code>；章节说该变量用于解决多 GPU 训练问题</td></tr><tr><td><code>save_freq</code></td><td>10000</td><td>章节建议调高</td></tr><tr><td><code>wandb.enable</code></td><td>True</td><td>CLI</td></tr><tr><td><code>policy.push_to_hub</code></td><td>False</td><td>CLI</td></tr><tr><td><code>policy.type</code></td><td>本地 <code>smolvla_base</code></td><td>CLI</td></tr><tr><td>数据集</td><td><code>nikriz/aopoli-lv-libero...</code></td><td>CLI</td></tr></table>
+<p>有效 batch：章节只给 <code>batch_size=64</code>，没有给卡数与累积；若按单卡、无累积，有效 batch = 64。这是条件式推断，不是章节配方。</p>
+<p>三级复现：</p>
+<ol><li><strong>理解与评测</strong>：章节给完整命令，可行；需要权重、数据、LIBERO 与补丁。</li><li><strong>训练链路</strong>：章节给 CLI 与 resume，可行；但优化器、学习率、数据规模未给，只能验证“能训”，不能验证“复现论文”。</li><li><strong>完整训练</strong>：章节给 200k steps 与约 10 小时的说法，但与 170 steps / 5 min 冲突；需本机实测吞吐后再估。</li></ol>
+<p>来源：本章程“训练”段。</p>
+<h3>8. 代码阅读顺序</h3>
+<table><tr><th>顺序</th><th>路径 / 模块</th><th>阅读重点</th></tr><tr><td>1</td><td><code>lerobot/policies/smolvla/modeling_smolvla.py</code></td><td><code>SmolVLAPolicy</code>：<code>from_pretrained</code> / <code>reset</code> / <code>select_action</code></td></tr><tr><td>2</td><td><code>lerobot/scripts/train.py</code></td><td>CLI、resume、<code>save_freq</code>、wandb</td></tr><tr><td>3</td><td><code>pip install -e ".[smolvla]"</code></td><td>smolvla 依赖组</td></tr><tr><td>4</td><td><code>LIBERO/libero/libero/benchmark/__init__.py</code> 第 164 行</td><td><code>torch.load(..., weights_only=False)</code></td></tr><tr><td>5</td><td><code>eval_LIBERO.py</code> 的 observation 字典</td><td>键名、180° 翻转、<code>/255</code>、CHW</td></tr><tr><td>6</td><td><code>_get_libero_env</code></td><td>BDDL 路径、256 分辨率、seed</td></tr><tr><td>7</td><td><code>normalize_gripper_action</code> / <code>invert_gripper_action</code></td><td><code>[0,1] → [-1,1]</code> 与符号</td></tr></table>
+<p>坑：</p>
+<ul><li>必须 <code>git checkout d602e816</code>；章节原话是“必须要这个版本，后续版本可能会报错”。</li><li>环境名不一致：创建 <code>smolvla</code>，激活 <code>smolvla_new</code>；照抄会找不到环境。</li><li>LIBERO 第 164 行不改，会报 <code>_pickle.UnpicklingError: Weights only load failed</code>。</li><li>图像 180° 翻转漏掉，训练/评估预处理不一致。</li><li><code>num_trials_per_task</code> 两个脚本默认值不同（1 vs 10）；比较成功率前先确认 trials。</li><li>每 episode 的 <code>policy.reset()</code> 不要省；章节代码每次都调。</li><li><code>save_freq=10000</code> 在 200k steps 下只留少量 checkpoint；章节建议调高。</li></ul>
+<h3>9. 从 checkpoint 开始复现</h3>
+<p>以下命令来自章节，未在本机验证；路径用占位符，按自己的目录替换。章节把两条 <code>git clone</code> 写在同一 cwd，这里改成同级克隆，便于后续 <code>cd ../LIBERO</code>。</p>
+<h4>9.1 固定源码与环境</h4>
+<pre>git clone https://github.com/huggingface/lerobot
+git clone https://github.com/Lifelong-Robot-Learning/LIBERO
+cd lerobot &amp;&amp; git stash &amp;&amp; git checkout d602e816
+
+micromamba create -n smolvla python=3.10 -c conda-forge --yes
+mamba activate smolvla_new   # 章节原文如此；创建名是 smolvla
+pip install torch==2.7.1+cu121 torchvision==0.22.1+cu121 torchaudio==2.7.1+cu121 \
+  -f https://mirror.sjtu.edu.cn/pytorch-wheels/cu121/
+cd lerobot &amp;&amp; pip install -e ".[smolvla]"
+cd ../LIBERO &amp;&amp; pip install -e . &amp;&amp; pip install robosuite==1.4.0 bddl easydict gym matplotlib
+export TOKENIZERS_PARALLELISM=false</pre>
+<h4>9.2 准备数据与打补丁</h4>
+<pre>export DATA_ROOT=/path/to/data
+python3 download_hf_files.py nikriz/aopoli-lv-libero_combined_no_noops_lerobot_v21 main \
+  --repo-type dataset --download_path "$DATA_ROOT/aopoli-lv-libero"
+# 把 LIBERO/libero/libero/benchmark/__init__.py 第 164 行改成：
+# init_states = torch.load(init_states_path, weights_only=False)</pre>
+<h4>9.3 训练与续训</h4>
+<pre>export MODEL_ROOT=/path/to/models OUTPUT_ROOT=/path/to/outputs
+python -m lerobot.scripts.train \
+  --policy.type="$MODEL_ROOT/smolvla_base" --policy.load_vlm_weights True \
+  --dataset.repo_id="$DATA_ROOT/aopoli-lv-libero" \
+  --batch_size=64 --steps=200000 --save_freq 10000 \
+  --output_dir="$OUTPUT_ROOT/libero_smolvla_scratch" \
+  --job_name=libero_smolvla_scratch_ckk --wandb.enable=true --policy.push_to_hub=False</pre>
+<h4>9.4 评测一个 suite</h4>
+<pre>python eval_LIBERO.py --policy_path="$OUTPUT_ROOT/libero_smolvla_scratch/checkpoints/200000/pretrained_model/"</pre>
+<p>这里假设已把章节给的评估脚本保存为 <code>eval_LIBERO.py</code>。章节还给了 <code>eval_LIBERO-task1.py</code> 与 <code>eval_LIBERO-task1-libero10.py</code> 两个变体；先跑单任务确认动作符号，再跑全 suite。</p>
+<h3>10. 如何用到自己的项目</h3>
+<p>可复用的是单卡微调配方、LIBERO 评测壳与动作约定，不是章节没有展开的模型架构。</p>
+<ul><li><strong>复用评测壳</strong>：把 observation 键、180° 翻转、<code>/255</code>、夹爪变换搬到自己的仿真；先跑一个 suite 的单任务；代价是环境接口与成功判定要自己对齐。</li><li><strong>单卡微调</strong>：用 <code>load_vlm_weights=True</code>、batch 64、先小步数验证吞吐，再按显存调 batch；测 loss、保存与恢复；代价是要先量本机吞吐，不能照抄 10 小时。</li><li><strong>动作约定审计</strong>：把 <code>[0,1]</code>/<code>[-1,1]</code>、符号、二值化写成单元测试；先在 task1 上验证开合方向；代价是要有可复现的初始状态与视频。</li></ul>
+<p>相关章节：<a href="rt-1.html">RT-1</a>、<a href="rt-x.html">RT-X</a>、<a href="openvla.html">OpenVLA</a>、<a href="../../01SmolVLA-LIBERO/01SmolVLA-libero.md">SmolVLA 导读</a>。</p></main>
+<footer><a href="index.html">← 返回 22 篇总览</a> · 本页由笔记自动生成</footer>
+<button class="totop" aria-label="回到顶部" onclick="scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>addEventListener('scroll',function(){document.querySelector('.totop').classList.toggle('show',scrollY>600)},{passive:true})</script>
+</body></html>
