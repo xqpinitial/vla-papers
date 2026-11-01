@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PRTS 论文精读：把目标可达性对比 RL 放进 VLA 预训练</title>
+<meta name="description" content="PRTS 重新分配的是 VLA 的训练信号——不只让模型拟合“专家在这个状态下做了什么”，还让它显式估计“当前 state-action 距离语言目标还有多远”。【章节】">
+<meta property="og:title" content="PRTS 论文精读：把目标可达性对比 RL 放进 VLA 预训练"><meta property="og:type" content="website">
+<link rel="stylesheet" href="../../assets/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%234f46e5'/%3E%3Ctext x='16' y='22' font-size='16' text-anchor='middle' fill='white' font-family='serif'%3EV%3C/text%3E%3C/svg%3E">
+</head><body>
+<div id="progress"></div><nav class="top">
+<a class="brand" href="../../index.html"><span class="dot"></span>VLA Research Hub<small>VLA 研究库</small></a>
+<div class="links">
+<a href="../../index.html">首页</a>
+<a href="../../survey/index.html">综述</a>
+<a href="../../papers/index.html" class="on">论文</a>
+<a href="../../papers/07-harness/index.html">Harness</a>
+</div>
+<span class="spacer"></span>
+<button class="searchbtn" data-search aria-label="搜索"><span>搜索</span><kbd>⌘K</kbd></button>
+<button class="iconbtn" id="themebtn" aria-label="切换明暗主题"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+<button class="iconbtn" id="menubtn" aria-label="菜单"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+</nav><header class="dochead"><div class="wrap"><div class="crumb"><a href="../../index.html">首页</a> / <a href="../../papers/index.html">论文</a> / <a href="../../papers/03-training/index.html">训练范式与在线强化学习</a></div><h1>PRTS 论文精读：把目标可达性对比 RL 放进 VLA 预训练</h1><p class="lede">PRTS 重新分配的是 VLA 的训练信号——不只让模型拟合“专家在这个状态下做了什么”，还让它显式估计“当前 state-action 距离语言目标还有多远”。【章节】</p><div class="chips"><a class="chip cat" href="../../papers/03-training/index.html">训练范式</a></div><div class="infobox"><div class="irow"><span class="ik">分类</span><span class="iv"><a href="../../papers/03-training/index.html">训练范式与在线强化学习</a></span></div><div class="irow"><span class="ik">对应专题</span><span class="iv">§3 训练范式：SFT / RL / 在线适应</span></div><div class="irow"><span class="ik">来源</span><span class="iv">VLA 六年演进（广域 22 篇）</span></div><div class="irow"><span class="ik">笔记</span><span class="iv">六站式深读 · 数字标「tex 已验」</span></div></div></div></header><div class="docgrid"><aside class="toc"><p class="t">本文目录</p><ul><li><a class="h2" href="#1-论文与官方资源">1. 论文与官方资源</a></li><li><a class="h2" href="#2-核心问题-行为克隆不知道-现在离目标还有多远">2. 核心问题：行为克隆不知道“现在离目标还有多远”</a></li><li><a class="h2" href="#3-模型结构与张量流">3. 模型结构与张量流</a></li><li><a class="h3" href="#3-1-输入-token-流与单次前向">3.1 输入 token 流与单次前向</a></li><li><a class="h3" href="#3-2-flow-matching-action-expert-连续动作仍走生成模型">3.2 Flow Matching Action Expert：连续动作仍走生成模型</a></li><li><a class="h3" href="#3-3-language-conditioned-contrastive-rl-无奖励标签的目标可达性">3.3 Language-Conditioned Contrastive RL：无奖励标签的目标可达性</a></li><li><a class="h3" href="#3-4-value-可视化-进度感是否真的存在">3.4 Value 可视化：进度感是否真的存在</a></li><li><a class="h2" href="#4-实验结果">4. 实验结果</a></li><li><a class="h3" href="#4-1-libero">4.1 LIBERO</a></li><li><a class="h3" href="#4-2-molmospaces">4.2 MolmoSpaces</a></li><li><a class="h3" href="#4-3-真机">4.3 真机</a></li><li><a class="h2" href="#5-消融实验">5. 消融实验</a></li><li><a class="h2" href="#6-延迟与显存怎么读">6. 延迟与显存怎么读</a></li><li><a class="h2" href="#7-训练资源与卡数">7. 训练资源与卡数</a></li><li><a class="h2" href="#8-代码阅读顺序">8. 代码阅读顺序</a></li><li><a class="h2" href="#9-从-checkpoint-开始复现">9. 从 checkpoint 开始复现</a></li><li><a class="h3" href="#9-1-加载-prts-4b">9.1 加载 PRTS-4B</a></li><li><a class="h3" href="#9-2-跑-libero-示例">9.2 跑 LIBERO 示例</a></li><li><a class="h3" href="#9-3-不建议现在做的事">9.3 不建议现在做的事</a></li><li><a class="h2" href="#10-如何用到自己的项目">10. 如何用到自己的项目</a></li></ul></aside><main class="prose"><p>PRTS 的核心不是换更大的 backbone，而是在 Qwen3-VL-4B 的 VLA 预训练里同时学动作生成与 goal-reachability awareness：用轨迹时序结构构造 reward-label-free 对比 RL 监督，让 state-action embedding 与 language goal embedding 的内积近似“从这里继续执行能否到达目标”。章节给出的头条数字是：预训练约 167B tokens、64 张 H100；标准四套 LIBERO 平均成功率 98.4；PRTS-Droid 在 MolmoSpaces Leaderboard 排名第 3、成功率 42.4%，榜单 Combined 字段为 65.36；许可证 CC BY-NC 4.0。以上为章节转述的官方 README、模型卡与榜单信息，未在本机复测；榜单会更新，数字按 2026-07-18 检索口径。</p>
+<blockquote>来源约定：本文事实只取自本仓库 <span class="deadref" title="原始 every-embodied 仓库引用，本归档未收录该文件">PRTS 导读</span>。章节没有逐条标注论文页码，实验数字统一记为“章节转述的论文/官方仓库报告”。<br>版本：arXiv 2604.27472，2026-04-30 提交；代码 commit：章节未给；查阅日期：2026-11-01。</blockquote>
+<h2 id="1-论文与官方资源">1. 论文与官方资源</h2>
+<div class="tbl"><table><thead><tr><th>资源</th><th>网页来源</th><th>说明</th></tr></thead><tbody><tr><td>论文</td><td><a href="https://arxiv.org/abs/2604.27472" target="_blank" rel="noopener">arXiv:2604.27472</a> / <a href="https://arxiv.org/html/2604.27472v1" target="_blank" rel="noopener">HTML</a></td><td>方法、CRL 目标与实验</td></tr><tr><td>源码</td><td><a href="https://github.com/TeleHuman/PRTS" target="_blank" rel="noopener">TeleHuman/PRTS</a></td><td>最小 SFT post-training code、LIBERO evaluation、CRL value visualization scripts</td></tr><tr><td>权重</td><td><a href="https://huggingface.co/TeleEmbodied/PRTS-4B" target="_blank" rel="noopener">TeleEmbodied/PRTS-4B</a> / <a href="https://huggingface.co/TeleEmbodied/PRTS-4B-LIBERO" target="_blank" rel="noopener">PRTS-4B-LIBERO</a></td><td>基于 Qwen3-VL-4B；LIBERO checkpoint 对应论文数字</td></tr><tr><td>项目页</td><td><a href="https://rhodes-team-prts.github.io/" target="_blank" rel="noopener">rhodes-team-prts.github.io</a></td><td>官方项目页</td></tr><tr><td>数据集</td><td>章节未给链接</td><td>公开 Standard LIBERO LeRobot-v2.1 示例，章节未给具体地址与规模</td></tr><tr><td>榜单</td><td><a href="https://molmospaces.allen.ai/leaderboard/ms" target="_blank" rel="noopener">MolmoSpaces Leaderboard</a></td><td><code>PRTS-Droid, TeleAI</code> 位列 TOP3；README 记录 42.4% SR</td></tr></tbody></table></div>
+<p>论文题目：PRTS: A Primitive Reasoning and Tasking System via Contrastive Representations；作者单位：中国电信人工智能研究院 TeleAI、清华大学、上海交通大学、复旦大学等；arXiv：2604.27472；版本：2026-04-30 提交；代码 commit：章节未给；查阅日期：2026-11-01。</p>
+<p><strong>开源与许可边界：</strong>GitHub README 写明项目使用 <strong>CC BY-NC 4.0</strong>，代码与权重可用于学术和非商业用途，商业使用不被该许可证允许。release plan 中已公开的有：preprint、PRTS-4B、LIBERO LeRobot-v2.1 数据示例、最小 SFT 代码、LIBERO 评测、PRTS-4B-LIBERO、CRL value 可视化脚本；PRTS-4B 的 SimplerEnv WidowX post-trained checkpoint 仍在后续计划中。</p>
+<h2 id="2-核心问题-行为克隆不知道-现在离目标还有多远">2. 核心问题：行为克隆不知道“现在离目标还有多远”</h2>
+<p>一句话：PRTS 重新分配的是 VLA 的训练信号——不只让模型拟合“专家在这个状态下做了什么”，还让它显式估计“当前 state-action 距离语言目标还有多远”。【章节】</p>
+<figure><img src="../../assets/svg/prts-architecture.svg" alt="PRTS 架构与训练信号" loading="lazy"><figcaption>PRTS 架构与训练信号</figcaption></figure>
+<p>图 1：PRTS 的 Qwen3-VL、flow-matching 动作头与对比 RL 分支。自绘，依据本地导读；不是论文原图。</p>
+<p>章节用“把杯子放进盒子”举例：夹爪刚靠近杯子、杯子已被抓住、杯子已到盒子上方、杯子掉到桌面边缘、杯子放进盒子但盒盖没关——这些状态的“下一步动作”在示教里可能都出现过，但行为克隆不告诉模型哪些状态更接近成功。遇到偏离示教的状态时，模型缺少可量化的任务进度感。</p>
+<p>对比主流路径：纯行为克隆 / 动作回归 → 行为克隆 + 预训练期 goal-reachability 对比监督。</p>
+<ul>
+<li>节省了什么：不需要环境 reward、人工成功标签或在线试错；不需要额外训练一个完全分离的 value 网络。</li>
+<li>保留了什么：标准 VLA 的连续动作生成路径；后训练仍可接 flow matching / SFT action expert。</li>
+<li>代价是什么：要构造轨迹时序上的正负样本与时间权重；value head 与动作分支共享前向，attention mask 一旦写错就会泄漏信息；榜单复现需要 MolmoSpaces 环境与 DROID checkpoint。</li>
+<li>读者该学什么：把“任务进度”当成一种可训练表征，而不是只用成功率做事后评价。</li>
+</ul>
+<h2 id="3-模型结构与张量流">3. 模型结构与张量流</h2>
+<h3 id="3-1-输入-token-流与单次前向">3.1 输入 token 流与单次前向</h3>
+<p>PRTS 的输入不是单张图，而是一条混合 token 序列：egocentric view、wrist view、vision tokens、textual robot state、instruction 与 action tokens。文本化 robot state 是重要细节：机器人状态被放进语言模型可处理的序列里，让 backbone 同时看到视觉、语言、状态与动作上下文。</p>
+<div class="tbl"><table><thead><tr><th>组件</th><th>章节给出的内容</th><th>作用</th></tr></thead><tbody><tr><td>视觉输入</td><td>egocentric view + wrist view</td><td>提供第一视角与腕部近景</td></tr><tr><td>机器人状态</td><td>textual robot state</td><td>把 proprio/关节状态放进语言序列</td></tr><tr><td>语言</td><td>instruction（作为 goal）</td><td>同时进入动作分支与 goal encoder</td></tr><tr><td>动作</td><td>action tokens</td><td>行为克隆的动作侧输入/输出</td></tr><tr><td>Backbone</td><td>Qwen3-VL</td><td>视觉语言与状态动作的统一编码</td></tr><tr><td>Attention mask</td><td>Designed Single-Forward Attention Mask</td><td>让 BC 动作预测与 CRL value 学习在同一次 forward 完成，同时避免信息泄漏</td></tr><tr><td>动作头</td><td>Flow Matching Action Expert（DiT）</td><td>从 noised action 预测 denoised action，输出连续 chunk</td></tr><tr><td>CRL 分支</td><td>state-action encoder <code>φ(s,a)</code> + goal encoder <code>ψ(g)</code></td><td>内积估计 goal reachability</td></tr></tbody></table></div>
+<p>章节对 mask 的描述是“哪些 token 可以互相注意”：CRL action 与 CRL goal 不是随便全互看，而是按自监督目标构造可用上下文。章节没有给 mask 的具体矩阵、层数、token 数或隐藏维度。</p>
+<h3 id="3-2-flow-matching-action-expert-连续动作仍走生成模型">3.2 Flow Matching Action Expert：连续动作仍走生成模型</h3>
+<p>PRTS 最终仍要输出连续机器人动作，所以在 Qwen3-VL 表征上接 flow matching action expert，用 DiT 结构从 noised action 预测 denoised action。章节把它定位为与现代连续动作 VLA 一致的做法：不把复杂 6DoF/关节动作硬离散成语言 token，而用连续生成模型处理。章节没有给 chunk 长度、去噪步数、动作维度或控制频率。</p>
+<h3 id="3-3-language-conditioned-contrastive-rl-无奖励标签的目标可达性">3.3 Language-Conditioned Contrastive RL：无奖励标签的目标可达性</h3>
+<p>CRL 分支构造两个编码器：state-action encoder <code>φ(s,a)</code> 与 goal encoder <code>ψ(g)</code>，让二者内积近似 <code>log Q(s,a,g)</code>：</p>
+<p>$$</p>
+<p>\log Q(s,a,g) \approx \phi(s,a)^\top \psi(g)</p>
+<p>$$</p>
+<p>也就是“从当前状态-动作出发，最终到达语言目标 <code>g</code> 的可达性”。训练信号来自演示轨迹的天然时序结构：在一条成功轨迹中，越靠后的状态通常越接近语言目标。同一任务目标下，后续能通向成功的 state-action 应与 goal embedding 更接近；不匹配的 goal 或错误阶段应更远。论文用 geometric temporal weighting 让远近时间步对监督强度产生不同贡献。</p>
+<div class="tbl"><table><thead><tr><th>维度</th><th>普通 RL</th><th>PRTS CRL</th></tr></thead><tbody><tr><td>监督来源</td><td>环境 reward 或人工成功标签</td><td>离线轨迹的时序结构</td></tr><tr><td>额外网络</td><td>通常单独训练 value / Q 网络</td><td>value head 与 VLA backbone 同一次 forward 联训</td></tr><tr><td>训练成本</td><td>常比 BC 贵很多</td><td>官方强调接近 BC compute</td></tr><tr><td>训练阶段</td><td>常见于 post-training</td><td>放进 pre-training</td></tr><tr><td>数据需求</td><td>需要交互或离线 RL 数据</td><td>仍需大量动作标注与具身推理数据</td></tr></tbody></table></div>
+<p>“reward-label-free”指不需要额外人工 reward label，不是无数据、无监督。章节明确说 PRTS 仍需要大量动作标注和具身推理数据。</p>
+<h3 id="3-4-value-可视化-进度感是否真的存在">3.4 Value 可视化：进度感是否真的存在</h3>
+<p>章节用一张对比图说明：同一段轨迹给两个语言 goal，正确指令是“把两只鞋放入鞋盒，右夹爪关上鞋盒”，错误指令是“把酱油和绿色纸杯放入鞋盒，右夹爪关上鞋盒”。随着第一只鞋被拿起、放入、第二只鞋放入、盒盖关闭，正确指令的 goal-reachability value 逐步升高，错误指令始终较低。这说明 value 不是“图像是否像训练数据”，而是在语言目标条件下判断任务是否更接近完成。</p>
+<p>来源：本地导读 §5–§7。</p>
+<h2 id="4-实验结果">4. 实验结果</h2>
+<h3 id="4-1-libero">4.1 LIBERO</h3>
+<p>协议：标准四套 LIBERO（章节未列套件名），指标 success rate；章节没有给每套分数、任务数、每任务 trials、种子与成功判定。唯一数字是平均 SR 98.4，章节称其“接近或匹配最强 prior 结果”，并在同等 post-training budget 下比 ABot-M0 更稳，尤其 Long suite。</p>
+<p>章节给出的口径是：平均 SR 98.4（标准四套平均，逐套数字未给）；与最强 prior 的关系为“接近或匹配”（定性，未给对照模型名与分数）；与 ABot-M0 的关系为“同 post-training budget 下更稳，Long suite 更明显”（定性，未给 budget 与逐套数字）。</p>
+<p>读法：98.4 是章节给出的唯一 LIBERO 数字，不能拆成四个 suite，也不能判断提升来自 CRL 还是来自 Qwen3-VL 基座与 post-training 数据。Long suite 的“更稳”没有数字支撑，只能作为方向性证据。</p>
+<h3 id="4-2-molmospaces">4.2 MolmoSpaces</h3>
+<p>MolmoSpaces 是 Ai2 的开放具身生态与基准：章节介绍它统一了 23 万多个室内环境、13 万多个物体模型和 4200 万个稳定抓取标注，支持 MuJoCo、Isaac、ManiSkill 等模拟器；MolmoSpaces-Bench 覆盖静态操作、移动操作、导航与多房间长时程任务。</p>
+<div class="tbl"><table><thead><tr><th>数字</th><th>来源</th><th>含义</th></tr></thead><tbody><tr><td>TOP3</td><td>MolmoSpaces policy leaderboard</td><td><code>PRTS-Droid</code> 进入全球前三</td></tr><tr><td>42.4% SR</td><td>PRTS 官方 GitHub News</td><td>success rate 口径</td></tr><tr><td>65.36</td><td>MolmoSpaces <code>/ms</code> 榜单搜索结果</td><td>页面展示的 Combined / score 字段之一</td></tr><tr><td>5B 参数</td><td>同上榜单条目</td><td>榜单参数口径；权重名为 PRTS-4B、模型卡写基于 Qwen3-VL-4B，两者口径不同，章节未解释差异</td></tr></tbody></table></div>
+<p>章节还写明 PRTS-Droid 超过 NVIDIA DreamZero、MolmoAct2 与 π0.5。读法：这证明 reward-label-free contrastive RL pretraining 在 DROID / MolmoSpaces 这类开放场景评测上有竞争力；不能推出 PRTS 已在所有真实机器人任务上超过所有模型，也不能推出每个 checkpoint 都能不适配直接上任意机器人。</p>
+<h3 id="4-3-真机">4.3 真机</h3>
+<p>章节给出两类真实平台与任务，但没有给成功率数字、每任务 trials 或微调步数。</p>
+<ul>
+<li><strong>RealMan Dual-Arm</strong>：双臂、头部相机、双腕部相机、双夹爪；多任务混合后训练，考察双臂长时程与多任务干扰。</li>
+<li><strong>Flexiv System</strong>：7DoF 单臂、主相机、腕部相机、Robotiq 夹爪；细粒度、接触丰富任务，考察空间 grounding 与误差累积。</li>
+</ul>
+<p>真实任务包括 Office Long Term、Stack Cups、Flip Tennis Tube、Gear Assembly、Block Combination、Flower Arrangement。这些是真实验证，但不是人人可一键复现的公开硬件 benchmark。</p>
+<p>来源：本地 PRTS 导读的对应小节。</p>
+<h2 id="5-消融实验">5. 消融实验</h2>
+<p>章节没有逐项消融表，也没有给“去掉 CRL / 去掉 temporal weighting / 换 goal encoder”的对照数字。它提供的替代证据有四类：</p>
+<div class="tbl"><table><thead><tr><th>证据</th><th>章节结论</th><th>数字</th></tr></thead><tbody><tr><td>正确 vs 错误指令的 value 曲线</td><td>正确指令随任务推进上升，错误指令保持较低</td><td>定性曲线，无坐标数值</td></tr><tr><td>预训练效率图</td><td>CRL 合入同一次前向，成本接近 BC</td><td>官方图，无具体倍数</td></tr><tr><td>LIBERO 与 ABot-M0 同预算对比</td><td>PRTS 更稳，Long suite 更明显</td><td>仅给 98.4 平均，未给对照分数</td></tr><tr><td>任务泛化图</td><td>新物体/新指令下仍能执行 Paper Rubbish、Place Block、Pick Shoes、Stack Cups</td><td>定性示例，无成功率</td></tr></tbody></table></div>
+<p>读者该不该复用：如果关心的是“长时程任务里模型是否知道进度”，CRL 值得加；如果只做单步短任务，收益可能不足以抵消 attention mask 与双编码器的工程复杂度。章节没有给 CRL 的单独去除实验，也没有给 temporal weighting 的敏感性分析，因此不能量化每一部分的贡献。</p>
+<p>来源：本地导读 §7、§8、§10。</p>
+<h2 id="6-延迟与显存怎么读">6. 延迟与显存怎么读</h2>
+<p>章节没有给推理延迟、显存、参数量（按权重名是 4B，榜单口径是 5B）、重规划间隔或控制频率。唯一与算力相关的是预训练规模：约 167B tokens、64 张 H100。因此不能用参数量推算延迟，也不能用 <code>1000 / 延迟</code> 计算策略调用频率。</p>
+<div class="tbl"><table><thead><tr><th>项目</th><th>章节给出的信息</th><th>能否用于部署选型</th></tr></thead><tbody><tr><td>参数量</td><td>权重名 PRTS-4B；模型卡写 Qwen3-VL-4B；榜单条目写 5B</td><td>口径不一致，需自行核对</td></tr><tr><td>预训练算力</td><td>约 167B tokens、64×H100</td><td>说明训练门槛，不说明推理成本</td></tr><tr><td>推理显存</td><td>章节未给</td><td>不能</td></tr><tr><td>单步 / 请求延迟</td><td>章节未给</td><td>不能</td></tr><tr><td>重规划间隔 / 控制频率</td><td>章节未给</td><td>不能</td></tr><tr><td>测量协议</td><td>章节未给</td><td>不能</td></tr></tbody></table></div>
+<p>读法：64×H100 与 167B tokens 说明“从头预训练”不是个人可负担的复现路径；章节建议的三档复现里，只有加载 checkpoint 与 LIBERO 评测是现实起点。部署判断必须本机测裸模型前向、含图像/状态预处理与通信的请求延迟、以及动作 chunk 的执行时长。</p>
+<p>来源：本地导读 §10、§12。</p>
+<h2 id="7-训练资源与卡数">7. 训练资源与卡数</h2>
+<p>章节给了预训练规模与公开的 post-training 入口，但没有给优化器步数、有效 batch、每卡 microbatch、梯度累积、学习率、warmup、EMA 或数据配比，因此无法填出完整配方，也无法用 <code>B_eff = N_GPU × B_micro × N_accum</code> 反推有效 batch。</p>
+<div class="tbl"><table><thead><tr><th>训练项目</th><th>章节给出的内容</th><th>说明</th></tr></thead><tbody><tr><td>预训练 tokens</td><td>约 167B</td><td>HF 模型卡</td></tr><tr><td>预训练硬件</td><td>64×H100</td><td>HF 模型卡</td></tr><tr><td>基座</td><td>Qwen3-VL-4B</td><td>权重名与模型卡</td></tr><tr><td>预训练目标</td><td>BC 动作损失 + language-conditioned CRL</td><td>同一次 forward；损失权重未给</td></tr><tr><td>Post-training</td><td>最小 SFT 代码，LIBERO + 真机平台</td><td>GitHub 已公开</td></tr><tr><td>LIBERO 数据</td><td>Standard LIBERO LeRobot-v2.1 示例</td><td>已公开；规模未给</td></tr><tr><td>优化器 / batch / 学习率 / 步数</td><td>章节未给</td><td>无法复现训练</td></tr><tr><td>许可</td><td>CC BY-NC 4.0</td><td>非商业</td></tr></tbody></table></div>
+<p>三级复现的可行性：</p>
+<ol>
+<li><strong>理解与评测</strong>：可行——加载 PRTS-4B 或 PRTS-4B-LIBERO，跑 smoke test 与 LIBERO 评测。</li>
+<li><strong>训练链路</strong>：部分可行——有最小 SFT post-training code 与 LIBERO 数据示例，可验证 post-training；预训练代码与 167B tokens 数据未给。</li>
+<li><strong>完整训练</strong>：不可行——缺预训练数据、超参与 64×H100 级算力。</li>
+</ol>
+<p>来源：本地导读 §10、§12。</p>
+<h2 id="8-代码阅读顺序">8. 代码阅读顺序</h2>
+<p>章节给出仓库顶层目录 <code>configs</code>、<code>examples</code>、<code>scripts</code>、<code>prts</code>，以及“先评测、后改 post-training”的顺序；具体文件路径章节未给。</p>
+<div class="tbl"><table><thead><tr><th>顺序</th><th>路径 / 模块</th><th>阅读重点</th></tr></thead><tbody><tr><td>1</td><td><code>configs/</code></td><td>模型、数据、评测配置；先确认 action layout 与相机配置</td></tr><tr><td>2</td><td><code>examples/</code></td><td>最小加载与推理示例；输入 token 的组织方式</td></tr><tr><td>3</td><td><code>scripts/</code></td><td>LIBERO 评测与 post-training 启动脚本</td></tr><tr><td>4</td><td><code>prts/</code></td><td>模型主体：Qwen3-VL backbone、action expert、CRL 分支、attention mask</td></tr><tr><td>5</td><td>CRL value 可视化脚本</td><td>正确/错误指令的 value 曲线如何生成</td></tr><tr><td>6</td><td><code>TeleEmbodied/PRTS-4B-LIBERO</code></td><td>论文 LIBERO 数字对应 checkpoint</td></tr></tbody></table></div>
+<p>坑（章节明确提示）：</p>
+<ul>
+<li>输入包含视觉、文本状态、指令、动作 token、CRL action / goal 等多种 token；action layout 与 mask 一旦错，模型可能能跑但结果不可用。</li>
+<li>不要一开始就改自己的机械臂数据；先用官方 LIBERO 数据与 checkpoint 跑通评测。</li>
+<li>章节未固定 commit；目录结构与文件名可能随仓库更新变化。</li>
+<li>MolmoSpaces checkpoint 是用最新 DROID fine-tuning launcher 训练的，仓库当前不提供一键跑榜脚本。</li>
+</ul>
+<h2 id="9-从-checkpoint-开始复现">9. 从 checkpoint 开始复现</h2>
+<p>以下命令来自章节转述的 HF 模型卡与官方 README，未在本机验证；版本号与路径需按仓库当前状态核对。</p>
+<h3 id="9-1-加载-prts-4b">9.1 加载 PRTS-4B</h3>
+<pre><code class="language-bash">pip install &quot;transformers==4.57.3&quot; torch safetensors huggingface_hub \
+    numpy pillow sentencepiece protobuf colorama tokenizers
+pip install accelerate</code></pre>
+<pre><code class="language-python">import torch
+from transformers import AutoConfig, AutoModel, AutoProcessor
+
+repo_id = &quot;TeleEmbodied/PRTS-4B&quot;
+
+config = AutoConfig.from_pretrained(repo_id, trust_remote_code=True)
+model = AutoModel.from_pretrained(
+    repo_id,
+    trust_remote_code=True,
+    torch_dtype=torch.bfloat16,
+    device_map=&quot;auto&quot;,
+)
+processor = AutoProcessor.from_pretrained(repo_id, trust_remote_code=True)</code></pre>
+<p>这个 smoke test 只说明权重能下载、custom code 能被 <code>transformers</code> 加载、模型结构与 processor 能初始化；不说明动作输出能控制真实硬件，也不说明榜单或 LIBERO 已复现。</p>
+<h3 id="9-2-跑-libero-示例">9.2 跑 LIBERO 示例</h3>
+<pre><code class="language-bash">git clone https://github.com/TeleHuman/PRTS.git
+cd PRTS
+pip install -r requirements.txt
+# 下载 TeleEmbodied/PRTS-4B-LIBERO 后，按官方 configs/scripts 跑 evaluation</code></pre>
+<p>顺序是：克隆仓库 → 安装依赖 → 下载 LIBERO checkpoint → 使用官方 LIBERO LeRobot-v2.1 数据 → 先跑 evaluation，再考虑改 post-training 配置。</p>
+<h3 id="9-3-不建议现在做的事">9.3 不建议现在做的事</h3>
+<p>MolmoSpaces 排名复现需要 DROID checkpoint 或 fine-tuning launcher、MolmoSpaces benchmark 环境、指定任务/场景/相机/初始状态与 evaluation protocol、policy wrapper 与 harness 适配；章节明确说当前不建议写成手把手复现。SimplerEnv WidowX 的 post-trained checkpoint 也仍在 release plan 中。</p>
+<p>来源：本地导读 §12。</p>
+<h2 id="10-如何用到自己的项目">10. 如何用到自己的项目</h2>
+<p>PRTS 的价值是把“任务进度”变成预训练期可学的表征，而不是在推理时外挂一个 reward model。可复用的是 CRL 目标与单次前向的工程组织，不是 64×H100 的预训练规模。</p>
+<ul>
+<li><strong>给自己的 VLA 加 CRL 头</strong>：在动作损失外接 <code>φ(s,a)</code> 与 <code>ψ(g)</code>，用轨迹时序构造正负样本与 geometric temporal weighting；测长时程任务、扰动恢复与换初始位姿。代价是要有成功轨迹的时序结构，且 goal 必须可编码。</li>
+<li><strong>单次前向 + attention mask</strong>：把 BC 与 value 学习合进同一次 forward，按自监督目标限制 CRL action/goal 的可见性；测吞吐与信息泄漏（value 是否偷看未来）。代价是 mask 工程复杂，错一处结果就不可用。</li>
+<li><strong>value 当进度监控</strong>：用 goal-reachability value 做早停、重试或恢复触发；测误触发率与任务成功率。代价是 value 需要按目标与 embodiment 校准，章节未给校准方法。</li>
+</ul>
+<p>相关章节：<a href="../04-3d/physbrain.html">PhysBrain</a>、<a href="../04-3d/3dvla.html">3DVLA</a>、<a href="../02-backbone/openvla.html">OpenVLA</a>、<span class="deadref" title="原始 every-embodied 仓库引用，本归档未收录该文件">PRTS 导读</span>、<a href="../../survey/6yr/02-lunwen-pingce.html">02 论文与评测</a>。</p></main></div><div class="pager"><a class="prev" href="lwd.html"><span class="dir">← 上一篇</span><span class="ttl">LWD 论文精读：把部署变成机群 RL 数据飞轮</span></a><a class="empty"></a></div><section class="related"><h2>同分类其他笔记</h2><div class="cards"><article class="pcard" data-cat="03-training" data-name="RT-X 论文精读：用 22 种机器人的数据换一个更强的单机策略" data-year="2023" data-idx="10" data-hay="rt-x 论文精读：用 22 种机器人的数据换一个更强的单机策略 rt-x 重新分配的是“本体差异”的处理位置——不在每个机器人上各训一个策略，而是先把动作对齐到共享 7-dof 空间，再用混合本体数据训练一个策略族。 "><h3><a href="rt-x.html">RT-X 论文精读：用 22 种机器人的数据换一个更强的单机策略</a></h3><p class="sum">RT-X 重新分配的是“本体差异”的处理位置——不在每个机器人上各训一个策略，而是先把动作对齐到共享 7-DoF 空间，再用混合本体数据训练一个策略族。</p><div class="foot"><span class="chip cat">训练范式</span><span class="yr">2023</span></div></article><article class="pcard" data-cat="03-training" data-name="Agentic-VLA 论文精读：给 OpenVLA-OFT 加一个会设计奖励、引导探索、复用权重的在线适应外环" data-year="0" data-idx="11" data-hay="agentic-vla 论文精读：给 openvla-oft 加一个会设计奖励、引导探索、复用权重的在线适应外环 agentic-vla 重新分配的是“部署后如何继续学习”的接口——不再只靠人工补示教或固定奖励，而是让 experience memory、vlm 探索 critic 和语言模型奖励分解共同调度一次在线 rl 适应。【章节】 "><h3><a href="agentic-vla.html">Agentic-VLA 论文精读：给 OpenVLA-OFT 加一个会设计奖励、引导探索、复用权重的在线适应外环</a></h3><p class="sum">Agentic-VLA 重新分配的是“部署后如何继续学习”的接口——不再只靠人工补示教或固定奖励，而是让 Experience Memory、VLM 探索 critic 和语言模型奖励分解共同调度一次在线 RL 适应。【章节】</p><div class="foot"><span class="chip cat">训练范式</span></div></article><article class="pcard" data-cat="03-training" data-name="Dexbotic-RLinf 论文精读：把 VLA 模型入口接到分布式 RL 后训练" data-year="0" data-idx="12" data-hay="dexbotic-rlinf 论文精读：把 vla 模型入口接到分布式 rl 后训练 dexbotic-rlinf 重新分配的是“模型开发”和“rl 训练系统”的边界——dexbotic 继续做 vla 用户入口，rlinf 做后端，两者通过 model registry 和薄 adapter 连接，而不是把模型代码复制进 rl 仓库，或让模型仓库重写一套 rl 系统。【章节】 "><h3><a href="dexbotic-rlinf.html">Dexbotic-RLinf 论文精读：把 VLA 模型入口接到分布式 RL 后训练</a></h3><p class="sum">Dexbotic-RLinf 重新分配的是“模型开发”和“RL 训练系统”的边界——Dexbotic 继续做 VLA 用户入口，RLinf 做后端，两者通过 model registry 和薄 adapter 连接，而不是把模型代码复制进 RL 仓库，或让模型仓库重写一套 RL 系统。【章节】</p><div class="foot"><span class="chip cat">训练范式</span></div></article></div></section><footer class="site"><div class="in">
+<div><b>VLA Research Hub</b> · 44 篇论文精读 + 7 篇综述 · 更新 2026-11-02</div>
+<div><a href="../../index.html">首页</a> · <a href="../../survey/index.html">综述</a> · <a href="../../papers/index.html">论文</a></div>
+</div></footer>
+<button class="totop" aria-label="回到顶部">↑</button>
+<div id="overlay"><div class="searchbox">
+<div class="hd"><span style="color:var(--faint)">🔍</span><input id="searchinput" placeholder="搜索论文、方向、机构…" autocomplete="off"><span class="hint">ESC</span></div>
+<div id="results"></div></div></div>
+<script>window.__BASE="../../";</script>
+<script src="../../assets/app.js"></script>
+</body></html>
