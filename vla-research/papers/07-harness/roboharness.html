@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RoboHarness 深度调研笔记</title>
+<meta name="description" content="把异构策略（VLA、WAM、RL、TAMP）各自封装成可复用 agentic skill，用多模态执行记忆 + 在线证据刻画&quot;能力边界&quot;做任务分解与路由；Memory Bridge 让策略交接时先把机器人带到下一个策略的分布内状态——免联合重训">
+<meta property="og:title" content="RoboHarness 深度调研笔记"><meta property="og:type" content="website">
+<link rel="stylesheet" href="../../assets/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%234f46e5'/%3E%3Ctext x='16' y='22' font-size='16' text-anchor='middle' fill='white' font-family='serif'%3EV%3C/text%3E%3C/svg%3E">
+</head><body>
+<div id="progress"></div><nav class="top">
+<a class="brand" href="../../index.html"><span class="dot"></span>VLA Research Hub<small>VLA 研究库</small></a>
+<div class="links">
+<a href="../../index.html">首页</a>
+<a href="../../survey/index.html">综述</a>
+<a href="../../papers/index.html" class="on">论文</a>
+<a href="../../papers/07-harness/index.html">Harness</a>
+</div>
+<span class="spacer"></span>
+<button class="searchbtn" data-search aria-label="搜索"><span>搜索</span><kbd>⌘K</kbd></button>
+<button class="iconbtn" id="themebtn" aria-label="切换明暗主题"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+<button class="iconbtn" id="menubtn" aria-label="菜单"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+</nav><header class="dochead"><div class="wrap"><div class="crumb"><a href="../../index.html">首页</a> / <a href="../../papers/index.html">论文</a> / <a href="../../papers/07-harness/index.html">Agent 与 Harness</a></div><h1>RoboHarness 深度调研笔记</h1><p class="lede">把异构策略（VLA、WAM、RL、TAMP）各自封装成可复用 agentic skill，用多模态执行记忆 + 在线证据刻画&quot;能力边界&quot;做任务分解与路由；Memory Bridge 让策略交接时先把机器人带到下一个策略的分布内状态——免联合重训</p><div class="chips"><a class="chip cat" href="../../papers/07-harness/index.html">Harness</a><span class="chip">02-冻结策略的运行时编排</span></div><div class="infobox"><div class="irow"><span class="ik">分类</span><span class="iv"><a href="../../papers/07-harness/index.html">Agent 与 Harness</a></span></div><div class="irow"><span class="ik">对应专题</span><span class="iv">§7 Agent / harness：冻结策略，把智能放到运行时</span></div><div class="irow"><span class="ik">功能子夹</span><span class="iv">02-冻结策略的运行时编排</span></div><div class="irow"><span class="ik">来源</span><span class="iv">Harness / Agentic-VLA 簇（22 篇）</span></div><div class="irow"><span class="ik">论文全名</span><span class="iv">RoboHarness: Memory-Driven Orchestration of Heterogeneous Robot Policies for Long-Horizon Planning</span></div><div class="irow"><span class="ik">arXiv</span><span class="iv"><a href="https://arxiv.org/abs/2607.18060 (2026-07-20, v3 2026-09-29)" target="_blank" rel="noopener">2607.18060 (2026-07-20, v3 2026-09-29)</a></span></div><div class="irow"><span class="ik">机构</span><span class="iv">Jinbang Huang, Zhiyuan Li, … Mark Coates, Yingxue Zhang 等</span></div><div class="irow"><span class="ik">笔记</span><span class="iv">六站式深读 · 数字标「tex 已验」</span></div></div></div></header><div class="docgrid"><aside class="toc"><p class="t">本文目录</p><ul><li><a class="h2" href="#速览">速览</a></li><li><a class="h2" href="#①-动机-两个被忽视的问题">① 动机：两个被忽视的问题</a></li><li><a class="h2" href="#②-架构-策略即技能-三类元技能">② 架构：策略即技能 + 三类元技能</a></li><li><a class="h2" href="#③-机制-memory-bridge-本文最具复用价值的设计">③ 机制：Memory Bridge（本文最具复用价值的设计）</a></li><li><a class="h2" href="#④-数据与结果">④ 数据与结果</a></li><li><a class="h2" href="#④a-主结果对比-论文-rmbench-behavior-1k-表-tex-已验">④A 主结果对比（论文 RMBench / BEHAVIOR-1K 表，tex 已验）</a></li><li><a class="h2" href="#④b-核心消融-异构策略配置-table-配置表">④B 核心消融（异构策略配置，Table 配置表）</a></li><li><a class="h2" href="#⑤-信息流">⑤ 信息流</a></li><li><a class="h2" href="#⑥-例子">⑥ 例子</a></li><li><a class="h2" href="#⑦-局限-作者自陈方向">⑦ 局限（作者自陈方向）</a></li><li><a class="h2" href="#⑧-簇内定位">⑧ 簇内定位</a></li></ul></aside><main class="prose"><h2 id="速览">速览</h2>
+<div class="tbl"><table><thead><tr><th>项</th><th>内容</th></tr></thead><tbody><tr><td>一句话</td><td>把<strong>异构策略</strong>（VLA、WAM、RL、TAMP）各自封装成可复用 agentic skill，用多模态执行记忆 + 在线证据刻画&quot;能力边界&quot;做任务分解与路由；<strong>Memory Bridge</strong> 让策略交接时先把机器人带到下一个策略的分布内状态——<strong>免联合重训</strong></td></tr><tr><td>冻结</td><td>全部被编排的策略（独立开发的 VLA/RL/TAMP）</td></tr><tr><td>演化</td><td>理解/记忆/进化三类元技能支撑的路由与桥接</td></tr><tr><td>规模</td><td>5 个公开基准 + 500 定制任务（10 类）+ 135 次真机试验</td></tr></tbody></table></div>
+<h2 id="①-动机-两个被忽视的问题">① 动机：两个被忽视的问题</h2>
+<ol>
+<li><strong>能力边界不确定</strong>：没有任何单一策略能可靠覆盖长程任务；组合异构策略时，规划器不知道每个策略&quot;在哪好用、在哪失灵&quot;——现有规划方法假设同构、预定义、适用性固定的技能。</li>
+<li><strong>交接分布错配</strong>：策略 A 结束时的机器人状态可能落在策略 B 的分布外，B 一上来就崩——这是异构编排特有的&quot;handoff&quot;难题。</li>
+</ol>
+<h2 id="②-架构-策略即技能-三类元技能">② 架构：策略即技能 + 三类元技能</h2>
+<ul>
+<li>每个异构控制系统被封装成<strong>可复用 agentic skill</strong>（框架设计为通用：导航策略、MPC、WAM 都能挂）；</li>
+<li>harness 集成 <strong>理解 / 记忆 / 进化</strong> 三类技能：</li>
+<li><strong>理解</strong>：用多模态执行记忆 + 在线证据推理各策略的能力边界；</li>
+<li><strong>记忆</strong>：执行轨迹库，按策略与场景索引；</li>
+<li><strong>进化</strong>：capability-aware 任务分解与策略路由随证据更新。</li>
+</ul>
+<h2 id="③-机制-memory-bridge-本文最具复用价值的设计">③ 机制：Memory Bridge（本文最具复用价值的设计）</h2>
+<p>策略 B 接管前：</p>
+<ol>
+<li>从记忆检索<strong>策略 B 相关的执行轨迹</strong>；</li>
+<li>估计 B 的<strong>分布内状态区域</strong>（in-distribution region）；</li>
+<li>引导机器人移动到该区域——例如把物体摆到 B 训练时习惯的方位、把夹爪回到 B 期望的开合度——然后交接。</li>
+</ol>
+<ul>
+<li>插件式、<strong>免联合重训</strong>，专门治&quot;handoff 掉点&quot;。</li>
+</ul>
+<h2 id="④-数据与结果">④ 数据与结果</h2>
+<ul>
+<li>三个公开基准 + 500 定制任务 + 135 真机试验（论文 v3 口径为 5 benchmark / 500 tasks / 135 real）；</li>
+<li>长程一致性与执行可靠性显著提升，对 OOD 条件鲁棒；capability-aware 路由与稳定编排是主要增益来源。</li>
+</ul>
+<h2 id="④a-主结果对比-论文-rmbench-behavior-1k-表-tex-已验">④A 主结果对比（论文 RMBench / BEHAVIOR-1K 表，tex 已验）</h2>
+<p><strong>RMBench（9 任务平均成功率 %）</strong></p>
+<div class="tbl"><table><thead><tr><th>Diffusion Policy</th><th>π0.5</th><th>X-VLA</th><th>Mem-0</th><th><strong>RoboHarness</strong></th></tr></thead><tbody><tr><td>5.8</td><td>10.4</td><td>9.8</td><td>42.0</td><td><strong>77.2</strong></td></tr></tbody></table></div>
+<p>（极端任务对比：Press Button 0/0/0/0 → <strong>100</strong>；Blocks Ranking Try 6 → <strong>80</strong>）</p>
+<p><strong>BEHAVIOR-1K（6 任务平均 SR / PS）：</strong> π0.5 0.05/0.26 · X-VLA 0.05/0.15 · RLC 0.23/0.42 · G0.5 –/0.54 · <strong>RoboHarness 0.43/0.66</strong></p>
+<h2 id="④b-核心消融-异构策略配置-table-配置表">④B 核心消融（异构策略配置，Table 配置表）</h2>
+<p>论文按基准分配异构策略组合（LIBERO/LIBERO-Plus/RMBench/BEHAVIOR-1K = π0.5+TAMP；LIBERO-LoHo/消融研究 = π0.5+Faster-WAM+RLinf-OpenVLA+TAMP 四策略全开）。<strong>核心发现是&quot;异构编排+Memory Bridge&quot;的系统增益</strong>（RMBench 77.2 vs 最强单策略 42.0，+35.2pp）；逐组件单独关闭的数字论文以正文/图形式给出，未提供独立消融大表（诚实标注）。</p>
+<h2 id="⑤-信息流">⑤ 信息流</h2>
+<pre><code>长程指令 → 理解技能：分解为子任务（按各策略能力边界）
+  → 路由：选策略 S_i → 执行 → 记录轨迹入记忆库
+  → 交接时 Memory Bridge：检索 S_{i+1} 轨迹 → 估计其分布内区域
+     → 引导机器人进入该区域 → 交接 → 重复直至完成</code></pre>
+<h2 id="⑥-例子">⑥ 例子</h2>
+<p>&quot;把积木装进盒子再放到架子上&quot;：抓取段路由给 VLA，精确插放段路由给 TAMP+RL；VLA 放手时 Memory Bridge 检索 TAMP 惯用的&quot;盒口朝上、物体在上方 5cm&quot;轨迹，先摆好再交接，避免 TAMP 因初始状态分布外而规划失败。</p>
+<h2 id="⑦-局限-作者自陈方向">⑦ 局限（作者自陈方向）</h2>
+<ul>
+<li>实例化只用 VLA/RL/TAMP 三族，对新策略族的泛化待验证；</li>
+<li>Memory Bridge 依赖轨迹检索与分布估计质量，高动态环境会吃紧；</li>
+<li>大而紧耦合的策略接入有架构开销。</li>
+</ul>
+<h2 id="⑧-簇内定位">⑧ 簇内定位</h2>
+<ul>
+<li>与 <strong>Harness VLA</strong>：Harness VLA 把&quot;一个冻结 VLA&quot;当原语 + 解析原语；RoboHarness 把<strong>多个异构策略</strong>都当原语，重点从&quot;怎么调用&quot;转到&quot;<strong>怎么交接</strong>&quot;；</li>
+<li>与 <strong>EMERGE-Policy</strong>：同为多组件编排，EMERGE 用角色化 Sub-Agent + 图结构，RoboHarness 用能力边界 + Memory Bridge；</li>
+<li>与 <strong>Orchestra</strong>：Orchestra 分离&quot;规划/执行管理&quot;与&quot;动作生成&quot;并用独立进度评估器，RoboHarness 用记忆驱动路由——两者都在回答&quot;长程谁负责记账&quot;。</li>
+</ul></main></div><div class="pager"><a class="prev" href="roboharn-evo.html"><span class="dir">← 上一篇</span><span class="ttl">RoboHarn-Evo 深度调研笔记</span></a><a class="next" href="zetta.html"><span class="dir">下一篇 →</span><span class="ttl">Zetta 深度调研笔记</span></a></div><section class="related"><h2>同分类其他笔记</h2><div class="cards"><article class="pcard" data-cat="07-harness" data-name="RAX 深度调研笔记" data-year="2026" data-idx="22" data-hay="rax 深度调研笔记 冻结通用 coding agent 直接连机器人感知/控制接口，把&quot;在线探索&quot;做成 scaling law：成功决策编译成程序、版本化入库，能力随探索预算单调增长 harvard · nvidia · uc berkeley · mit · stanford · harness/agentic-vla · 纯代码路线 · 探索 scaling · scaling online exploration for robot agents (rax)"><h3><a href="rax.html">RAX 深度调研笔记</a></h3><p class="sum">冻结通用 coding agent 直接连机器人感知/控制接口，把&quot;在线探索&quot;做成 scaling law：成功决策编译成程序、版本化入库，能力随探索预算单调增长</p><div class="foot"><span class="chip cat">Harness</span><span class="chip">01-代码即策略与技能发现</span><span class="yr">2026</span></div></article><article class="pcard" data-cat="07-harness" data-name="AdaHVLA 深度调研笔记" data-year="0" data-idx="23" data-hay="adahvla 深度调研笔记 在任务级推理器与 vla 之间加一段可编辑的协调代码，用机器人经验迭代修订它；解耦多 agent 适配（证据分析 / harness 修订 / 行为评估分置于不同上下文）+ 有状态修订图把证据-假设-修订-效果连成图——navila-lh 22.5%→57.5%，操纵任务跨三个 vla 底座最高 +30.8pp unc · ustc · hkust · cuhk（junyi tang, jie peng, … tianlong chen） · harness/adaptive-revision · 修订图 · vla 外挂协调层 · adahvla: adaptive harnesses for long-horizon vision-language-action execution"><h3><a href="adahvla.html">AdaHVLA 深度调研笔记</a></h3><p class="sum">在任务级推理器与 VLA 之间加一段可编辑的协调代码，用机器人经验迭代修订它；解耦多 agent 适配（证据分析 / harness 修订 / 行为评估分置于不同上下文）+ 有状态修订图把证据-假设-修订-效果连成图——NaVILA-LH 22.5%→57.5%，操纵任务跨三个 VLA 底座最高 +30.8pp</p><div class="foot"><span class="chip cat">Harness</span><span class="chip">03-自我进化与技能库</span></div></article><article class="pcard" data-cat="07-harness" data-name="ASPIRE 深度调研笔记" data-year="0" data-idx="24" data-hay="aspire 深度调研笔记 让 coding agent 当&quot;机器人程序员&quot;：写代码→跑→看 per-primitive 多模态 trace→定位 bug→改→把验证过的修复蒸馏成&quot;失败签名→修复动作&quot;技能库；配进化搜索逃出局部修复环 nvidia gear · umich · uiuc · uc berkeley · cmu · ut austin · asu（runyu lu, yubo wu 等；jim fan / yuke zhu / guanzhi wang 领衔） · harness/agentic-vla · 纯代码路线 · 技能库持续学习 · aspire: agentic skill programming through iterative robot exploration (agentic /skills discovery for robotics)"><h3><a href="aspire.html">ASPIRE 深度调研笔记</a></h3><p class="sum">让 coding agent 当&quot;机器人程序员&quot;：写代码→跑→看 per-primitive 多模态 trace→定位 bug→改→把验证过的修复蒸馏成&quot;失败签名→修复动作&quot;技能库；配进化搜索逃出局部修复环</p><div class="foot"><span class="chip cat">Harness</span><span class="chip">01-代码即策略与技能发现</span></div></article></div></section><footer class="site"><div class="in">
+<div><b>VLA Research Hub</b> · 44 篇论文精读 + 7 篇综述 · 更新 2026-11-02</div>
+<div><a href="../../index.html">首页</a> · <a href="../../survey/index.html">综述</a> · <a href="../../papers/index.html">论文</a></div>
+</div></footer>
+<button class="totop" aria-label="回到顶部">↑</button>
+<div id="overlay"><div class="searchbox">
+<div class="hd"><span style="color:var(--faint)">🔍</span><input id="searchinput" placeholder="搜索论文、方向、机构…" autocomplete="off"><span class="hint">ESC</span></div>
+<div id="results"></div></div></div>
+<script>window.__BASE="../../";</script>
+<script src="../../assets/app.js"></script>
+</body></html>
