@@ -75,3 +75,9 @@ nav .back{margin-left:0}
 .paper-body p,.paper-body li{font-size:15.5px}
 footer{border-top:1px solid var(--line);margin-top:40px;padding-top:18px}
 @media(max-width:640px){.hero h1{font-size:24px}.grid{grid-template-columns:1fr}}
+
+/* info block */
+.infobox{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:14px 0 18px;display:grid;grid-template-columns:auto 1fr;gap:7px 14px;align-items:baseline}
+.infobox .ik{font-size:13px;font-weight:700;color:var(--acc);white-space:nowrap}
+.infobox .iv{font-size:14px;color:var(--ink);word-break:break-all}
+.infobox .iv .aff{color:var(--muted);font-size:13px}
