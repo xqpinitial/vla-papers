@@ -1,0 +1,91 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RT-2 论文精读：把动作写成文本 token 的 VLA 范式</title><link rel="stylesheet" href="assets/style.css"></head>
+<body><nav><a class="brand" href="index.html">📚 VLA 论文精读</a><span class="nav-sub">22 篇 · 2020–2026</span><span class="spacer"></span><a class="back" href="index.html">← 总览</a></nav>
+<header class="paper-head"><div class="chips"><a class="chip cat" href="index.html">论文精读</a><span class="chip">更新 2026-11-01</span></div>
+<h1>RT-2 论文精读：把动作写成文本 token 的 VLA 范式</h1>
+<div class="infobox"><div class="irow"><span class="ik">📄 篇目</span><span class="iv"><span class="au">rt-2</span></span></div><div class="irow"><span class="ik">🏷️ 系列</span><span class="iv">VLA 论文精读（22 篇）</span></div><div class="irow"><span class="ik">🗓️ 更新</span><span class="iv">2026-11-01</span></div><div class="irow"><span class="ik">🔗 索引</span><span class="iv"><a href="index.html">返回 22 篇总览</a></span></div></div></header>
+<main class="paper-body"><p>RT-2 用 55B 的 PaLI-X 或 PaLM-E，把机器人动作编码成文本字符串，并在机器人数据与互联网 VQA 数据上联合微调；推理频率低于 1Hz。它的价值是证明互联网视觉语言知识可以迁移到机器人控制，代价是模型规模与推理速度。本地章节没有给出 RT-2 的代码、权重、成功率或训练配方，因此本文按“范式阅读”写，不按“可复现”写。</p>
+<p>本文反复用到的对照数字：RT-2 参数量 55B、推理低于 1Hz、动作为文本 token；RT-1 参数量 35M、推理约 3Hz、每维动作 256 bins。以上均为作者报告、经本地章节转述，本文未核对论文原文。</p>
+<blockquote>说明：本文按 <code>paper-deep-read</code> 结构生成；事实来自本仓库 <a href="../../03RT系列论文解读与代码分析/01RT系列论文解读与代码分析.md">RT 系列导读</a>。章节未给论文节号/表号、完整成功率与训练配方；公开入口见 §1，文中只在必要处注明。<br><br>标记约定：<strong>作者报告（章节转述）</strong> 指论文结论经章节转述、本文未核对原文；<strong>章节陈述</strong> 指本地导读自己的判断；<strong>章节代码</strong> 指导读中给出的示例代码。</blockquote>
+<h3>1. 论文与官方资源</h3>
+<table><tr><th>资源</th><th>网页来源</th><th>说明</th></tr><tr><td>论文</td><td><a href="https://arxiv.org/abs/2307.15818">arXiv:2307.15818</a></td><td>公开入口*</td></tr><tr><td>源码</td><td>无官方 RT-2 代码；RT-1 参考 <a href="https://github.com/google-research/robotics_transformer">google-research/robotics_transformer</a></td><td>公开入口*</td></tr><tr><td>权重</td><td>无公开权重</td><td>—</td></tr><tr><td>项目页</td><td><a href="https://robotics-transformer2.github.io/">robotics-transformer2.github.io</a></td><td>公开入口*</td></tr></table>
+<blockquote>* 公开入口未在本地章节核验；本地章节只用于事实核对。</blockquote>
+<p>论文：RT-2（2023，Google DeepMind）；arXiv：2307.15818（公开入口，未在本地章节核验）；版本：本地导读整理，不是论文版本号。</p>
+<p><strong>版本提示：</strong>本地导读把 RT-1、RT-2、RT-X 放在同一章对照（章节 §5 有一张三代对照表）。本文只取 RT-2 部分，RT-1/RT-X 的数字仅用于解释差异，不与 RT-2 混成同一评测口径。</p>
+<h3>2. 核心问题：动作能不能直接当成语言</h3>
+<p>RT-2 的设计取舍是：不为机器人新增专用动作头，而是把动作写成文本 token，让同一个 VLM 在生成语言答案的同时生成动作串。</p>
+<figure style="text-align:center;margin:1.4em 0"><img src="assets/rt-2-architecture.svg" alt="RT-2 训练与推理信息流" style="max-width:100%;border:1px solid #e5e7eb;border-radius:8px"><figcaption class="figcap">RT-2 训练与推理信息流</figcaption></figure>
+<p>图 1：RT-2 的训练与推理信息流。自绘，依据本地导读；不是论文原图。</p>
+<p>对比 RT-1 的路径：RT-1 用 EfficientNet + FiLM + Token Learner + Transformer，动作走每维 256 bins 的分类；RT-2 把动作放进 VLM 的文本生成接口。变化不只是“模型更大”，而是<strong>动作的表示从分类标签变成了语言 token</strong>。</p>
+<ul><li>节省了什么：不需要为机器人单独设计动作头，也不需要从零训练机器人表征；动作与语言共用一套解码流程。</li><li>保留了什么：VLM 在互联网数据里学到的语义理解与常识；章节把符号推理与视觉语义泛化归因于这部分知识。</li><li>代价是什么：55B 规模与低于 1Hz 的推理频率，使它不适合高频闭环控制。</li><li>读者该学什么：<strong>语义泛化优先时，动作可以作为语言接口；高频控制优先时，这个接口太慢。</strong></li></ul>
+<p>来源：章节 §3.1–§3.3、§5 对照表。</p>
+<h3>3. 模型结构与张量流</h3>
+<p>章节没有给 RT-2 的分层结构、张量维度或动作词表大小；能确认的是它没有新增机器人专用模块，而是在预训练 VLM 上做联合微调。因此本节按“backbone → 动作 token 化 → 数据混合”三件事组织，不虚构层数与维度。</p>
+<h4>3.1 Backbone 与两代对照</h4>
+<table><tr><th>项目</th><th>RT-1</th><th>RT-2</th></tr><tr><td>发布时间</td><td>2022</td><td>2023</td></tr><tr><td>参数量</td><td>35M（作者报告，章节转述）</td><td>55B（作者报告，章节转述）</td></tr><tr><td>Backbone</td><td>EfficientNet + FiLM + Token Learner + Transformer</td><td>PaLI-X 或 PaLM-E</td></tr><tr><td>输入</td><td>图像 + 文本指令</td><td>图像 + 文本</td></tr><tr><td>动作表示</td><td>每维 256 bins 的离散 token</td><td>文本 token（如 <code>128 128 100 ...</code>）</td></tr><tr><td>推理频率</td><td>约 3Hz（章节称实时）</td><td>低于 1Hz（章节注“需云端或量化”）</td></tr><tr><td>训练数据</td><td>章节未给（仅说明为端到端控制模型）</td><td>机器人数据 + 互联网 VQA（配比未给）</td></tr><tr><td>开源状态</td><td>章节称 Google 开源了 <code>rt-1</code> 代码</td><td>章节未提供代码或权重入口</td></tr></table>
+<p>读这张表要注意：两代的参数量、动作表示和推理频率是章节明确给出的，属作者报告、经章节转述；训练数据与开源状态两行是章节陈述，其中 RT-1 的数据集与规模章节没有展开。</p>
+<p>来源：章节 §2.1、§2.2、§3、§5 对照表。</p>
+<h4>3.2 动作即文本：token 化与反 token 化</h4>
+<p>章节用 RT-1 的 tokenizer 代码说明 RT 系列的动作离散化：把每一维连续动作映射到 0–255 的整数，再交给 Transformer 当分类目标。RT-2 沿用“动作变成 token”的思路，但把离散整数写成了文本串；章节没有给出 RT-2 的词表组织方式。</p>
+<p>设第 $d$ 维动作为 $a_d$，离散 token 为 $k_d$，词表大小为 $V$，动作范围为 $[a_{\min}, a_{\max}]$，章节代码对应：</p>
+<p>$$</p>
+<p>k_d = \left\lfloor \operatorname{clip}\!\left(\frac{a_d-a_{\min}}{a_{\max}-a_{\min}},\,0,\,1\right)\times (V-1)\right\rfloor</p>
+<p>$$</p>
+<p>$$</p>
+<p>a_d = \frac{k_d+0.5}{V}\times (a_{\max}-a_{\min}) + a_{\min}</p>
+<p>$$</p>
+<p>章节代码的默认值是 $a_{\min}=-1$、$a_{\max}=1$、$V=256$；$k_d$ 取值 0–255。需要说明两点：</p>
+<ul><li>这是<strong>章节代码</strong>（RT-1 版本），不是 RT-2 论文公式；RT-2 如何把一条动作切成文本 token、每条动作占多少 token，章节未给。</li><li>按章节代码复算，tokenize 用 $(V-1)$ 缩放、detokenize 用 $(k_d+0.5)/V$，两者不是严格互逆；章节未解释这一差异，照抄实现时需要自行校验。</li></ul>
+<p>读论文时重点看：动作 token 在词表里怎么组织（单维一个 token 还是整串 token）；动作串如何解析回连续值；token 粒度如何同时影响精度与序列长度。</p>
+<p>来源：章节 §2.2–§2.3（含 tokenizer 代码）。</p>
+<h4>3.3 联合微调：机器人数据 + 互联网 VQA</h4>
+<table><tr><th>数据源</th><th>训练中的角色</th><th>章节给出的目的</th></tr><tr><td>机器人数据（章节未细分字段）</td><td>让 VLM 学会输出动作</td><td>注入机器人控制能力</td></tr><tr><td>互联网 VQA（图像 + 问题 + 答案）</td><td>与机器人数据混合训练</td><td>防止灾难性遗忘，保留常识与语义</td></tr></table>
+<p>章节的因果解释是：如果只在机器人数据上微调，大模型会丢掉原有的常识推理能力，变成一个“只会干活”的模型；混入 VQA 数据可以缓解这个问题。这是章节对“为什么联合微调”的定性说明，不是消融结论——章节没有给混合比例、采样策略或遗忘指标。</p>
+<p>来源：章节 §3.3 与章节图 2（联合微调策略）。</p>
+<h4>3.4 结构与训练，读论文时看什么</h4>
+<ul><li><strong>动作接口</strong>：文本动作的词表如何扩展，是否与自然语言词表共享 embedding。</li><li><strong>数据混合</strong>：机器人数据与 VQA 的比例如何影响通用能力保留与动作成功率。</li><li><strong>backbone 选择</strong>：章节只列了 PaLI-X 与 PaLM-E 两个选项，没有给两者的对照结果。</li><li><strong>规模代价</strong>：55B 与低于 1Hz 是章节同时给出的两个事实，读的时候要一起看，不能只引用参数量。</li></ul>
+<p>来源：章节 §3。</p>
+<h3>4. 实验结果</h3>
+<p>章节对 RT-2 的结果是定性的：没有任务集、每任务 trials、总测试次数、种子、测试硬件或完整成功率表。因此本节只整理“章节声称了什么能力”，不做数值横比。</p>
+<table><tr><th>能力</th><th>章节描述</th><th>证据口径</th></tr><tr><td>符号推理</td><td>指令“捡起快灭绝的动物”，模型识别恐龙玩具并抓取；章节称训练数据中没有“灭绝动物”与动作的配对</td><td>作者报告，经章节转述；无成功率</td></tr><tr><td>视觉语义泛化</td><td>能识别训练集中未见过的物体与背景</td><td>作者报告，经章节转述；无成功率</td></tr><tr><td>能力来源</td><td>章节把能力归因于 VLM 的互联网知识，而不是更大的机器人数据</td><td>章节陈述；无对照数字</td></tr></table>
+<p>读法：这三条能支持“方向可行”的判断，不能支持“RT-2 比 RT-1 高多少”。章节没有给出同一任务上的两代对照，任何百分比都不应从这里推导。若需要数值，只能回论文原文补。</p>
+<p>来源：章节 §3.2、§5。</p>
+<h3>5. 消融实验</h3>
+<p>章节只给了一个定性判断：机器人数据 + VQA 的联合微调，比只用机器人数据更能保留通用能力；没有消融表、数据配比或遗忘指标。</p>
+<h4>5.1 章节点到但未给数字的消融</h4>
+<table><tr><th>候选消融</th><th>章节是否给结果</th><th>读原文时找什么</th></tr><tr><td>只用机器人数据 vs 机器人 + VQA</td><td>仅定性（联合微调更好）</td><td>遗忘指标、VQA 比例、对照任务</td></tr><tr><td>PaLI-X vs PaLM-E</td><td>未给</td><td>两种 backbone 的成功率与延迟</td></tr><tr><td>动作 token 粒度</td><td>未给</td><td>粒度对成功率与动作串长度的影响</td></tr><tr><td>机器人数据规模</td><td>未给</td><td>数据量与泛化的关系</td></tr></table>
+<p>收益是多少、在哪个 benchmark 更明显、读者该不该复用：章节无法回答。能复用的是“混合数据防遗忘”这一设计假设，但必须在自己的数据上验证，不能把章节的定性判断当成已复现结论。</p>
+<h4>5.2 论文阅读路线（按章节点名的主题，非论文章节号）</h4>
+<p>章节没有给论文的节号或表号；下表按章节点名的主题组织，不能当作论文目录使用。</p>
+<table><tr><th>阅读主题</th><th>章节依据</th><th>论文位置</th><th>读它回答什么</th></tr><tr><td>动作即语言</td><td>§3.1</td><td>章节未标注</td><td>动作如何编码成文本、词表如何扩展</td></tr><tr><td>涌现能力</td><td>§3.2</td><td>章节未标注</td><td>符号推理与视觉泛化的评测任务、数字</td></tr><tr><td>联合微调</td><td>§3.3、图 2</td><td>章节未标注</td><td>数据混合比例与防遗忘证据</td></tr><tr><td>两代对照</td><td>§5 对照表</td><td>章节未标注</td><td>参数量、动作表示、频率的原始口径</td></tr><tr><td>开源平替</td><td>§5 学习建议</td><td>章节未标注</td><td>OpenVLA 与 RT-2 的差异</td></tr></table>
+<p>来源：章节 §3、§5。</p>
+<h3>6. 延迟与显存怎么读</h3>
+<table><tr><th>指标</th><th>章节值</th><th>口径</th><th>不能推出什么</th></tr><tr><td>RT-2 推理频率</td><td>低于 1Hz</td><td>章节 §5 对照表，注“需云端或量化”</td><td>具体毫秒数、硬件、batch 大小</td></tr><tr><td>RT-1 推理频率</td><td>约 3Hz</td><td>章节称实时输出控制指令</td><td>RT-2 的延迟上界</td></tr><tr><td>参数量</td><td>RT-2 55B / RT-1 35M</td><td>章节对照表</td><td>显存占用（还取决于精度与并行方式）</td></tr><tr><td>延迟测量协议</td><td>未给</td><td>—</td><td>无法复现计时或横比</td></tr></table>
+<p>按 <code>1000 / 频率</code> 换算：RT-1 约 3Hz 对应每次策略调用约 333ms；RT-2 低于 1Hz 对应每次策略调用超过 1s。这是<strong>换算</strong>，不是章节实测值。表中的频率与参数量为作者报告、经章节转述；测量协议、硬件与显存章节均未给。</p>
+<p>还要区分三个概念：模型延迟、完整请求延迟、重规划间隔。章节只给了推理频率这一层信息；它说明策略调用频率，不说明动作执行频率，也不说明端到端反馈频率。因此 55B/低于 1Hz 只能支持“适合慢层语义接口”的判断，不能用来估算某个具体控制回路的可用性。</p>
+<p>来源：章节 §5 对照表、§2。</p>
+<h3>7. 训练资源与卡数</h3>
+<p>章节没有给 RT-2 的训练硬件、优化器步数、batch、学习率、warmup、EMA 或数据配比，也没有给 RT-1 的训练配方。能确认的只有两点：</p>
+<ol><li>RT-2 不是从头训练，而是从预训练 VLM 出发做微调（章节 §3 开头）。</li><li>微调使用机器人数据与互联网 VQA 的混合数据（章节 §3.3）。</li></ol>
+<p>因此本文不写“硬件/步数/有效 batch”级别的配方表，也不写梯度累积公式——这些量章节一个都没有给，按 55B 反推卡数只会得到猜测。三级复现的落点是：理解级可以读导读和 OpenVLA；加载级与训练级在 RT-2 上没有入口（见 §8–§9）。</p>
+<p>来源：章节 §3。</p>
+<h3>8. 代码阅读顺序</h3>
+<p>本仓库章节没有提供 RT-2 的公开代码、权重或 commit，因此不存在可核对的文件路径，也不能写“从源码读起”。下面给的是<strong>替代读法</strong>，不是 RT-2 的代码阅读顺序：</p>
+<ol><li>读章节 §3，建立“动作即语言 + 联合微调”的范式，这是 RT-2 唯一可确认的设计层信息。</li><li>读章节 §2.2–§2.3 的 RT-1 tokenizer 代码，理解 256 bins 的离散化与反离散化。</li><li>读 <a href="openvla.html">OpenVLA</a> 的导读：章节称 OpenVLA 是 RT-2 的开源平替（基于 Llama 2 + Prismatic），可以下载权重微调；具体路径以该文为准，本文不复制。</li><li>读章节 §4 的 RT-X 部分，理解跨形态数据；它解决的是“身体多样性”，不是 RT-2 的复现。</li></ol>
+<p><strong>容易踩的坑：</strong>把“章节有 RT-1 tokenizer 代码”误当成“RT-2 有代码”。两者不是一回事：前者是动作分 bin 的教学示例，后者是 VLM 文本动作接口，章节没有给后者的实现。</p>
+<p>来源：章节 §2.3、§3、§4、§5 学习建议。</p>
+<h3>9. 从 checkpoint 开始复现</h3>
+<p>本地章节没有提供 RT-2 的公开 checkpoint、代码或数据配方，无法按 skill 的标准写加载检查、单 suite 评测与单卡训练。这一节只能写“不可复现”与替代路径。</p>
+<table><tr><th>替代路径</th><th>章节依据</th><th>能学到什么</th><th>边界</th></tr><tr><td>RT-1 公开代码</td><td>章节称 Google 开源了 <code>rt-1</code> 代码</td><td>动作分 bin、Transformer 控制流程</td><td>不是 RT-2 的 VLM 文本接口</td></tr><tr><td>OpenVLA</td><td>章节称其为 RT-2 开源平替（Llama 2 + Prismatic），可下载权重微调</td><td>开源 VLM + 动作的微调与评测</td><td>章节未给具体指标，需按 <a href="openvla.html">OpenVLA</a> 核对</td></tr><tr><td>RT-X / BridgeData V2</td><td>章节 §4、§5 学习建议</td><td>跨形态数据与正迁移</td><td>不是 RT-2 复现</td></tr></table>
+<p><strong>复现分级结论：</strong>RT-2 只能做到“理解级复现”，做不到“加载级”或“训练级”复现。上表三条路径都不是 RT-2 的官方链路，不能用来声称复现了 RT-2 的数字。</p>
+<p><strong>未在本机验证：</strong>以上均为阅读路径，不含可执行命令；章节也没有给出任何安装、下载或评测命令。</p>
+<p>来源：章节 §3、§5 学习建议。</p>
+<h3>10. 如何用到自己的项目</h3>
+<p>RT-2 最值得借的是“动作即语言”的接口思想，而不是 55B 的具体实现。章节给出的两个硬约束——55B 与低于 1Hz——决定了它适合慢层语义，不适合直接驱动高频控制回路。</p>
+<ul><li><strong>语义接口</strong>：把动作离散成文本 token，复用 VLM 词表，适合语言条件复杂、低频决策的任务；要测的是语义泛化与动作解析正确率，代价是推理频率与 token 精度。</li><li><strong>快慢分层</strong>：用 VLM 做慢层语义规划，用轻量动作头做高频执行；两层分别记录延迟与成功率，代价是系统复杂度与接口对齐。</li><li><strong>对照实验</strong>：在同一任务上比较文本 token（RT-2 路线）、256 bins（RT-1 路线）与开源基线（OpenVLA）；先统一评测协议，再谈优劣，代价是需要可复现的评测环境。</li></ul>
+<p>相关章节：<a href="openvla.html">OpenVLA</a>、<a href="galaxea-g0-5.html">Galaxea G0.5</a>、<a href="../../03RT系列论文解读与代码分析/01RT系列论文解读与代码分析.md">RT 系列导读</a>、<a href="../01-jishu-zhuanti.html">01 技术专题</a>。</p></main>
+<footer><a href="index.html">← 返回 22 篇总览</a> · 本页由笔记自动生成</footer>
+<button class="totop" aria-label="回到顶部" onclick="scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>addEventListener('scroll',function(){document.querySelector('.totop').classList.toggle('show',scrollY>600)},{passive:true})</script>
+</body></html>
