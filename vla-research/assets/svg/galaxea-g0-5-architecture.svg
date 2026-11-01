@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="500" viewBox="0 0 960 500">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+    </marker>
+  </defs>
+  <rect width="960" height="500" fill="#ffffff"/>
+  <text x="28" y="36" font-family="Helvetica, Arial, sans-serif" font-size="22" font-weight="bold" fill="#0f172a">Galaxea G0.5：推理与动作放进一条自回归流</text>
+
+  <!-- inputs -->
+  <rect x="24" y="76" width="196" height="58" rx="8" fill="#eef4ff" stroke="#3b6fb6"/>
+  <text x="122" y="100" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">过去 5 秒 / 6 帧</text>
+  <text x="122" y="121" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">多视角 RGB</text>
+
+  <rect x="24" y="150" width="196" height="58" rx="8" fill="#eef4ff" stroke="#3b6fb6"/>
+  <text x="122" y="174" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">任务指令</text>
+  <text x="122" y="195" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" fill="#1f2937">embodiment ID / text</text>
+
+  <rect x="24" y="224" width="196" height="58" rx="8" fill="#eef4ff" stroke="#3b6fb6"/>
+  <text x="122" y="248" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">本体状态</text>
+  <text x="122" y="269" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" fill="#1f2937">proprioception</text>
+
+  <line x1="220" y1="105" x2="268" y2="150" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="220" y1="179" x2="268" y2="179" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="220" y1="253" x2="268" y2="210" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- decoder -->
+  <rect x="270" y="130" width="224" height="100" rx="8" fill="#e8f7ee" stroke="#2f855a"/>
+  <text x="382" y="164" font-family="Helvetica, Arial, sans-serif" font-size="16" text-anchor="middle" fill="#1f2937">Qwen3.5 2B</text>
+  <text x="382" y="188" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">自回归 decoder</text>
+  <text x="382" y="210" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">统一 token 序列</text>
+
+  <!-- reasoning branch -->
+  <line x1="494" y1="158" x2="542" y2="128" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="544" y="84" width="204" height="82" rx="8" fill="#fff7e6" stroke="#b7791f"/>
+  <text x="646" y="110" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">可选 reasoning token</text>
+  <text x="646" y="133" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">Subtask / BBox /</text>
+  <text x="646" y="151" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">Trace / ActionHint</text>
+
+  <!-- action branch -->
+  <line x1="494" y1="200" x2="542" y2="230" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="544" y="190" width="220" height="82" rx="8" fill="#fff7e6" stroke="#b7791f"/>
+  <text x="654" y="216" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">动作 token</text>
+  <text x="654" y="239" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">27 维 ActionCodec / RVQ</text>
+  <text x="654" y="258" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">只对 active motion groups</text>
+
+  <line x1="654" y1="272" x2="654" y2="316" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="544" y="318" width="220" height="62" rx="8" fill="#eef4ff" stroke="#3b6fb6"/>
+  <text x="654" y="344" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">ActionCodec decoder</text>
+  <text x="654" y="366" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">token → 连续动作</text>
+
+  <line x1="654" y1="380" x2="654" y2="410" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="544" y="412" width="220" height="58" rx="8" fill="#f8fafc" stroke="#94a3b8"/>
+  <text x="654" y="437" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">16-step 动作块</text>
+  <text x="654" y="458" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">闭环重规划 → 新观测</text>
+
+  <text x="24" y="330" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#475569">27 维动作空间：left_control 9 + left_gripper 1</text>
+  <text x="24" y="352" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#475569">+ right_control 9 + right_gripper 1 + lower_body 7。</text>
+  <text x="24" y="378" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#475569">记忆：5 秒 / 6 帧；factorized 时空注意力；</text>
+  <text x="24" y="400" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#475569">history-frame dropout；历史 token 在末层丢弃。</text>
+  <text x="24" y="440" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#475569">图为自绘信息流，依据本地 G0.5 导读；不是论文原图。</text>
+</svg>
