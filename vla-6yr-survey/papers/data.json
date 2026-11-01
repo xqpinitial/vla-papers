@@ -1,0 +1,90 @@
+[
+ {
+  "stem": "3dvla",
+  "title": "3DVLA 论文精读：把 3D 实例与遮挡补全做成 VLA 的即插即用 token"
+ },
+ {
+  "stem": "act",
+  "title": "ACT 论文精读：CVAE + 动作分块，51.55M 参数也能做抓取"
+ },
+ {
+  "stem": "agentic-vla",
+  "title": "Agentic-VLA 论文精读：给 OpenVLA-OFT 加一个会设计奖励、引导探索、复用权重的在线适应外环"
+ },
+ {
+  "stem": "dexbotic-rlinf",
+  "title": "Dexbotic-RLinf 论文精读：把 VLA 模型入口接到分布式 RL 后训练"
+ },
+ {
+  "stem": "dexora",
+  "title": "Dexora 论文精读：把 VLA 推到 36-DoF 双臂双手"
+ },
+ {
+  "stem": "dit4dit",
+  "title": "DiT4DiT 论文精读：Cosmos 视频 backbone + DiT 动作头，先跑通 LIBERO 链路"
+ },
+ {
+  "stem": "dm0-5",
+  "title": "DM0.5 技术精读：把 VLA 在线执行链路逐段压成低延迟服务"
+ },
+ {
+  "stem": "eva-client",
+  "title": "EVA-Client 精读：把“训练完”到“真机能跑、能审计”的工程链路固定下来"
+ },
+ {
+  "stem": "eventvla",
+  "title": "EventVLA 论文精读：把关键视觉证据存成原图，需要时再看一次"
+ },
+ {
+  "stem": "galaxea-g0-5",
+  "title": "Galaxea G0.5 论文精读：把推理、记忆与动作 token 放进一条自回归流"
+ },
+ {
+  "stem": "lwd",
+  "title": "LWD 论文精读：把部署变成机群 RL 数据飞轮"
+ },
+ {
+  "stem": "openvla",
+  "title": "OpenVLA 论文精读：开源 7B 级 VLA 的 LIBERO 复现基线"
+ },
+ {
+  "stem": "physbrain",
+  "title": "PhysBrain 1.0 论文精读：先学物理常识，再让双脑 VLA 学控制"
+ },
+ {
+  "stem": "pi0",
+  "title": "π0 论文精读：在 LeRobot 链路里微调 5 步动作块策略"
+ },
+ {
+  "stem": "prts",
+  "title": "PRTS 论文精读：把目标可达性对比 RL 放进 VLA 预训练"
+ },
+ {
+  "stem": "rt-1",
+  "title": "RT-1 论文精读：把连续动作切成 256 个 bin 的机器人 Transformer"
+ },
+ {
+  "stem": "rt-2",
+  "title": "RT-2 论文精读：把动作写成文本 token 的 VLA 范式"
+ },
+ {
+  "stem": "rt-x",
+  "title": "RT-X 论文精读：用 22 种机器人的数据换一个更强的单机策略"
+ },
+ {
+  "stem": "smolvla",
+  "title": "SmolVLA 论文精读：在单张 3090 上把 LIBERO 微调跑到 0.71"
+ },
+ {
+  "stem": "visualthink-vla",
+  "title": "VisualThink-VLA 论文精读：用路由后的视觉证据替代文字 CoT"
+ },
+ {
+  "stem": "wall-oss",
+  "title": "WALL-OSS 论文精读：把预训练 VLM 接到可执行动作空间"
+ },
+ {
+  "stem": "wall-x",
+  "title": "WALL-X 精读：WALL 系列的开源工程栈，不是一篇论文"
+ }
+]
