@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HarnessBank 深度调研笔记</title>
+<meta name="description" content="任务 agent + 独立 evolver agent 的 harness 自进化框架：语义基因库按 (改哪里, 为什么改) 归档高质 harness 防搜索坍缩，四道门控筛掉无效/未激活/不显著/无增益的子代——七个 agent 基准 +5.1%~15.4%">
+<meta property="og:title" content="HarnessBank 深度调研笔记"><meta property="og:type" content="website">
+<link rel="stylesheet" href="../../assets/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%234f46e5'/%3E%3Ctext x='16' y='22' font-size='16' text-anchor='middle' fill='white' font-family='serif'%3EV%3C/text%3E%3C/svg%3E">
+</head><body>
+<div id="progress"></div><nav class="top">
+<a class="brand" href="../../index.html"><span class="dot"></span>VLA Research Hub<small>VLA 研究库</small></a>
+<div class="links">
+<a href="../../index.html">首页</a>
+<a href="../../survey/index.html">综述</a>
+<a href="../../papers/index.html" class="on">论文</a>
+<a href="../../papers/07-harness/index.html">Harness</a>
+</div>
+<span class="spacer"></span>
+<button class="searchbtn" data-search aria-label="搜索"><span>搜索</span><kbd>⌘K</kbd></button>
+<button class="iconbtn" id="themebtn" aria-label="切换明暗主题"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+<button class="iconbtn" id="menubtn" aria-label="菜单"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+</nav><header class="dochead"><div class="wrap"><div class="crumb"><a href="../../index.html">首页</a> / <a href="../../papers/index.html">论文</a> / <a href="../../papers/07-harness/index.html">Agent 与 Harness</a></div><h1>HarnessBank 深度调研笔记</h1><p class="lede">任务 agent + 独立 evolver agent 的 harness 自进化框架：语义基因库按 (改哪里, 为什么改) 归档高质 harness 防搜索坍缩，四道门控筛掉无效/未激活/不显著/无增益的子代——七个 agent 基准 +5.1%~15.4%</p><div class="chips"><a class="chip cat" href="../../papers/07-harness/index.html">Harness</a><span class="chip">03-自我进化与技能库</span></div><div class="infobox"><div class="irow"><span class="ik">分类</span><span class="iv"><a href="../../papers/07-harness/index.html">Agent 与 Harness</a></span></div><div class="irow"><span class="ik">对应专题</span><span class="iv">§7 Agent / harness：冻结策略，把智能放到运行时</span></div><div class="irow"><span class="ik">功能子夹</span><span class="iv">03-自我进化与技能库</span></div><div class="irow"><span class="ik">来源</span><span class="iv">Harness / Agentic-VLA 簇（22 篇）</span></div><div class="irow"><span class="ik">论文全名</span><span class="iv">HarnessBank: Semantic Gene-Bank Search with Gated Verification for Agent-Harness Self-Evolution</span></div><div class="irow"><span class="ik">arXiv</span><span class="iv"><a href="https://arxiv.org/abs/2607.13683 (2026-07-15 提交线 · arXiv 07-30, v2 08-03)" target="_blank" rel="noopener">2607.13683 (2026-07-15 提交线 · arXiv 07-30, v2 08-03)</a></span></div><div class="irow"><span class="ik">机构</span><span class="iv">恒心智能 EverMind · 盛大集团 Shanda（Xiaotian Luo, Dizhan Xue 等）</span></div><div class="irow"><span class="ik">笔记</span><span class="iv">六站式深读 · 数字标「tex 已验」</span></div></div></div></header><div class="docgrid"><aside class="toc"><p class="t">本文目录</p><ul><li><a class="h2" href="#速览">速览</a></li><li><a class="h2" href="#①-动机-自进化的三个失败模式">① 动机：自进化的三个失败模式</a></li><li><a class="h2" href="#②-架构-双-agent-基因库">② 架构：双 agent + 基因库</a></li><li><a class="h2" href="#③-机制-四道门控-gated-harness-screening">③ 机制：四道门控（Gated Harness Screening）</a></li><li><a class="h2" href="#④-数据与结果">④ 数据与结果</a></li><li><a class="h2" href="#④a-主结果对比-论文-table-1-llm-agent-基准-test-pass-1-tex-已验">④A 主结果对比（论文 Table 1，LLM-agent 基准，Test Pass@1，tex 已验）</a></li><li><a class="h2" href="#④b-核心消融-table-3-门控消融-table-2-跨模型匹配律-tex-已验">④B 核心消融（Table 3 门控消融 + Table 2 跨模型匹配律，tex 已验）</a></li><li><a class="h2" href="#⑤-信息流-一轮进化">⑤ 信息流（一轮进化）</a></li><li><a class="h2" href="#⑥-例子">⑥ 例子</a></li><li><a class="h2" href="#⑦-局限">⑦ 局限</a></li><li><a class="h2" href="#⑧-簇内定位">⑧ 簇内定位</a></li></ul></aside><main class="prose"><h2 id="速览">速览</h2>
+<div class="tbl"><table><thead><tr><th>项</th><th>内容</th></tr></thead><tbody><tr><td>一句话</td><td>任务 agent + 独立 evolver agent 的 harness 自进化框架：<strong>语义基因库</strong>按 (改哪里, 为什么改) 归档高质 harness 防搜索坍缩，<strong>四道门控</strong>筛掉无效/未激活/不显著/无增益的子代——七个 agent 基准 +5.1%~15.4%</td></tr><tr><td>冻结</td><td>任务模型权重（主实验 Qwen3.6-27B；跨模型含 397B / Gemini）</td></tr><tr><td>演化</td><td>harness 整体表面：prompt / 知识 / runtime / config（核心 kernel 不可变）</td></tr><tr><td>领域</td><td><strong>通用 LLM agent</strong>（Terminal-Bench 2 等），不是机器人——但它是机器人侧 harness 自进化（Zetta/SHAPER/RoboFoundry/AdaHVLA）的方法论源头之一</td></tr></tbody></table></div>
+<h2 id="①-动机-自进化的三个失败模式">① 动机：自进化的三个失败模式</h2>
+<ol>
+<li><strong>搜索坍缩</strong>：贪心选择只留单一线路，把&quot;高质但语义不同&quot;的 harness 丢掉，也可能记住个别训练任务而非修复失败机制；</li>
+<li><strong>评估噪声</strong>：agent 结果在临界任务上波动，沙箱崩溃/验证器超时等基建问题被误记为 harness 改动的效果；</li>
+<li><strong>过拟合与未激活</strong>：看似成功的补丁可能在执行中从未被触发，或只对筛选用任务过拟合。</li>
+</ol>
+<h2 id="②-架构-双-agent-基因库">② 架构：双 agent + 基因库</h2>
+<ul>
+<li><strong>任务 agent</strong> 在当前 harness 下执行环境任务；<strong>evolver agent</strong> 分析执行轨迹、诊断复现失败机制、生成子代 harness（不碰模型参数）。</li>
+<li><strong>Harness Gene Bank（HGB）</strong>：每个库 cell 按<strong>语义坐标</strong>索引——<code>where</code>（改动作用在哪个 harness 组件）× <code>why</code>（针对哪种失败病理）。不同失败机制的 harness 都保留在库中，evolver 可以：从失败轨迹<strong>再造</strong>机制，或<strong>跨 cell 重组</strong>兼容机制；质量偏置的父代选择利用最强线路，语义库保住贪心进化会丢的互补解。</li>
+</ul>
+<h2 id="③-机制-四道门控-gated-harness-screening">③ 机制：四道门控（Gated Harness Screening）</h2>
+<pre><code>子代 harness
+ ├─ ① 有效性门：剔除被基建故障污染的评估
+ ├─ ② 激活门：验证补丁在执行中真的被触发
+ ├─ ③ 配对显著性门：增益与任务级波动可区分（~2σ）
+ └─ ④ 增益门：必须胜过父代
+ → 过四门才上全量训练集评估 → 竞争入基因库</code></pre>
+<p>这是把&quot;<strong>可统计验证的筛选</strong>&quot;引入 harness 自进化——与 RAX 的&quot;无人值守成功才入库&quot;、ASPIRE 的 verifier 复现同一哲学，但做成了显式的统计协议。</p>
+<h2 id="④-数据与结果">④ 数据与结果</h2>
+<ul>
+<li>七个多样 agent 基准（含 Terminal-Bench 2 等）：一致提升 <strong>+5.1% ~ +15.4%</strong>；</li>
+<li>跨模型实验：进化出的 harness 是<strong>模型特异</strong>的而非普适最优——可迁移的是&quot;失败诊断 + 结构化搜索 + 验证&quot;这套流程本身；</li>
+<li>相关定位：对照 GEPA（prompt 进化）与 Darwin Gödel Machine（开放自改），HarnessBank 把优化面扩展到<strong>全 harness 表面</strong>。</li>
+</ul>
+<h2 id="④a-主结果对比-论文-table-1-llm-agent-基准-test-pass-1-tex-已验">④A 主结果对比（论文 Table 1，LLM-agent 基准，Test Pass@1，tex 已验）</h2>
+<div class="tbl"><table><thead><tr><th>基准</th><th>领域</th><th>Vanilla</th><th>Evolved</th><th>Δ</th></tr></thead><tbody><tr><td>TB2</td><td>终端操作</td><td>36.1</td><td><strong>45.4</strong></td><td>+9.3</td></tr><tr><td>LiveCode</td><td>代码生成</td><td>58.1</td><td><strong>71.8</strong></td><td>+13.7</td></tr><tr><td>Omni-MATH</td><td>数学推理</td><td>54.3</td><td><strong>66.0</strong></td><td>+11.7</td></tr><tr><td>AppWorld</td><td>App/API 控制</td><td>41.3</td><td><strong>56.7</strong></td><td>+15.4</td></tr><tr><td>SWE-bench</td><td>仓库级修 bug</td><td>47.4</td><td><strong>52.6</strong></td><td>+5.1</td></tr></tbody></table></div>
+<p>训练期 Pass@1 同步提升（如 LiveCode 64.6→85.6）；Pass@3 亦有 5~13 个点增益；knowledge retention 37%~148%。</p>
+<h2 id="④b-核心消融-table-3-门控消融-table-2-跨模型匹配律-tex-已验">④B 核心消融（Table 3 门控消融 + Table 2 跨模型匹配律，tex 已验）</h2>
+<ul>
+<li><strong>w/o 2σ 精英过滤</strong>：false elites +2，收敛轮数 &gt;20（cap）——没有统计门控，进化不收敛；</li>
+<li><strong>w/o confirm + 2σ</strong>：Pass@1 -1.6，false elites +3；</li>
+<li><strong>跨模型匹配律</strong>：同一 harness 迁到不同底座/数学域，增益由底座&quot;主导失败模式&quot;预测（如 397B 在 AppWorld 是 Careless → 换失败模式匹配的 harness 变体 +13.6；错配变体只有 +0.2/+1.2）。</li>
+</ul>
+<h2 id="⑤-信息流-一轮进化">⑤ 信息流（一轮进化）</h2>
+<pre><code>任务 agent 在当前 harness 下跑任务 → 执行轨迹
+  → evolver 诊断复现失败机制 → 生成子代 harness（改 prompt/知识/runtime/config）
+  → 小子集评估 → 四道门控 → 过门者上全量评估 → 质量竞争入库（按 where×why 归档）
+  → 下一轮：再造 or 跨 cell 重组</code></pre>
+<h2 id="⑥-例子">⑥ 例子</h2>
+<p>补丁类型如 Verify-Finalize（提交前自检，抑制过早收束）：如果轨迹显示 agent 反复&quot;提前宣布完成&quot;，evolver 生成&quot;finalize 前强制 verifier 检查&quot;的 harness 变体；激活门会验证这条补丁路径真的被执行到了，显著性门验证加了它确实赢。</p>
+<h2 id="⑦-局限">⑦ 局限</h2>
+<ul>
+<li>代码&quot;接受后开源&quot;，尚未发布；</li>
+<li>进化成本：每个子代要过多轮评估（门控正是为了省这笔钱）；</li>
+<li>模型特异性意味着换底座要重新进化。</li>
+</ul>
+<h2 id="⑧-簇内定位">⑧ 簇内定位</h2>
+<ul>
+<li>机器人侧自进化 harness（<strong>Zetta 的批量级进化 / RoboFoundry 的外循环 / AdaHVLA 的修订图 / HarnessBank 的基因库</strong>）共享同一套问题：怎么防搜索坍缩、怎么防噪声自评——HarnessBank 是把这套方法论讲得最显式的一篇；</li>
+<li>与 <strong>Harness²</strong>：都做&quot;harness 改 harness&quot;，HarnessBank 靠真值可评的基准门控，Harness² 靠行为对比在<strong>无验证器</strong>的开放世界工作；</li>
+<li>时间线上它是 07 月&quot;自进化&quot;分支的第一篇，随后 08–10 月的机器人化版本连续出现。</li>
+</ul></main></div><div class="pager"><a class="prev" href="harness2.html"><span class="dir">← 上一篇</span><span class="ttl">Harness² 深度调研笔记</span></a><a class="next" href="harnesseval-w.html"><span class="dir">下一篇 →</span><span class="ttl">HarnessEval-W 深度调研笔记</span></a></div><section class="related"><h2>同分类其他笔记</h2><div class="cards"><article class="pcard" data-cat="07-harness" data-name="RAX 深度调研笔记" data-year="2026" data-idx="22" data-hay="rax 深度调研笔记 冻结通用 coding agent 直接连机器人感知/控制接口，把&quot;在线探索&quot;做成 scaling law：成功决策编译成程序、版本化入库，能力随探索预算单调增长 harvard · nvidia · uc berkeley · mit · stanford · harness/agentic-vla · 纯代码路线 · 探索 scaling · scaling online exploration for robot agents (rax)"><h3><a href="rax.html">RAX 深度调研笔记</a></h3><p class="sum">冻结通用 coding agent 直接连机器人感知/控制接口，把&quot;在线探索&quot;做成 scaling law：成功决策编译成程序、版本化入库，能力随探索预算单调增长</p><div class="foot"><span class="chip cat">Harness</span><span class="chip">01-代码即策略与技能发现</span><span class="yr">2026</span></div></article><article class="pcard" data-cat="07-harness" data-name="AdaHVLA 深度调研笔记" data-year="0" data-idx="23" data-hay="adahvla 深度调研笔记 在任务级推理器与 vla 之间加一段可编辑的协调代码，用机器人经验迭代修订它；解耦多 agent 适配（证据分析 / harness 修订 / 行为评估分置于不同上下文）+ 有状态修订图把证据-假设-修订-效果连成图——navila-lh 22.5%→57.5%，操纵任务跨三个 vla 底座最高 +30.8pp unc · ustc · hkust · cuhk（junyi tang, jie peng, … tianlong chen） · harness/adaptive-revision · 修订图 · vla 外挂协调层 · adahvla: adaptive harnesses for long-horizon vision-language-action execution"><h3><a href="adahvla.html">AdaHVLA 深度调研笔记</a></h3><p class="sum">在任务级推理器与 VLA 之间加一段可编辑的协调代码，用机器人经验迭代修订它；解耦多 agent 适配（证据分析 / harness 修订 / 行为评估分置于不同上下文）+ 有状态修订图把证据-假设-修订-效果连成图——NaVILA-LH 22.5%→57.5%，操纵任务跨三个 VLA 底座最高 +30.8pp</p><div class="foot"><span class="chip cat">Harness</span><span class="chip">03-自我进化与技能库</span></div></article><article class="pcard" data-cat="07-harness" data-name="ASPIRE 深度调研笔记" data-year="0" data-idx="24" data-hay="aspire 深度调研笔记 让 coding agent 当&quot;机器人程序员&quot;：写代码→跑→看 per-primitive 多模态 trace→定位 bug→改→把验证过的修复蒸馏成&quot;失败签名→修复动作&quot;技能库；配进化搜索逃出局部修复环 nvidia gear · umich · uiuc · uc berkeley · cmu · ut austin · asu（runyu lu, yubo wu 等；jim fan / yuke zhu / guanzhi wang 领衔） · harness/agentic-vla · 纯代码路线 · 技能库持续学习 · aspire: agentic skill programming through iterative robot exploration (agentic /skills discovery for robotics)"><h3><a href="aspire.html">ASPIRE 深度调研笔记</a></h3><p class="sum">让 coding agent 当&quot;机器人程序员&quot;：写代码→跑→看 per-primitive 多模态 trace→定位 bug→改→把验证过的修复蒸馏成&quot;失败签名→修复动作&quot;技能库；配进化搜索逃出局部修复环</p><div class="foot"><span class="chip cat">Harness</span><span class="chip">01-代码即策略与技能发现</span></div></article></div></section><footer class="site"><div class="in">
+<div><b>VLA Research Hub</b> · 44 篇论文精读 + 7 篇综述 · 更新 2026-11-02</div>
+<div><a href="../../index.html">首页</a> · <a href="../../survey/index.html">综述</a> · <a href="../../papers/index.html">论文</a></div>
+</div></footer>
+<button class="totop" aria-label="回到顶部">↑</button>
+<div id="overlay"><div class="searchbox">
+<div class="hd"><span style="color:var(--faint)">🔍</span><input id="searchinput" placeholder="搜索论文、方向、机构…" autocomplete="off"><span class="hint">ESC</span></div>
+<div id="results"></div></div></div>
+<script>window.__BASE="../../";</script>
+<script src="../../assets/app.js"></script>
+</body></html>
