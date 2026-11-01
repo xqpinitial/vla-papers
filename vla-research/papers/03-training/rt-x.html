@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RT-X 论文精读：用 22 种机器人的数据换一个更强的单机策略</title>
+<meta name="description" content="RT-X 重新分配的是“本体差异”的处理位置——不在每个机器人上各训一个策略，而是先把动作对齐到共享 7-DoF 空间，再用混合本体数据训练一个策略族。">
+<meta property="og:title" content="RT-X 论文精读：用 22 种机器人的数据换一个更强的单机策略"><meta property="og:type" content="website">
+<link rel="stylesheet" href="../../assets/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%234f46e5'/%3E%3Ctext x='16' y='22' font-size='16' text-anchor='middle' fill='white' font-family='serif'%3EV%3C/text%3E%3C/svg%3E">
+</head><body>
+<div id="progress"></div><nav class="top">
+<a class="brand" href="../../index.html"><span class="dot"></span>VLA Research Hub<small>VLA 研究库</small></a>
+<div class="links">
+<a href="../../index.html">首页</a>
+<a href="../../survey/index.html">综述</a>
+<a href="../../papers/index.html" class="on">论文</a>
+<a href="../../papers/07-harness/index.html">Harness</a>
+</div>
+<span class="spacer"></span>
+<button class="searchbtn" data-search aria-label="搜索"><span>搜索</span><kbd>⌘K</kbd></button>
+<button class="iconbtn" id="themebtn" aria-label="切换明暗主题"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+<button class="iconbtn" id="menubtn" aria-label="菜单"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+</nav><header class="dochead"><div class="wrap"><div class="crumb"><a href="../../index.html">首页</a> / <a href="../../papers/index.html">论文</a> / <a href="../../papers/03-training/index.html">训练范式与在线强化学习</a></div><h1>RT-X 论文精读：用 22 种机器人的数据换一个更强的单机策略</h1><p class="lede">RT-X 重新分配的是“本体差异”的处理位置——不在每个机器人上各训一个策略，而是先把动作对齐到共享 7-DoF 空间，再用混合本体数据训练一个策略族。</p><div class="chips"><a class="chip cat" href="../../papers/03-training/index.html">训练范式</a><span class="chip">2023</span></div><div class="infobox"><div class="irow"><span class="ik">分类</span><span class="iv"><a href="../../papers/03-training/index.html">训练范式与在线强化学习</a></span></div><div class="irow"><span class="ik">对应专题</span><span class="iv">§3 训练范式：SFT / RL / 在线适应</span></div><div class="irow"><span class="ik">来源</span><span class="iv">VLA 六年演进（广域 22 篇）</span></div><div class="irow"><span class="ik">年份</span><span class="iv">2023</span></div><div class="irow"><span class="ik">笔记</span><span class="iv">六站式深读 · 数字标「tex 已验」</span></div></div></div></header><div class="docgrid"><aside class="toc"><p class="t">本文目录</p><ul><li><a class="h2" href="#1-论文与官方资源">1. 论文与官方资源</a></li><li><a class="h2" href="#2-核心问题-本体差异放在哪里处理">2. 核心问题：本体差异放在哪里处理</a></li><li><a class="h2" href="#3-模型结构与张量流">3. 模型结构与张量流</a></li><li><a class="h3" href="#3-1-数据集-章节给出的规模与缺口">3.1 数据集：章节给出的规模与缺口</a></li><li><a class="h3" href="#3-2-统一动作空间-7-dof">3.2 统一动作空间：7-DoF</a></li><li><a class="h3" href="#3-3-rt-x-模型-不是一个单独架构">3.3 RT-X 模型：不是一个单独架构</a></li><li><a class="h3" href="#3-4-读代码看什么">3.4 读代码看什么</a></li><li><a class="h2" href="#4-实验结果">4. 实验结果</a></li><li><a class="h3" href="#4-1-章节能支撑的结论">4.1 章节能支撑的结论</a></li><li><a class="h3" href="#4-2-标准对照表为什么填不出来">4.2 标准对照表为什么填不出来</a></li><li><a class="h3" href="#4-3-真机">4.3 真机</a></li><li><a class="h2" href="#5-消融实验">5. 消融实验</a></li><li><a class="h2" href="#6-延迟与显存怎么读">6. 延迟与显存怎么读</a></li><li><a class="h2" href="#7-训练资源与卡数">7. 训练资源与卡数</a></li><li><a class="h2" href="#8-代码阅读顺序">8. 代码阅读顺序</a></li><li><a class="h2" href="#9-从-checkpoint-开始复现">9. 从 checkpoint 开始复现</a></li><li><a class="h2" href="#10-如何用到自己的项目">10. 如何用到自己的项目</a></li></ul></aside><main class="prose"><p>RT-X（2023）把 RT 系列的“单机器人策略”推到“跨本体策略”：Google 联合 33 家实验室、收集 22 种不同机器人（Franka、UR5、WidowX 等）的数据构建 Open X-Embodiment，把所有动作映射到统一的 7-DoF（位置 3 + 姿态 3 + 夹爪 1）空间，再用 RT-1 / RT-2 变体在混合数据上训练。本地章节给出的核心结论是正迁移：用别人的机器人数据训练，能提升自己机器人的性能，数据稀缺任务上更明显。章节没有给任何成功率、数据规模、训练配方或延迟，因此本文按“范式阅读”写，不按“可复现”写。</p>
+<blockquote>来源约定：本文事实只取自本仓库 <span class="deadref" title="原始 every-embodied 仓库引用，本归档未收录该文件">RT 系列导读</span>（下称“本章程”），没有用模型记忆补写论文细节。<br>标记约定：<strong>章节陈述</strong>＝本地导读自己的归纳；<strong>章节未给</strong>＝本地章节没有该信息；<strong>公开入口</strong>*＝入口不在章节内、未在本地章节核验。<br>版本：论文 2023 年（章节只给年份）；arXiv 编号、论文版本日期、代码 commit 章节均未给；查阅日期 2026-11-01。</blockquote>
+<h2 id="1-论文与官方资源">1. 论文与官方资源</h2>
+<div class="tbl"><table><thead><tr><th>资源</th><th>入口</th><th>阅读用途</th></tr></thead><tbody><tr><td>论文</td><td>章节未给</td><td>本地章节没有给 arXiv 编号或 PDF 入口</td></tr><tr><td>源码</td><td>章节未给</td><td>本地章节没有给 RT-X 官方训练/推理代码</td></tr><tr><td>权重</td><td>章节未给</td><td>本地章节没有给 checkpoint 或模型卡</td></tr><tr><td>项目页</td><td><a href="https://robotics-transformer-x.github.io/" target="_blank" rel="noopener">robotics-transformer-x.github.io</a></td><td>公开入口*；章节只给数据集名称，未给页面</td></tr><tr><td>数据集</td><td><a href="https://github.com/google-deepmind/open_x_embodiment" target="_blank" rel="noopener">google-deepmind/open_x_embodiment</a></td><td>公开入口*；章节只给 Open X-Embodiment 名称与 33/22 规模</td></tr></tbody></table></div>
+<p>* 公开入口未在本地章节核验；本地章节只用于事实核对。</p>
+<p>论文题目：Open X-Embodiment / RT-X（章节未给完整题目）；arXiv：章节未给；版本：2023；代码 commit：章节未给；查阅日期 2026-11-01。</p>
+<p><strong>版本提示：</strong> 章节把 RT-X 写成“RT-1 / RT-2 变体、多种规格”，本身没有固定基座。任何“RT-X 的成功率/参数量/延迟”都必须先问是哪个变体；本文不替它补数字。</p>
+<h2 id="2-核心问题-本体差异放在哪里处理">2. 核心问题：本体差异放在哪里处理</h2>
+<p>一句话：RT-X 重新分配的是“本体差异”的处理位置——不在每个机器人上各训一个策略，而是先把动作对齐到共享 7-DoF 空间，再用混合本体数据训练一个策略族。</p>
+<figure><img src="../../assets/svg/rt-x-architecture.svg" alt="RT-X 跨本体数据与统一动作空间" loading="lazy"><figcaption>RT-X 跨本体数据与统一动作空间</figcaption></figure>
+<p>图 1：RT-X 的数据、动作空间与训练信息流。自绘，依据本地导读；不是论文原图。</p>
+<p>与图对应的信息流：33 家实验室的 22 种机器人数据 → 统一 7-DoF 动作空间 → RT-1 / RT-2 变体在混合数据上训练 → RT-X 策略接收图像、文本与机器人类型 → 在目标机器人上评测，观察正迁移。</p>
+<p>对比主流路径：每个机器人一个专家策略 → 一个策略族跨本体训练。</p>
+<ul>
+<li>节省了什么：按章节的正迁移结论，数据稀缺的机器人可以借用其他本体的数据；不需要为每个本体从零收集同等规模的演示。</li>
+<li>保留了什么：RT-1 / RT-2 的架构与离散动作 token 输出；章节表格明确写 RT-X 是这两种架构的变体。</li>
+<li>代价是什么：所有动作要先映射到 7-DoF，章节没有给非 7-DoF 本体的补齐/裁剪规则；混合采样比例也没有给。</li>
+<li>读者该学什么：跨本体的第一性问题不是模型大小，而是动作空间对齐与数据混合。</li>
+</ul>
+<p>来源：本章程 §4.1–4.2、§5。</p>
+<h2 id="3-模型结构与张量流">3. 模型结构与张量流</h2>
+<h3 id="3-1-数据集-章节给出的规模与缺口">3.1 数据集：章节给出的规模与缺口</h3>
+<div class="tbl"><table><thead><tr><th>项目</th><th>章节给出的值</th><th>说明</th></tr></thead><tbody><tr><td>数据集名称</td><td>Open X-Embodiment</td><td>章节只给名称</td></tr><tr><td>合作实验室</td><td>33 家</td><td>规模描述</td></tr><tr><td>机器人种类</td><td>22 种</td><td>规模描述</td></tr><tr><td>机器人举例</td><td>Franka、UR5、WidowX</td><td>章节只列三个例子</td></tr><tr><td>数据规模</td><td>章节未给</td><td>没有 episodes、小时数或任务数</td></tr><tr><td>数据格式</td><td>章节未给</td><td>没有 RLDS/LeRobot 等格式说明</td></tr><tr><td>常用子集</td><td>BridgeData V2</td><td>章节 §5 学习建议点名，称适合测试跨域泛化</td></tr></tbody></table></div>
+<p>章节没有给数据规模，因此不能从“33 家 / 22 种”推算训练 token 数、batch 或训练时长。</p>
+<h3 id="3-2-统一动作空间-7-dof">3.2 统一动作空间：7-DoF</h3>
+<div class="tbl"><table><thead><tr><th>分量</th><th>维数</th><th>章节说明</th></tr></thead><tbody><tr><td>位置</td><td>3</td><td>position</td></tr><tr><td>姿态</td><td>3</td><td>orientation</td></tr><tr><td>夹爪</td><td>1</td><td>gripper</td></tr><tr><td><strong>合计</strong></td><td><strong>7</strong></td><td>位置 + 姿态 + 夹爪</td></tr></tbody></table></div>
+<p>维度账本（按章节定义直接相加，不是论文公式）：</p>
+<pre><code class="language-text">dim(action) = 3 + 3 + 1 = 7</code></pre>
+<p>章节没有给姿态表示（欧拉角/四元数/轴角）、归一化方式、夹爪开合约定、控制频率，也没有给“非 7-DoF 机器人怎么映射”。读数据卡或自建管线时，这四项要先确认。</p>
+<h3 id="3-3-rt-x-模型-不是一个单独架构">3.3 RT-X 模型：不是一个单独架构</h3>
+<p>章节表格把 RT-X 的核心架构写成“RT-1 / RT-2 变体”，参数量写成“多种规格”；输入比 RT-1 / RT-2 多了“机器人类型”，输出仍是离散动作 token。这意味着同一份“RT-X”结果可能来自不同基座；比较时必须先问是哪个变体、哪个参数量、在哪个本体上评测。</p>
+<h3 id="3-4-读代码看什么">3.4 读代码看什么</h3>
+<p>章节没有给 RT-X 官方代码。如果借 RT-1 实现读，重点看三处：动作 tokenizer 是否支持 7 维、输入里是否有本体 ID、数据加载是否按本体分组。这三处决定“统一动作空间”是不是真的统一，而不是只在文档里统一。</p>
+<p>来源：本章程 §4.1–4.2、§5。</p>
+<h2 id="4-实验结果">4. 实验结果</h2>
+<h3 id="4-1-章节能支撑的结论">4.1 章节能支撑的结论</h3>
+<p>协议：章节没有给 benchmark 名称、任务数、每任务 trials、成功率、种子或真机硬件；下表只记录章节的定性结论与它给出的规模数字。</p>
+<div class="tbl"><table><thead><tr><th>章节结论</th><th>章节表述</th><th>支撑数字</th><th>能说明什么</th></tr></thead><tbody><tr><td>跨本体训练可行</td><td>22 种机器人、33 家实验室的混合数据</td><td>33 / 22</td><td>规模与可行性</td></tr><tr><td>正迁移</td><td>“用别人的机器人数据训练，能提升自己机器人的性能”</td><td>章节未给</td><td>方向性结论</td></tr><tr><td>数据稀缺任务更明显</td><td>“特别是在数据稀缺的任务上”</td><td>章节未给</td><td>方向性结论</td></tr><tr><td>BridgeData V2 适合跨域测试</td><td>学习建议</td><td>章节未给</td><td>实践建议</td></tr></tbody></table></div>
+<p>读法：这四条都不是受控实验数字；不能写成“RT-X 比 RT-1 高 X%”。章节也没有给“单本体训练 vs 混合本体训练”的对照，因此“正迁移”只能当作者结论，不能当本文复算结果。</p>
+<h3 id="4-2-标准对照表为什么填不出来">4.2 标准对照表为什么填不出来</h3>
+<p>固定列是模型 / 参数量 / 推理显存 / 延迟 / 平均成功率。章节只给 RT-X 参数量“多种规格”，显存、延迟、成功率全缺；RT-1 / RT-2 的数字又来自另一张概览表，不能拼成 RT-X 的一行。强行补列会变成编造。</p>
+<h3 id="4-3-真机">4.3 真机</h3>
+<p>章节没有给硬件、相机、任务、演示数、微调步数或测试次数；只给“在目标机器人上评测”的定性描述。视频入口章节未给。</p>
+<p>来源：本章程 §4.1–4.2、§5。</p>
+<h2 id="5-消融实验">5. 消融实验</h2>
+<p>章节没有消融表，也没有“单本体 vs 混合”“不同混合比例”“有无本体 ID”的对照。下表只列出章节提到的设计选择，以及它们为什么不能当消融结论：</p>
+<div class="tbl"><table><thead><tr><th>设计选择</th><th>章节给出的证据</th><th>能否当消融结论</th></tr></thead><tbody><tr><td>统一 7-DoF 动作空间</td><td>只给定义</td><td>否，没有其他动作空间的对照</td></tr><tr><td>22 种机器人混合</td><td>只给正迁移结论</td><td>否，没有单本体数值</td></tr><tr><td>RT-1 基座 vs RT-2 基座</td><td>只给两种变体</td><td>否，没有同任务对照</td></tr><tr><td>BridgeData V2 子集</td><td>只给学习建议</td><td>否，没有与其他子集的对照</td></tr></tbody></table></div>
+<p>读者该不该复用：统一动作空间 + 混合数据是跨本体的必要工程，但章节没有给混合比例、本体采样权重与负迁移分析；复用时必须自己补这三项消融。</p>
+<p>来源：本章程 §4.2、§5。</p>
+<h2 id="6-延迟与显存怎么读">6. 延迟与显存怎么读</h2>
+<div class="tbl"><table><thead><tr><th>模型</th><th>章节频率</th><th>显存</th><th>测量协议</th></tr></thead><tbody><tr><td>RT-X（RT-1 基座）</td><td>视基座模型而定</td><td>章节未给</td><td>章节未给</td></tr><tr><td>RT-X（RT-2 基座）</td><td>视基座模型而定</td><td>章节未给</td><td>章节未给</td></tr><tr><td>RT-1（参照）</td><td>~3Hz</td><td>章节未给</td><td>章节未给</td></tr><tr><td>RT-2（参照）</td><td>&lt;1Hz</td><td>章节未给</td><td>章节未给</td></tr></tbody></table></div>
+<p>章节没有给 RT-X 自己的延迟；“视基座模型而定”意味着不能用一个数字代表 RT-X。RT-1 / RT-2 的频率是同一张概览表里的数字，只能当参照，不能当成 RT-X 的实测。</p>
+<p>区分：<code>1000 / 延迟</code> 只说明策略调用频率，不说明动作执行频率或端到端反馈频率。测量时应分开记录模型前向、完整请求（含图像预处理/通信）与重规划间隔；章节三项都没有给。</p>
+<p>来源：本章程 §5。</p>
+<h2 id="7-训练资源与卡数">7. 训练资源与卡数</h2>
+<div class="tbl"><table><thead><tr><th>训练要素</th><th>章节值</th><th>说明</th></tr></thead><tbody><tr><td>硬件 / 卡数</td><td>章节未给</td><td>没有 GPU 型号或数量</td></tr><tr><td>优化器 / 步数</td><td>章节未给</td><td>没有训练步数</td></tr><tr><td>有效 batch / microbatch / 累积</td><td>章节未给</td><td>无法反推</td></tr><tr><td>学习率 / warmup / EMA</td><td>章节未给</td><td>没有配方</td></tr><tr><td>冻结模块</td><td>章节未给</td><td>没有说明冻结哪些层</td></tr><tr><td>数据规模 / 采样比例</td><td>章节未给</td><td>只说“混合数据集”</td></tr><tr><td>本体采样权重</td><td>章节未给</td><td>跨本体训练的关键项缺失</td></tr></tbody></table></div>
+<p>章节只给“在混合数据集上训练”，没有给采样比例；跨本体训练的核心恰恰是采样比例与动作对齐，所以无法从章节复现训练。</p>
+<p>三级复现：</p>
+<ol>
+<li><strong>理解与评测</strong>：章节没有权重，无法加载评测；只能读范式与数据规模。</li>
+<li><strong>训练链路</strong>：章节没有代码、数据格式、损失与优化器，无法验证。</li>
+<li><strong>完整训练</strong>：章节没有卡数、步数、batch、学习率与采样比例，不能声称可复现。</li>
+</ol>
+<p>来源：本章程 §4.2。</p>
+<h2 id="8-代码阅读顺序">8. 代码阅读顺序</h2>
+<div class="tbl"><table><thead><tr><th>顺序</th><th>路径 / 模块</th><th>阅读重点</th></tr></thead><tbody><tr><td>1</td><td>本章程 §4.1 的数据集描述</td><td>33 / 22 / 机器人举例，先建立数据规模感</td></tr><tr><td>2</td><td><code>google-research/robotics_transformer</code>*</td><td>RT-1 参考实现；不是 RT-X 官方代码</td></tr><tr><td>3</td><td>动作空间对齐（自建）</td><td>7-DoF 映射、姿态表示、夹爪符号、归一化</td></tr><tr><td>4</td><td>数据加载（自建）</td><td>Open X-Embodiment / BridgeData V2 的格式与本体重组</td></tr><tr><td>5</td><td>训练与评测（自建）</td><td>混合采样、基座选择、目标机器人协议</td></tr></tbody></table></div>
+<p>坑：</p>
+<ul>
+<li>不要把 RT-1 仓库当成 RT-X 官方实现；章节只把 RT-X 写成 RT-1 / RT-2 的变体。</li>
+<li>不要把 7-DoF 当成所有机器人的原生动作维度；章节只给统一后的空间，没有给映射规则。</li>
+<li>BridgeData V2 只是章节推荐的最常用子集，不等于整个 Open X-Embodiment。</li>
+</ul>
+<h2 id="9-从-checkpoint-开始复现">9. 从 checkpoint 开始复现</h2>
+<p>章节没有给 RT-X 权重、代码或训练命令，因此不能写“从 checkpoint 开始复现”。能做的是最小阅读路径：</p>
+<pre><code class="language-bash"># 非 RT-X 官方命令；仅用于读 RT-1 参考实现
+git clone https://github.com/google-research/robotics_transformer   # 公开入口*</code></pre>
+<p>检查清单：</p>
+<ol>
+<li>数据：确认拿到的是 Open X-Embodiment 的哪个子集；章节只点名 BridgeData V2 常用。</li>
+<li>动作：把目标机器人动作映射到 7-DoF，并确认姿态表示与夹爪符号。</li>
+<li>本体 ID：确认输入里“机器人类型”的编码方式；章节只给模态，未给实现。</li>
+<li>评测：章节未给协议，需要自建任务、trials 与成功判定。</li>
+</ol>
+<p>三级复现：理解 1/3（可读范式）；训练链路 0/3（无代码与配方）；完整训练 0/3（无权重与数据管线）。</p>
+<h2 id="10-如何用到自己的项目">10. 如何用到自己的项目</h2>
+<p>可复用的是“统一动作空间 + 混合本体数据 + 本体条件输入”的组合，不是照搬 RT-X 的某个分数。</p>
+<ul>
+<li><strong>统一动作空间</strong>：先把目标机器人动作映射到 7-DoF，再比较单本体训练与混合训练；测数据稀缺任务的正迁移；代价是映射层与归一化要自己写。</li>
+<li><strong>混合采样</strong>：给不同本体设采样权重，观察目标本体成功率与负迁移；测权重敏感度；代价是要有多个本体的数据与统一评测。</li>
+<li><strong>本体 ID 条件</strong>：在输入里加机器人类型编码，测未见本体的泛化；代价是需要本体描述规范与额外 token。</li>
+</ul>
+<p>相关章节：<a href="../01-action/rt-1.html">RT-1</a>、<a href="../01-action/rt-2.html">RT-2</a>、<a href="../02-backbone/openvla.html">OpenVLA</a>、<span class="deadref" title="原始 every-embodied 仓库引用，本归档未收录该文件">RT 系列导读</span>。</p></main></div><div class="pager"><a class="empty"></a><a class="next" href="agentic-vla.html"><span class="dir">下一篇 →</span><span class="ttl">Agentic-VLA 论文精读：给 OpenVLA-OFT 加一个会设计奖励、引导探索、复用权重的在线适应外环</span></a></div><section class="related"><h2>同分类其他笔记</h2><div class="cards"><article class="pcard" data-cat="03-training" data-name="Agentic-VLA 论文精读：给 OpenVLA-OFT 加一个会设计奖励、引导探索、复用权重的在线适应外环" data-year="0" data-idx="11" data-hay="agentic-vla 论文精读：给 openvla-oft 加一个会设计奖励、引导探索、复用权重的在线适应外环 agentic-vla 重新分配的是“部署后如何继续学习”的接口——不再只靠人工补示教或固定奖励，而是让 experience memory、vlm 探索 critic 和语言模型奖励分解共同调度一次在线 rl 适应。【章节】 "><h3><a href="agentic-vla.html">Agentic-VLA 论文精读：给 OpenVLA-OFT 加一个会设计奖励、引导探索、复用权重的在线适应外环</a></h3><p class="sum">Agentic-VLA 重新分配的是“部署后如何继续学习”的接口——不再只靠人工补示教或固定奖励，而是让 Experience Memory、VLM 探索 critic 和语言模型奖励分解共同调度一次在线 RL 适应。【章节】</p><div class="foot"><span class="chip cat">训练范式</span></div></article><article class="pcard" data-cat="03-training" data-name="Dexbotic-RLinf 论文精读：把 VLA 模型入口接到分布式 RL 后训练" data-year="0" data-idx="12" data-hay="dexbotic-rlinf 论文精读：把 vla 模型入口接到分布式 rl 后训练 dexbotic-rlinf 重新分配的是“模型开发”和“rl 训练系统”的边界——dexbotic 继续做 vla 用户入口，rlinf 做后端，两者通过 model registry 和薄 adapter 连接，而不是把模型代码复制进 rl 仓库，或让模型仓库重写一套 rl 系统。【章节】 "><h3><a href="dexbotic-rlinf.html">Dexbotic-RLinf 论文精读：把 VLA 模型入口接到分布式 RL 后训练</a></h3><p class="sum">Dexbotic-RLinf 重新分配的是“模型开发”和“RL 训练系统”的边界——Dexbotic 继续做 VLA 用户入口，RLinf 做后端，两者通过 model registry 和薄 adapter 连接，而不是把模型代码复制进 RL 仓库，或让模型仓库重写一套 RL 系统。【章节】</p><div class="foot"><span class="chip cat">训练范式</span></div></article><article class="pcard" data-cat="03-training" data-name="LWD 论文精读：把部署变成机群 RL 数据飞轮" data-year="0" data-idx="13" data-hay="lwd 论文精读：把部署变成机群 rl 数据飞轮 lwd 重新分配的是“真机部署数据的用途”——不再只把部署当评测，而是把机群产生的成功、失败、恢复和接管轨迹变成离线到在线 rl 的训练信号，持续更新同一个通用策略。【章节】 "><h3><a href="lwd.html">LWD 论文精读：把部署变成机群 RL 数据飞轮</a></h3><p class="sum">LWD 重新分配的是“真机部署数据的用途”——不再只把部署当评测，而是把机群产生的成功、失败、恢复和接管轨迹变成离线到在线 RL 的训练信号，持续更新同一个通用策略。【章节】</p><div class="foot"><span class="chip cat">训练范式</span></div></article></div></section><footer class="site"><div class="in">
+<div><b>VLA Research Hub</b> · 44 篇论文精读 + 7 篇综述 · 更新 2026-11-02</div>
+<div><a href="../../index.html">首页</a> · <a href="../../survey/index.html">综述</a> · <a href="../../papers/index.html">论文</a></div>
+</div></footer>
+<button class="totop" aria-label="回到顶部">↑</button>
+<div id="overlay"><div class="searchbox">
+<div class="hd"><span style="color:var(--faint)">🔍</span><input id="searchinput" placeholder="搜索论文、方向、机构…" autocomplete="off"><span class="hint">ESC</span></div>
+<div id="results"></div></div></div>
+<script>window.__BASE="../../";</script>
+<script src="../../assets/app.js"></script>
+</body></html>
