@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>RATs 深读：任务到来之前，先让机器人玩出技能库</title><link rel="stylesheet" href="../assets/style.css"></head>
-<body><nav><a class="brand" href="../index.html">🤖 Harness Papers</a><span class="spacer"></span><a class='back' href='../index.html'>← 返回论文库</a></nav>
+<body><nav><a class="brand" href="../index.html">🤖 VLA Papers</a><span class="spacer"></span><a class='back' href='../index.html'>← 返回论文库</a></nav>
 <header class="paper-head"><div class="chips"><span class="chip">2026-06-17</span><a class="chip cat" href="../index.html?cat=技能库与在线探索">技能库与在线探索</a><a class="chip" href="https://arxiv.org/abs/2606.19419">arXiv:2606.19419</a><a class="chip" href="https://playful-rats.github.io">Project</a></div>
 <h1>RATs 深读：任务到来之前，先让机器人玩出技能库</h1><div class="infobox"><div class="irow"><span class="ik">📄 Paper</span><span class="iv"><a href="https://arxiv.org/abs/2606.19419">arXiv:2606.19419</a></span></div><div class="irow"><span class="ik">💻 Code</span><span class="iv"><span class="none">暂无</span></span></div><div class="irow"><span class="ik">🌐 Project</span><span class="iv"><a href="https://playful-rats.github.io">playful-rats.github.io</a></span></div><div class="irow"><span class="ik">👥 作者与单位</span><span class="iv"><span class="au">Junyi Zhang*, Jiaxin Ge*, Hanjun Yoo, Letian Fu, … 共20人</span><span class="aff">UC Berkeley · Impossible Research</span></span></div><div class="irow"><span class="ik">🏢 机构简称</span><span class="iv">UC Berkeley · Impossible Research</span></div></div><p class="metric">⭐ LIBERO-PRO +20.6pp；跨环境即插 +8.9</p><p class="oneliner">Goldilocks 内在动机自提案任务，Write-Execute-Verify-Diagnose 团队蒸馏代码技能库。</p></header>
 <main class="paper-body"><h2>RATs 深度调研笔记</h2>
@@ -41,4 +41,7 @@
 <ol><li>评测以仿真为主，真机 sim-to-real 稳健性待大规模验证；</li><li>玩的质量受仿真环境多样性限制（物体/动力学/可供性）；</li><li><strong>技能误检索会伤害性能</strong>（检索到不适配下游任务的技能）——需要上下文感知的检索；</li><li>依赖 VLM 验证；primitive 级控制 API 限制灵巧操作；</li><li>推理成本上升。</li></ol>
 <h3>⑧ 与另外五篇的关系</h3>
 <ul><li>对 <strong>CaP-X</strong>：整个 Execution 团队是 CaP-Agent0 的多智能体强化版；技能可直接插回 CaP-Agent0（其跨环境实验设计）。</li><li>对 <strong>ASPIRE/RAX</strong>：同为"经验→代码资产"，但学习时机不同——RATs 在<strong>任务前</strong>（play，内在动机），ASPIRE/RAX 在<strong>任务期</strong>（外在任务驱动）；ASPIRE 重失败诊断，RATs 重成功蒸馏。</li><li>对 <strong>HarnessPAI</strong>：技能库组织的两个极端——扁平函数+docstring vs 四级节点中心；HarnessPAI 用 Fig 11 的消融回应了扁平库的检索短板（正是 RATs 自认局限 3）。</li><li>对 <strong>Zetta</strong>：Zetta 管执行中（动作频率），RATs 管执行前（能力储备）。</li></ul></main>
-<footer>本页由论文精读笔记自动生成 · <a href="../index.html">返回论文库</a></footer></body></html>
+<footer>本页由论文精读笔记自动生成 · <a href="../index.html">返回论文库</a></footer>
+<button class="totop" aria-label="回到顶部" onclick="scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>addEventListener('scroll',function(){document.querySelector('.totop').classList.toggle('show',scrollY>600)},{passive:true})</script>
+</body></html>

@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>HarnessEval-W 深读：把世界模型评测做成可审计的证据树</title><link rel="stylesheet" href="../assets/style.css"></head>
-<body><nav><a class="brand" href="../index.html">🤖 Harness Papers</a><span class="spacer"></span><a class='back' href='../index.html'>← 返回论文库</a></nav>
+<body><nav><a class="brand" href="../index.html">🤖 VLA Papers</a><span class="spacer"></span><a class='back' href='../index.html'>← 返回论文库</a></nav>
 <header class="paper-head"><div class="chips"><span class="chip">2026-08-17</span><a class="chip cat" href="../index.html?cat=评测与基准">评测与基准</a><a class="chip" href="https://arxiv.org/abs/2608.16859">arXiv:2608.16859</a><a class="chip" href="https://github.com/mirros-lab/harnesseval-w">Code</a><a class="chip" href="https://mirros-lab.github.io/HarnessEval-W">Project</a></div>
 <h1>HarnessEval-W 深读：把世界模型评测做成可审计的证据树</h1><div class="infobox"><div class="irow"><span class="ik">📄 Paper</span><span class="iv"><a href="https://arxiv.org/abs/2608.16859">arXiv:2608.16859</a></span></div><div class="irow"><span class="ik">💻 Code</span><span class="iv"><a href="https://github.com/mirros-lab/harnesseval-w">github.com/mirros-lab/harnesseval-w</a></span></div><div class="irow"><span class="ik">🌐 Project</span><span class="iv"><a href="https://mirros-lab.github.io/HarnessEval-W">mirros-lab.github.io/HarnessEval-W</a></span></div><div class="irow"><span class="ik">👥 作者与单位</span><span class="iv"><span class="au">Weiliang Chen, Haowen Sun, Jun Gao, Jiawei Chi, … 共43人</span><span class="aff">MirroS（镜界）· NUS · NTU · UC Berkeley · MIT · NVIDIA 等</span></span></div><div class="irow"><span class="ik">🏢 机构简称</span><span class="iv">MirroS · NUS · NTU · Berkeley · MIT</span></div></div><p class="metric">⭐ 18 模型 × 330 案例；与人类排序 ρ=0.93</p><p class="oneliner">评测工作流 Agent 化：拆子问题、子代理取证、父代理校验，产出可审计证据树。</p></header>
 <main class="paper-body"><h2>HarnessEval-W 深度调研笔记</h2>
@@ -28,4 +28,7 @@
 <ul><li>全量 330 案例与 HF 托管在归档核查时部分待发布（管线与 demo 已开源）；V1 Leaderboard 当时 Coming Soon；</li><li>评测 agent 自身依赖强 VLM——评测者的偏差需要人类对齐实验兜底（ρ=0.93 是当前证据）；</li><li>面向交互式开放域世界模型，不覆盖操纵 EEF 轴的具身任务。</li></ul>
 <h3>⑥ 簇内定位</h3>
 <ul><li>时间线上与 <strong>HumanCLAW</strong> 同月，共同把"harness"从<strong>提升能力</strong>扩展到<strong>测量能力</strong>：一个测 VLM 决策，一个测世界模型预测；</li><li>与 <strong>CaP-Bench</strong>：CaP-Bench 评 coding agent（固定量表分层），HarnessEval-W 评生成式 rollout（推理链证据树）——评测 agentic 化的两个方向；</li><li>呼应 ASPIRE/HarnessPAI 的门控哲学：<strong>没有可验证的推理链，分数就不可信</strong>——这句话同时适用于评模型和评 harness 改动。</li></ul></main>
-<footer>本页由论文精读笔记自动生成 · <a href="../index.html">返回论文库</a></footer></body></html>
+<footer>本页由论文精读笔记自动生成 · <a href="../index.html">返回论文库</a></footer>
+<button class="totop" aria-label="回到顶部" onclick="scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>addEventListener('scroll',function(){document.querySelector('.totop').classList.toggle('show',scrollY>600)},{passive:true})</script>
+</body></html>

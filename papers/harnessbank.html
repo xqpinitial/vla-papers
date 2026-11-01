@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>HarnessBank 深读：LLM Agent 的 Harness 自进化——语义基因库 + 四道门控</title><link rel="stylesheet" href="../assets/style.css"></head>
-<body><nav><a class="brand" href="../index.html">🤖 Harness Papers</a><span class="spacer"></span><a class='back' href='../index.html'>← 返回论文库</a></nav>
+<body><nav><a class="brand" href="../index.html">🤖 VLA Papers</a><span class="spacer"></span><a class='back' href='../index.html'>← 返回论文库</a></nav>
 <header class="paper-head"><div class="chips"><span class="chip">2026-07-15</span><a class="chip cat" href="../index.html?cat=通用 Agent Harness">通用 Agent Harness</a><a class="chip" href="https://arxiv.org/abs/2607.13683">arXiv:2607.13683</a></div>
 <h1>HarnessBank 深读：LLM Agent 的 Harness 自进化——语义基因库 + 四道门控</h1><div class="infobox"><div class="irow"><span class="ik">📄 Paper</span><span class="iv"><a href="https://arxiv.org/abs/2607.13683">arXiv:2607.13683</a></span></div><div class="irow"><span class="ik">💻 Code</span><span class="iv"><span class="none">暂无</span></span></div><div class="irow"><span class="ik">🌐 Project</span><span class="iv"><span class="none">暂无</span></span></div><div class="irow"><span class="ik">👥 作者与单位</span><span class="iv"><span class="au">Xiaotian Luo, Dizhan Xue, Fengxingyu Wang, Chuanrui Hu, Yafeng Deng（共5人）</span><span class="aff">恒心智能 EverMind · 盛大集团</span></span></div><div class="irow"><span class="ik">🏢 机构简称</span><span class="iv">恒心智能 EverMind · 盛大</span></div></div><p class="metric">⭐ 7 个 agent 基准 +5.1%~15.4%</p><p class="oneliner">任务 agent + 独立 evolver：基因库按(改哪里,为什么)归档防坍缩，四道门控筛真改进。</p></header>
 <main class="paper-body"><h2>HarnessBank 深度调研笔记</h2>
@@ -37,4 +37,7 @@
 <ul><li>代码"接受后开源"，尚未发布；</li><li>进化成本：每个子代要过多轮评估（门控正是为了省这笔钱）；</li><li>模型特异性意味着换底座要重新进化。</li></ul>
 <h3>⑧ 簇内定位</h3>
 <ul><li>机器人侧自进化 harness（<strong>Zetta 的批量级进化 / RoboFoundry 的外循环 / AdaHVLA 的修订图 / HarnessBank 的基因库</strong>）共享同一套问题：怎么防搜索坍缩、怎么防噪声自评——HarnessBank 是把这套方法论讲得最显式的一篇；</li><li>与 <strong>Harness²</strong>：都做"harness 改 harness"，HarnessBank 靠真值可评的基准门控，Harness² 靠行为对比在<strong>无验证器</strong>的开放世界工作；</li><li>时间线上它是 07 月"自进化"分支的第一篇，随后 08–10 月的机器人化版本连续出现。</li></ul></main>
-<footer>本页由论文精读笔记自动生成 · <a href="../index.html">返回论文库</a></footer></body></html>
+<footer>本页由论文精读笔记自动生成 · <a href="../index.html">返回论文库</a></footer>
+<button class="totop" aria-label="回到顶部" onclick="scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>addEventListener('scroll',function(){document.querySelector('.totop').classList.toggle('show',scrollY>600)},{passive:true})</script>
+</body></html>

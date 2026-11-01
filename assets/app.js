@@ -27,14 +27,16 @@ function render(){
   grid.innerHTML = list.map(p=>`
     <div class="card">
       ${p.figs?`<div class="thumb"><img loading="lazy" src="assets/figures/${p.slug}/fig-01.png" alt=""></div>`:""}
-      <h3><a href="papers/${p.slug}.html">${p.title}</a></h3>
-      <p class="one">${p.oneliner}</p>
-      <p class="metric">⭐ ${p.metric}</p>
-      <div class="foot">
-        <span class="chip cat">${p.cat}</span>
-        ${p.date?`<span class="chip">${p.date.slice(0,7)}</span>`:""}
-        ${p.arxiv?`<a class="chip" target="_blank" href="https://arxiv.org/abs/${p.arxiv}">arXiv:${p.arxiv}</a>`:""}
-        <a class="chip" href="papers/${p.slug}.html">阅读 →</a>
+      <div class="card-in">
+        <h3><a href="papers/${p.slug}.html">${p.title}</a></h3>
+        <p class="one">${p.oneliner}</p>
+        <p class="metric">⭐ ${p.metric}</p>
+        <div class="foot">
+          <span class="chip cat">${p.cat}</span>
+          ${p.date?`<span class="chip">${p.date.slice(0,7)}</span>`:""}
+          ${p.arxiv?`<a class="chip" target="_blank" href="https://arxiv.org/abs/${p.arxiv}">arXiv:${p.arxiv}</a>`:""}
+          <a class="chip" href="papers/${p.slug}.html">阅读 →</a>
+        </div>
       </div>
     </div>`).join("");
   document.getElementById("empty").style.display = list.length ? "none":"block";

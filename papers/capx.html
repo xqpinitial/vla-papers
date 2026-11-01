@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>CaP-X 深读：Code-as-Policy 的第一块系统性评测地基</title><link rel="stylesheet" href="../assets/style.css"></head>
-<body><nav><a class="brand" href="../index.html">🤖 Harness Papers</a><span class="spacer"></span><a class='back' href='../index.html'>← 返回论文库</a></nav>
+<body><nav><a class="brand" href="../index.html">🤖 VLA Papers</a><span class="spacer"></span><a class='back' href='../index.html'>← 返回论文库</a></nav>
 <header class="paper-head"><div class="chips"><span class="chip">2026-03-23</span><a class="chip cat" href="../index.html?cat=评测与基准">评测与基准</a><a class="chip" href="https://arxiv.org/abs/2603.22435">arXiv:2603.22435</a><a class="chip" href="https://github.com/capgym/cap-x">Code</a><a class="chip" href="https://capgym.github.io">Project</a></div>
 <h1>CaP-X 深读：Code-as-Policy 的第一块系统性评测地基</h1><div class="infobox"><div class="irow"><span class="ik">📄 Paper</span><span class="iv"><a href="https://arxiv.org/abs/2603.22435">arXiv:2603.22435</a></span></div><div class="irow"><span class="ik">💻 Code</span><span class="iv"><a href="https://github.com/capgym/cap-x">github.com/capgym/cap-x</a></span></div><div class="irow"><span class="ik">🌐 Project</span><span class="iv"><a href="https://capgym.github.io">capgym.github.io</a></span></div><div class="irow"><span class="ik">👥 作者与单位</span><span class="iv"><span class="au">Letian Fu, Justin Yu, Karim El-Refai, Ethan Kou, … 共16人</span><span class="aff">NVIDIA · UC Berkeley · Stanford · CMU</span></span></div><div class="irow"><span class="ik">🏢 机构简称</span><span class="iv">NVIDIA · Berkeley · Stanford · CMU</span></div></div><p class="metric">⭐ CaP-RL：Qwen-7B 25/4/30→80/44/93</p><p class="oneliner">CaP-Gym/Bench/Agent0/RL 四件套；性能随人工抽象升、随抽象撤除降，测试时计算可补。</p></header>
 <main class="paper-body"><h2>CaP-X 深度调研笔记</h2>
@@ -33,4 +33,7 @@
 <ul><li>局限（作者自陈 + 读报）：它是<strong>平台与基准</strong>而非单一方法；脚手架依赖被自己证实（高层宏分数好看但泛化差）；评测规模与任务多样性仍有限；CaP-RL 只在 7B 开源模型上验证。</li><li>工程事实：仓库只有 main/v0.1 两分支、无 tag/release；<code>uv</code> 管理依赖，需 CUDA GPU 与 Isaac Sim（BEHAVIOR 任务）。</li></ul>
 <h3>⑧ 与另外五篇的关系</h3>
 <ul><li><strong>RATs</strong>：技能即插回 CaP-Agent0（+8.9/+8.8）；直接引用其多轮反馈与技能合成机制。</li><li><strong>ASPIRE</strong>：以 CaP-X 为最强基线并反超 77pp——补上了"经验沉淀 + 失败可见性"。</li><li><strong>RAX</strong>：把 CaP-Bench 的"测试时计算 scaling"结论延伸为"探索预算 scaling"。</li><li><strong>HarnessPAI / Zetta</strong>：在 CaP 纯代码路线暴露的接触-rich 短板处，分别引入冻结 VLA 原语（混合）与运行时 critic（VLA 为主）。</li><li>与 <strong>Harness VLA</strong>（簇外）：Harness VLA 的 LIBERO-Pro 基线表里 CaP-X=18.2%——注意其协议与 CaP-X 自报口径不同。</li></ul></main>
-<footer>本页由论文精读笔记自动生成 · <a href="../index.html">返回论文库</a></footer></body></html>
+<footer>本页由论文精读笔记自动生成 · <a href="../index.html">返回论文库</a></footer>
+<button class="totop" aria-label="回到顶部" onclick="scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>addEventListener('scroll',function(){document.querySelector('.totop').classList.toggle('show',scrollY>600)},{passive:true})</script>
+</body></html>

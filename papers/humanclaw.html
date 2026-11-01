@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>HumanCLAW 深读：VLM 有眼睛没身体——决策与运动解耦后的真相</title><link rel="stylesheet" href="../assets/style.css"></head>
-<body><nav><a class="brand" href="../index.html">🤖 Harness Papers</a><span class="spacer"></span><a class='back' href='../index.html'>← 返回论文库</a></nav>
+<body><nav><a class="brand" href="../index.html">🤖 VLA Papers</a><span class="spacer"></span><a class='back' href='../index.html'>← 返回论文库</a></nav>
 <header class="paper-head"><div class="chips"><span class="chip">2026-07-27</span><a class="chip cat" href="../index.html?cat=评测与基准">评测与基准</a><a class="chip" href="https://arxiv.org/abs/2607.27180">arXiv:2607.27180</a></div>
 <h1>HumanCLAW 深读：VLM 有眼睛没身体——决策与运动解耦后的真相</h1><div class="infobox"><div class="irow"><span class="ik">📄 Paper</span><span class="iv"><a href="https://arxiv.org/abs/2607.27180">arXiv:2607.27180</a></span></div><div class="irow"><span class="ik">💻 Code</span><span class="iv"><span class="none">暂无</span></span></div><div class="irow"><span class="ik">🌐 Project</span><span class="iv"><span class="none">暂无</span></span></div><div class="irow"><span class="ik">👥 作者与单位</span><span class="iv"><span class="au">Li Siyao*, Jiawei Gu*, Shuai Liu, Kairui Hu, Zekun Li, … 共18人</span><span class="aff">Meta · 南洋理工大学 · 华盛顿大学 · Brown · Northwestern</span></span></div><div class="irow"><span class="ik">🏢 机构简称</span><span class="iv">Meta · NTU · UW</span></div></div><p class="metric">⭐ 9 个前沿 VLM 最好仅 16.8%</p><p class="oneliner">VLM 决策 × DiT 运动解耦 + Half-Physics 仿真，隔离测量 action intelligence。</p></header>
 <main class="paper-body"><h2>HumanCLAW 深度调研笔记</h2>
@@ -30,4 +30,7 @@
 <ul><li>Half-Physics 刻意抽掉运动控制难度——结论只覆盖决策智能，不能外推到全身动力控制；</li><li>sit 子集与室内场景设定较窄；HSSD-Hab val 资源需授权；</li><li>与同名 <strong>VisionClaw</strong>（可穿戴 always-on agent）无关。</li></ul>
 <h3>⑦ 簇内定位</h3>
 <ul><li>时间线里唯一的<strong>纯评测侧 harness</strong>（另一篇 HarnessEval-W 评世界模型）——共同命题：<strong>harness 不只用来提升能力，也用来让"能力"可被可信地测量</strong>；</li><li>它给整条 harness 路线提供了诊断学基础：为什么"冻结大模型 + 外壳"会有效/无效——因为瓶颈在决策层的具身自我意识，harness 的 verifier/记忆/脚手架恰好在补这一层；</li><li>与 <strong>EmbodiedSkills</strong> 的 verifier、<strong>CaP-X</strong> 的脚手架发现互相印证：<strong>验证与紧凑上下文比堆历史帧更值钱</strong>。</li></ul></main>
-<footer>本页由论文精读笔记自动生成 · <a href="../index.html">返回论文库</a></footer></body></html>
+<footer>本页由论文精读笔记自动生成 · <a href="../index.html">返回论文库</a></footer>
+<button class="totop" aria-label="回到顶部" onclick="scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>addEventListener('scroll',function(){document.querySelector('.totop').classList.toggle('show',scrollY>600)},{passive:true})</script>
+</body></html>

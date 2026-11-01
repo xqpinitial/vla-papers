@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>RoboHarn-Evo 深读：双层物理知识自演化——任务判据与动作判据分开检验</title><link rel="stylesheet" href="../assets/style.css"></head>
-<body><nav><a class="brand" href="../index.html">🤖 Harness Papers</a><span class="spacer"></span><a class='back' href='../index.html'>← 返回论文库</a></nav>
+<body><nav><a class="brand" href="../index.html">🤖 VLA Papers</a><span class="spacer"></span><a class='back' href='../index.html'>← 返回论文库</a></nav>
 <header class="paper-head"><div class="chips"><span class="chip">2026-09-27</span><a class="chip cat" href="../index.html?cat=知识与记忆">知识与记忆</a><a class="chip" href="https://arxiv.org/abs/2609.37583">arXiv:2609.37583</a></div>
 <h1>RoboHarn-Evo 深读：双层物理知识自演化——任务判据与动作判据分开检验</h1><div class="infobox"><div class="irow"><span class="ik">📄 Paper</span><span class="iv"><a href="https://arxiv.org/abs/2609.37583">arXiv:2609.37583</a></span></div><div class="irow"><span class="ik">💻 Code</span><span class="iv"><span class="none">暂无</span></span></div><div class="irow"><span class="ik">🌐 Project</span><span class="iv"><span class="none">暂无</span></span></div><div class="irow"><span class="ik">👥 作者与单位</span><span class="iv"><span class="au">Shifeng Bao*, Fanding Huang*, Yihan Lin, Youhe Feng, … 共10人</span><span class="aff">中国人民大学 · 清华大学 · XYZ Embodied AI</span></span></div><div class="irow"><span class="ik">🏢 机构简称</span><span class="iv">中国人民大学 · 清华 · XYZ</span></div></div><p class="metric">⭐ GPT-5.5 留出 48.3→75.0；知识纠错 83.3%</p><p class="oneliner">HPK = 任务知识（何时算完成）+ 动作知识（几何策略与物理效果），双循环演化与纠错。</p></header>
 <main class="paper-body"><h2>RoboHarn-Evo 深度调研笔记</h2>
@@ -31,4 +31,7 @@
 <ul><li>知识条目质量依赖 reflector 的抽取与判据设计；</li><li>层级固定为两层（任务/动作），更深的层次结构未探索；</li><li>跨域迁移在 RoboDojo 验证，域差更大时待考。</li></ul>
 <h3>⑦ 簇内定位</h3>
 <ul><li>与 <strong>RoboFoundry</strong>：同月、同为"经验→持久系统改进"，RoboHarn-Evo 演化<strong>知识</strong>（分层判据检验），RoboFoundry 演化<strong>整个系统文件</strong>（上下文面+技能面）；</li><li>与 <strong>RATs/ASPIRE 的技能库</strong>：技能库存"怎么做"，HPK 额外存"怎么判断做完了"——完成判据是被此前工作忽视的一层；</li><li>与 <strong>HarnessBank 的门控</strong>：同源的"入库纪律"——HPK 条目要"有支持且无相反证据"才可检索；</li><li>它回答了 Harness VLA 留下的记忆短板（EmbodiedSkills 的 RMBench 12.5%）如何用<strong>可检验的知识演化</strong>补上。</li></ul></main>
-<footer>本页由论文精读笔记自动生成 · <a href="../index.html">返回论文库</a></footer></body></html>
+<footer>本页由论文精读笔记自动生成 · <a href="../index.html">返回论文库</a></footer>
+<button class="totop" aria-label="回到顶部" onclick="scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>addEventListener('scroll',function(){document.querySelector('.totop').classList.toggle('show',scrollY>600)},{passive:true})</script>
+</body></html>

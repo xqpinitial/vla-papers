@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Zetta ζ 深读：慢大脑如何管快身体——动作频率上的运行时 Critic</title><link rel="stylesheet" href="../assets/style.css"></head>
-<body><nav><a class="brand" href="../index.html">🤖 Harness Papers</a><span class="spacer"></span><a class='back' href='../index.html'>← 返回论文库</a></nav>
+<body><nav><a class="brand" href="../index.html">🤖 VLA Papers</a><span class="spacer"></span><a class='back' href='../index.html'>← 返回论文库</a></nav>
 <header class="paper-head"><div class="chips"><span class="chip">2026-08-16</span><a class="chip cat" href="../index.html?cat=冻结模型编排">冻结模型编排</a><a class="chip" href="https://arxiv.org/abs/2608.16590">arXiv:2608.16590</a><a class="chip" href="https://github.com/air-embodied-brain/Zetta-Embodiment">Code</a><a class="chip" href="https://air-embodied-brain.github.io/zetta">Project</a></div>
 <h1>Zetta ζ 深读：慢大脑如何管快身体——动作频率上的运行时 Critic</h1><div class="infobox"><div class="irow"><span class="ik">📄 Paper</span><span class="iv"><a href="https://arxiv.org/abs/2608.16590">arXiv:2608.16590</a></span></div><div class="irow"><span class="ik">💻 Code</span><span class="iv"><a href="https://github.com/air-embodied-brain/Zetta-Embodiment">github.com/air-embodied-brain/Zetta-Embodiment</a></span></div><div class="irow"><span class="ik">🌐 Project</span><span class="iv"><a href="https://air-embodied-brain.github.io/zetta">air-embodied-brain.github.io/zetta</a></span></div><div class="irow"><span class="ik">👥 作者与单位</span><span class="iv"><span class="au">清华大学 AIR 团队（完整作者列表见论文首页）</span><span class="aff">清华大学 AIR</span></span></div><div class="irow"><span class="ik">🏢 机构简称</span><span class="iv">清华 AIR</span></div></div><p class="metric">⭐ LIBERO-Pro Goal 34.5→90.8</p><p class="oneliner">代码化 critic 毫秒级监控冻结 π0.5，编排 agent 审批恢复；三时间尺度自进化 + Z-Infra。</p></header>
 <main class="paper-body"><h2>Zetta 深度调研笔记</h2>
@@ -42,4 +42,7 @@
 <ul><li><strong>Z-Infra</strong>（配套推理设施）：π0.5 模型分区（VLM 与动作专家拆成独立进程，CUDA IPC 传中间激活）+ 按模块 W8A8/W4A16/W4A8 量化——喂饱自进化所需的并行 rollout 吞吐。自进化速度由 rollout 决定，这是六篇中唯一为"探索吞吐"专门造 infra 的。</li><li>局限（基于论文与读报）：仿真为主；critic/恢复剧本的代码本身由进化产生，其正确性依赖 held-out 门控的覆盖度；编排 agent 逻辑固定，长尾失败模式可能超出其审批能力；基座限定为可分区块化的 VLA。</li></ul>
 <h3>⑧ 与另外五篇的关系</h3>
 <ul><li>对 <strong>Harness VLA</strong>（簇外锚点）：同一"冻结 VLA + 词汇纪律"哲学，但 Harness VLA 的 harness 只在任务回合粒度学习（探索期蒸馏记忆），Zetta 把监控下沉到<strong>动作频率</strong>并让 harness 本体持续演化——对同一 π0.5 底座，Goal 34.5→90.8 vs Harness VLA 的 ~82.4（不同协议，不可直接比）。</li><li>对 <strong>RAX/ASPIRE/CaP-X/RATs</strong>（纯代码）：Zetta 反其道——动作全部来自冻结 VLA，代码只做监控与恢复；承认接触-rich 仍是 VLA 强项，但把"失败响应"从 LLM 手里拿走。</li><li>对 <strong>HarnessPAI</strong>：两者都强调"代码可审计 + 门控进化"；分工上 HarnessPAI 用 VLA 做语义难阶段的原语，Zetta 让 VLA 做全部动作。</li><li><strong>独特贡献</strong>：唯一回答"慢大脑怎么管快身体"的——用权威分层 + 代码 critic 实现<strong>在线</strong>闭环，其余五篇的闭环都在回合/批次粒度。</li></ul></main>
-<footer>本页由论文精读笔记自动生成 · <a href="../index.html">返回论文库</a></footer></body></html>
+<footer>本页由论文精读笔记自动生成 · <a href="../index.html">返回论文库</a></footer>
+<button class="totop" aria-label="回到顶部" onclick="scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>addEventListener('scroll',function(){document.querySelector('.totop').classList.toggle('show',scrollY>600)},{passive:true})</script>
+</body></html>

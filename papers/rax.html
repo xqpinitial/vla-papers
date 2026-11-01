@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>RAX 深读：把在线探索做成 Scaling Law，五大基准平均领先 37.4 个点</title><link rel="stylesheet" href="../assets/style.css"></head>
-<body><nav><a class="brand" href="../index.html">🤖 Harness Papers</a><span class="spacer"></span><a class='back' href='../index.html'>← 返回论文库</a></nav>
+<body><nav><a class="brand" href="../index.html">🤖 VLA Papers</a><span class="spacer"></span><a class='back' href='../index.html'>← 返回论文库</a></nav>
 <header class="paper-head"><div class="chips"><span class="chip">2026-10-25</span><a class="chip cat" href="../index.html?cat=技能库与在线探索">技能库与在线探索</a><a class="chip" href="https://arxiv.org/abs/2610.22496">arXiv:2610.22496</a><a class="chip" href="https://github.com/robot-agent-exploration/rax">Code</a><a class="chip" href="https://robot-agent-exploration.com">Project</a></div>
 <h1>RAX 深读：把在线探索做成 Scaling Law，五大基准平均领先 37.4 个点</h1><div class="infobox"><div class="irow"><span class="ik">📄 Paper</span><span class="iv"><a href="https://arxiv.org/abs/2610.22496">arXiv:2610.22496</a></span></div><div class="irow"><span class="ik">💻 Code</span><span class="iv"><a href="https://github.com/robot-agent-exploration/rax">github.com/robot-agent-exploration/rax</a></span></div><div class="irow"><span class="ik">🌐 Project</span><span class="iv"><a href="https://robot-agent-exploration.com">robot-agent-exploration.com</a></span></div><div class="irow"><span class="ik">👥 作者与单位</span><span class="iv"><span class="au">Runhan Huang, Xiangcheng Zhang, Haoyu Chen, Yitong Li, … 共20人</span><span class="aff">Harvard · NVIDIA · UC Berkeley · MIT · Stanford</span></span></div><div class="irow"><span class="ik">🏢 机构简称</span><span class="iv">Harvard · NVIDIA · Berkeley · MIT · Stanford</span></div></div><p class="metric">⭐ 五大基准平均 +37.4pp；0.1mm 插孔零演示</p><p class="oneliner">冻结 coding agent 在线探索机器人 API，成功决策编译成程序、版本化入库。</p></header>
 <main class="paper-body"><h2>RAX 深度调研笔记</h2>
@@ -38,4 +38,7 @@
 <ul><li><strong>探索 scaling</strong>：所有基准上性能随预算（2→128 eps）单调增长——这是"scaling law"主张的证据主体。</li><li>并行化：Claude Code 4×4 在 4.9h 得 92.2 vs 单 agent 13.7h 得 63.3。</li><li>深度消融：RGB-only 平均掉 <strong>17.3</strong> 分（域随机化任务 31.1→13.8）。</li><li>零动作演示：RAX⋆（仅保留视觉演示）81.9% 恰好追平 100 动作演示微调的 WB-WAM。</li><li>局限：深度缺失大掉分；loco-manip 与域随机化需超大预算（make toast random 64eps 仅 47.2）；真机每 episode 耗操作员时间。</li><li>第三方读报（davidlxu）提醒：37.4 平均值混合了五种计分口径与任务子集；部分评测仍有 agent 在环或提供演示信息，解读"autonomous/无演示"要看细节。</li></ul>
 <h3>⑧ 与另外五篇的关系</h3>
 <ul><li>与 <strong>CaP-X</strong>：CaP-X 证明"测试时计算可补低层原语鲁棒性"，RAX 把这条推到极致（探索预算即 scaling 轴）。</li><li>与 <strong>ASPIRE</strong>：同台竞技（LIBERO-Pro 84.4 vs 63.2）；ASPIRE 重"看得见失败"的 trace 与 verifier 门控，RAX 重"版本化程序库 + 编译加速 + 并行探索"。</li><li>与 <strong>HarnessPAI/Zetta</strong>：那两篇把 VLA/WAM 请回动作层（混合/VLA 为主）；RAX 是最激进的<strong>无 VLA 纯代码</strong>路线，反证"VLA 不可替代"需要重新论证。</li><li>与 <strong>RATs</strong>：RATs 在任务到来前自玩攒技能（内在动机），RAX 在任务期探索（外在任务驱动），是"何时探索"的两个端点。</li></ul></main>
-<footer>本页由论文精读笔记自动生成 · <a href="../index.html">返回论文库</a></footer></body></html>
+<footer>本页由论文精读笔记自动生成 · <a href="../index.html">返回论文库</a></footer>
+<button class="totop" aria-label="回到顶部" onclick="scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>addEventListener('scroll',function(){document.querySelector('.totop').classList.toggle('show',scrollY>600)},{passive:true})</script>
+</body></html>

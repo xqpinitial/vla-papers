@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>AdaHVLA 深读：harness 也要版本管理——修订图驱动的自适应协调层</title><link rel="stylesheet" href="../assets/style.css"></head>
-<body><nav><a class="brand" href="../index.html">🤖 Harness Papers</a><span class="spacer"></span><a class='back' href='../index.html'>← 返回论文库</a></nav>
+<body><nav><a class="brand" href="../index.html">🤖 VLA Papers</a><span class="spacer"></span><a class='back' href='../index.html'>← 返回论文库</a></nav>
 <header class="paper-head"><div class="chips"><span class="chip">2026-09-29</span><a class="chip cat" href="../index.html?cat=冻结模型编排">冻结模型编排</a><a class="chip" href="https://arxiv.org/abs/2609.29204">arXiv:2609.29204</a></div>
 <h1>AdaHVLA 深读：harness 也要版本管理——修订图驱动的自适应协调层</h1><div class="infobox"><div class="irow"><span class="ik">📄 Paper</span><span class="iv"><a href="https://arxiv.org/abs/2609.29204">arXiv:2609.29204</a></span></div><div class="irow"><span class="ik">💻 Code</span><span class="iv"><span class="none">暂无</span></span></div><div class="irow"><span class="ik">🌐 Project</span><span class="iv"><span class="none">暂无</span></span></div><div class="irow"><span class="ik">👥 作者与单位</span><span class="iv"><span class="au">Junyi Tang, Jie Peng, Zezhen Ding, Yuan Shen, Tianlong Chen（共5人）</span><span class="aff">UNC · 中国科学技术大学 · HKUST · CUHK</span></span></div><div class="irow"><span class="ik">🏢 机构简称</span><span class="iv">UNC · USTC · HKUST · CUHK</span></div></div><p class="metric">⭐ NaVILA-LH 22.5%→57.5%</p><p class="oneliner">可编辑协调代码 + 有状态修订图（证据-假设-修订-效果），跨任务持续适应。</p></header>
 <main class="paper-body"><h2>AdaHVLA 深度调研笔记</h2>
@@ -29,4 +29,7 @@
 <ul><li>修订的是<strong>代码协调策略</strong>，动作层能力上限仍由 VLA 决定；</li><li>修订图与多 agent 适配带来额外计算；假设空间受提示设计限制；</li><li>真机部分为定性演示而非系统化成功率。</li></ul>
 <h3>⑦ 簇内定位</h3>
 <ul><li>与 <strong>SERA</strong>（自进化 harness 的先行者）：SERA 用 rollout 提/评 harness 修订版本，AdaHVLA 加了<strong>显式修订图与假设检验</strong>——把"harness 也当作有版本的软件"贯彻到底；</li><li>与 <strong>HarnessBank</strong>：同一问题（怎么可信地改 harness），AdaHVLA 面向机器人、用假设-验证替代统计门控；</li><li>与 <strong>EmbodiedSkills</strong>：EmbodiedSkills 的 runtime 固定、证明验证值 38pp；AdaHVLA 让 runtime 本身可进化——两者可叠加。</li></ul></main>
-<footer>本页由论文精读笔记自动生成 · <a href="../index.html">返回论文库</a></footer></body></html>
+<footer>本页由论文精读笔记自动生成 · <a href="../index.html">返回论文库</a></footer>
+<button class="totop" aria-label="回到顶部" onclick="scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>addEventListener('scroll',function(){document.querySelector('.totop').classList.toggle('show',scrollY>600)},{passive:true})</script>
+</body></html>

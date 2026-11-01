@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Harness VLA 深度调研：把 Coding-Agent 的 Harness 范式引入具身智能</title><link rel="stylesheet" href="../assets/style.css"></head>
-<body><nav><a class="brand" href="../index.html">🤖 Harness Papers</a><span class="spacer"></span><a class='back' href='../index.html'>← 返回论文库</a></nav>
+<body><nav><a class="brand" href="../index.html">🤖 VLA Papers</a><span class="spacer"></span><a class='back' href='../index.html'>← 返回论文库</a></nav>
 <header class="paper-head"><div class="chips"><span class="chip">2026-07-09</span><a class="chip cat" href="../index.html?cat=冻结模型编排">冻结模型编排</a><a class="chip" href="https://arxiv.org/abs/2607.08448">arXiv:2607.08448</a><a class="chip" href="https://github.com/RLinf/RPent">Code</a><a class="chip" href="https://harnessvla.github.io">Project</a></div>
 <h1>Harness VLA 深度调研：把 Coding-Agent 的 Harness 范式引入具身智能</h1><div class="infobox"><div class="irow"><span class="ik">📄 Paper</span><span class="iv"><a href="https://arxiv.org/abs/2607.08448">arXiv:2607.08448</a></span></div><div class="irow"><span class="ik">💻 Code</span><span class="iv"><a href="https://github.com/RLinf/RPent">github.com/RLinf/RPent</a></span></div><div class="irow"><span class="ik">🌐 Project</span><span class="iv"><a href="https://harnessvla.github.io">harnessvla.github.io</a></span></div><div class="irow"><span class="ik">👥 作者与单位</span><span class="iv"><span class="au">Yixian Zhang*, Huanming Zhang*, Feng Gao, Xiao Li, Zhihao Liu, … 共17人（*共同一作）</span><span class="aff">清华大学 · Striding AI · Purdue · 中科院自动化所 · 无问芯穹 · 港科大 · 中关村学院</span></span></div><div class="irow"><span class="ik">🏢 机构简称</span><span class="iv">清华大学 · 无问芯穹 等</span></div></div><p class="metric">⭐ LIBERO-Pro 82.4% vs 冻结 π_RLinf 50%</p><p class="oneliner">冻结 VLA 降格为可重试原语 vla_act，6+2 固定解析原语 + 双层记忆，词汇锁死只学 operating range。</p></header>
 <main class="paper-body"><h2>Harness VLA 深度调研笔记</h2>
@@ -38,4 +38,7 @@
 <ul><li>消融：无记忆版本显著掉点（两块记忆一起拿掉）；真机仅 demo 未系统 benchmark；主表无置信区间。</li><li>局限：执行系统更大（多原语+记忆+LLM 时延）；依赖 reference-seed 探索；planner 视觉推理有限；VLA 与 harness 无联合优化。</li><li>框架声称与 WAM 等其他具身基础模型兼容——<strong>action-representation-agnostic 的系统层</strong>。</li></ul>
 <h3>⑧ 簇内定位</h3>
 <ul><li>时间线（07-09）的<strong>命名旗手</strong>："词汇锁死 vs 词汇膨胀"对照轴的一端（另一端是 CaP-X/RAX/ASPIRE 的持续扩充）；</li><li>与 <strong>Zetta</strong>：同一冻结纪律，Zetta 把监控下沉到动作频率且让 harness 本体演化，Harness VLA 的 harness 只在任务回合粒度学习；</li><li>与 <strong>EmbodiedSkills</strong>：guarded runtime 固定 vs 这里记忆可学——互补；</li><li>与 <strong>SERA</strong>（2610.29560）：SERA 主张 harness 本身可自进化，立场相反的姊妹篇。</li></ul></main>
-<footer>本页由论文精读笔记自动生成 · <a href="../index.html">返回论文库</a></footer></body></html>
+<footer>本页由论文精读笔记自动生成 · <a href="../index.html">返回论文库</a></footer>
+<button class="totop" aria-label="回到顶部" onclick="scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>addEventListener('scroll',function(){document.querySelector('.totop').classList.toggle('show',scrollY>600)},{passive:true})</script>
+</body></html>

@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>DreamSteer 深读：不动 VLA 一根毫毛，世界模型预演挑动作</title><link rel="stylesheet" href="../assets/style.css"></head>
-<body><nav><a class="brand" href="../index.html">🤖 Harness Papers</a><span class="spacer"></span><a class='back' href='../index.html'>← 返回论文库</a></nav>
+<body><nav><a class="brand" href="../index.html">🤖 VLA Papers</a><span class="spacer"></span><a class='back' href='../index.html'>← 返回论文库</a></nav>
 <header class="paper-head"><div class="chips"><span class="chip">2026-07-03</span><a class="chip cat" href="../index.html?cat=世界模型与想象">世界模型与想象</a><a class="chip" href="https://arxiv.org/abs/2607.02865">arXiv:2607.02865</a><a class="chip" href="https://dream-steer.github.io">Project</a></div>
 <h1>DreamSteer 深读：不动 VLA 一根毫毛，世界模型预演挑动作</h1><div class="infobox"><div class="irow"><span class="ik">📄 Paper</span><span class="iv"><a href="https://arxiv.org/abs/2607.02865">arXiv:2607.02865</a></span></div><div class="irow"><span class="ik">💻 Code</span><span class="iv"><span class="none">暂无</span></span></div><div class="irow"><span class="ik">🌐 Project</span><span class="iv"><a href="https://dream-steer.github.io">dream-steer.github.io</a></span></div><div class="irow"><span class="ik">👥 作者与单位</span><span class="iv"><span class="au">Hanchen Cui, Sergio Arnaud, Arjun Majumdar, Daniel Dugas, Elie Aljalbout, Karthik Desingh, Krishna Murthy Jatavallabhula†, Franziska Meier†（共8人）</span><span class="aff">Meta FAIR · University of Minnesota</span></span></div><div class="irow"><span class="ik">🏢 机构简称</span><span class="iv">Meta FAIR · U Minnesota</span></div></div><p class="metric">⭐ 真机 OOD 23.75%→66.25%；潜空间 rollout 39× 加速</p><p class="oneliner">冻结 VLA 采样多候选，潜空间世界模型想象未来、语言价值模型排序，只执行最高分。</p></header>
 <main class="paper-body"><h2>DreamSteer 深度调研笔记</h2>
@@ -34,4 +34,7 @@
 <ul><li>是<strong>有限候选集上的 rerank</strong>，不是全局最优规划——候选池里没有的动作永远不会被选中；</li><li>价值模型想象轨迹的评估依赖潜空间保真度，长 horizon 误差会累积；</li><li>部署环内每步要做 K 次想象 + 排序，有推理时延成本（论文以潜空间效率对冲）。</li></ul>
 <h3>⑦ 簇内定位</h3>
 <ul><li>与 <strong>Harness VLA / RoboDawn</strong>：同属"冻结底座 + 系统层补强"，但 DreamSteer 的 harness 是<strong>世界模型+价值模型</strong>（想象力），不是代码/技能/记忆；</li><li>与 <strong>Zetta</strong>：Zetta 的 critic 在执行<strong>中</strong>毫秒级纠错，DreamSteer 在执行<strong>前</strong>用想象排序；</li><li>与 <strong>EmbodiedSWE / HarnessPAI 的数据反哺</strong>：DreamSteer 完全不动训练侧——三者构成"改训练 / 改组织 / 改想象"三种冻结-增强路线；</li><li>是时间线里"<strong>test-time scaling 的 VLA 类比</strong>"代表：采样 + rerank，代价从算力换成想象力。</li></ul></main>
-<footer>本页由论文精读笔记自动生成 · <a href="../index.html">返回论文库</a></footer></body></html>
+<footer>本页由论文精读笔记自动生成 · <a href="../index.html">返回论文库</a></footer>
+<button class="totop" aria-label="回到顶部" onclick="scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>addEventListener('scroll',function(){document.querySelector('.totop').classList.toggle('show',scrollY>600)},{passive:true})</script>
+</body></html>

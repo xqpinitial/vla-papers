@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>RoboHarness 深读：VLA/RL/TAMP 异构策略编排，Memory Bridge 治交接掉点</title><link rel="stylesheet" href="../assets/style.css"></head>
-<body><nav><a class="brand" href="../index.html">🤖 Harness Papers</a><span class="spacer"></span><a class='back' href='../index.html'>← 返回论文库</a></nav>
+<body><nav><a class="brand" href="../index.html">🤖 VLA Papers</a><span class="spacer"></span><a class='back' href='../index.html'>← 返回论文库</a></nav>
 <header class="paper-head"><div class="chips"><span class="chip">2026-07-20</span><a class="chip cat" href="../index.html?cat=冻结模型编排">冻结模型编排</a><a class="chip" href="https://arxiv.org/abs/2607.18060">arXiv:2607.18060</a></div>
 <h1>RoboHarness 深读：VLA/RL/TAMP 异构策略编排，Memory Bridge 治交接掉点</h1><div class="infobox"><div class="irow"><span class="ik">📄 Paper</span><span class="iv"><a href="https://arxiv.org/abs/2607.18060">arXiv:2607.18060</a></span></div><div class="irow"><span class="ik">💻 Code</span><span class="iv"><span class="none">暂无</span></span></div><div class="irow"><span class="ik">🌐 Project</span><span class="iv"><span class="none">暂无</span></span></div><div class="irow"><span class="ik">👥 作者与单位</span><span class="iv"><span class="au">Jinbang Huang, Yuanzhao Hu*, Zhiyuan Li*, Ran Qi*, Yixin Xiao, … 共9人</span><span class="aff">华为诺亚方舟实验室 · UBC · 多伦多大学 · 麦吉尔大学 · 2012 实验室基础模型部</span></span></div><div class="irow"><span class="ik">🏢 机构简称</span><span class="iv">华为诺亚 · UBC · 多大 · McGill</span></div></div><p class="metric">⭐ 5 基准 + 500 任务 + 135 真机</p><p class="oneliner">异构策略封装成可复用技能，执行记忆刻画能力边界；交接前把机器人带到下一策略的分布内状态。</p></header>
 <main class="paper-body"><h2>RoboHarness 深度调研笔记</h2>
@@ -37,4 +37,7 @@
 <ul><li>实例化只用 VLA/RL/TAMP 三族，对新策略族的泛化待验证；</li><li>Memory Bridge 依赖轨迹检索与分布估计质量，高动态环境会吃紧；</li><li>大而紧耦合的策略接入有架构开销。</li></ul>
 <h3>⑧ 簇内定位</h3>
 <ul><li>与 <strong>Harness VLA</strong>：Harness VLA 把"一个冻结 VLA"当原语 + 解析原语；RoboHarness 把<strong>多个异构策略</strong>都当原语，重点从"怎么调用"转到"<strong>怎么交接</strong>"；</li><li>与 <strong>EMERGE-Policy</strong>：同为多组件编排，EMERGE 用角色化 Sub-Agent + 图结构，RoboHarness 用能力边界 + Memory Bridge；</li><li>与 <strong>Orchestra</strong>：Orchestra 分离"规划/执行管理"与"动作生成"并用独立进度评估器，RoboHarness 用记忆驱动路由——两者都在回答"长程谁负责记账"。</li></ul></main>
-<footer>本页由论文精读笔记自动生成 · <a href="../index.html">返回论文库</a></footer></body></html>
+<footer>本页由论文精读笔记自动生成 · <a href="../index.html">返回论文库</a></footer>
+<button class="totop" aria-label="回到顶部" onclick="scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>addEventListener('scroll',function(){document.querySelector('.totop').classList.toggle('show',scrollY>600)},{passive:true})</script>
+</body></html>

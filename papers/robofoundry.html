@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>RoboFoundry 深读：System-as-Policy——像维护代码库一样进化整个机器人系统</title><link rel="stylesheet" href="../assets/style.css"></head>
-<body><nav><a class="brand" href="../index.html">🤖 Harness Papers</a><span class="spacer"></span><a class='back' href='../index.html'>← 返回论文库</a></nav>
+<body><nav><a class="brand" href="../index.html">🤖 VLA Papers</a><span class="spacer"></span><a class='back' href='../index.html'>← 返回论文库</a></nav>
 <header class="paper-head"><div class="chips"><span class="chip">2026-09-28</span><a class="chip cat" href="../index.html?cat=编码 Agent 与系统进化">编码 Agent 与系统进化</a><a class="chip" href="https://arxiv.org/abs/2609.32862">arXiv:2609.32862</a><a class="chip" href="https://jingsongliang.com/robofoundry">Project</a></div>
 <h1>RoboFoundry 深读：System-as-Policy——像维护代码库一样进化整个机器人系统</h1><div class="infobox"><div class="irow"><span class="ik">📄 Paper</span><span class="iv"><a href="https://arxiv.org/abs/2609.32862">arXiv:2609.32862</a></span></div><div class="irow"><span class="ik">💻 Code</span><span class="iv"><span class="none">暂无</span></span></div><div class="irow"><span class="ik">🌐 Project</span><span class="iv"><a href="https://jingsongliang.com/robofoundry">jingsongliang.com/robofoundry</a></span></div><div class="irow"><span class="ik">👥 作者与单位</span><span class="iv"><span class="au">Jingsong Liang*, Shuhao Liao*, Shizhe Zhang, … 共18人</span><span class="aff">南洋理工大学 · 北京航空航天大学 · 新加坡国立大学 · 上海交通大学 · 云蝶科技</span></span></div><div class="irow"><span class="ik">🏢 机构简称</span><span class="iv">NTU · 北航 · NUS · 上交 · 云蝶</span></div></div><p class="metric">⭐ EmbodiedBench GPT-5.5 +27.8%</p><p class="oneliner">系统以文件目录存在，上下文面+技能面双进化；语义接口隔离本体无关决策。</p></header>
 <main class="paper-body"><h2>RoboFoundry 深度调研笔记</h2>
@@ -35,4 +35,7 @@
 <ul><li>系统文件的增长需要治理（文章强调验证式提交，但长期膨胀待考）；</li><li>语义-执行分离的适配层仍需人工/agent 编写；</li><li>归因六维的划分是否完备待检验。</li></ul>
 <h3>⑧ 簇内定位</h3>
 <ul><li>与 <strong>RoboHarn-Evo</strong>：同月同主题（经验→持久改进），RoboFoundry 面<strong>大</strong>（整个系统文件）、RoboHarn-Evo 面<strong>深</strong>（知识判据分层检验）；</li><li>与 <strong>Zetta</strong>：Zetta 演化 {Critic,Recovery,Tools} 且有代码化 critic 高频在线监控，RoboFoundry 演化文件系统且偏离线外循环；</li><li>与 <strong>HarnessBank</strong>：共同的"验证式提交"纪律；RoboFoundry 把它从通用 agent 搬进具身并加上跨本体语义接口；</li><li>名字即宣言：<strong>System-as-Policy——进化的单位是系统，不是权重</strong>。</li></ul></main>
-<footer>本页由论文精读笔记自动生成 · <a href="../index.html">返回论文库</a></footer></body></html>
+<footer>本页由论文精读笔记自动生成 · <a href="../index.html">返回论文库</a></footer>
+<button class="totop" aria-label="回到顶部" onclick="scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>addEventListener('scroll',function(){document.querySelector('.totop').classList.toggle('show',scrollY>600)},{passive:true})</script>
+</body></html>

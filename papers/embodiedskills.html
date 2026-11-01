@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>EmbodiedSkills 深读：skill 契约 + guarded runtime——去掉验证从 86.2% 掉到 48.2%</title><link rel="stylesheet" href="../assets/style.css"></head>
-<body><nav><a class="brand" href="../index.html">🤖 Harness Papers</a><span class="spacer"></span><a class='back' href='../index.html'>← 返回论文库</a></nav>
+<body><nav><a class="brand" href="../index.html">🤖 VLA Papers</a><span class="spacer"></span><a class='back' href='../index.html'>← 返回论文库</a></nav>
 <header class="paper-head"><div class="chips"><span class="chip">2026-09-01</span><a class="chip cat" href="../index.html?cat=冻结模型编排">冻结模型编排</a><a class="chip" href="https://arxiv.org/abs/2609.01281">arXiv:2609.01281</a><a class="chip" href="https://github.com/DCDmllm/EmbodiedSkills">Code</a></div>
 <h1>EmbodiedSkills 深读：skill 契约 + guarded runtime——去掉验证从 86.2% 掉到 48.2%</h1><div class="infobox"><div class="irow"><span class="ik">📄 Paper</span><span class="iv"><a href="https://arxiv.org/abs/2609.01281">arXiv:2609.01281</a></span></div><div class="irow"><span class="ik">💻 Code</span><span class="iv"><a href="https://github.com/DCDmllm/EmbodiedSkills">github.com/DCDmllm/EmbodiedSkills</a></span></div><div class="irow"><span class="ik">🌐 Project</span><span class="iv"><span class="none">暂无</span></span></div><div class="irow"><span class="ik">👥 作者与单位</span><span class="iv"><span class="au">Wei Wang, Wenqiao Zhang†, Yutong Lin, Yuqian Yuan, … 共17人</span><span class="aff">浙江大学 · 南京航空航天大学 · Cornell · 云深处 · NUS</span></span></div><div class="irow"><span class="ik">🏢 机构简称</span><span class="iv">浙江大学 等</span></div></div><p class="metric">⭐ RoboTwin 86.2% · LIBERO 97.4%；验证值 38pp</p><p class="oneliner">技能决策只是提案：runtime 先查前置再执行、执行后用新观测验证；六阶段 AgentLoop。</p></header>
 <main class="paper-body"><h2>EmbodiedSkills 深度调研笔记</h2>
@@ -31,4 +31,7 @@
 <p>"把容器放上盘子"：Plan 拆出"抓容器"子目标；Preflight 发现上次抓取证据是 3 步之前的旧帧（freshness 失败）→ 强制 Reobserve；执行中容器滑落，Verify 用新帧判失败，Recover 生成"以更大开度重抓"并写回 trace。</p>
 <h3>⑦ 簇内定位</h3>
 <ul><li>与 <strong>Harness VLA</strong>：互补——Harness VLA 冻结原语+记忆，EmbodiedSkills 冻结接口+guarded runtime（外部读报原话："与 Harness VLA 的冻结原语路线互补"）；</li><li>与 <strong>SERA/AdaHVLA</strong>：runtime 固定 vs harness 可编辑——EmbodiedSkills 证明"哪怕 harness 不学，光有验证分支就值 38 个点"；</li><li>与 <strong>HumanCLAW</strong>：互证 verifier 与紧凑上下文的价值；</li><li>弱点与 <strong>RMBench 记忆类任务</strong>正是 RoboFoundry/RoboHarn-Evo（记忆/知识侧自进化）要补的位。</li></ul></main>
-<footer>本页由论文精读笔记自动生成 · <a href="../index.html">返回论文库</a></footer></body></html>
+<footer>本页由论文精读笔记自动生成 · <a href="../index.html">返回论文库</a></footer>
+<button class="totop" aria-label="回到顶部" onclick="scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>addEventListener('scroll',function(){document.querySelector('.totop').classList.toggle('show',scrollY>600)},{passive:true})</script>
+</body></html>

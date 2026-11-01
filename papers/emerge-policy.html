@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>EMERGE-Policy 深读：机器人的心智从单策略中涌现——图结构多智能体框架</title><link rel="stylesheet" href="../assets/style.css"></head>
-<body><nav><a class="brand" href="../index.html">🤖 Harness Papers</a><span class="spacer"></span><a class='back' href='../index.html'>← 返回论文库</a></nav>
+<body><nav><a class="brand" href="../index.html">🤖 VLA Papers</a><span class="spacer"></span><a class='back' href='../index.html'>← 返回论文库</a></nav>
 <header class="paper-head"><div class="chips"><span class="chip">2026-08-29</span><a class="chip cat" href="../index.html?cat=冻结模型编排">冻结模型编排</a><a class="chip" href="https://arxiv.org/abs/2608.29896">arXiv:2608.29896</a><a class="chip" href="https://github.com/EMERGE-Policy/EMERGE-Policy">Code</a><a class="chip" href="https://emerge-policy.github.io/EMERGE-Policy">Project</a></div>
 <h1>EMERGE-Policy 深读：机器人的心智从单策略中涌现——图结构多智能体框架</h1><div class="infobox"><div class="irow"><span class="ik">📄 Paper</span><span class="iv"><a href="https://arxiv.org/abs/2608.29896">arXiv:2608.29896</a></span></div><div class="irow"><span class="ik">💻 Code</span><span class="iv"><a href="https://github.com/EMERGE-Policy/EMERGE-Policy">github.com/EMERGE-Policy/EMERGE-Policy</a></span></div><div class="irow"><span class="ik">🌐 Project</span><span class="iv"><a href="https://emerge-policy.github.io/EMERGE-Policy">emerge-policy.github.io/EMERGE-Policy</a></span></div><div class="irow"><span class="ik">👥 作者与单位</span><span class="iv"><span class="au">Zhirui Fang*, Qingchi Yu*, Ziyang Chen*, Longfei Li*, … 共21人</span><span class="aff">清华大学 · 南京理工大学 · 西安交大 · 哈工大 · 北京大学 · NTU</span></span></div><div class="irow"><span class="ik">🏢 机构简称</span><span class="iv">清华（李秀团队）等</span></div></div><p class="metric">⭐ 零微调打穿 LIBERO/RoboDojo + 真机</p><p class="oneliner">Main Agent 持任务态 + 角色化 Sub Agent 隔离上下文；Operational/Imagination/Evaluation 三类技能。</p></header>
 <main class="paper-body"><h2>EMERGE-Policy 深度调研笔记</h2>
@@ -32,4 +32,7 @@
 <ul><li>系统复杂度高：Main/Sub 多 agent + 三类技能的编排与通信开销；</li><li>"涌现"为系统级叙述，组件各自能力上限仍在；</li><li>基准数字以论文表格为准（二手读报未给出统一均值，引用时需回查原文表）。</li></ul>
 <h3>⑦ 簇内定位</h3>
 <ul><li>与 <strong>RoboHarness</strong>：都做异构编排——EMERGE 胜在<strong>角色隔离上下文 + 图结构信息流</strong>，RoboHarness 胜在<strong>交接分布匹配</strong>（Memory Bridge）；</li><li>与 <strong>HarnessPAI</strong>：同样把模型当技能调用，EMERGE 加了 Imagination/Evaluation 两类"认知技能"与多 agent 分工；</li><li>与 <strong>Orchestra</strong>：都在解决"长程谁记账"——EMERGE 用 Main Agent 活跃上下文 + 外部记忆，Orchestra 用共享执行上下文 + 独立进度评估器；</li><li>名字即立场：<strong>具身智能系统的时代命题是"系统"，不是"模型"</strong>。</li></ul></main>
-<footer>本页由论文精读笔记自动生成 · <a href="../index.html">返回论文库</a></footer></body></html>
+<footer>本页由论文精读笔记自动生成 · <a href="../index.html">返回论文库</a></footer>
+<button class="totop" aria-label="回到顶部" onclick="scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>addEventListener('scroll',function(){document.querySelector('.totop').classList.toggle('show',scrollY>600)},{passive:true})</script>
+</body></html>

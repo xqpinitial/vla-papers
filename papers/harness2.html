@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Harness² 深读：谷歌递归 Agent Harnessing——不训模型训外壳，还改进改进者</title><link rel="stylesheet" href="../assets/style.css"></head>
-<body><nav><a class="brand" href="../index.html">🤖 Harness Papers</a><span class="spacer"></span><a class='back' href='../index.html'>← 返回论文库</a></nav>
+<body><nav><a class="brand" href="../index.html">🤖 VLA Papers</a><span class="spacer"></span><a class='back' href='../index.html'>← 返回论文库</a></nav>
 <header class="paper-head"><div class="chips"><span class="chip">2026-10-09</span><a class="chip cat" href="../index.html?cat=通用 Agent Harness">通用 Agent Harness</a><a class="chip" href="https://arxiv.org/abs/2610.14224">arXiv:2610.14224</a><a class="chip" href="https://github.com/google-research/harness2">Code</a></div>
 <h1>Harness² 深读：谷歌递归 Agent Harnessing——不训模型训外壳，还改进改进者</h1><div class="infobox"><div class="irow"><span class="ik">📄 Paper</span><span class="iv"><a href="https://arxiv.org/abs/2610.14224">arXiv:2610.14224</a></span></div><div class="irow"><span class="ik">💻 Code</span><span class="iv"><a href="https://github.com/google-research/harness2">github.com/google-research/harness2</a></span></div><div class="irow"><span class="ik">🌐 Project</span><span class="iv"><span class="none">暂无</span></span></div><div class="irow"><span class="ik">👥 作者与单位</span><span class="iv"><span class="au">Ruiyao Xu, Yanfei Chen, Zhongying CuiZhu, Bhavana Dalvi Mishra, … 共9人</span><span class="aff">Google Research</span></span></div><div class="irow"><span class="ik">🏢 机构简称</span><span class="iv">Google Research</span></div></div><p class="metric">⭐ WorkBuddy-Bench +11.5 分（GLM-5/Gemini）</p><p class="oneliner">对比式 Propose-Probe-Compose 无真值自改 harness；harnessing 级递归沉淀改进经验。</p></header>
 <main class="paper-body"><h2>Harness² 深度调研笔记</h2>
@@ -36,4 +36,7 @@
 <ul><li>对比可以是<strong>真实的但不相关</strong>：两次执行的差异可能在冗长度/工具调用数，而非正确性——行为对比没有真值锚；</li><li>每次 probe 是真实执行，k 倍算力与墙钟成本（论文报增益未报成本）；</li><li>基准虽"朴素设计"（JobBench/LAB/WorkBuddy），仍是可评任务，真开放世界仍未测。</li></ul>
 <h3>⑦ 簇内定位</h3>
 <ul><li>与 <strong>HarnessBank</strong>：同一"改 harness"问题——HarnessBank 有基准真值可用门控，Harness² 用行为对比在<strong>无验证器</strong>世界工作；结论还互补：HarnessBank 发现"harness 模型特异"，Harness² 发现"改进流程可迁移"；</li><li>与 <strong>SERA/AdaHVLA/RoboFoundry</strong>：机器人侧递归自改进的通用 agent 原型——Propose–Probe–Compose 的对比思想可平移；</li><li>时间线收尾篇的呼应：从 07-09 Harness VLA 的"冻结 VLA 当原语"到 10-13 Orchestra 的"规划/执行管理分离"，再到 Harness² 的"递归 harnessing"——<strong>进化的单位完成了 模型 → 外壳 → 改外壳的方法 三级跳</strong>。</li></ul></main>
-<footer>本页由论文精读笔记自动生成 · <a href="../index.html">返回论文库</a></footer></body></html>
+<footer>本页由论文精读笔记自动生成 · <a href="../index.html">返回论文库</a></footer>
+<button class="totop" aria-label="回到顶部" onclick="scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>addEventListener('scroll',function(){document.querySelector('.totop').classList.toggle('show',scrollY>600)},{passive:true})</script>
+</body></html>

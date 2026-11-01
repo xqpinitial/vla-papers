@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>RoboDawn 深读：冻结 VLM + 离散命令 + ICL，零机器人训练打出 73.6%</title><link rel="stylesheet" href="../assets/style.css"></head>
-<body><nav><a class="brand" href="../index.html">🤖 Harness Papers</a><span class="spacer"></span><a class='back' href='../index.html'>← 返回论文库</a></nav>
+<body><nav><a class="brand" href="../index.html">🤖 VLA Papers</a><span class="spacer"></span><a class='back' href='../index.html'>← 返回论文库</a></nav>
 <header class="paper-head"><div class="chips"><span class="chip">2026-09-22</span><a class="chip cat" href="../index.html?cat=智能迁移与 ICL">智能迁移与 ICL</a><a class="chip" href="https://arxiv.org/abs/2609.22966">arXiv:2609.22966</a><a class="chip" href="https://github.com/Hugo-AGI/RoboDawn">Code</a><a class="chip" href="https://robodawn.top">Project</a></div>
 <h1>RoboDawn 深读：冻结 VLM + 离散命令 + ICL，零机器人训练打出 73.6%</h1><div class="infobox"><div class="irow"><span class="ik">📄 Paper</span><span class="iv"><a href="https://arxiv.org/abs/2609.22966">arXiv:2609.22966</a></span></div><div class="irow"><span class="ik">💻 Code</span><span class="iv"><a href="https://github.com/Hugo-AGI/RoboDawn">github.com/Hugo-AGI/RoboDawn</a></span></div><div class="irow"><span class="ik">🌐 Project</span><span class="iv"><a href="https://robodawn.top">robodawn.top</a></span></div><div class="irow"><span class="ik">👥 作者与单位</span><span class="iv"><span class="au">Meng-Hao Guo, Zhe-Han Mo, Jia-Jun Wang, Yi Zhang, … 共9人</span><span class="aff">清华大学 · 腾讯混元</span></span></div><div class="irow"><span class="ik">🏢 机构简称</span><span class="iv">清华 · 腾讯混元</span></div></div><p class="metric">⭐ RoboTwin C2R 73.6% &gt; π0.5 46%</p><p class="oneliner">人类直觉的离散语义命令接口（GIP 参考）+ 1 条演示 ICL，冻结 VLM 闭环控制双臂。</p></header>
 <main class="paper-body"><h2>RoboDawn 深度调研笔记</h2>
@@ -30,4 +30,7 @@
 <ul><li>离散小步长命令 → 推理轮数多、长程任务时延高；</li><li>依赖 VLM 的空间 grounding 质量（与 HumanCLAW 发现的"自我意识缺失"同源风险）；</li><li>C2R 设定的"有界随机化"仍在分布邻域内，开放世界未证。</li></ul>
 <h3>⑦ 簇内定位</h3>
 <ul><li>与 <strong>RoboDawn 同门的 Harness VLA</strong>（同在 C2R 上有数字）：RoboDawn 73.6% vs 58.4%——<strong>纯 ICL 接口路线打赢了需要全量机器人数据后训练后端的记忆编排路线</strong>（注意 π_RLinf 后端差异，谨慎横比）；</li><li>与 <strong>DreamSteer</strong>：都是"冻结底座 + 部署时增强"，一个加想象力、一个加接口与演示；</li><li>与 <strong>GaP</strong>：同为"人类直觉接口"（离散命令 vs 计算图），GaP 加仿真排练、RoboDawn 加 ICL；</li><li>开源纪律好：710 episode 评测全部可逐步回放。</li></ul></main>
-<footer>本页由论文精读笔记自动生成 · <a href="../index.html">返回论文库</a></footer></body></html>
+<footer>本页由论文精读笔记自动生成 · <a href="../index.html">返回论文库</a></footer>
+<button class="totop" aria-label="回到顶部" onclick="scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>addEventListener('scroll',function(){document.querySelector('.totop').classList.toggle('show',scrollY>600)},{passive:true})</script>
+</body></html>
