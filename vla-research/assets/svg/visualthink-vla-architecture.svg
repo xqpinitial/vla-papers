@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="430" viewBox="0 0 900 430">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+    </marker>
+  </defs>
+  <rect width="900" height="430" fill="#ffffff"/>
+  <text x="28" y="36" font-family="Helvetica, Arial, sans-serif" font-size="22" font-weight="bold" fill="#0f172a">VisualThink-VLA：路由视觉证据替代文字 CoT</text>
+
+  <!-- input -->
+  <rect x="24" y="76" width="180" height="76" rx="8" fill="#eef4ff" stroke="#3b6fb6"/>
+  <text x="114" y="102" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">当前帧 + 上一帧</text>
+  <text x="114" y="123" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">语言指令</text>
+
+  <!-- evidence bank -->
+  <rect x="236" y="76" width="190" height="76" rx="8" fill="#e8f7ee" stroke="#2f855a"/>
+  <text x="331" y="102" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">六类候选证据</text>
+  <text x="331" y="123" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">bbox / edge / motion</text>
+  <text x="331" y="140" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">relation / depth / segment</text>
+
+  <!-- screening -->
+  <rect x="458" y="76" width="170" height="76" rx="8" fill="#f8fafc" stroke="#94a3b8"/>
+  <text x="543" y="102" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">channel screening</text>
+  <text x="543" y="123" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">保留四通道</text>
+  <text x="543" y="140" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">去掉 depth / segment</text>
+
+  <!-- router -->
+  <rect x="660" y="76" width="200" height="76" rx="8" fill="#fff7e6" stroke="#b7791f"/>
+  <text x="760" y="102" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">task-adaptive router</text>
+  <text x="760" y="123" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">soft-hard 训练 / hard 推理</text>
+  <text x="760" y="140" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">每步动态选通道</text>
+
+  <line x1="204" y1="114" x2="236" y2="114" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="426" y1="114" x2="458" y2="114" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="628" y1="114" x2="660" y2="114" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- composer -->
+  <path d="M 760 152 L 760 250 L 658 250" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="458" y="210" width="200" height="80" rx="8" fill="#fff7e6" stroke="#b7791f"/>
+  <text x="558" y="238" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">Visual State Composer</text>
+  <text x="558" y="259" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">routed 证据 → soft states</text>
+  <text x="558" y="277" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">插入 action decoding 前</text>
+
+  <!-- frozen vla -->
+  <line x1="458" y1="250" x2="436" y2="250" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="236" y="210" width="200" height="80" rx="8" fill="#e8f7ee" stroke="#2f855a"/>
+  <text x="336" y="238" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">冻结 VLA backbone</text>
+  <text x="336" y="259" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">OpenVLA / Octo / SmolVLA</text>
+  <text x="336" y="277" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#475569">只训练证据层与 adapter</text>
+
+  <line x1="336" y1="290" x2="336" y2="330" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="336" y="352" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">动作预测</text>
+  <text x="336" y="371" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#475569">真机平均选 1.83 个通道</text>
+
+  <text x="470" y="330" font-family="Helvetica, Arial, sans-serif" font-size="12" fill="#475569">训练期：FullSoft teacher（四通道全开）</text>
+  <text x="470" y="349" font-family="Helvetica, Arial, sans-serif" font-size="12" fill="#475569">蒸馏到 router 选择的稀疏 student；</text>
+  <text x="470" y="368" font-family="Helvetica, Arial, sans-serif" font-size="12" fill="#475569">推理不需要 teacher，也不生成 trace。</text>
+
+  <text x="24" y="398" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#475569">证据只在当前帧/上一帧上提取；depth 与 segment 因收益低、开销高被筛掉。</text>
+  <text x="24" y="418" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#475569">图为自绘信息流，依据本地 VisualThink-VLA 导读；不是论文原图。</text>
+</svg>
