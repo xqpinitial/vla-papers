@@ -2,7 +2,7 @@
 
 > **冻结底座，进化外壳。** 25 篇论文/综述的六站深读（动机 → 架构 → 机制 → 基准 → 信息流 → 例子 → 局限），覆盖 VLA、世界模型与通用 Agent 的组织层（Harness）研究全景。
 >
-> 🌐 **在线阅读**：`https://<YOUR_USERNAME>.github.io/harness-papers/`（启用 Pages 后）
+> 🌐 **在线阅读**：`https://<YOUR_USERNAME>.github.io/vla-papers/`（启用 Pages 后）
 > 📮 同步发布于知乎专栏：[@initial_dream](https://www.zhihu.com/people/initial_dream)
 
 所有数字均对照论文 arXiv 原文（LaTeX 源）核实；每篇附论文原图与原始材料索引。

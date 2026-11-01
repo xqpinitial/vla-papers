@@ -4,7 +4,7 @@
 set -e
 GH_USER="${GH_USER:?需要 GH_USER}"
 GH_TOKEN="${GH_TOKEN:?需要 GH_TOKEN（classic PAT, repo 权限）}"
-REPO="${1:-harness-papers}"
+REPO="${1:-vla-papers}"
 cd "$(dirname "$0")"
 
 echo "── 1/4 创建仓库 $GH_USER/$REPO（如已存在则跳过）"
