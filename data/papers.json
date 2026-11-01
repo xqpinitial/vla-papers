@@ -72,7 +72,7 @@
   "oneliner": "异构策略封装成可复用技能，执行记忆刻画能力边界；交接前把机器人带到下一策略的分布内状态。",
   "metric": "5 基准 + 500 任务 + 135 真机",
   "arxiv": "2607.18060",
-  "org": "Jinbang Huang 等",
+  "org": "华为诺亚 · UBC · 多大 · McGill",
   "code": "",
   "project": "",
   "figs": 2
@@ -202,7 +202,7 @@
   "oneliner": "系统以文件目录存在，上下文面+技能面双进化；语义接口隔离本体无关决策。",
   "metric": "EmbodiedBench GPT-5.5 +27.8%",
   "arxiv": "2609.32862",
-  "org": "Jingsong Liang 等",
+  "org": "NTU · 北航 · NUS · 上交 · 云蝶",
   "code": "",
   "project": "jingsongliang.com/robofoundry",
   "figs": 2
