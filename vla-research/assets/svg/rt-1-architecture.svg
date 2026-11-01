@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="430" viewBox="0 0 900 430">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+    </marker>
+  </defs>
+  <rect width="900" height="430" fill="#ffffff"/>
+  <text x="28" y="34" font-family="Helvetica, Arial, sans-serif" font-size="20" font-weight="bold" fill="#0f172a">RT-1：EfficientNet + FiLM + Token Learner → 256-bin 动作 token</text>
+
+  <!-- input -->
+  <rect x="24" y="72" width="190" height="86" rx="8" fill="#eef4ff" stroke="#3b6fb6"/>
+  <text x="119" y="100" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">RGB 图像 + 文本指令</text>
+  <text x="119" y="122" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">端到端输入</text>
+  <text x="119" y="143" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" fill="#475569">分辨率章节未给</text>
+
+  <!-- visual encoder + film -->
+  <rect x="250" y="72" width="210" height="86" rx="8" fill="#e8f7ee" stroke="#2f855a"/>
+  <text x="355" y="100" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">EfficientNet + FiLM</text>
+  <text x="355" y="122" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">视觉编码 + 语言调制</text>
+  <text x="355" y="143" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" fill="#475569">Feature-wise Linear Modulation</text>
+
+  <!-- token learner -->
+  <rect x="496" y="72" width="190" height="86" rx="8" fill="#e8f7ee" stroke="#2f855a"/>
+  <text x="591" y="100" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">Token Learner</text>
+  <text x="591" y="122" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">压缩视觉特征</text>
+  <text x="591" y="143" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" fill="#475569">token 数章节未给</text>
+
+  <!-- transformer -->
+  <rect x="496" y="218" width="190" height="86" rx="8" fill="#e8f7ee" stroke="#2f855a"/>
+  <text x="591" y="246" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">Transformer</text>
+  <text x="591" y="268" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">序列建模与动作预测</text>
+  <text x="591" y="289" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" fill="#475569">层数 / 宽度章节未给</text>
+
+  <!-- action tokens -->
+  <rect x="250" y="218" width="210" height="86" rx="8" fill="#fff7e6" stroke="#b7791f"/>
+  <text x="355" y="246" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">每维 256 bins</text>
+  <text x="355" y="268" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">0–255 动作 token</text>
+  <text x="355" y="289" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" fill="#475569">每维一个分类问题</text>
+
+  <!-- detokenize -->
+  <rect x="250" y="354" width="300" height="50" rx="8" fill="#f8fafc" stroke="#94a3b8"/>
+  <text x="400" y="384" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">反离散化 → 连续动作（~3Hz）</text>
+
+  <!-- arrows -->
+  <line x1="214" y1="115" x2="246" y2="115" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="460" y1="115" x2="492" y2="115" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="591" y1="158" x2="591" y2="214" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="492" y1="261" x2="464" y2="261" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="355" y1="304" x2="355" y2="350" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <text x="700" y="240" font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#475569">35M 参数（章节概览）</text>
+  <text x="700" y="262" font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#475569">输出为离散动作 token</text>
+  <text x="700" y="284" font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#475569">未给 benchmark 成功率</text>
+  <text x="700" y="306" font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#475569">未给显存与测量协议</text>
+  <text x="24" y="422" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#475569">自绘，依据本地 RT 系列导读；不是论文原图。</text>
+</svg>
