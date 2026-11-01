@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="430" viewBox="0 0 900 430">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+    </marker>
+  </defs>
+  <rect width="900" height="430" fill="#ffffff"/>
+  <text x="28" y="34" font-family="Helvetica, Arial, sans-serif" font-size="20" font-weight="bold" fill="#0f172a">RT-X：22 种机器人 → 统一 7-DoF → 混合数据训练</text>
+
+  <!-- data -->
+  <rect x="24" y="72" width="190" height="94" rx="8" fill="#eef4ff" stroke="#3b6fb6"/>
+  <text x="119" y="100" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">Open X-Embodiment</text>
+  <text x="119" y="122" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">33 实验室 / 22 种机器人</text>
+  <text x="119" y="144" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" fill="#475569">Franka / UR5 / WidowX</text>
+
+  <!-- action space -->
+  <rect x="250" y="72" width="210" height="94" rx="8" fill="#e8f7ee" stroke="#2f855a"/>
+  <text x="355" y="100" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">统一动作空间</text>
+  <text x="355" y="123" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" fill="#1f2937">7-DoF</text>
+  <text x="355" y="145" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" fill="#475569">位置 3 + 姿态 3 + 夹爪 1</text>
+
+  <!-- mixed training -->
+  <rect x="496" y="72" width="190" height="94" rx="8" fill="#e8f7ee" stroke="#2f855a"/>
+  <text x="591" y="100" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">混合数据训练</text>
+  <text x="591" y="122" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">RT-1 / RT-2 变体</text>
+  <text x="591" y="144" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" fill="#475569">参数量：多种规格</text>
+
+  <!-- policy -->
+  <rect x="496" y="224" width="190" height="94" rx="8" fill="#fff7e6" stroke="#b7791f"/>
+  <text x="591" y="252" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">RT-X 策略</text>
+  <text x="591" y="274" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" fill="#1f2937">图像 + 文本 + 机器人类型</text>
+  <text x="591" y="296" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" fill="#475569">输出离散动作 token</text>
+
+  <!-- target robot -->
+  <rect x="250" y="224" width="210" height="94" rx="8" fill="#eef4ff" stroke="#3b6fb6"/>
+  <text x="355" y="252" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">目标机器人评测</text>
+  <text x="355" y="275" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" fill="#1f2937">Positive Transfer</text>
+  <text x="355" y="296" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" fill="#475569">数据稀缺任务更明显</text>
+
+  <!-- caveat -->
+  <rect x="250" y="370" width="436" height="44" rx="8" fill="#f8fafc" stroke="#94a3b8"/>
+  <text x="468" y="397" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" fill="#1f2937">章节未给成功率 / 数据规模 / 训练配方</text>
+
+  <!-- arrows -->
+  <line x1="214" y1="119" x2="246" y2="119" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="460" y1="119" x2="492" y2="119" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="591" y1="166" x2="591" y2="220" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="492" y1="271" x2="464" y2="271" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="355" y1="318" x2="355" y2="366" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <text x="700" y="240" font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#475569">统一 7-DoF 是章节的</text>
+  <text x="700" y="258" font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#475569">核心工程</text>
+  <text x="700" y="280" font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#475569">未给姿态表示与归一化</text>
+  <text x="700" y="298" font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#475569">未给本体采样比例</text>
+  <text x="700" y="316" font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#475569">未给单本体 vs 混合对照</text>
+  <text x="24" y="422" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#475569">自绘，依据本地 RT 系列导读；不是论文原图。</text>
+</svg>
