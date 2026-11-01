@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>动作表示与动作分块 · 论文</title>
+<meta name="description" content="动作怎么参数化：离散 bin、文本 token、动作分块、流匹配、高自由度动作空间。">
+<meta property="og:title" content="动作表示与动作分块 · 论文"><meta property="og:type" content="website">
+<link rel="stylesheet" href="../../assets/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%234f46e5'/%3E%3Ctext x='16' y='22' font-size='16' text-anchor='middle' fill='white' font-family='serif'%3EV%3C/text%3E%3C/svg%3E">
+</head><body>
+<div id="progress"></div><nav class="top">
+<a class="brand" href="../../index.html"><span class="dot"></span>VLA Research Hub<small>VLA 研究库</small></a>
+<div class="links">
+<a href="../../index.html">首页</a>
+<a href="../../survey/index.html">综述</a>
+<a href="../../papers/index.html" class="on">论文</a>
+<a href="../../papers/07-harness/index.html">Harness</a>
+</div>
+<span class="spacer"></span>
+<button class="searchbtn" data-search aria-label="搜索"><span>搜索</span><kbd>⌘K</kbd></button>
+<button class="iconbtn" id="themebtn" aria-label="切换明暗主题"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+<button class="iconbtn" id="menubtn" aria-label="菜单"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+</nav><header class="pagehead"><div class="wrap">
+<div class="crumb"><a href="../../index.html">首页</a> / <a href="../../papers/index.html">论文</a> / 动作表示与动作分块</div>
+<h1>动作表示与动作分块</h1><p class="lead">动作怎么参数化：离散 bin、文本 token、动作分块、流匹配、高自由度动作空间。</p><p class="lead" style="margin-top:10px">配套综述：<a href="../../survey/action/action-representations.html">Action 表示方式四条路线</a></p>
+<div class="meta-chips"><span class="chip cat">§1 动作表示：四条路线怎么选</span><span class="chip">6 篇</span></div>
+</div></header><main class="wrap"><section class="cards"><article class="pcard" data-cat="01-action" data-name="RT-1 论文精读：把连续动作切成 256 个 bin 的机器人 Transformer" data-year="2022" data-idx="0" data-hay="rt-1 论文精读：把连续动作切成 256 个 bin 的机器人 transformer rt-1 重新分配的是“连续控制”与“序列建模”的接口——把每个动作维度均匀切成 256 个 bin，让 transformer 用分类的方式出动作，而不是回归连续值。 "><h3><a href="rt-1.html">RT-1 论文精读：把连续动作切成 256 个 bin 的机器人 Transformer</a></h3><p class="sum">RT-1 重新分配的是“连续控制”与“序列建模”的接口——把每个动作维度均匀切成 256 个 bin，让 Transformer 用分类的方式出动作，而不是回归连续值。</p><div class="foot"><span class="chip cat">动作表示</span><span class="yr">2022</span></div></article><article class="pcard" data-cat="01-action" data-name="ACT 论文精读：CVAE + 动作分块，51.55M 参数也能做抓取" data-year="0" data-idx="1" data-hay="act 论文精读：cvae + 动作分块，51.55m 参数也能做抓取 在“只有几十条示教、没有语言输入、单卡可训”的约束下，act 用 10 步动作块降低决策频率，并在训练时用 cvae 潜变量给动作生成引入随机隐变量，而不是只做确定性回归。【章节】 "><h3><a href="act.html">ACT 论文精读：CVAE + 动作分块，51.55M 参数也能做抓取</a></h3><p class="sum">在“只有几十条示教、没有语言输入、单卡可训”的约束下，ACT 用 10 步动作块降低决策频率，并在训练时用 CVAE 潜变量给动作生成引入随机隐变量，而不是只做确定性回归。【章节】</p><div class="foot"><span class="chip cat">动作表示</span></div></article><article class="pcard" data-cat="01-action" data-name="Dexora 论文精读：把 VLA 推到 36-DoF 双臂双手" data-year="0" data-idx="2" data-hay="dexora 论文精读：把 vla 推到 36-dof 双臂双手 dexora 重新分配的是“vla 的 embodiment 与数据质量接口”——不是只换更强的 vlm，而是让策略直接输出 36-dof 双臂双手动作，并让训练过程按演示质量加权。【章节】 "><h3><a href="dexora.html">Dexora 论文精读：把 VLA 推到 36-DoF 双臂双手</a></h3><p class="sum">Dexora 重新分配的是“VLA 的 embodiment 与数据质量接口”——不是只换更强的 VLM，而是让策略直接输出 36-DoF 双臂双手动作，并让训练过程按演示质量加权。【章节】</p><div class="foot"><span class="chip cat">动作表示</span></div></article><article class="pcard" data-cat="01-action" data-name="Galaxea G0.5 论文精读：把推理、记忆与动作 token 放进一条自回归流" data-year="0" data-idx="3" data-hay="galaxea g0.5 论文精读：把推理、记忆与动作 token 放进一条自回归流 g0.5 重新分配的是“推理、动作表征、跨本体控制”三者的接口——不再让外部 planner 写推理、另一个 action head 出动作，而是让同一个 transformer decoder 在一条 next-token 序列里写完 cot 再写动作 token。【章节】 "><h3><a href="galaxea-g0-5.html">Galaxea G0.5 论文精读：把推理、记忆与动作 token 放进一条自回归流</a></h3><p class="sum">G0.5 重新分配的是“推理、动作表征、跨本体控制”三者的接口——不再让外部 planner 写推理、另一个 action head 出动作，而是让同一个 transformer decoder 在一条 next-token 序列里写完 CoT 再写动作 token。【章节】</p><div class="foot"><span class="chip cat">动作表示</span></div></article><article class="pcard" data-cat="01-action" data-name="π0 论文精读：在 LeRobot 链路里微调 5 步动作块策略" data-year="0" data-idx="4" data-hay="π0 论文精读：在 lerobot 链路里微调 5 步动作块策略 章节回答的是工程问题——如何把预训练 π0 在 20 条语言条件示教上微调，并用比环境 success 更严格的物理口径判断策略是否真的完成抓取-搬运-放置；它没有复述 π0 的内部结构、预训练目标或动作生成机制。【章节】 "><h3><a href="pi0.html">π0 论文精读：在 LeRobot 链路里微调 5 步动作块策略</a></h3><p class="sum">章节回答的是工程问题——如何把预训练 π0 在 20 条语言条件示教上微调，并用比环境 success 更严格的物理口径判断策略是否真的完成抓取-搬运-放置；它没有复述 π0 的内部结构、预训练目标或动作生成机制。【章节】</p><div class="foot"><span class="chip cat">动作表示</span></div></article><article class="pcard" data-cat="01-action" data-name="RT-2 论文精读：把动作写成文本 token 的 VLA 范式" data-year="0" data-idx="5" data-hay="rt-2 论文精读：把动作写成文本 token 的 vla 范式 说明：本文按 paper-deep-read 结构生成；事实来自本仓库 rt 系列导读。章节未给论文节号/表号、完整成功率与训练配方；公开入口见 §1，文中只在必要处注明。 "><h3><a href="rt-2.html">RT-2 论文精读：把动作写成文本 token 的 VLA 范式</a></h3><p class="sum">说明：本文按 paper-deep-read 结构生成；事实来自本仓库 RT 系列导读。章节未给论文节号/表号、完整成功率与训练配方；公开入口见 §1，文中只在必要处注明。</p><div class="foot"><span class="chip cat">动作表示</span></div></article></section></main><footer class="site"><div class="in">
+<div><b>VLA Research Hub</b> · 44 篇论文精读 + 7 篇综述 · 更新 2026-11-02</div>
+<div><a href="../../index.html">首页</a> · <a href="../../survey/index.html">综述</a> · <a href="../../papers/index.html">论文</a></div>
+</div></footer>
+<button class="totop" aria-label="回到顶部">↑</button>
+<div id="overlay"><div class="searchbox">
+<div class="hd"><span style="color:var(--faint)">🔍</span><input id="searchinput" placeholder="搜索论文、方向、机构…" autocomplete="off"><span class="hint">ESC</span></div>
+<div id="results"></div></div></div>
+<script>window.__BASE="../../";</script>
+<script src="../../assets/app.js"></script>
+</body></html>
