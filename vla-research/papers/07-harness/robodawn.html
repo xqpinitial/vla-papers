@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RoboDawn 深度调研笔记</title>
+<meta name="description" content="冻结 agentic VLM + 人类直觉的离散语义命令（move/rotate/grip，GIP 双指尖中点为统一参考）+ 1 条任务演示 ICL，闭环控制双臂——零机器人训练：RoboTwin 2.0 C2R 零样本 53.2% → 1-shot 73.6%，超 π₀.₅ 的 46.0%">
+<meta property="og:title" content="RoboDawn 深度调研笔记"><meta property="og:type" content="website">
+<link rel="stylesheet" href="../../assets/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%234f46e5'/%3E%3Ctext x='16' y='22' font-size='16' text-anchor='middle' fill='white' font-family='serif'%3EV%3C/text%3E%3C/svg%3E">
+</head><body>
+<div id="progress"></div><nav class="top">
+<a class="brand" href="../../index.html"><span class="dot"></span>VLA Research Hub<small>VLA 研究库</small></a>
+<div class="links">
+<a href="../../index.html">首页</a>
+<a href="../../survey/index.html">综述</a>
+<a href="../../papers/index.html" class="on">论文</a>
+<a href="../../papers/07-harness/index.html">Harness</a>
+</div>
+<span class="spacer"></span>
+<button class="searchbtn" data-search aria-label="搜索"><span>搜索</span><kbd>⌘K</kbd></button>
+<button class="iconbtn" id="themebtn" aria-label="切换明暗主题"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+<button class="iconbtn" id="menubtn" aria-label="菜单"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+</nav><header class="dochead"><div class="wrap"><div class="crumb"><a href="../../index.html">首页</a> / <a href="../../papers/index.html">论文</a> / <a href="../../papers/07-harness/index.html">Agent 与 Harness</a></div><h1>RoboDawn 深度调研笔记</h1><p class="lede">冻结 agentic VLM + 人类直觉的离散语义命令（move/rotate/grip，GIP 双指尖中点为统一参考）+ 1 条任务演示 ICL，闭环控制双臂——零机器人训练：RoboTwin 2.0 C2R 零样本 53.2% → 1-shot 73.6%，超 π₀.₅ 的 46.0%</p><div class="chips"><a class="chip cat" href="../../papers/07-harness/index.html">Harness</a><span class="chip">05-智能体编排与技能迁移</span></div><div class="infobox"><div class="irow"><span class="ik">分类</span><span class="iv"><a href="../../papers/07-harness/index.html">Agent 与 Harness</a></span></div><div class="irow"><span class="ik">对应专题</span><span class="iv">§7 Agent / harness：冻结策略，把智能放到运行时</span></div><div class="irow"><span class="ik">功能子夹</span><span class="iv">05-智能体编排与技能迁移</span></div><div class="irow"><span class="ik">来源</span><span class="iv">Harness / Agentic-VLA 簇（22 篇）</span></div><div class="irow"><span class="ik">论文全名</span><span class="iv">RoboDawn: Transferring the Intelligence of VLMs to Robotic Control</span></div><div class="irow"><span class="ik">arXiv</span><span class="iv"><a href="https://arxiv.org/abs/2609.22966 (2026-09-19/22)" target="_blank" rel="noopener">2609.22966 (2026-09-19/22)</a></span></div><div class="irow"><span class="ik">机构</span><span class="iv">清华大学 · 腾讯混元（Meng-Hao Guo, Yongming Rao, Shi-Min Hu 等）</span></div><div class="irow"><span class="ik">代码 / 资源</span><span class="iv">github.com/Hugo-AGI/RoboDawn（MIT）· 项目页 robodawn.top（710 episode 可回放）</span></div><div class="irow"><span class="ik">笔记</span><span class="iv">六站式深读 · 数字标「tex 已验」</span></div></div></div></header><div class="docgrid"><aside class="toc"><p class="t">本文目录</p><ul><li><a class="h2" href="#速览">速览</a></li><li><a class="h2" href="#①-动机-智能可以跨域迁移">① 动机：智能可以跨域迁移</a></li><li><a class="h2" href="#②-架构-命令接口-闭环-icl">② 架构：命令接口 + 闭环 + ICL</a></li><li><a class="h2" href="#③-数据与结果">③ 数据与结果</a></li><li><a class="h2" href="#④-信息流">④ 信息流</a></li><li><a class="h2" href="#④a-主结果对比-论文-table-1-2-tex-已验">④A 主结果对比（论文 Table 1/2，tex 已验）</a></li><li><a class="h2" href="#④b-核心消融-shots-敏感性-底座模型">④B 核心消融（shots 敏感性 + 底座模型）</a></li><li><a class="h2" href="#⑤-例子">⑤ 例子</a></li><li><a class="h2" href="#⑥-局限">⑥ 局限</a></li><li><a class="h2" href="#⑦-簇内定位">⑦ 簇内定位</a></li></ul></aside><main class="prose"><h2 id="速览">速览</h2>
+<div class="tbl"><table><thead><tr><th>项</th><th>内容</th></tr></thead><tbody><tr><td>一句话</td><td>冻结 agentic VLM + <strong>人类直觉的离散语义命令</strong>（move/rotate/grip，GIP 双指尖中点为统一参考）+ 1 条任务演示 ICL，闭环控制双臂——<strong>零机器人训练</strong>：RoboTwin 2.0 C2R 零样本 53.2% → <strong>1-shot 73.6%</strong>，超 π₀.₅ 的 46.0%</td></tr><tr><td>冻结</td><td>VLM 权重全程冻结（主实验 GPT-6 Astra）</td></tr><tr><td>演化</td><td>无参数更新；ICL 上下文内适应（memory M_t 逐轮更新）</td></tr><tr><td>真机</td><td>Franka：block-in-basket、block stacking</td></tr></tbody></table></div>
+<h2 id="①-动机-智能可以跨域迁移">① 动机：智能可以跨域迁移</h2>
+<ul>
+<li>人类能无缝适应物理与数字世界——数字-真实鸿沟存在于本体/环境/任务，但<strong>人类智能本身可迁移</strong>。</li>
+<li>追问：VLM 的智能能否同样从数字世界泛化到物理控制？RoboDawn 的答案：瓶颈不在从头学具身智能，而在<strong>接口 + 在线课</strong>（few-shot 演示 grounding 接口用法与解题策略）。</li>
+</ul>
+<h2 id="②-架构-命令接口-闭环-icl">② 架构：命令接口 + 闭环 + ICL</h2>
+<div class="tbl"><table><thead><tr><th>组件</th><th>设计</th></tr></thead><tbody><tr><td>语义命令语法</td><td>离散 translate / rotate / gripper + home/wait/done；步长有界（≤20cm / 90°）；以 <strong>GIP（Gripper Interaction Point，双指尖中点）</strong>统一标注、状态与命令参考</td></tr><tr><td>固定上下文</td><td>环境/相机 profile E + 命令 primer D_prim + 任务演示 D_task（0/1/N 条）</td></tr><tr><td>每轮闭环</td><td>Observe（多视角标注+状态+grid）→ Reason（进度/计划/scratchpad）→ Act（语义命令 batch）→ Execute（规划→运动→反馈 F_t）→ Adapt（更新 memory M_t）</td></tr><tr><td>ICL 构造</td><td>专家轨迹先降为 waypoints，再转写为命令序列；VLM 为每轮补 rationale——接口用法与任务策略一起进上下文</td></tr></tbody></table></div>
+<h2 id="③-数据与结果">③ 数据与结果</h2>
+<div class="tbl"><table><thead><tr><th>基准</th><th>零样本</th><th>1-shot</th><th>对照</th></tr></thead><tbody><tr><td>RoboTwin 2.0 C2R</td><td>53.2%</td><td><strong>73.6%</strong></td><td>π₀.₅（全量后训练）46.0%；<strong>Harness VLA 58.4%</strong></td></tr><tr><td>RoboDojo</td><td>35.67%</td><td><strong>47.17%</strong></td><td>DM0.5 19.34%</td></tr><tr><td>Franka 真机</td><td>block-in-basket、block stacking 成功</td><td>—</td><td>—</td></tr></tbody></table></div>
+<ul>
+<li>零样本即超多个在基准专属机器人数据上训练的强策略；单条 in-context 演示再大幅拉升并 SOTA。</li>
+</ul>
+<h2 id="④-信息流">④ 信息流</h2>
+<pre><code>固定上下文（E + D_prim + D_task）+ 当前观测 + M_t
+  → 冻结 VLM 推理 → 语义命令 batch（GIP 参考）
+  → 规划→运动→执行 → 反馈 F_t → 更新 M_t → 下一轮</code></pre>
+<h2 id="④a-主结果对比-论文-table-1-2-tex-已验">④A 主结果对比（论文 Table 1/2，tex 已验）</h2>
+<p><strong>RoboTwin 2.0 C2R（成功率 %）</strong></p>
+<div class="tbl"><table><thead><tr><th>方法</th><th>Shots</th><th>SR</th></tr></thead><tbody><tr><td>π0.5</td><td>Full Set</td><td>46.0</td></tr><tr><td>LingBot-VLA</td><td>Full Set</td><td>50.4</td></tr><tr><td>HarnessVLA (CC)</td><td>Full Set</td><td>58.4</td></tr><tr><td><strong>RoboDawn (Gemini-3.8-Flash)</strong></td><td>0 / 1</td><td>47.0 / 62.2</td></tr><tr><td><strong>RoboDawn (GPT-6 Astra)</strong></td><td>0 / 1</td><td><strong>53.2 / 73.6</strong></td></tr></tbody></table></div>
+<p><strong>RoboDojo（成功率 %）：</strong> π0.5 6.91 · Xiaomi-Robotics-1 13.93 · GPT-6 Astra(0-shot) 22.58 → <strong>RoboDawn 0-shot 35.67 / 1-shot 47.17</strong>（零机器人训练）。</p>
+<h2 id="④b-核心消融-shots-敏感性-底座模型">④B 核心消融（shots 敏感性 + 底座模型）</h2>
+<ul>
+<li><strong>0-shot → 1-shot</strong>：RoboTwin +15.2pp（Flash）/ +20.4pp（Astra）；RoboDojo +11.5pp——一条演示的边际收益极大；</li>
+<li><strong>底座消融</strong>：Flash → Astra 0-shot +6.2pp / 1-shot +11.4pp——agentic VLM 底座越强，零训练管线免费升级；</li>
+<li>对照全量微调基线（X-VLA 20.9 / GR00T-1.7 20.7 / StarVLA 10.6）：零训练 agent 在 C2R 上反超。</li>
+</ul>
+<h2 id="⑤-例子">⑤ 例子</h2>
+<p>叠块任务 1-shot：演示把&quot;抓块→移到目标上方→放下&quot;降为 5 条 GIP 命令 + 每步 rationale；VLM 在新随机化场景里按相同语法发命令，偏差时用 Adapt 步修正下一步（如&quot;GIP 偏左 2cm，下轮 move 右移 2cm&quot;）。</p>
+<h2 id="⑥-局限">⑥ 局限</h2>
+<ul>
+<li>离散小步长命令 → 推理轮数多、长程任务时延高；</li>
+<li>依赖 VLM 的空间 grounding 质量（与 HumanCLAW 发现的&quot;自我意识缺失&quot;同源风险）；</li>
+<li>C2R 设定的&quot;有界随机化&quot;仍在分布邻域内，开放世界未证。</li>
+</ul>
+<h2 id="⑦-簇内定位">⑦ 簇内定位</h2>
+<ul>
+<li>与 <strong>RoboDawn 同门的 Harness VLA</strong>（同在 C2R 上有数字）：RoboDawn 73.6% vs 58.4%——<strong>纯 ICL 接口路线打赢了需要全量机器人数据后训练后端的记忆编排路线</strong>（注意 π_RLinf 后端差异，谨慎横比）；</li>
+<li>与 <strong>DreamSteer</strong>：都是&quot;冻结底座 + 部署时增强&quot;，一个加想象力、一个加接口与演示；</li>
+<li>与 <strong>GaP</strong>：同为&quot;人类直觉接口&quot;（离散命令 vs 计算图），GaP 加仿真排练、RoboDawn 加 ICL；</li>
+<li>开源纪律好：710 episode 评测全部可逐步回放。</li>
+</ul></main></div><div class="pager"><a class="prev" href="rats.html"><span class="dir">← 上一篇</span><span class="ttl">RATs 深度调研笔记</span></a><a class="next" href="robofoundry.html"><span class="dir">下一篇 →</span><span class="ttl">RoboFoundry 深度调研笔记</span></a></div><section class="related"><h2>同分类其他笔记</h2><div class="cards"><article class="pcard" data-cat="07-harness" data-name="RAX 深度调研笔记" data-year="2026" data-idx="22" data-hay="rax 深度调研笔记 冻结通用 coding agent 直接连机器人感知/控制接口，把&quot;在线探索&quot;做成 scaling law：成功决策编译成程序、版本化入库，能力随探索预算单调增长 harvard · nvidia · uc berkeley · mit · stanford · harness/agentic-vla · 纯代码路线 · 探索 scaling · scaling online exploration for robot agents (rax)"><h3><a href="rax.html">RAX 深度调研笔记</a></h3><p class="sum">冻结通用 coding agent 直接连机器人感知/控制接口，把&quot;在线探索&quot;做成 scaling law：成功决策编译成程序、版本化入库，能力随探索预算单调增长</p><div class="foot"><span class="chip cat">Harness</span><span class="chip">01-代码即策略与技能发现</span><span class="yr">2026</span></div></article><article class="pcard" data-cat="07-harness" data-name="AdaHVLA 深度调研笔记" data-year="0" data-idx="23" data-hay="adahvla 深度调研笔记 在任务级推理器与 vla 之间加一段可编辑的协调代码，用机器人经验迭代修订它；解耦多 agent 适配（证据分析 / harness 修订 / 行为评估分置于不同上下文）+ 有状态修订图把证据-假设-修订-效果连成图——navila-lh 22.5%→57.5%，操纵任务跨三个 vla 底座最高 +30.8pp unc · ustc · hkust · cuhk（junyi tang, jie peng, … tianlong chen） · harness/adaptive-revision · 修订图 · vla 外挂协调层 · adahvla: adaptive harnesses for long-horizon vision-language-action execution"><h3><a href="adahvla.html">AdaHVLA 深度调研笔记</a></h3><p class="sum">在任务级推理器与 VLA 之间加一段可编辑的协调代码，用机器人经验迭代修订它；解耦多 agent 适配（证据分析 / harness 修订 / 行为评估分置于不同上下文）+ 有状态修订图把证据-假设-修订-效果连成图——NaVILA-LH 22.5%→57.5%，操纵任务跨三个 VLA 底座最高 +30.8pp</p><div class="foot"><span class="chip cat">Harness</span><span class="chip">03-自我进化与技能库</span></div></article><article class="pcard" data-cat="07-harness" data-name="ASPIRE 深度调研笔记" data-year="0" data-idx="24" data-hay="aspire 深度调研笔记 让 coding agent 当&quot;机器人程序员&quot;：写代码→跑→看 per-primitive 多模态 trace→定位 bug→改→把验证过的修复蒸馏成&quot;失败签名→修复动作&quot;技能库；配进化搜索逃出局部修复环 nvidia gear · umich · uiuc · uc berkeley · cmu · ut austin · asu（runyu lu, yubo wu 等；jim fan / yuke zhu / guanzhi wang 领衔） · harness/agentic-vla · 纯代码路线 · 技能库持续学习 · aspire: agentic skill programming through iterative robot exploration (agentic /skills discovery for robotics)"><h3><a href="aspire.html">ASPIRE 深度调研笔记</a></h3><p class="sum">让 coding agent 当&quot;机器人程序员&quot;：写代码→跑→看 per-primitive 多模态 trace→定位 bug→改→把验证过的修复蒸馏成&quot;失败签名→修复动作&quot;技能库；配进化搜索逃出局部修复环</p><div class="foot"><span class="chip cat">Harness</span><span class="chip">01-代码即策略与技能发现</span></div></article></div></section><footer class="site"><div class="in">
+<div><b>VLA Research Hub</b> · 44 篇论文精读 + 7 篇综述 · 更新 2026-11-02</div>
+<div><a href="../../index.html">首页</a> · <a href="../../survey/index.html">综述</a> · <a href="../../papers/index.html">论文</a></div>
+</div></footer>
+<button class="totop" aria-label="回到顶部">↑</button>
+<div id="overlay"><div class="searchbox">
+<div class="hd"><span style="color:var(--faint)">🔍</span><input id="searchinput" placeholder="搜索论文、方向、机构…" autocomplete="off"><span class="hint">ESC</span></div>
+<div id="results"></div></div></div>
+<script>window.__BASE="../../";</script>
+<script src="../../assets/app.js"></script>
+</body></html>
