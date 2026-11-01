@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RoboFoundry 深度调研笔记</title>
+<meta name="description" content="把支撑模型完成任务的整套系统当策略来进化：系统以文件目录存在（cat/grep 查看，add/modify/delete 修改），内外双循环&quot;执行—反思—修复—晋升&quot;；EmbodiedBench 上 GPT-5.5 +27.8%、Qwen3.7-Plus 逼近 GPT-5.5（70.3% vs 72">
+<meta property="og:title" content="RoboFoundry 深度调研笔记"><meta property="og:type" content="website">
+<link rel="stylesheet" href="../../assets/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%234f46e5'/%3E%3Ctext x='16' y='22' font-size='16' text-anchor='middle' fill='white' font-family='serif'%3EV%3C/text%3E%3C/svg%3E">
+</head><body>
+<div id="progress"></div><nav class="top">
+<a class="brand" href="../../index.html"><span class="dot"></span>VLA Research Hub<small>VLA 研究库</small></a>
+<div class="links">
+<a href="../../index.html">首页</a>
+<a href="../../survey/index.html">综述</a>
+<a href="../../papers/index.html" class="on">论文</a>
+<a href="../../papers/07-harness/index.html">Harness</a>
+</div>
+<span class="spacer"></span>
+<button class="searchbtn" data-search aria-label="搜索"><span>搜索</span><kbd>⌘K</kbd></button>
+<button class="iconbtn" id="themebtn" aria-label="切换明暗主题"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+<button class="iconbtn" id="menubtn" aria-label="菜单"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+</nav><header class="dochead"><div class="wrap"><div class="crumb"><a href="../../index.html">首页</a> / <a href="../../papers/index.html">论文</a> / <a href="../../papers/07-harness/index.html">Agent 与 Harness</a></div><h1>RoboFoundry 深度调研笔记</h1><p class="lede">把支撑模型完成任务的整套系统当策略来进化：系统以文件目录存在（cat/grep 查看，add/modify/delete 修改），内外双循环&quot;执行—反思—修复—晋升&quot;；EmbodiedBench 上 GPT-5.5 +27.8%、Qwen3.7-Plus 逼近 GPT-5.5（70.3% vs 72.7%）；RoboMemArena +39.0%；LIBERO-PRO 比 CaP-Agent0 +243.8~679.7%</p><div class="chips"><a class="chip cat" href="../../papers/07-harness/index.html">Harness</a><span class="chip">03-自我进化与技能库</span></div><div class="infobox"><div class="irow"><span class="ik">分类</span><span class="iv"><a href="../../papers/07-harness/index.html">Agent 与 Harness</a></span></div><div class="irow"><span class="ik">对应专题</span><span class="iv">§7 Agent / harness：冻结策略，把智能放到运行时</span></div><div class="irow"><span class="ik">功能子夹</span><span class="iv">03-自我进化与技能库</span></div><div class="irow"><span class="ik">来源</span><span class="iv">Harness / Agentic-VLA 簇（22 篇）</span></div><div class="irow"><span class="ik">论文全名</span><span class="iv">RoboFoundry: System-as-Policy Evolution for Self-Learning Embodied Agents</span></div><div class="irow"><span class="ik">arXiv</span><span class="iv"><a href="https://arxiv.org/abs/2609.32862 (2026-09-26/29)" target="_blank" rel="noopener">2609.32862 (2026-09-26/29)</a></span></div><div class="irow"><span class="ik">机构</span><span class="iv">Jingsong Liang, Shuhao Liao, … Yao Mu, Chen Lv 等</span></div><div class="irow"><span class="ik">笔记</span><span class="iv">六站式深读 · 数字标「tex 已验」</span></div></div></div></header><div class="docgrid"><aside class="toc"><p class="t">本文目录</p><ul><li><a class="h2" href="#速览">速览</a></li><li><a class="h2" href="#①-动机-优化零件-优化系统">① 动机：优化零件 ≠ 优化系统</a></li><li><a class="h2" href="#②-架构-两层系统-双循环-语义接口">② 架构：两层系统 + 双循环 + 语义接口</a></li><li><a class="h2" href="#③-机制-六维归因-验证式提交">③ 机制：六维归因 + 验证式提交</a></li><li><a class="h2" href="#④-数据与结果">④ 数据与结果</a></li><li><a class="h2" href="#④a-主结果对比-论文-table-1-robomemarena-libero-pro-tex-已验">④A 主结果对比（论文 Table 1 RoboMemArena + LIBERO-PRO，tex 已验）</a></li><li><a class="h2" href="#④b-核心消融-诚实标注">④B 核心消融（诚实标注）</a></li><li><a class="h2" href="#⑤-信息流">⑤ 信息流</a></li><li><a class="h2" href="#⑥-例子">⑥ 例子</a></li><li><a class="h2" href="#⑦-局限">⑦ 局限</a></li><li><a class="h2" href="#⑧-簇内定位">⑧ 簇内定位</a></li></ul></aside><main class="prose"><h2 id="速览">速览</h2>
+<div class="tbl"><table><thead><tr><th>项</th><th>内容</th></tr></thead><tbody><tr><td>一句话</td><td><strong>把支撑模型完成任务的整套系统当策略来进化</strong>：系统以文件目录存在（cat/grep 查看，add/modify/delete 修改），内外双循环&quot;执行—反思—修复—晋升&quot;；EmbodiedBench 上 <strong>GPT-5.5 +27.8%</strong>、Qwen3.7-Plus 逼近 GPT-5.5（70.3% vs 72.7%）；RoboMemArena <strong>+39.0%</strong>；LIBERO-PRO 比 CaP-Agent0 <strong>+243.8~679.7%</strong></td></tr><tr><td>冻结</td><td>基座模型参数（GPT-5.5 / Qwen3.7-Plus / 冻结 VLA 如 π₀.₅ 后端）</td></tr><tr><td>演化</td><td>两个进化面：<strong>上下文面</strong>（活跃上下文 + 文件系统记忆：SAVE/RETRIEVE/UTILIZE）+ <strong>技能面</strong>（原子技能→组合流程→失败恢复树）</td></tr><tr><td>迁移</td><td>共享语义接口隔离&quot;本体无关决策&quot;与&quot;本体特定执行&quot;——换执行适配层即可跨机器人复用</td></tr></tbody></table></div>
+<h2 id="①-动机-优化零件-优化系统">① 动机：优化零件 ≠ 优化系统</h2>
+<ul>
+<li>现有方法各改各的零件（memory、context、skills、action 接口），没人把<strong>支撑系统本身当统一策略</strong>；</li>
+<li>且&quot;交互&quot;本身不产生自改进——<strong>执行经验必须被转换成持久、经验证的系统变更</strong>才有意义。</li>
+</ul>
+<h2 id="②-架构-两层系统-双循环-语义接口">② 架构：两层系统 + 双循环 + 语义接口</h2>
+<ul>
+<li><strong>系统即文件</strong>：任务级系统服务当前任务；通用系统跨任务、跨本体持续保留。</li>
+<li><strong>内循环</strong>：执行任务、记录轨迹；<strong>外循环</strong>：按轨迹提出修改 → 后续执行检验 → 只有能修复当前失败的修改才正式提交。</li>
+<li><strong>两个进化面</strong>：</li>
+</ul>
+<ol>
+<li>上下文面：SAVE / RETRIEVE / UTILIZE 三类操作决定记什么、取什么、怎么用；</li>
+<li>技能面：原子技能 → &quot;移动—抓取—放置&quot;组合流程 → 失败条件化恢复树（失败时从仍有效的状态重规划）。</li>
+</ol>
+<ul>
+<li><strong>共享语义接口</strong>：语义层只处理跨本体共享的任务逻辑；执行层适配具体机器人（后端可为冻结 VLA、coding agent 生成的函数、CuRobo 视运动接口）。</li>
+</ul>
+<h2 id="③-机制-六维归因-验证式提交">③ 机制：六维归因 + 验证式提交</h2>
+<p>失败/低效先归因到<strong>六大能力维度</strong>——感知/推理/规划（决策能力）+ 保存/检索/利用（记忆管理）；只在对应进化面上提出修改，且必须<strong>验证有效才提交</strong>；复现出现的改进晋升到通用系统。</p>
+<h2 id="④-数据与结果">④ 数据与结果</h2>
+<div class="tbl"><table><thead><tr><th>基准</th><th>结果</th></tr></thead><tbody><tr><td>EmbodiedBench</td><td>SOTA：GPT-5.5 <strong>+27.8%</strong>；Qwen3.7-Plus 70.3% ≈ GPT-5.5 72.7%（系统进化抹平模型差距）</td></tr><tr><td>RoboMemArena（长程记忆）</td><td>超所有基线（含外部大模型辅助方法）<strong>至少 +39.0%</strong></td></tr><tr><td>LIBERO-PRO（扰动）</td><td>比 CaP-Agent0 <strong>+243.8%~679.7%</strong>（全扰动类型）</td></tr><tr><td>真机</td><td>跨机器人、跨任务零样本迁移 + 部署后在线进化</td></tr></tbody></table></div>
+<h2 id="④a-主结果对比-论文-table-1-robomemarena-libero-pro-tex-已验">④A 主结果对比（论文 Table 1 RoboMemArena + LIBERO-PRO，tex 已验）</h2>
+<p><strong>RoboMemArena（长程记忆，SR / PS）</strong></p>
+<div class="tbl"><table><thead><tr><th>方法</th><th>Overall</th><th>Transfer</th><th>Occlusion</th><th>Counting</th><th>Sequence</th></tr></thead><tbody><tr><td><strong>RoboFoundry</strong></td><td><strong>53.5 / 72.8</strong></td><td>70.5/78.1</td><td>38.3/57.6</td><td>55.2/82.5</td><td>75.2/92.1</td></tr><tr><td>PrediMem</td><td>38.5 / 55.2</td><td>22.5/45.2</td><td>27.3/38.4</td><td>45.7/69.3</td><td>72.5/89.5</td></tr><tr><td>MemER</td><td>27.3 / 49.1</td><td>20.0/36.1</td><td>16.4/33.2</td><td>27.1/65.1</td><td>65.0/79.1</td></tr><tr><td>π0.5</td><td>21.5 / 38.7</td><td>20.0/42.8</td><td>12.7/17.2</td><td>14.3/50.9</td><td>60.0/71.6</td></tr><tr><td>MemoryVLA</td><td>15.0 / 35.3</td><td>15.0/37.2</td><td>7.3/13.1</td><td>14.3/55.1</td><td>37.5/65.2</td></tr></tbody></table></div>
+<p><strong>LIBERO-PRO</strong>（task-wise 表）：RoboFoundry 各套件 95–100%，而 OpenVLA/π0 大多 0.0、π0.5/CaP-Agent0 在任务改向下大量归零。</p>
+<h2 id="④b-核心消融-诚实标注">④B 核心消融（诚实标注）</h2>
+<p>论文无逐组件关闭的独立消融大表（设计选择以图表呈现）；核心对照是 System-as-Policy 整体 vs 记忆/双系统基线（上表 +26.2pp over 最强记忆基线 PrediMem）。</p>
+<h2 id="⑤-信息流">⑤ 信息流</h2>
+<pre><code>内循环：任务执行 → 轨迹 → 六维归因
+外循环：对应进化面提修改（上下文面 / 技能面）
+  → 后续执行验证 → 有效才提交 → 复现者晋升通用系统（文件目录）
+语义接口（本体无关）→ 执行适配层（本体相关：VLA / 代码 / CuRobo）</code></pre>
+<h2 id="⑥-例子">⑥ 例子</h2>
+<p>&quot;收拾桌面&quot;任务失败于&quot;忘记抽屉里有遗留物&quot;→ 归因为<strong>检索</strong>能力缺陷 → 上下文面新增规则&quot;进入新区域先 RETRIEVE 该区域的历史记录&quot;→ 下次执行验证有效 → 提交进通用系统 → 换一台机器人只需换执行适配层。</p>
+<h2 id="⑦-局限">⑦ 局限</h2>
+<ul>
+<li>系统文件的增长需要治理（文章强调验证式提交，但长期膨胀待考）；</li>
+<li>语义-执行分离的适配层仍需人工/agent 编写；</li>
+<li>归因六维的划分是否完备待检验。</li>
+</ul>
+<h2 id="⑧-簇内定位">⑧ 簇内定位</h2>
+<ul>
+<li>与 <strong>RoboHarn-Evo</strong>：同月同主题（经验→持久改进），RoboFoundry 面<strong>大</strong>（整个系统文件）、RoboHarn-Evo 面<strong>深</strong>（知识判据分层检验）；</li>
+<li>与 <strong>Zetta</strong>：Zetta 演化 {Critic,Recovery,Tools} 且有代码化 critic 高频在线监控，RoboFoundry 演化文件系统且偏离线外循环；</li>
+<li>与 <strong>HarnessBank</strong>：共同的&quot;验证式提交&quot;纪律；RoboFoundry 把它从通用 agent 搬进具身并加上跨本体语义接口；</li>
+<li>名字即宣言：<strong>System-as-Policy——进化的单位是系统，不是权重</strong>。</li>
+</ul></main></div><div class="pager"><a class="prev" href="robodawn.html"><span class="dir">← 上一篇</span><span class="ttl">RoboDawn 深度调研笔记</span></a><a class="next" href="roboharn-evo.html"><span class="dir">下一篇 →</span><span class="ttl">RoboHarn-Evo 深度调研笔记</span></a></div><section class="related"><h2>同分类其他笔记</h2><div class="cards"><article class="pcard" data-cat="07-harness" data-name="RAX 深度调研笔记" data-year="2026" data-idx="22" data-hay="rax 深度调研笔记 冻结通用 coding agent 直接连机器人感知/控制接口，把&quot;在线探索&quot;做成 scaling law：成功决策编译成程序、版本化入库，能力随探索预算单调增长 harvard · nvidia · uc berkeley · mit · stanford · harness/agentic-vla · 纯代码路线 · 探索 scaling · scaling online exploration for robot agents (rax)"><h3><a href="rax.html">RAX 深度调研笔记</a></h3><p class="sum">冻结通用 coding agent 直接连机器人感知/控制接口，把&quot;在线探索&quot;做成 scaling law：成功决策编译成程序、版本化入库，能力随探索预算单调增长</p><div class="foot"><span class="chip cat">Harness</span><span class="chip">01-代码即策略与技能发现</span><span class="yr">2026</span></div></article><article class="pcard" data-cat="07-harness" data-name="AdaHVLA 深度调研笔记" data-year="0" data-idx="23" data-hay="adahvla 深度调研笔记 在任务级推理器与 vla 之间加一段可编辑的协调代码，用机器人经验迭代修订它；解耦多 agent 适配（证据分析 / harness 修订 / 行为评估分置于不同上下文）+ 有状态修订图把证据-假设-修订-效果连成图——navila-lh 22.5%→57.5%，操纵任务跨三个 vla 底座最高 +30.8pp unc · ustc · hkust · cuhk（junyi tang, jie peng, … tianlong chen） · harness/adaptive-revision · 修订图 · vla 外挂协调层 · adahvla: adaptive harnesses for long-horizon vision-language-action execution"><h3><a href="adahvla.html">AdaHVLA 深度调研笔记</a></h3><p class="sum">在任务级推理器与 VLA 之间加一段可编辑的协调代码，用机器人经验迭代修订它；解耦多 agent 适配（证据分析 / harness 修订 / 行为评估分置于不同上下文）+ 有状态修订图把证据-假设-修订-效果连成图——NaVILA-LH 22.5%→57.5%，操纵任务跨三个 VLA 底座最高 +30.8pp</p><div class="foot"><span class="chip cat">Harness</span><span class="chip">03-自我进化与技能库</span></div></article><article class="pcard" data-cat="07-harness" data-name="ASPIRE 深度调研笔记" data-year="0" data-idx="24" data-hay="aspire 深度调研笔记 让 coding agent 当&quot;机器人程序员&quot;：写代码→跑→看 per-primitive 多模态 trace→定位 bug→改→把验证过的修复蒸馏成&quot;失败签名→修复动作&quot;技能库；配进化搜索逃出局部修复环 nvidia gear · umich · uiuc · uc berkeley · cmu · ut austin · asu（runyu lu, yubo wu 等；jim fan / yuke zhu / guanzhi wang 领衔） · harness/agentic-vla · 纯代码路线 · 技能库持续学习 · aspire: agentic skill programming through iterative robot exploration (agentic /skills discovery for robotics)"><h3><a href="aspire.html">ASPIRE 深度调研笔记</a></h3><p class="sum">让 coding agent 当&quot;机器人程序员&quot;：写代码→跑→看 per-primitive 多模态 trace→定位 bug→改→把验证过的修复蒸馏成&quot;失败签名→修复动作&quot;技能库；配进化搜索逃出局部修复环</p><div class="foot"><span class="chip cat">Harness</span><span class="chip">01-代码即策略与技能发现</span></div></article></div></section><footer class="site"><div class="in">
+<div><b>VLA Research Hub</b> · 44 篇论文精读 + 7 篇综述 · 更新 2026-11-02</div>
+<div><a href="../../index.html">首页</a> · <a href="../../survey/index.html">综述</a> · <a href="../../papers/index.html">论文</a></div>
+</div></footer>
+<button class="totop" aria-label="回到顶部">↑</button>
+<div id="overlay"><div class="searchbox">
+<div class="hd"><span style="color:var(--faint)">🔍</span><input id="searchinput" placeholder="搜索论文、方向、机构…" autocomplete="off"><span class="hint">ESC</span></div>
+<div id="results"></div></div></div>
+<script>window.__BASE="../../";</script>
+<script src="../../assets/app.js"></script>
+</body></html>
