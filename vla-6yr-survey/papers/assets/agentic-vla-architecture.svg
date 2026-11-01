@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="430" viewBox="0 0 900 430">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+    </marker>
+  </defs>
+  <rect width="900" height="430" fill="#ffffff"/>
+  <text x="28" y="36" font-family="Helvetica, Arial, sans-serif" font-size="22" font-weight="bold" fill="#0f172a">Agentic-VLA：围绕 OpenVLA-OFT 的在线适应外环</text>
+  <text x="28" y="60" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#475569">agentic 指训练过程：奖励、探索与经验复用由外环调度，VLA 仍负责执行动作</text>
+
+  <!-- input -->
+  <rect x="24" y="170" width="180" height="70" rx="8" fill="#eef4ff" stroke="#3b6fb6"/>
+  <text x="114" y="196" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">新任务指令</text>
+  <text x="114" y="218" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" fill="#1f2937">当前观测 / 近期轨迹</text>
+
+  <!-- experience memory -->
+  <rect x="230" y="70" width="200" height="76" rx="8" fill="#e8f7ee" stroke="#2f855a"/>
+  <text x="330" y="96" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">Experience Memory</text>
+  <text x="330" y="118" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">task embedding + 策略参数</text>
+  <text x="330" y="136" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">capacity 100 / top-k 3</text>
+
+  <!-- policy rollout -->
+  <rect x="230" y="180" width="210" height="90" rx="8" fill="#e8f7ee" stroke="#2f855a"/>
+  <text x="335" y="208" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="middle" fill="#1f2937">OpenVLA-OFT</text>
+  <text x="335" y="230" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" fill="#1f2937">离散 action token</text>
+  <text x="335" y="252" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" fill="#1f2937">在线 rollout</text>
+
+  <!-- LGE -->
+  <rect x="24" y="290" width="180" height="72" rx="8" fill="#eef4ff" stroke="#3b6fb6"/>
+  <text x="114" y="316" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">Language-Guided</text>
+  <text x="114" y="337" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">Exploration</text>
+  <text x="114" y="355" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">VLM 探索 critic</text>
+
+  <!-- ARS -->
+  <rect x="480" y="180" width="190" height="90" rx="8" fill="#fff7e6" stroke="#b7791f"/>
+  <text x="575" y="206" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">Adaptive Reward</text>
+  <text x="575" y="228" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">Synthesis</text>
+  <text x="575" y="250" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">子目标 + 动态权重</text>
+
+  <!-- GRPO -->
+  <rect x="480" y="310" width="190" height="66" rx="8" fill="#f8fafc" stroke="#94a3b8"/>
+  <text x="575" y="336" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">GRPO 更新</text>
+  <text x="575" y="357" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">group 8 / batch 32</text>
+
+  <!-- arrows -->
+  <line x1="204" y1="190" x2="226" y2="150" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="150" y="166" font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#475569">检索</text>
+
+  <line x1="204" y1="215" x2="226" y2="215" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <line x1="330" y1="146" x2="330" y2="176" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="338" y="166" font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#475569">warm start</text>
+
+  <line x1="204" y1="326" x2="226" y2="255" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="230" y1="255" x2="206" y2="306" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="150" y="276" font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#475569">建议拼 prompt</text>
+
+  <line x1="440" y1="225" x2="476" y2="225" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="575" y1="270" x2="575" y2="306" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <line x1="480" y1="343" x2="440" y2="270" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="430" y="300" font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#475569">策略更新</text>
+
+  <path d="M 670 330 L 730 330 L 730 108 L 434 108" fill="none" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="610" y="300" font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#475569">成功适应后写回</text>
+
+  <text x="24" y="400" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#475569">在线适应闭环：EM 检索 → 策略 warm start → rollout ↔ LGE → ARS → GRPO。</text>
+  <text x="24" y="421" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#475569">图为自绘信息流，依据本地导读；不是论文原图。</text>
+</svg>
