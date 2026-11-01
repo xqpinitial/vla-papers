@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="430" viewBox="0 0 900 430">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+    </marker>
+  </defs>
+  <rect width="900" height="430" fill="#ffffff"/>
+  <text x="28" y="36" font-family="Helvetica, Arial, sans-serif" font-size="22" font-weight="bold" fill="#0f172a">DM0.5：prefix 一次编码，suffix 反复出动作</text>
+  <text x="28" y="60" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#475569">Gemma3 VLM prefix + 自定义 Action Expert suffix + Flow Matching action chunk</text>
+
+  <!-- input -->
+  <rect x="24" y="100" width="190" height="80" rx="8" fill="#eef4ff" stroke="#3b6fb6"/>
+  <text x="119" y="126" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">多视角图像 + 指令</text>
+  <text x="119" y="147" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">状态 + robot type</text>
+  <text x="119" y="168" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">proprioception</text>
+
+  <!-- prefix -->
+  <rect x="250" y="100" width="200" height="80" rx="8" fill="#e8f7ee" stroke="#2f855a"/>
+  <text x="350" y="126" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">Vision encoder</text>
+  <text x="350" y="147" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">Gemma3 VLM prefix</text>
+  <text x="350" y="168" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">token 序列</text>
+
+  <!-- cache -->
+  <rect x="250" y="216" width="200" height="66" rx="8" fill="#fff7e6" stroke="#b7791f"/>
+  <text x="350" y="241" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">Prefix KV cache</text>
+  <text x="350" y="262" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">图像 / 语言 / 状态条件 c</text>
+
+  <!-- action expert -->
+  <rect x="490" y="168" width="210" height="92" rx="8" fill="#e8f7ee" stroke="#2f855a"/>
+  <text x="595" y="194" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">Action Expert suffix</text>
+  <text x="595" y="215" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">action_in_proj / time_mlp</text>
+  <text x="595" y="234" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">每层时间调制</text>
+  <text x="595" y="252" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">action_out_proj</text>
+
+  <!-- velocity / euler -->
+  <rect x="490" y="300" width="210" height="66" rx="8" fill="#fff7e6" stroke="#b7791f"/>
+  <text x="595" y="325" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">速度场 vθ + Euler</text>
+  <text x="595" y="346" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">diffusion_steps = 10</text>
+
+  <!-- output -->
+  <rect x="730" y="300" width="146" height="66" rx="8" fill="#f8fafc" stroke="#94a3b8"/>
+  <text x="803" y="325" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">action chunk</text>
+  <text x="803" y="346" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">→ 机器人</text>
+
+  <!-- arrows -->
+  <line x1="214" y1="140" x2="246" y2="140" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="350" y1="180" x2="350" y2="212" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="358" y="200" font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#475569">编码一次</text>
+
+  <line x1="450" y1="240" x2="486" y2="218" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="454" y="256" font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#475569">KV cache</text>
+
+  <line x1="595" y1="260" x2="595" y2="296" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="603" y="282" font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#475569">预测 vθ</text>
+
+  <line x1="530" y1="300" x2="530" y2="264" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="450" y="292" font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#475569">Euler 更新</text>
+
+  <line x1="700" y1="333" x2="726" y2="333" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <text x="24" y="320" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#475569">prefix 只跑一次，动作采样循环只跑 action suffix；</text>
+  <text x="24" y="342" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#475569">一次推理输出一段 action chunk，执行后读取新观测。</text>
+  <text x="24" y="374" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#475569">公告 9.29× 栈：TensorRT / FlexAttention / FP8 E4M3 /</text>
+  <text x="24" y="396" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#475569">Triton fused kernels / CUDA Graph；未在 OpenDM 完整开源。</text>
+  <text x="24" y="421" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#475569">图为自绘信息流，依据本地导读；不是论文原图。</text>
+</svg>
