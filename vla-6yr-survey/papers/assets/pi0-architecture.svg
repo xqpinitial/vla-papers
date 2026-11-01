@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="430" viewBox="0 0 900 430">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+    </marker>
+  </defs>
+  <rect width="900" height="430" fill="#ffffff"/>
+  <text x="24" y="34" font-family="Helvetica, Arial, sans-serif" font-size="21" font-weight="bold" fill="#0f172a">π0：5 步动作块 + 双层成功判定</text>
+
+  <!-- observations -->
+  <rect x="24" y="70" width="170" height="150" rx="8" fill="#eef4ff" stroke="#3b6fb6"/>
+  <text x="109" y="96" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#1f2937">观测</text>
+  <text x="109" y="122" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">主视角 256×256</text>
+  <text x="109" y="144" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">腕部 256×256</text>
+  <text x="109" y="166" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">状态 6 维</text>
+
+  <!-- language -->
+  <rect x="24" y="240" width="170" height="70" rx="8" fill="#eef4ff" stroke="#3b6fb6"/>
+  <text x="109" y="266" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#1f2937">语言指令</text>
+  <text x="109" y="288" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" fill="#1f2937">Place the red mug ...</text>
+
+  <!-- policy -->
+  <rect x="230" y="95" width="205" height="175" rx="8" fill="#e8f7ee" stroke="#2f855a"/>
+  <text x="332" y="121" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#1f2937">PI0Policy</text>
+  <text x="332" y="145" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">预训练 lerobot/pi0</text>
+  <text x="332" y="167" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">PaliGemma 3B 依赖</text>
+  <text x="332" y="189" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">gated 权重</text>
+  <text x="332" y="215" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">chunk_size = 5</text>
+  <text x="332" y="237" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">n_action_steps = 5</text>
+
+  <!-- action chunk -->
+  <rect x="475" y="95" width="185" height="90" rx="8" fill="#fff7e6" stroke="#b7791f"/>
+  <text x="567" y="121" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#1f2937">动作块</text>
+  <text x="567" y="145" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">5 × 7 维动作</text>
+  <text x="567" y="167" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">6 关节 + 1 夹爪</text>
+
+  <!-- loop -->
+  <rect x="475" y="215" width="185" height="85" rx="8" fill="#fff7e6" stroke="#b7791f"/>
+  <text x="567" y="241" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">20 Hz 闭环</text>
+  <text x="567" y="263" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">select_action</text>
+  <text x="567" y="285" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">policy.reset() 清队列</text>
+
+  <!-- success -->
+  <rect x="700" y="140" width="176" height="130" rx="8" fill="#f8fafc" stroke="#94a3b8"/>
+  <text x="788" y="166" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#1f2937">成功判定</text>
+  <text x="788" y="190" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">legacy_success</text>
+  <text x="788" y="212" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">physical_success</text>
+  <text x="788" y="234" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">抬起 ≥ 0.03 m</text>
+  <text x="788" y="254" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">终态 z 朝上</text>
+
+  <!-- arrows -->
+  <line x1="194" y1="120" x2="230" y2="140" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="194" y1="270" x2="230" y2="240" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="435" y1="130" x2="475" y2="130" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="567" y1="185" x2="567" y2="215" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="660" y1="255" x2="700" y2="225" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+  <polyline points="567,300 567,330 332,330 332,270" fill="none" stroke="#94a3b8" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#arrow)"/>
+
+  <text x="590" y="324" font-family="Helvetica, Arial, sans-serif" font-size="12" fill="#64748b">下一帧观测 / 新指令</text>
+
+  <text x="24" y="360" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#475569">关键数字：chunk 5 / n_action_steps 5；动作 7 维；20 episode、2621 帧；20,000 steps、batch 16。</text>
+  <text x="24" y="382" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#475569">0.25 s = 5 步 / 20 Hz，是动作块覆盖时长，不是策略前向延迟。</text>
+  <text x="24" y="404" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#475569">图为自绘信息流，依据本地 π0 导读；不是论文原图。</text>
+</svg>
