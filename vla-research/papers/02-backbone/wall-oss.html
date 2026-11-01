@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WALL-OSS 论文精读：把预训练 VLM 接到可执行动作空间</title>
+<meta name="description" content="WALL-OSS 重新分配的是“动作生成放在 VLM 的什么位置”——不是给 VLM 外接一个线性 action head，而是把 embodied reasoning、子任务分解和细粒度动作合成放进同一条紧耦合链路，再用两阶段训练把离散动作先验接到连续控制上。【章节】">
+<meta property="og:title" content="WALL-OSS 论文精读：把预训练 VLM 接到可执行动作空间"><meta property="og:type" content="website">
+<link rel="stylesheet" href="../../assets/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%234f46e5'/%3E%3Ctext x='16' y='22' font-size='16' text-anchor='middle' fill='white' font-family='serif'%3EV%3C/text%3E%3C/svg%3E">
+</head><body>
+<div id="progress"></div><nav class="top">
+<a class="brand" href="../../index.html"><span class="dot"></span>VLA Research Hub<small>VLA 研究库</small></a>
+<div class="links">
+<a href="../../index.html">首页</a>
+<a href="../../survey/index.html">综述</a>
+<a href="../../papers/index.html" class="on">论文</a>
+<a href="../../papers/07-harness/index.html">Harness</a>
+</div>
+<span class="spacer"></span>
+<button class="searchbtn" data-search aria-label="搜索"><span>搜索</span><kbd>⌘K</kbd></button>
+<button class="iconbtn" id="themebtn" aria-label="切换明暗主题"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+<button class="iconbtn" id="menubtn" aria-label="菜单"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+</nav><header class="dochead"><div class="wrap"><div class="crumb"><a href="../../index.html">首页</a> / <a href="../../papers/index.html">论文</a> / <a href="../../papers/02-backbone/index.html">视觉 Backbone 与感知推理</a></div><h1>WALL-OSS 论文精读：把预训练 VLM 接到可执行动作空间</h1><p class="lede">WALL-OSS 重新分配的是“动作生成放在 VLM 的什么位置”——不是给 VLM 外接一个线性 action head，而是把 embodied reasoning、子任务分解和细粒度动作合成放进同一条紧耦合链路，再用两阶段训练把离散动作先验接到连续控制上。【章节】</p><div class="chips"><a class="chip cat" href="../../papers/02-backbone/index.html">Backbone</a></div><div class="infobox"><div class="irow"><span class="ik">分类</span><span class="iv"><a href="../../papers/02-backbone/index.html">视觉 Backbone 与感知推理</a></span></div><div class="irow"><span class="ik">对应专题</span><span class="iv">§2 图像 backbone</span></div><div class="irow"><span class="ik">来源</span><span class="iv">VLA 六年演进（广域 22 篇）</span></div><div class="irow"><span class="ik">笔记</span><span class="iv">六站式深读 · 数字标「tex 已验」</span></div></div></div></header><div class="docgrid"><aside class="toc"><p class="t">本文目录</p><ul><li><a class="h2" href="#1-论文与官方资源">1. 论文与官方资源</a></li><li><a class="h2" href="#2-核心问题-vlm-会看图-但不会直接产生机器人动作">2. 核心问题：VLM 会看图，但不会直接产生机器人动作</a></li><li><a class="h2" href="#3-模型结构与张量流">3. 模型结构与张量流</a></li><li><a class="h3" href="#3-1-三条-vlm-vla-路线">3.1 三条 VLM→VLA 路线</a></li><li><a class="h3" href="#3-2-四个核心模块">3.2 四个核心模块</a></li><li><a class="h3" href="#3-3-训练管线-inspiration-到-integration">3.3 训练管线：Inspiration 到 Integration</a></li><li><a class="h3" href="#3-4-数据-不是只靠机器人轨迹">3.4 数据：不是只靠机器人轨迹</a></li><li><a class="h2" href="#4-实验结果">4. 实验结果</a></li><li><a class="h2" href="#5-消融实验">5. 消融实验</a></li><li><a class="h2" href="#6-延迟与显存怎么读">6. 延迟与显存怎么读</a></li><li><a class="h2" href="#7-训练资源与卡数">7. 训练资源与卡数</a></li><li><a class="h2" href="#8-代码阅读顺序">8. 代码阅读顺序</a></li><li><a class="h2" href="#9-从-checkpoint-开始复现">9. 从 checkpoint 开始复现</a></li><li><a class="h3" href="#9-1-下载-checkpoint">9.1 下载 checkpoint</a></li><li><a class="h3" href="#9-2-lerobot-最小后训练-评估">9.2 LeRobot 最小后训练 / 评估</a></li><li><a class="h3" href="#9-3-原生-wall-x-路线">9.3 原生 wall-x 路线</a></li><li><a class="h3" href="#9-4-smoke-test-能证明什么">9.4 smoke test 能证明什么</a></li><li><a class="h2" href="#10-如何用到自己的项目">10. 如何用到自己的项目</a></li></ul></aside><main class="prose"><p>WALL-OSS 对应论文 <em>Igniting VLMs toward the Embodied Space</em>，是 X Square Robot 的 WALL 生态里“模型层”的开源 release：把预训练 VLM 的视觉语言理解接到机器人动作空间，让同一个体系既做 embodied reasoning，又生成可执行动作。本地章节给出的可核验口径是：模型卡称 <code>wall-oss-0.5</code> 为 4B VLA（3B VLM backbone 加动作组件）、公开 4 个 checkpoint 变体（<code>wall-oss-0.5</code>、<code>wall-oss-flow</code>、<code>wall-oss-flow-0.1</code>、<code>wall-oss-fast</code>）、训练分 2 阶段（Inspiration / Integration）；LeRobot 示例命令用 <code>steps=3000</code>、<code>batch_size=32</code>。章节没有给任何成功率、显存或延迟数字，本文不补写。</p>
+<blockquote>来源约定：本文事实只取自本仓库 <span class="deadref" title="原始 every-embodied 仓库引用，本归档未收录该文件">WALL-OSS 导读</span>，没有用模型记忆补写论文细节。<br>标注约定：<code>【章节】</code> 指本地导读自己的归纳；<code>【章节转述】</code> 指导读对论文、LeRobot 文档、模型卡或官方 README 的转述。论文版本号与代码 commit 章节未给。<br>版本：arXiv 2509.11766（章节链接 <code>v1</code> HTML）；章节观察日期 2026-06-29；代码 commit 章节未给；查阅日期 2026-11-01。</blockquote>
+<h2 id="1-论文与官方资源">1. 论文与官方资源</h2>
+<div class="tbl"><table><thead><tr><th>资源</th><th>入口</th><th>阅读用途</th></tr></thead><tbody><tr><td>论文</td><td><a href="https://arxiv.org/abs/2509.11766" target="_blank" rel="noopener">arXiv:2509.11766</a></td><td>方法、范式对比、训练管线与数据组成</td></tr><tr><td>源码</td><td><a href="https://github.com/X-Square-Robot/wall-x" target="_blank" rel="noopener">X-Square-Robot/wall-x</a></td><td>WALL 系列官方工程栈；WALL-OSS 的后训练与推理入口</td></tr><tr><td>权重</td><td><a href="https://huggingface.co/x-square-robot" target="_blank" rel="noopener">Hugging Face: x-square-robot</a>；<a href="https://huggingface.co/x-square-robot/wall-oss-0.5" target="_blank" rel="noopener">wall-oss-0.5</a>、<a href="https://huggingface.co/x-square-robot/wall-oss-flow" target="_blank" rel="noopener">wall-oss-flow</a>、<a href="https://huggingface.co/x-square-robot/wall-oss-fast" target="_blank" rel="noopener">wall-oss-fast</a></td><td>checkpoint 与模型卡；另有 <code>wall-oss-flow-0.1</code>，章节只给名称、未给链接</td></tr><tr><td>项目页</td><td>章节未给</td><td>本地章节没有出现论文项目页</td></tr><tr><td>官方文档</td><td><a href="https://huggingface.co/docs/lerobot/en/walloss" target="_blank" rel="noopener">LeRobot: WALL-OSS</a></td><td><code>policy.type=wall_x</code> 的集成、后训练与评估说明</td></tr></tbody></table></div>
+<p>论文题目：Igniting VLMs toward the Embodied Space；arXiv：2509.11766；版本：章节引用 <code>2509.11766v1</code>；代码 commit：章节未给；查阅日期：2026-11-01。</p>
+<p><strong>版本提示：</strong>章节里的模型清单来自 WALL-X README 的当前列表，不是论文里的版本号。<code>wall-oss-0.5</code> 被模型卡称为 2026 版、更偏 deployment-ready；<code>wall-oss-flow</code>、<code>wall-oss-flow-0.1</code>、<code>wall-oss-fast</code> 是不同动作分支的 release。写教程或实验时不要把四个名字混写成一个“WALL-OSS”。</p>
+<h2 id="2-核心问题-vlm-会看图-但不会直接产生机器人动作">2. 核心问题：VLM 会看图，但不会直接产生机器人动作</h2>
+<p>一句话：WALL-OSS 重新分配的是“动作生成放在 VLM 的什么位置”——不是给 VLM 外接一个线性 action head，而是把 embodied reasoning、子任务分解和细粒度动作合成放进同一条紧耦合链路，再用两阶段训练把离散动作先验接到连续控制上。【章节】</p>
+<figure><img src="../../assets/svg/wall-oss-architecture.svg" alt="WALL-OSS 架构与动作流" loading="lazy"><figcaption>WALL-OSS 架构与动作流</figcaption></figure>
+<p>图 1：WALL-OSS 从视觉语言输入到动作输出的紧耦合信息流。自绘，依据本地导读；不是论文原图。</p>
+<p>章节把“预训练 VLM 直接当策略”的缺口拆成四条：</p>
+<ul>
+<li><strong>空间几何</strong>：夹爪与物体的相对位置要准，通用 VLM 的图文对齐不保证这一点。</li>
+<li><strong>时间节奏</strong>：靠近、闭合、抬起、移动、放下有先后，动作必须按阶段组织。</li>
+<li><strong>动作表示</strong>：连续控制、diffusion / flow matching、FAST-style action token 各有取舍。</li>
+<li><strong>能力保留</strong>：不能为了学动作把 VLM 原本的视觉语言能力训练坏。</li>
+</ul>
+<p>对比主流路径：VLM 编码 + 外接 action head / 纯离散 action token / 纯连续 diffusion → 统一 VLA 框架（Uni-CoT + MoE action heads + 两阶段训练）。【章节转述】</p>
+<ul>
+<li>节省了什么：动作分支不再完全游离在 VLM 主干之外，语义推理与动作生成共享同一套表征。</li>
+<li>保留了什么：预训练 VLM 的视觉语言先验，并用多模态 VQA 数据继续维持。</li>
+<li>代价是什么：训练分成两阶段，离散先验与连续控制要分别调；MoE 专家与 Uni-CoT 增加了实现复杂度。</li>
+<li>读者该学什么：VLM→VLA 的关键不是“换一个头”，而是设计动作先验如何进入推理链路、又如何落到高频控制。</li>
+</ul>
+<h2 id="3-模型结构与张量流">3. 模型结构与张量流</h2>
+<h3 id="3-1-三条-vlm-vla-路线">3.1 三条 VLM→VLA 路线</h3>
+<div class="tbl"><table><thead><tr><th>路线</th><th>做法</th><th>章节指出的风险</th></tr></thead><tbody><tr><td>只接 action head</td><td>VLM 编码图文，外接小头预测动作</td><td>动作生成和语言推理耦合弱</td></tr><tr><td>离散 action token</td><td>把连续动作离散成 token，用语言模型方式生成</td><td>容易牺牲控制精度</td></tr><tr><td>连续动作建模</td><td>用 diffusion / flow matching 预测连续动作</td><td>训练稳定性与 VLM prior 保留更难</td></tr></tbody></table></div>
+<p>WALL-OSS 的策略是把离散与连续都纳入考虑：先建立 embodied semantic-action association，再用连续控制分支支撑高频执行。【章节转述】这也是它区别于“单一路线”的地方。</p>
+<h3 id="3-2-四个核心模块">3.2 四个核心模块</h3>
+<div class="tbl"><table><thead><tr><th>模块</th><th>章节给出的作用</th><th>读代码时看什么</th></tr></thead><tbody><tr><td>Embodied perception-enhanced multimodal pretraining</td><td>用视觉-语言-动作数据增强空间、因果和操作理解</td><td>预训练数据里动作数据与 VQA 的比例、视觉编码是否冻结</td></tr><tr><td>Unified Cross-Level CoT / Uni-CoT</td><td>把高层指令理解、子任务分解、细粒度动作合成放进连续链路</td><td>CoT 是文本 token、隐状态还是两者混合；哪些层参与</td></tr><tr><td>MoE action heads</td><td>按任务阶段动态激活不同专家，支持离散或连续动作建模</td><td>专家数、路由依据、离散/连续分支如何切换</td></tr><tr><td>Two-stage training</td><td>先用离散动作先验增强语义-动作对齐，再用 flow matching 做连续控制</td><td>两阶段的切换点、第二阶段是否冻结第一阶段模块</td></tr></tbody></table></div>
+<h3 id="3-3-训练管线-inspiration-到-integration">3.3 训练管线：Inspiration 到 Integration</h3>
+<p>章节转述 LeRobot 文档的两阶段写法：<strong>Inspiration</strong> 阶段注入离散动作先验，增强空间理解与语义-动作对齐，直观理解是先让模型知道“语言和操作阶段怎么对应”；<strong>Integration</strong> 阶段使用 flow matching 实现高频连续控制，再让模型输出可执行的连续动作。</p>
+<p>这条路线承认 VLM 和机器人控制之间存在分布差异：VLM 的能力不等于动作能力，需要中间桥接。章节的判断是，它比直接在小数据上微调 action head 更稳。【章节】</p>
+<h3 id="3-4-数据-不是只靠机器人轨迹">3.4 数据：不是只靠机器人轨迹</h3>
+<p>章节列出四类数据：自采机器人动作数据、开源机器人动作数据、multimodal VQA / vision-language 数据，以及长时域操作、推理与指令跟随任务。【章节转述】</p>
+<p>混训的动机是双向的：只用机器人动作数据，规模不够且容易冲坏 VLM 的图文理解；只用图文数据，又学不到可执行动作。章节据此解释为什么“从头预训练 WALL-OSS 不是普通教程项目”，更现实的是下载 checkpoint 做后训练。</p>
+<h2 id="4-实验结果">4. 实验结果</h2>
+<p>章节没有引用任何 benchmark 名称、任务数、trials、种子或成功率，也没有给参数量实测、显存或延迟。因此本文不搭“模型 / 参数量 / 显存 / 延迟 / 成功率”对照表。【章节】</p>
+<div class="tbl"><table><thead><tr><th>评测载体</th><th>章节给出的口径</th><th>章节未给</th><th>读法</th></tr></thead><tbody><tr><td>LIBERO（LeRobot / wall-x 入口）</td><td>章节把 LIBERO 列为推荐评测环境之一</td><td>suite 选择、任务数、trials、成功率</td><td>只能确认有入口，不能确认分数</td></tr><tr><td>自有 LeRobot 格式数据</td><td>后训练 + validation</td><td>数据规模、训练步数、验证指标</td><td>只能做链路验证</td></tr><tr><td>真实机器人部署</td><td>章节提到 WALL-OSS-0.5 面向 deployment</td><td>硬件、任务、演示数、测试次数</td><td>不能当作已复现的真机结果</td></tr><tr><td>论文实验</td><td>章节只让读方法图（图 2/3/4）</td><td>所有定量结果</td><td>本文不转述未读到的数字</td></tr></tbody></table></div>
+<p>读法：这一章能支持的结论是“WALL-OSS 有可下载权重、可运行工程栈和 LeRobot 集成”，不是“WALL-OSS 在某个 benchmark 上达到某个分数”。如果要在自己的报告里写性能，必须回到论文或自己复测，并带上协议。</p>
+<p>来源：本地 WALL-OSS 导读 §1、§8、§9。</p>
+<h2 id="5-消融实验">5. 消融实验</h2>
+<p>章节没有给消融实验，也没有给任何消融数值。下表把章节声称的设计作用整理成“待核验清单”，不是论文消融表。</p>
+<div class="tbl"><table><thead><tr><th>设计主张</th><th>章节声称的作用</th><th>章节是否给消融数值</th><th>复现时怎么验证</th></tr></thead><tbody><tr><td>离散动作先验</td><td>增强空间理解与语义-动作对齐</td><td>未给</td><td>去掉 Inspiration 阶段，只做 flow matching 后训练，比成功率与收敛步数</td></tr><tr><td>Uni-CoT</td><td>把子任务分解与动作合成放进连续链路</td><td>未给</td><td>关闭 CoT 分支，比长时域任务完成率与语言跟随</td></tr><tr><td>MoE action heads</td><td>按任务阶段激活不同专家</td><td>未给</td><td>换成单专家，比参数量、延迟与多阶段任务成功率</td></tr><tr><td>flow matching 连续控制</td><td>支撑高频连续动作</td><td>未给</td><td>与离散 token 解码对比控制平滑度、延迟与精度</td></tr><tr><td>多源数据混训</td><td>同时保住 VQA 能力与动作能力</td><td>未给</td><td>调整动作:VQA 比例，测动作成功率与 VQA 回退</td></tr></tbody></table></div>
+<p>读者该不该复用：章节的论证是设计层的，不是实验层的。可复用的是“先离散先验、再连续控制”的课程思路；是否值得照搬，要在自己的数据和本体上按上表逐项测。不要把这张表当成“作者已经证明”的结论。</p>
+<p>来源：本地 WALL-OSS 导读 §3–§6。</p>
+<h2 id="6-延迟与显存怎么读">6. 延迟与显存怎么读</h2>
+<p>章节没有给模型延迟、显存、控制频率或 action chunk 长度，只给了模型规模与示例运行配置。</p>
+<div class="tbl"><table><thead><tr><th>项目</th><th>章节给出的值</th><th>口径</th></tr></thead><tbody><tr><td>模型规模</td><td>4B VLA；3B VLM backbone + 动作组件</td><td>模型卡说法【章节转述】</td></tr><tr><td>预测模式</td><td><code>--policy.prediction_mode=diffusion</code></td><td>LeRobot 示例命令，不是论文默认值</td></tr><tr><td>注意力实现</td><td><code>--policy.attn_implementation=eager</code></td><td>同上</td></tr><tr><td>运行设备</td><td><code>--policy.device=cuda</code></td><td>同上</td></tr><tr><td>延迟 / 显存 / 控制频率</td><td>章节未给</td><td>—</td></tr></tbody></table></div>
+<p>读法：</p>
+<ul>
+<li>“4B”是模型卡对 <code>wall-oss-0.5</code> 的描述，不是本文实测的参数量；3B VLM + 动作组件如何加到 4B，章节没有给逐项账本。</li>
+<li><code>prediction_mode=diffusion</code> 与 <code>attn_implementation=eager</code> 来自示例命令，不能当成论文训练或部署的默认配置。</li>
+<li>章节没有给 action chunk 长度，也没有给控制频率；无法把一次前向换算成可执行时长。</li>
+<li><code>1000 / 延迟</code> 只说明策略调用频率，不等于动作执行频率或端到端反馈频率。</li>
+<li>需要显存数字时只能本机测：分别记录加载显存、单次前向峰值、完整请求延迟（含图像预处理）。</li>
+</ul>
+<p>来源：本地 WALL-OSS 导读 §7、§8。</p>
+<h2 id="7-训练资源与卡数">7. 训练资源与卡数</h2>
+<p>章节没有给 GPU 数、优化器、学习率、warmup、EMA 或冻结模块，也没有给可写成公式的损失或维度定义；下面的数值全部来自 LeRobot 示例命令或模型卡，不是论文训练配方。</p>
+<div class="tbl"><table><thead><tr><th>训练项目</th><th>章节给出的值</th><th>口径</th></tr></thead><tbody><tr><td>阶段 1</td><td>Inspiration：离散动作先验、语义-动作对齐</td><td>章节转述 LeRobot 文档</td></tr><tr><td>阶段 2</td><td>Integration：flow matching 连续控制</td><td>同上</td></tr><tr><td>示例优化步数</td><td><code>--steps=3000</code></td><td>LeRobot 示例命令</td></tr><tr><td>示例 batch</td><td><code>--batch_size=32</code></td><td>同上</td></tr><tr><td>设备</td><td><code>--policy.device=cuda</code></td><td>同上</td></tr><tr><td>数据</td><td>自采动作 + 开源动作 + multimodal VQA + 长时域任务</td><td>章节转述论文数据组成</td></tr><tr><td>GPU 数 / 学习率 / warmup / EMA / 冻结模块</td><td>章节未给</td><td>—</td></tr></tbody></table></div>
+<p>章节没有给 <code>N_GPU</code>、<code>B_micro</code>、<code>N_accum</code> 中任何一项，因此无法用 <code>B_eff = N_GPU × B_micro × N_accum</code> 反推有效 batch；<code>batch_size=32</code> 只是单条示例命令里的值，不能当成论文配方。</p>
+<p>三级复现的可行性：</p>
+<ol>
+<li><strong>理解与评测</strong>：可行。下载 <code>wall-oss-0.5</code> 或 <code>wall-oss-flow</code>，按 LeRobot 或 wall-x 跑一次加载与单任务评估。</li>
+<li><strong>训练链路</strong>：部分可行。用少量 LeRobot 数据跑几百步，验证数据读取、动作分支、保存与恢复；示例 3000 步只能证明链路，不证明性能。</li>
+<li><strong>完整训练</strong>：章节没有给预训练配方，不能声称可复现论文训练；章节本身也明确说“从头预训练不是普通教程项目”。</li>
+</ol>
+<p>来源：本地 WALL-OSS 导读 §5、§6、§8。</p>
+<h2 id="8-代码阅读顺序">8. 代码阅读顺序</h2>
+<p>章节没有给 WALL-OSS 的模型文件路径；下表是章节给出的入口与阅读重点，具体路径需按固定 commit 核对。</p>
+<div class="tbl"><table><thead><tr><th>顺序</th><th>路径 / 入口</th><th>阅读重点</th></tr></thead><tbody><tr><td>1</td><td>论文图 2、图 3、图 4</td><td>范式对比、紧耦合架构、两阶段训练管线</td></tr><tr><td>2</td><td><a href="https://huggingface.co/x-square-robot" target="_blank" rel="noopener">HF x-square-robot</a> 模型卡</td><td>4B/3B 规模说法、各 checkpoint 的差异</td></tr><tr><td>3</td><td><a href="https://github.com/X-Square-Robot/wall-x" target="_blank" rel="noopener">X-Square-Robot/wall-x</a></td><td>官方工程栈；后训练、推理、评估入口</td></tr><tr><td>4</td><td><a href="https://huggingface.co/docs/lerobot/en/walloss" target="_blank" rel="noopener">LeRobot WALL-OSS 文档</a></td><td><code>policy.type=wall_x</code> 的配置与训练命令</td></tr><tr><td>5</td><td><code>lerobot-train</code> 参数</td><td><code>dataset.repo_id</code>、<code>policy.pretrained_name_or_path</code>、<code>prediction_mode</code>、<code>attn_implementation</code></td></tr><tr><td>6</td><td>MoE action heads 实现</td><td>专家路由、离散/连续分支切换；路径章节未给</td></tr><tr><td>7</td><td>Uni-CoT 实现</td><td>CoT 在哪些层产生、如何条件动作；路径章节未给</td></tr><tr><td>8</td><td>checkpoint 配置</td><td>动作维度、processor 与模型结构；路径章节未给</td></tr></tbody></table></div>
+<p>坑：</p>
+<ul>
+<li><strong>模型名不能混写</strong>：<code>wall-oss-0.5</code>、<code>wall-oss-flow</code>、<code>wall-oss-flow-0.1</code>、<code>wall-oss-fast</code> 是不同 release；教程里必须写清具体 checkpoint。</li>
+<li><strong>示例命令不是论文配方</strong>：<code>steps=3000</code>、<code>batch_size=32</code> 只是 LeRobot 文档示例，换 GPU 与数据集就要改。</li>
+<li><strong>两条工程路线</strong>：wall-x 原生栈与 LeRobot 集成都能跑，但配置方式不同；不要在同一份配置里混用。</li>
+<li><strong>checkpoint 名称要落到具体模型</strong>：<code>policy.pretrained_name_or_path</code> 必须指向实际下载的那个 release，写错会把 FLOW 的配置套到 0.5 上。</li>
+</ul>
+<h2 id="9-从-checkpoint-开始复现">9. 从 checkpoint 开始复现</h2>
+<p>以下命令来自章节转述的 LeRobot 示例，未在本机验证；路径、checkpoint 名称与版本需按自己的环境替换。</p>
+<h3 id="9-1-下载-checkpoint">9.1 下载 checkpoint</h3>
+<pre><code class="language-bash"># 示意；章节只给模型页链接，没有给逐字下载命令
+huggingface-cli download x-square-robot/wall-oss-0.5 --local-dir /path/to/wall-oss-0.5
+# 或 wall-oss-flow / wall-oss-fast</code></pre>
+<h3 id="9-2-lerobot-最小后训练-评估">9.2 LeRobot 最小后训练 / 评估</h3>
+<pre><code class="language-bash">lerobot-train \
+  --dataset.repo_id=your_dataset \
+  --policy.type=wall_x \
+  --output_dir=./outputs/wallx_training \
+  --job_name=wallx_training \
+  --policy.repo_id=your_repo_id \
+  --policy.pretrained_name_or_path=x-square-robot/wall-oss-flow \
+  --policy.prediction_mode=diffusion \
+  --policy.attn_implementation=eager \
+  --steps=3000 \
+  --policy.device=cuda \
+  --batch_size=32</code></pre>
+<p>章节把这段命令定位为“方向指引”，不是承诺可直接复现的结果。运行前要按 GPU、数据集、LeRobot 版本和 checkpoint 名称调整。</p>
+<h3 id="9-3-原生-wall-x-路线">9.3 原生 wall-x 路线</h3>
+<p>想贴近官方工程栈，走 <a href="https://github.com/X-Square-Robot/wall-x" target="_blank" rel="noopener">X-Square-Robot/wall-x</a>；安装、YAML 配置与 policy server 的注意事项见 <a href="../05-deploy/wall-x.html">WALL-X 精读</a>。</p>
+<h3 id="9-4-smoke-test-能证明什么">9.4 smoke test 能证明什么</h3>
+<p>能证明：checkpoint 可下载、processor 可加载、LeRobot 数据可读、动作分支能前向、输出能保存。不能证明：任何 benchmark 成功率、真机可部署、论文训练可复现。</p>
+<h2 id="10-如何用到自己的项目">10. 如何用到自己的项目</h2>
+<p>WALL-OSS 的价值是把“VLM 怎么接动作”拆成可组合的四个部件：embodied 预训练、Uni-CoT、MoE action heads、两阶段训练。可复用的是这套拆分，不是某个 checkpoint 的数字。</p>
+<ul>
+<li><strong>给自己的 VLM 加动作分支</strong>：先按“离散先验 → 连续控制”的两阶段做小规模后训练，测动作成功率与 VQA 回退；代价是要准备动作数据与两套训练配置。</li>
+<li><strong>验证 Uni-CoT 是否值得</strong>：在同一本体上对比有无子任务分解，测长时域完成率与语言跟随；代价是序列变长、推理变慢。</li>
+<li><strong>MoE action heads 的轻量替代</strong>：如果专家路由实现成本高，先用单头 + 阶段 embedding 做 baseline，再逐步加专家；测参数量、延迟与多阶段任务成功率。</li>
+</ul>
+<p>相关章节：<a href="../05-deploy/wall-x.html">WALL-X 精读</a>、<a href="eventvla.html">EventVLA 精读</a>、<span class="deadref" title="原始 every-embodied 仓库引用，本归档未收录该文件">WALL-OSS 导读</span>、<a href="../../survey/6yr/01-jishu-zhuanti.html">01 技术专题</a>、<a href="../../survey/6yr/02-lunwen-pingce.html">02 论文与评测</a>。</p></main></div><div class="pager"><a class="prev" href="visualthink-vla.html"><span class="dir">← 上一篇</span><span class="ttl">VisualThink-VLA 论文精读：用路由后的视觉证据替代文字 CoT</span></a><a class="empty"></a></div><section class="related"><h2>同分类其他笔记</h2><div class="cards"><article class="pcard" data-cat="02-backbone" data-name="EventVLA 论文精读：把关键视觉证据存成原图，需要时再看一次" data-year="0" data-idx="6" data-hay="eventvla 论文精读：把关键视觉证据存成原图，需要时再看一次 eventvla 重新分配的是“历史信息存在哪里”这个接口——不是把历史压进模型隐状态，而是把少量原图关键帧存在 runtime 侧，等后续决策需要时再作为视觉输入看一次。【章节】 "><h3><a href="eventvla.html">EventVLA 论文精读：把关键视觉证据存成原图，需要时再看一次</a></h3><p class="sum">EventVLA 重新分配的是“历史信息存在哪里”这个接口——不是把历史压进模型隐状态，而是把少量原图关键帧存在 runtime 侧，等后续决策需要时再作为视觉输入看一次。【章节】</p><div class="foot"><span class="chip cat">Backbone</span></div></article><article class="pcard" data-cat="02-backbone" data-name="OpenVLA 论文精读：开源 7B 级 VLA 的 LIBERO 复现基线" data-year="0" data-idx="7" data-hay="openvla 论文精读：开源 7b 级 vla 的 libero 复现基线 说明：本文按 paper-deep-read 结构整理，唯一事实来源是本仓库 openvla 导读（下称“本章程”）。口径分两种：章节记录＝章节给出的命令、日志、截图与显存数字；章节转述＝章节对架构的文字说明，未标论文出处。由于章节没有引用论文，本文无法区分“论文作者报告”与“章节作者转述”，凡架构描述一律记为“章节转述”。整理日期 2026-11-01；章节未给论文版本与代码 commit，本文不虚构。 "><h3><a href="openvla.html">OpenVLA 论文精读：开源 7B 级 VLA 的 LIBERO 复现基线</a></h3><p class="sum">说明：本文按 paper-deep-read 结构整理，唯一事实来源是本仓库 OpenVLA 导读（下称“本章程”）。口径分两种：章节记录＝章节给出的命令、日志、截图与显存数字；章节转述＝章节对架构的文字说明，未标论文出处。由于章节没有引用论文，本文无法区分“论文作者报告”与“章节作者转述”，凡架构描述一律记为“章节转述”。整理日期 2026-11-01；章节未给论文版本与代码 commit，本文不虚构。</p><div class="foot"><span class="chip cat">Backbone</span></div></article><article class="pcard" data-cat="02-backbone" data-name="VisualThink-VLA 论文精读：用路由后的视觉证据替代文字 CoT" data-year="0" data-idx="8" data-hay="visualthink-vla 论文精读：用路由后的视觉证据替代文字 cot visualthink-vla 重新分配的是“中间推理的载体”——不生成自然语言 cot，而是从当前帧、上一帧和指令里提取视觉证据，由 router 每步只选需要的通道，再注入冻结 vla 预测动作。【章节】 "><h3><a href="visualthink-vla.html">VisualThink-VLA 论文精读：用路由后的视觉证据替代文字 CoT</a></h3><p class="sum">VisualThink-VLA 重新分配的是“中间推理的载体”——不生成自然语言 CoT，而是从当前帧、上一帧和指令里提取视觉证据，由 router 每步只选需要的通道，再注入冻结 VLA 预测动作。【章节】</p><div class="foot"><span class="chip cat">Backbone</span></div></article></div></section><footer class="site"><div class="in">
+<div><b>VLA Research Hub</b> · 44 篇论文精读 + 7 篇综述 · 更新 2026-11-02</div>
+<div><a href="../../index.html">首页</a> · <a href="../../survey/index.html">综述</a> · <a href="../../papers/index.html">论文</a></div>
+</div></footer>
+<button class="totop" aria-label="回到顶部">↑</button>
+<div id="overlay"><div class="searchbox">
+<div class="hd"><span style="color:var(--faint)">🔍</span><input id="searchinput" placeholder="搜索论文、方向、机构…" autocomplete="off"><span class="hint">ESC</span></div>
+<div id="results"></div></div></div>
+<script>window.__BASE="../../";</script>
+<script src="../../assets/app.js"></script>
+</body></html>
