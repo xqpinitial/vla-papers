@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 368" width="900" height="368" font-family="PingFang SC, -apple-system, BlinkMacSystemFont, Microsoft YaHei, sans-serif">
+<rect width="900" height="368" fill="#ffffff"/>
+<rect x="0" y="0" width="900" height="50" fill="#4f46e5"/>
+<text x="24" y="32" font-size="19" fill="#ffffff" font-weight="700" text-anchor="start">图 A2｜一句话主张与速览</text>
+<text x="876" y="32" font-size="11" fill="#ffffff" font-weight="400" text-anchor="end" opacity="0.82">dexora · 字段均摘自本文</text>
+<rect x="24" y="68" width="852" height="92" rx="10" fill="#4f46e5" opacity="0.07"/>
+<text x="40" y="92" font-size="11" fill="#4f46e5" font-weight="700" text-anchor="start">一句话</text>
+<text x="40" y="116" font-size="15" fill="#0f172a" font-weight="500" text-anchor="start">Dexora 重新分配的是“VLA 的 embodiment 与数据质量接口”——不是只换更强的 VLM，而是让策略直接输出 36-DoF 双臂双手动作，并让训练</text>
+<text x="40" y="141" font-size="15" fill="#0f172a" font-weight="500" text-anchor="start">过程按演示质量加权。【章节】</text>
+<rect x="24" y="176" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="38" y="197" font-size="11" fill="#4f46e5" font-weight="700" text-anchor="start">论文</text>
+<text x="38" y="216" font-size="12" fill="#334155" font-weight="400" text-anchor="start">Dexora: Open-source VLA for High-DoF Bimanual Dexterity</text>
+<rect x="456" y="176" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="470" y="197" font-size="11" fill="#4f46e5" font-weight="700" text-anchor="start">arXiv</text>
+<text x="470" y="216" font-size="12" fill="#334155" font-weight="400" text-anchor="start">2605.18722</text>
+<rect x="24" y="252" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="38" y="273" font-size="11" fill="#4f46e5" font-weight="700" text-anchor="start">代码</text>
+<text x="38" y="292" font-size="12" fill="#334155" font-weight="400" text-anchor="start">https://github.com/dexoravla/Dexora</text>
+<text x="24" y="350" font-size="11" fill="#94a3b8" font-weight="400" text-anchor="start">字段与表述均摘自原文，未作补全或推断</text>
+<rect x="0.5" y="0.5" width="899" height="367" fill="none" stroke="#e2e8f0"/>
+</svg>
