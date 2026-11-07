@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="zh-CN" data-theme="light"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>WALL-X 精读：WALL 系列的开源工程栈，不是一篇论文</title>
+<title>【VLA 精读 · 轻量化部署】WALL-X：WALL 系列的开源工程栈，不是一篇论文</title>
 <meta name="description" content="WALL-X 重新分配的是“复现工作的起点”——不是从论文方法读起，而是从 checkpoint、LeRobot 数据、YAML 配置、训练脚本和 policy server 这条工程链路跑起。【章节】">
-<meta property="og:title" content="WALL-X 精读：WALL 系列的开源工程栈，不是一篇论文"><meta property="og:type" content="website">
+<meta property="og:title" content="【VLA 精读 · 轻量化部署】WALL-X：WALL 系列的开源工程栈，不是一篇论文"><meta property="og:type" content="website">
 <link rel="stylesheet" href="../../assets/style.css">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%234f46e5'/%3E%3Ctext x='16' y='22' font-size='16' text-anchor='middle' fill='white' font-family='serif'%3EV%3C/text%3E%3C/svg%3E">
 </head><body>
@@ -19,12 +19,31 @@
 <button class="searchbtn" data-search aria-label="搜索"><span>搜索</span><kbd>⌘K</kbd></button>
 <button class="iconbtn" id="themebtn" aria-label="切换明暗主题"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
 <button class="iconbtn" id="menubtn" aria-label="菜单"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
-</nav><header class="dochead"><div class="wrap"><div class="crumb"><a href="../../index.html">首页</a> / <a href="../../papers/index.html">论文</a> / <a href="../../papers/05-deploy/index.html">轻量化与部署工程</a></div><h1>WALL-X 精读：WALL 系列的开源工程栈，不是一篇论文</h1><p class="lede">WALL-X 重新分配的是“复现工作的起点”——不是从论文方法读起，而是从 checkpoint、LeRobot 数据、YAML 配置、训练脚本和 policy server 这条工程链路跑起。【章节】</p><div class="chips"><a class="chip cat" href="../../papers/05-deploy/index.html">轻量化部署</a></div><div class="infobox"><div class="irow"><span class="ik">分类</span><span class="iv"><a href="../../papers/05-deploy/index.html">轻量化与部署工程</a></span></div><div class="irow"><span class="ik">对应专题</span><span class="iv">§5 轻量化 + 真机落地</span></div><div class="irow"><span class="ik">来源</span><span class="iv">VLA 六年演进（广域 22 篇）</span></div><div class="irow"><span class="ik">笔记</span><span class="iv">六站式深读 · 数字标「tex 已验」</span></div></div></div></header><div class="docgrid"><aside class="toc"><p class="t">本文目录</p><ul><li><a class="h2" href="#1-仓库和资源状态">1. 仓库和资源状态</a></li><li><a class="h2" href="#2-核心问题-复现从哪一步开始">2. 核心问题：复现从哪一步开始</a></li><li><a class="h2" href="#3-仓库里有什么">3. 仓库里有什么</a></li><li><a class="h3" href="#3-1-六项能力">3.1 六项能力</a></li><li><a class="h3" href="#3-2-在整条链路中的位置">3.2 在整条链路中的位置</a></li><li><a class="h3" href="#3-3-与-wall-wm-的边界">3.3 与 WALL-WM 的边界</a></li><li><a class="h2" href="#4-评估入口与可核验状态">4. 评估入口与可核验状态</a></li><li><a class="h2" href="#5-选择矩阵-checkpoint-分支与路线">5. 选择矩阵：checkpoint、分支与路线</a></li><li><a class="h2" href="#6-环境与延迟怎么读">6. 环境与延迟怎么读</a></li><li><a class="h2" href="#7-训练配置与-smoke-test">7. 训练配置与 smoke test</a></li><li><a class="h2" href="#8-代码阅读顺序">8. 代码阅读顺序</a></li><li><a class="h2" href="#9-从安装到-smoke-test">9. 从安装到 smoke test</a></li><li><a class="h3" href="#9-1-创建环境">9.1 创建环境</a></li><li><a class="h3" href="#9-2-下载模型与-processor">9.2 下载模型与 processor</a></li><li><a class="h3" href="#9-3-固定路径">9.3 固定路径</a></li><li><a class="h3" href="#9-4-先跑-smoke-test-再谈评估">9.4 先跑 smoke test，再谈评估</a></li><li><a class="h2" href="#10-如何用到自己的项目">10. 如何用到自己的项目</a></li></ul></aside><main class="prose"><p>WALL-X 不是论文，是 X Square Robot 给 WALL 系列模型提供的开源工程栈：下载 checkpoint、准备 LeRobot 数据、写 YAML、跑后训练、起 policy server、做 LIBERO / 真机评估的代码入口。本地章节给出的可核验数字都是工程口径：支持 4 个 checkpoint 变体、Python 3.10、LeRobot 固定 commit <code>c66cd401767e60baece16e1cf68da2824227e076</code>、<code>MAX_JOBS=8</code> 编译 CUDA op、Apache-2.0 license。章节没有给任何模型性能、显存或延迟数字；本文按“工程导航”写，不按“论文方法”写。</p>
+</nav><header class="dochead"><div class="wrap"><div class="crumb"><a href="../../index.html">首页</a> / <a href="../../papers/index.html">论文</a> / <a href="../../papers/05-deploy/index.html">轻量化与部署工程</a></div><h1>【VLA 精读 · 轻量化部署】WALL-X：WALL 系列的开源工程栈，不是一篇论文</h1><p class="lede">WALL-X 重新分配的是“复现工作的起点”——不是从论文方法读起，而是从 checkpoint、LeRobot 数据、YAML 配置、训练脚本和 policy server 这条工程链路跑起。【章节】</p><div class="chips"><a class="chip cat" href="../../papers/05-deploy/index.html">轻量化部署</a></div><div class="infobox"><div class="irow"><span class="ik">分类</span><span class="iv"><a href="../../papers/05-deploy/index.html">轻量化与部署工程</a></span></div><div class="irow"><span class="ik">对应专题</span><span class="iv">§5 轻量化 + 真机落地</span></div><div class="irow"><span class="ik">来源</span><span class="iv">VLA 六年演进（广域 22 篇）</span></div><div class="irow"><span class="ik">笔记</span><span class="iv">六站式深读 · 数字标「tex 已验」</span></div></div></div></header><div class="docgrid"><aside class="toc"><p class="t">本文目录</p><ul><li><a class="h2" href="#①-仓库和资源状态">① 仓库和资源状态</a></li><li><a class="h2" href="#②-核心问题-复现从哪一步开始">② 核心问题：复现从哪一步开始</a></li><li><a class="h2" href="#③-仓库里有什么">③ 仓库里有什么</a></li><li><a class="h3" href="#3-1-六项能力">3.1 六项能力</a></li><li><a class="h3" href="#3-2-在整条链路中的位置">3.2 在整条链路中的位置</a></li><li><a class="h3" href="#3-3-与-wall-wm-的边界">3.3 与 WALL-WM 的边界</a></li><li><a class="h2" href="#④-评估入口与可核验状态">④ 评估入口与可核验状态</a></li><li><a class="h2" href="#⑤-选择矩阵-checkpoint-分支与路线">⑤ 选择矩阵：checkpoint、分支与路线</a></li><li><a class="h2" href="#⑥-环境与延迟怎么读">⑥ 环境与延迟怎么读</a></li><li><a class="h2" href="#⑦-训练配置与-smoke-test">⑦ 训练配置与 smoke test</a></li><li><a class="h2" href="#⑧-代码阅读顺序">⑧ 代码阅读顺序</a></li><li><a class="h2" href="#⑨-从安装到-smoke-test">⑨ 从安装到 smoke test</a></li><li><a class="h3" href="#9-1-创建环境">9.1 创建环境</a></li><li><a class="h3" href="#9-2-下载模型与-processor">9.2 下载模型与 processor</a></li><li><a class="h3" href="#9-3-固定路径">9.3 固定路径</a></li><li><a class="h3" href="#9-4-先跑-smoke-test-再谈评估">9.4 先跑 smoke test，再谈评估</a></li><li><a class="h2" href="#⑩-如何用到自己的项目">⑩ 如何用到自己的项目</a></li><li><a class="h2" href="#⑪-判断与局限">⑪ 判断与局限</a></li></ul></aside><main class="prose"><blockquote><strong>原题与资源</strong>：<a href="https://github.com/X-Square-Robot/wall-x" target="_blank" rel="noopener">代码</a><br><strong>一句话</strong>：WALL-X 重新分配的是“复现工作的起点”——不是从论文方法读起，而是从 checkpoint、LeRobot 数据、YAML 配置、训练脚本和 policy server 这条工程链路跑起。【章节】<br><strong>阅读成本</strong>：正文约 8129 字 / 10 个章节 / 5 张图；目录按本文原有章节顺序排列，章节内容未改动。</blockquote>
+<p><strong>目录</strong>（点击跳到对应章节）：</p>
+<ol>
+<li><a href="#①-仓库和资源状态">① 仓库和资源状态</a></li>
+<li><a href="#②-核心问题-复现从哪一步开始">② 核心问题：复现从哪一步开始</a></li>
+<li><a href="#③-仓库里有什么">③ 仓库里有什么</a></li>
+<li><a href="#④-评估入口与可核验状态">④ 评估入口与可核验状态</a></li>
+<li><a href="#⑤-选择矩阵-checkpoint-分支与路线">⑤ 选择矩阵：checkpoint、分支与路线</a></li>
+<li><a href="#⑥-环境与延迟怎么读">⑥ 环境与延迟怎么读</a></li>
+<li><a href="#⑦-训练配置与-smoke-test">⑦ 训练配置与 smoke test</a></li>
+<li><a href="#⑧-代码阅读顺序">⑧ 代码阅读顺序</a></li>
+<li><a href="#⑨-从安装到-smoke-test">⑨ 从安装到 smoke test</a></li>
+<li><a href="#⑩-如何用到自己的项目">⑩ 如何用到自己的项目</a></li>
+<li><a href="#⑪-判断与局限">⑪ 判断与局限</a></li>
+</ol>
+<figure><img src="../../assets/svg/wall-x-fig1-map.svg" alt="图 A1｜章节地图" loading="lazy"><figcaption>图 A1｜章节地图</figcaption></figure>
+<p class="figcap">图 A1：本文章节地图（节点即原文 h2 标题）。自绘，依据本文，不新增事实。</p>
+<p>WALL-X 不是论文，是 X Square Robot 给 WALL 系列模型提供的开源工程栈：下载 checkpoint、准备 LeRobot 数据、写 YAML、跑后训练、起 policy server、做 LIBERO / 真机评估的代码入口。本地章节给出的可核验数字都是工程口径：支持 4 个 checkpoint 变体、Python 3.10、LeRobot 固定 commit <code>c66cd401767e60baece16e1cf68da2824227e076</code>、<code>MAX_JOBS=8</code> 编译 CUDA op、Apache-2.0 license。章节没有给任何模型性能、显存或延迟数字；本文按“工程导航”写，不按“论文方法”写。</p>
 <blockquote>来源约定：本文事实只取自本仓库 <span class="deadref" title="原始 every-embodied 仓库引用，本归档未收录该文件">WALL-X 导读</span>，没有用模型记忆补写仓库细节。<br>标注约定：<code>【章节】</code> 指本地导读自己的归纳；<code>【章节转述】</code> 指导读对官方 README、workspace guide 或模型页的转述。WALL-X 自身 commit 章节未给。<br>版本：无 arXiv；WALL-X commit 章节未给；LeRobot 固定 commit <code>c66cd401…</code>；workspace README 当前面向 Wall-OSS-0.5；查阅日期 2026-11-01。</blockquote>
-<h2 id="1-仓库和资源状态">1. 仓库和资源状态</h2>
+<h2 id="①-仓库和资源状态">① 仓库和资源状态</h2>
 <div class="tbl"><table><thead><tr><th>资源</th><th>入口</th><th>说明</th></tr></thead><tbody><tr><td>论文</td><td>无独立论文</td><td>章节明确说明 WALL-X 是工程框架；方法读 <a href="../02-backbone/wall-oss.html">WALL-OSS 精读</a>，不把工程栈当论文</td></tr><tr><td>源码</td><td><a href="https://github.com/X-Square-Robot/wall-x" target="_blank" rel="noopener">X-Square-Robot/wall-x</a></td><td>训练、推理、评估、serving 与 CUDA op</td></tr><tr><td>权重</td><td><a href="https://huggingface.co/x-square-robot/wall-oss-0.5" target="_blank" rel="noopener">x-square-robot/wall-oss-0.5</a>、<a href="https://huggingface.co/x-square-robot/wall-oss-flow" target="_blank" rel="noopener">wall-oss-flow</a>、<a href="https://huggingface.co/x-square-robot/wall-oss-fast" target="_blank" rel="noopener">wall-oss-fast</a></td><td>当前 README 列出 4 个变体；<code>wall-oss-flow-0.1</code> 章节只给名称、未给链接</td></tr><tr><td>项目页</td><td>章节未给</td><td>本地章节没有出现项目页</td></tr><tr><td>官方文档</td><td><a href="https://github.com/X-Square-Robot/wall-x/blob/main/workspace/README.md" target="_blank" rel="noopener">workspace/README.md</a></td><td>Wall-OSS-0.5 的 fine-tune、simulation evaluation、real robot deployment</td></tr><tr><td>License</td><td>Apache-2.0</td><td>章节转述仓库 license</td></tr></tbody></table></div>
 <p><strong>版本提示：</strong>WALL-X README 的 News 同时提到 WALL-OSS、WALL-OSS-0.5 和 WALL-WM，容易让人误以为“WALL-WM 完整代码已能一键复现”。更谨慎的理解是：WALL-X 当前明确提供的是 WALL 系列开源模型的训练与推理栈；WALL-WM 的论文和 PDF 已公开，但完整事件级 world action model 的权重、事件数据和训练 recipe 不能直接从 WALL-X 模型列表中确认。【章节】</p>
-<h2 id="2-核心问题-复现从哪一步开始">2. 核心问题：复现从哪一步开始</h2>
+<h2 id="②-核心问题-复现从哪一步开始">② 核心问题：复现从哪一步开始</h2>
+<figure><img src="../../assets/svg/wall-x-fig2-claim.svg" alt="图 A2｜主张与速览" loading="lazy"><figcaption>图 A2｜主张与速览</figcaption></figure>
+<p class="figcap">图 A2：一句话主张与速览字段。自绘，依据本文，不新增事实。</p>
 <p>一句话：WALL-X 重新分配的是“复现工作的起点”——不是从论文方法读起，而是从 checkpoint、LeRobot 数据、YAML 配置、训练脚本和 policy server 这条工程链路跑起。【章节】</p>
 <figure><img src="../../assets/svg/wall-x-architecture.svg" alt="WALL-X 工程链路" loading="lazy"><figcaption>WALL-X 工程链路</figcaption></figure>
 <p>图 1：WALL-X 从 checkpoint 与数据到训练、服务和评估的工程链路。自绘，依据本地导读；不是论文原图。</p>
@@ -35,7 +54,14 @@
 <li>代价是什么：环境版本、CUDA 编译、LeRobot commit、checkpoint 路径、数据格式都要对齐；任一项错都可能跑不起来。</li>
 <li>读者该学什么：先判断“我要跑哪个 checkpoint、用哪条入口”，再谈复现；不要把工程链路通当成论文复现。</li>
 </ul>
-<h2 id="3-仓库里有什么">3. 仓库里有什么</h2>
+<h2 id="③-仓库里有什么">③ 仓库里有什么</h2>
+<figure><img src="../../assets/svg/wall-x-fig3-nums.svg" alt="图 A3｜数字摘录" loading="lazy"><figcaption>图 A3｜数字摘录</figcaption></figure>
+<p class="figcap">图 A3：本文可核验的数字摘录。自绘，依据本文，不新增事实。</p>
+<p><strong>一个具体任务走一遍 · 本文可核验数字与字段速查</strong>（以下均摘自原文，未作推算）：</p>
+<ul>
+<li>4 个 — WALL-X 不是论文，是 X Square Robot 给 WALL 系列</li>
+<li>3B — huggingface-cli download Qwen/Qwen2.5-</li>
+</ul>
 <h3 id="3-1-六项能力">3.1 六项能力</h3>
 <div class="tbl"><table><thead><tr><th>能力</th><th>章节给出的说明</th><th>对复现的意义</th></tr></thead><tbody><tr><td>LeRobot data preparation</td><td>把机器人轨迹组织成 LeRobot 可读格式</td><td>降低接入自有数据的成本</td></tr><tr><td>model configuration</td><td>用 YAML 指定 checkpoint、processor、动作维度、数据路径与训练超参</td><td>配置是主要“接口”，不是代码</td></tr><tr><td>flow-matching action branch</td><td>面向连续动作生成，适合高频控制</td><td>对应 <code>wall-oss-flow</code> 一类 checkpoint</td></tr><tr><td>FAST action branch</td><td>面向更快的 action token / action prediction</td><td>对应 <code>wall-oss-fast</code></td></tr><tr><td>serving and evaluation utilities</td><td>把 policy 作为服务启动，由仿真或机器人客户端调用</td><td>模型进程与控制进程解耦</td></tr><tr><td>CUDA operator sources</td><td>安装时编译自定义 CUDA op</td><td>要求 CUDA / PyTorch / flash-attn 匹配</td></tr></tbody></table></div>
 <p>这也说明复现 WALL-X 的难点不在“命令多”，而在环境版本、CUDA 编译、LeRobot 版本、checkpoint 路径和数据格式。【章节】</p>
@@ -50,17 +76,17 @@
 <li>WALL-WM 的论文与 PDF 已公开，但完整事件级 world action model 的权重、事件数据和训练 recipe 还不能直接从 WALL-X 模型列表中确认。</li>
 </ul>
 <p>因此，WALL-X 不能自动等同于 WALL-WM 的完整论文复现包。【章节】</p>
-<h2 id="4-评估入口与可核验状态">4. 评估入口与可核验状态</h2>
+<h2 id="④-评估入口与可核验状态">④ 评估入口与可核验状态</h2>
 <p>章节没有给任何 benchmark 分数、任务数、trials 或种子；下表只整理“有哪些评估入口、各自缺什么”。【章节】</p>
 <div class="tbl"><table><thead><tr><th>入口</th><th>前置条件</th><th>章节未给</th><th>读法</th></tr></thead><tbody><tr><td>LIBERO simulation evaluation</td><td>LIBERO 环境、对应 checkpoint、配置</td><td>suite 选择、任务数、trials、成功率</td><td>最接近标准评测，但仍需自己记录协议</td></tr><tr><td>自有 LeRobot 数据后训练 + validation</td><td>LeRobot 数据、动作维度匹配</td><td>数据规模、验证指标、早停策略</td><td>只能验证链路与数据适配</td></tr><tr><td>fake inference / serving smoke test</td><td>policy server 能起</td><td>动作质量、延迟</td><td>证明服务连通，不证明策略有效</td></tr><tr><td>真实机器人部署</td><td>硬件接口、安全控制</td><td>任务、演示数、测试次数、成功率</td><td>章节明确说不应在通用教程里默认可用</td></tr></tbody></table></div>
 <p>读法：这张表能回答“从哪开始跑”，不能回答“跑出来多少分”。如果报告里要写性能，必须补自己的协议与数字，不能引用本章。</p>
 <p>来源：本地 WALL-X 导读 §3、§8。</p>
-<h2 id="5-选择矩阵-checkpoint-分支与路线">5. 选择矩阵：checkpoint、分支与路线</h2>
+<h2 id="⑤-选择矩阵-checkpoint-分支与路线">⑤ 选择矩阵：checkpoint、分支与路线</h2>
 <p>本章是工程导航，没有消融实验；下面的“对照”是章节给出的选择建议，不是实验结果。</p>
 <div class="tbl"><table><thead><tr><th>目标</th><th>推荐选择</th><th>原因</th><th>风险</th></tr></thead><tbody><tr><td>第一次跑通 WALL-X</td><td><code>wall-oss-0.5</code> + 当前 main 分支</td><td>workspace README 明确面向 Wall-OSS-0.5</td><td>其他 checkpoint 可能不兼容当前代码</td></tr><tr><td>测试 flow / FAST 老模型</td><td>按官方说明切到对应历史 commit</td><td>官方建议使用旧版本代码</td><td>commit 与依赖需一起回退</td></tr><tr><td>接入 LeRobot 社区工具</td><td><code>policy.type=wall_x</code></td><td>已有 LeRobot 数据与 <code>lerobot-train</code> 经验时更顺</td><td>LeRobot 版本与 WALL-X 依赖可能冲突</td></tr><tr><td>复现 WALL-WM 论文</td><td>暂不建议</td><td>缺权重、事件数据与训练 recipe</td><td>容易把“News 提到”误当成“已开源”</td></tr></tbody></table></div>
 <p>读者该不该复用：如果目标是“在自己的数据上后训练一个 WALL-OSS”，选 <code>wall-oss-0.5</code> + 当前代码最稳；如果目标是复现论文方法，应该先读 WALL-OSS 论文，不要把 WALL-X 当成方法论文。章节没有给不同 checkpoint 的成功率对照，因此无法判断哪个模型“更好”，只能判断哪个“更匹配当前代码”。【章节】</p>
 <p>来源：本地 WALL-X 导读 §4、§9。</p>
-<h2 id="6-环境与延迟怎么读">6. 环境与延迟怎么读</h2>
+<h2 id="⑥-环境与延迟怎么读">⑥ 环境与延迟怎么读</h2>
 <p>章节没有给模型延迟、显存或控制频率，只给了安装约束与部署形态。</p>
 <div class="tbl"><table><thead><tr><th>检查项</th><th>章节给出的要求</th><th>为什么重要</th></tr></thead><tbody><tr><td>Python</td><td>3.10</td><td>官方 conda 环境即 <code>python=3.10</code></td></tr><tr><td>依赖</td><td><code>pip install -r requirements.txt</code></td><td>基础包版本由仓库锁定</td></tr><tr><td>dmuon</td><td><code>pip install &quot;dmuon @ git+<a href="https://github.com/X-Square-Robot/dmuon.git&quot;" target="_blank" rel="noopener">https://github.com/X-Square-Robot/dmuon.git&quot;</a></code></td><td>从 git 安装，版本随上游变化</td></tr><tr><td>LeRobot</td><td>checkout <code>c66cd401767e60baece16e1cf68da2824227e076</code></td><td>章节给出的固定 commit</td></tr><tr><td>LeRobot 安装方式</td><td><code>pip install --no-deps -e .</code></td><td>避免覆盖 WALL-X 依赖</td></tr><tr><td>CUDA op 编译</td><td><code>MAX_JOBS=8 pip install --no-build-isolation -e .</code></td><td>安装时编译自定义算子</td></tr><tr><td>CUDA / PyTorch / flash-attn</td><td>必须匹配</td><td>章节把版本冲突列为最常见失败原因</td></tr></tbody></table></div>
 <p>读法：</p>
@@ -71,7 +97,7 @@
 <li>需要显存数字时只能本机测：分别记录加载显存、单次前向峰值、完整请求延迟。</li>
 </ul>
 <p>来源：本地 WALL-X 导读 §5、§8。</p>
-<h2 id="7-训练配置与-smoke-test">7. 训练配置与 smoke test</h2>
+<h2 id="⑦-训练配置与-smoke-test">⑦ 训练配置与 smoke test</h2>
 <p>章节没有给 GPU 数、学习率、warmup、EMA 或默认训练步数，也没有给损失或动作维度的公式；训练配置的核心是 YAML 字段。</p>
 <div class="tbl"><table><thead><tr><th>配置字段</th><th>作用</th><th>章节是否给默认值</th></tr></thead><tbody><tr><td><code>model.config_path</code></td><td>指向 WALL-OSS checkpoint 里的 <code>config.json</code></td><td>未给</td></tr><tr><td><code>model.processor_path</code></td><td>指向 Qwen2.5-VL processor</td><td>未给</td></tr><tr><td><code>model.pretrained_path</code></td><td>指向预训练权重</td><td>未给</td></tr><tr><td>dataset path</td><td>指向 LeRobot 格式数据</td><td>未给</td></tr><tr><td>robot DOF</td><td>动作维度必须与机器人数据匹配</td><td>未给</td></tr><tr><td>action branch</td><td>flow / FAST / 其他预测模式</td><td>未给</td></tr><tr><td>batch size / steps</td><td>根据显存调整</td><td>未给</td></tr></tbody></table></div>
 <p>如果把复现目标设成 smoke test 级别，章节给的验收标准是：</p>
@@ -90,7 +116,7 @@
 <li><strong>完整训练</strong>：章节未给配方，且明确说“当前不写手把手复现”，不能声称可复现论文训练。</li>
 </ol>
 <p>来源：本地 WALL-X 导读 §7、§10。</p>
-<h2 id="8-代码阅读顺序">8. 代码阅读顺序</h2>
+<h2 id="⑧-代码阅读顺序">⑧ 代码阅读顺序</h2>
 <div class="tbl"><table><thead><tr><th>顺序</th><th>路径 / 入口</th><th>阅读重点</th></tr></thead><tbody><tr><td>1</td><td>仓库根 <code>README</code></td><td>支持的模型、能力列表、News 与边界</td></tr><tr><td>2</td><td><code>workspace/README.md</code></td><td>Wall-OSS-0.5 的 fine-tune、sim evaluation、real robot deployment</td></tr><tr><td>3</td><td><code>workspace/example/*.yml</code></td><td>模型路径、processor、数据、动作维度、batch/steps</td></tr><tr><td>4</td><td><code>requirements.txt</code></td><td>基础依赖与版本约束</td></tr><tr><td>5</td><td>CUDA operator sources</td><td>安装时编译哪些算子、依赖什么 CUDA 版本</td></tr><tr><td>6</td><td>serving / evaluation utilities</td><td>policy server 的请求-响应格式与客户端调用方式</td></tr><tr><td>7</td><td>LeRobot checkout</td><td>固定 commit <code>c66cd401…</code> 与 <code>policy.type=wall_x</code> 的接口</td></tr></tbody></table></div>
 <p>坑（章节明确提示）：</p>
 <ul>
@@ -99,7 +125,7 @@
 <li><strong>workspace README 只面向 0.5</strong>：使用 FLOW / FAST 时按官方说明切旧版本代码，不要拿 0.5 的 YAML 直接套。</li>
 <li><strong>路径不要写死作者机器</strong>：章节建议用 <code>MODEL_ROOT</code>、<code>DATA_ROOT</code>、<code>WALLX_ROOT</code> 三个环境变量，YAML 里引用它们。</li>
 </ul>
-<h2 id="9-从安装到-smoke-test">9. 从安装到 smoke test</h2>
+<h2 id="⑨-从安装到-smoke-test">⑨ 从安装到 smoke test</h2>
 <p>以下命令来自章节转述的官方 README，未在本机验证；路径与版本需按自己的机器替换。</p>
 <h3 id="9-1-创建环境">9.1 创建环境</h3>
 <pre><code class="language-bash">conda create --name wallx python=3.10
@@ -132,14 +158,28 @@ export WALLX_ROOT=/path/to/wall-x</code></pre>
 # 4. 起 policy server，做 fake inference 或单任务 LIBERO
 # 具体命令章节未给，按 workspace/README.md 与仓库示例填写</code></pre>
 <p>能证明：环境装好、模型能加载、数据能读、服务能通。不能证明：任何 benchmark 分数、真机安全、论文训练可复现。</p>
-<h2 id="10-如何用到自己的项目">10. 如何用到自己的项目</h2>
+<h2 id="⑩-如何用到自己的项目">⑩ 如何用到自己的项目</h2>
 <p>WALL-X 的价值是把“模型 → 数据 → 配置 → 训练 → 服务 → 评估”这条链路固定下来，让 WALL-OSS 可以被后训练和部署，而不是停留在论文权重。</p>
 <ul>
 <li><strong>接自己的 LeRobot 数据</strong>：按 YAML 字段填 <code>model.*</code>、数据路径与 robot DOF，先跑 smoke test；代价是动作维度与归一化必须和机器人一致。</li>
 <li><strong>把 policy server 接进自己的仿真/真机</strong>：复用请求-响应接口，把模型进程与控制进程分开；代价是要处理通信延迟与异常重启。</li>
 <li><strong>用 WALL-X 做后训练基线</strong>：固定 <code>wall-oss-0.5</code> 与 LeRobot commit，只改数据与训练步数，得到可复现的工程基线；代价是不能把结果当成论文复现。</li>
 </ul>
-<p>相关章节：<a href="../02-backbone/wall-oss.html">WALL-OSS 精读</a>、<a href="../02-backbone/eventvla.html">EventVLA 精读</a>、<span class="deadref" title="原始 every-embodied 仓库引用，本归档未收录该文件">WALL-X 导读</span>、<a href="../../survey/6yr/01-jishu-zhuanti.html">01 技术专题</a>、<a href="../../survey/6yr/02-lunwen-pingce.html">02 论文与评测</a>。</p></main></div><div class="pager"><a class="prev" href="smolvla.html"><span class="dir">← 上一篇</span><span class="ttl">SmolVLA 论文精读：在单张 3090 上把 LIBERO 微调跑到 0.71</span></a><a class="empty"></a></div><section class="related"><h2>同分类其他笔记</h2><div class="cards"><article class="pcard" data-cat="05-deploy" data-name="DM0.5 技术精读：把 VLA 在线执行链路逐段压成低延迟服务" data-year="0" data-idx="17" data-hay="dm0.5 技术精读：把 vla 在线执行链路逐段压成低延迟服务 dm0.5 重新分配的是“模型语义”和“执行形状”的边界——模型结构保持 gemma3 vlm + action expert + flow matching，但把在线执行拆成 prefix 一次编码、suffix 反复采样，再用 tensorrt、flexattention、fp8、triton fused kernels 和 cuda graph 压缩固定形状的计算与调度。【章节】 "><h3><a href="dm0-5.html">DM0.5 技术精读：把 VLA 在线执行链路逐段压成低延迟服务</a></h3><p class="sum">DM0.5 重新分配的是“模型语义”和“执行形状”的边界——模型结构保持 Gemma3 VLM + Action Expert + Flow Matching，但把在线执行拆成 prefix 一次编码、suffix 反复采样，再用 TensorRT、FlexAttention、FP8、Triton fused kernels 和 CUDA Graph 压缩固定形状的计算与调度。【章节】</p><div class="foot"><span class="chip cat">轻量化部署</span></div></article><article class="pcard" data-cat="05-deploy" data-name="EVA-Client 精读：把“训练完”到“真机能跑、能审计”的工程链路固定下来" data-year="0" data-idx="18" data-hay="eva-client 精读：把“训练完”到“真机能跑、能审计”的工程链路固定下来 eva-client 重新分配的是“模型推理”和“机器人执行”之间的边界——观测格式、动作块调度、动作空间转换和评测记录从训练脚本里拆出来，做成一个可以替换策略后端的客户端。【章节】 "><h3><a href="eva-client.html">EVA-Client 精读：把“训练完”到“真机能跑、能审计”的工程链路固定下来</a></h3><p class="sum">EVA-Client 重新分配的是“模型推理”和“机器人执行”之间的边界——观测格式、动作块调度、动作空间转换和评测记录从训练脚本里拆出来，做成一个可以替换策略后端的客户端。【章节】</p><div class="foot"><span class="chip cat">轻量化部署</span></div></article><article class="pcard" data-cat="05-deploy" data-name="SmolVLA 论文精读：在单张 3090 上把 LIBERO 微调跑到 0.71" data-year="0" data-idx="19" data-hay="smolvla 论文精读：在单张 3090 上把 libero 微调跑到 0.71 章节回答的不是“smolvla 为什么这样设计”，而是“怎样把 smolvla_base 在 libero 上单卡跑通并复现一个可核对的成功率”。它重新分配的是工程成本：把不确定性压到环境 pin、动作约定与评测脚本上。 "><h3><a href="smolvla.html">SmolVLA 论文精读：在单张 3090 上把 LIBERO 微调跑到 0.71</a></h3><p class="sum">章节回答的不是“SmolVLA 为什么这样设计”，而是“怎样把 smolvla_base 在 LIBERO 上单卡跑通并复现一个可核对的成功率”。它重新分配的是工程成本：把不确定性压到环境 pin、动作约定与评测脚本上。</p><div class="foot"><span class="chip cat">轻量化部署</span></div></article></div></section><footer class="site"><div class="in">
+<p>相关章节：<a href="../02-backbone/wall-oss.html">WALL-OSS 精读</a>、<a href="../02-backbone/eventvla.html">EventVLA 精读</a>、<span class="deadref" title="原始 every-embodied 仓库引用，本归档未收录该文件">WALL-X 导读</span>、<a href="../../survey/6yr/01-jishu-zhuanti.html">01 技术专题</a>、<a href="../../survey/6yr/02-lunwen-pingce.html">02 论文与评测</a>。</p>
+<hr>
+<h2 id="⑪-判断与局限">⑪ 判断与局限</h2>
+<p><strong>本文判断</strong>：WALL-X 的价值是把“模型 → 数据 → 配置 → 训练 → 服务 → 评估”这条链路固定下来，让 WALL-OSS 可以被后训练和部署，而不是停留在论文权重。</p>
+<p><strong>局限与不确定项</strong>（以下均摘自本文，未作推断）：</p>
+<ul>
+<li>章节没有给 GPU 数、学习率、warmup、EMA 或默认训练步数，也没有给损失或动作维度的公式；训练配置的核心是 YAML 字段。</li>
+<li>model.config_path 指向 WALL-OSS checkpoint 里的 config.json 未给</li>
+<li>model.processor_path 指向 Qwen2.5-VL processor 未给</li>
+<li>model.pretrained_path 指向预训练权重 未给</li>
+<li>dataset path 指向 LeRobot 格式数据 未给</li>
+</ul>
+<figure><img src="../../assets/svg/wall-x-fig4-limits.svg" alt="图 A4｜局限清单" loading="lazy"><figcaption>图 A4｜局限清单</figcaption></figure>
+<p class="figcap">图 A4：局限与不确定项摘录。自绘，依据本文，不新增事实。</p>
+<blockquote><strong>覆盖范围</strong>：本页新增的导读、目录、章节地图、数字卡与局限清单，均为原文信息的重排或摘录；正文、数据与实验结论未改动。</blockquote></main></div><div class="pager"><a class="prev" href="smolvla.html"><span class="dir">← 上一篇</span><span class="ttl">【VLA 精读 · 轻量化部署】SmolVLA：在单张 3090 上把 LIBERO 微调跑到 0.71</span></a><a class="empty"></a></div><section class="related"><h2>同分类其他笔记</h2><div class="cards"><article class="pcard" data-cat="05-deploy" data-name="【VLA 精读 · 轻量化部署】DM0.5：把 VLA 在线执行链路逐段压成低延迟服务" data-year="0" data-idx="17" data-hay="【vla 精读 · 轻量化部署】dm0.5：把 vla 在线执行链路逐段压成低延迟服务 dm0.5 重新分配的是“模型语义”和“执行形状”的边界——模型结构保持 gemma3 vlm + action expert + flow matching，但把在线执行拆成 prefix 一次编码、suffix 反复采样，再用 tensorrt、flexattention、fp8、triton fused kernels 和 cuda graph 压缩固定形状的计算与调度。【章节】 "><h3><a href="dm0-5.html">【VLA 精读 · 轻量化部署】DM0.5：把 VLA 在线执行链路逐段压成低延迟服务</a></h3><p class="sum">DM0.5 重新分配的是“模型语义”和“执行形状”的边界——模型结构保持 Gemma3 VLM + Action Expert + Flow Matching，但把在线执行拆成 prefix 一次编码、suffix 反复采样，再用 TensorRT、FlexAttention、FP8、Triton fused kernels 和 CUDA Graph 压缩固定形状的计算与调度。【章节】</p><div class="foot"><span class="chip cat">轻量化部署</span></div></article><article class="pcard" data-cat="05-deploy" data-name="【VLA 精读 · 轻量化部署】EVA-Client：把“训练完”到“真机能跑、能审计”的工程链路固定下来" data-year="0" data-idx="18" data-hay="【vla 精读 · 轻量化部署】eva-client：把“训练完”到“真机能跑、能审计”的工程链路固定下来 eva-client 重新分配的是“模型推理”和“机器人执行”之间的边界——观测格式、动作块调度、动作空间转换和评测记录从训练脚本里拆出来，做成一个可以替换策略后端的客户端。【章节】 "><h3><a href="eva-client.html">【VLA 精读 · 轻量化部署】EVA-Client：把“训练完”到“真机能跑、能审计”的工程链路固定下来</a></h3><p class="sum">EVA-Client 重新分配的是“模型推理”和“机器人执行”之间的边界——观测格式、动作块调度、动作空间转换和评测记录从训练脚本里拆出来，做成一个可以替换策略后端的客户端。【章节】</p><div class="foot"><span class="chip cat">轻量化部署</span></div></article><article class="pcard" data-cat="05-deploy" data-name="【VLA 精读 · 轻量化部署】SmolVLA：在单张 3090 上把 LIBERO 微调跑到 0.71" data-year="0" data-idx="19" data-hay="【vla 精读 · 轻量化部署】smolvla：在单张 3090 上把 libero 微调跑到 0.71 章节回答的不是“smolvla 为什么这样设计”，而是“怎样把 smolvla_base 在 libero 上单卡跑通并复现一个可核对的成功率”。它重新分配的是工程成本：把不确定性压到环境 pin、动作约定与评测脚本上。 "><h3><a href="smolvla.html">【VLA 精读 · 轻量化部署】SmolVLA：在单张 3090 上把 LIBERO 微调跑到 0.71</a></h3><p class="sum">章节回答的不是“SmolVLA 为什么这样设计”，而是“怎样把 smolvla_base 在 LIBERO 上单卡跑通并复现一个可核对的成功率”。它重新分配的是工程成本：把不确定性压到环境 pin、动作约定与评测脚本上。</p><div class="foot"><span class="chip cat">轻量化部署</span></div></article></div></section><footer class="site"><div class="in">
 <div><b>VLA Research Hub</b> · 44 篇论文精读 + 7 篇综述 · 更新 2026-11-02</div>
 <div><a href="../../index.html">首页</a> · <a href="../../survey/index.html">综述</a> · <a href="../../papers/index.html">论文</a></div>
 </div></footer>
