@@ -1,0 +1,58 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VFlash 深读：把视觉规划从逐 token 生成改成一次并行出整块</title><link rel="stylesheet" href="../assets/style.css"></head>
+<body><nav><a class="brand" href="../index.html">🤖 VLA Papers</a><span class="spacer"></span><a class='back' href='../index.html'>← 返回论文库</a></nav>
+<header class="paper-head"><div class="chips"><span class="chip">2026-11-05</span><a class="chip cat" href="../index.html?cat=冻结模型编排">冻结模型编排</a><a class="chip" href="https://arxiv.org/abs/2611.08449">arXiv:2611.08449</a><a class="chip" href="https://research.nvidia.com/labs/lpr/vflash">Project</a></div>
+<h1>VFlash 深读：把视觉规划从逐 token 生成改成一次并行出整块</h1><div class="infobox"><div class="irow"><span class="ik">📄 Paper</span><span class="iv"><a href="https://arxiv.org/abs/2611.08449">arXiv:2611.08449</a></span></div><div class="irow"><span class="ik">💻 Code</span><span class="iv"><a href="https://github.com/NVlabs/Eagle">github.com/NVlabs/Eagle</a></span></div><div class="irow"><span class="ik">🌐 Project</span><span class="iv"><a href="https://research.nvidia.com/labs/lpr/vflash">research.nvidia.com/labs/lpr/vflash</a></span></div><div class="irow"><span class="ik">👥 作者与单位</span><span class="iv"><span class="au">Yu-Cheng Chou*, Shihao Wang*, Jin Huang*, Chi-Pin Huang, Chiao-An Yang, Xianzhe Fan, … 共19人（*共同一作；通讯 Zhiding Yu，含 Linxi "Jim" Fan、Jan Kautz）</span><span class="aff">NVIDIA Research · 约翰霍普金斯大学 · 香港理工大学 · 普渡大学 · 香港大学</span></span></div><div class="irow"><span class="ik">🏢 机构简称</span><span class="iv">NVIDIA Research · JHU · PolyU · Purdue · HKU</span></div></div><p class="metric">⭐ 解码加速 12–42× · 3D 轨迹 ADE −18~61% · MolmoSpaces 70.2%</p><p class="oneliner">冻结 VLM + 5 层非因果 drafter，把边界框/轨迹/稠密运动整块并行解码，更快且更准。</p></header>
+<main class="paper-body"><h2>VFlash 深度调研笔记</h2>
+<h3>速览</h3>
+<table><tr><th>项</th><th>内容</th></tr><tr><td>一句话</td><td>把机器人/自动驾驶里的"视觉规划"（边界框、2D+3D 轨迹、稠密 3D 运动）从「逐 token 生成坐标」改成「一次并行生成整个几何 primitive」，用轻量 drafter 换掉自回归解码——<strong>提速 12–42×（端到端 ~5×）的同时精度反而更高</strong>（3D 轨迹误差最多降 61%）。</td></tr><tr><td>冻结</td><td>Target VLM（Qwen3-4B + MoonViT）全程冻结，只出特征、做接受/回退</td></tr><tr><td>训练</td><td>仅 5 层非因果 drafter（537M 可训练参数），在冻结 target 特征上训练</td></tr><tr><td>定位</td><td>解码层革新：与 harness（系统层）、action 表示（token 层）正交；是 LocateAnything/Rex-Omni/MolmoMotion 这条"视觉 primitive"线的解码加速器</td></tr></table>
+<figure><img loading="lazy" src="../assets/figures/vflash/fig-01.png" alt="Figure 1（teaser）"><figcaption>Figure 1（teaser）</figcaption></figure><h3>① 动机：为什么自回归解码卡住了 Physical AI</h3>
+<ul><li>机器人/自动驾驶的"空间目标"（杯子在哪、机械臂走哪条路、未来点云怎么动）本质是<strong>几何</strong>，不是<strong>文本</strong>。但现有 VLM 用自回归解码生成坐标——一个航点一个航点吐，每条轨迹要走 B−1 次 target 前向。</li><li><strong>越丰富越慢</strong>：NAVSIM 要 8 航点（4 秒）、Waymo 要 20 航点（5 秒），坐标逐 token 生成，解码成为主导延迟（Thor 上 AR 解码占模型阶段 75–87%）。</li><li><strong>级联误差</strong>：自回归里前面坐标写错无法回改，误差一路累积，3D 轨迹里致命。</li><li><strong>token 对齐 ≠ 空间精度</strong>：投机解码要求 drafter 和 target 逐 token 一致，但这和"空间上对不对"是两回事——一个坐标 token 猜错就被拒绝，即使整条轨迹形状是对的。</li></ul>
+<h3>② 架构：drafter + target 的分工</h3>
+<figure><img loading="lazy" src="../assets/figures/vflash/fig-02.png" alt="Figure 2（pipeline）"><figcaption>Figure 2（pipeline）</figcaption></figure>
+<pre>观测 x + 指令
+   ↓  冻结 target VLM（p_θ）前向，取中间层特征 H_θ(x)
+   ↓  注入 drafter（q_φ）作为 KV
+   ↓  遇到 primitive 起始 token → 触发一个完整 primitive 块（长度 B(s)）
+   ↓  drafter 一次并行前向，预测整个块的所有坐标
+   ↓  结构校验器 A_s（schema + 空间置信度）→ 直接接受 / 回退 AR
+   ↓  target 一次前向更新 cache、吐下一个 token</pre>
+<table><tr><th>原则</th><th>解决什么</th><th>做法</th></tr><tr><td>边界对齐</td><td>固定窗口把 primitive 切碎</td><td>每个解码块覆盖一个完整 primitive，工具调用声明长度</td></tr><tr><td>位置对齐</td><td>坐标值 token 数不固定会错位</td><td>专用坐标 token 或定宽数字字段，每个槽位含义固定</td></tr><tr><td>从几何结构学习</td><td>投机解码只学 token 一致</td><td>用标注的 primitive 坐标做监督，直接优化空间精度</td></tr></table>
+<h3>②B 模型流程与各模块数据维度</h3>
+<figure><img loading="lazy" src="../assets/figures/vflash/vflash_flow_dims.png" alt="VFlash 流程与维度"><figcaption>模型流程与数据维度（自绘）</figcaption></figure>
+<table><tr><th>#</th><th>模块</th><th>关键配置 / 维度</th><th>输出</th></tr><tr><td>1</td><td>输入</td><td>图像 native resolution · 指令文本</td><td>—</td></tr><tr><td>2</td><td>视觉编码器 MoonViT-SO-400M</td><td>27 层 · 宽 1152 · 14px patch · 2×2 合并</td><td>[N_v × 1152]</td></tr><tr><td>3</td><td>MLP connector</td><td>2 层</td><td>[N_v × 1152] → [N_v × 2560]</td></tr><tr><td>4</td><td>Target VLM · Qwen3-4B（冻结）</td><td>36 层 · 宽 2560</td><td>hidden [N × 2560]</td></tr><tr><td>5</td><td>选层特征</td><td>层 1/9/17/25/33</td><td>拼接 12800 → 投影 2560 · RMS</td></tr><tr><td>6</td><td>Drafter（537M 可训练）</td><td>5 层非因果 · 32Q/8KV 头 · 头宽 128 · FFN 9728</td><td>整块 logits</td></tr><tr><td>7</td><td>Primitive 块</td><td>B-box 4 · 2D+3D 轨迹 5P · 稠密 3D</td><td>B(s) 个 token</td></tr><tr><td>8</td><td>结构校验器 A_s</td><td>schema + 空间置信度 guard</td><td>接受 / 回退</td></tr></table>
+<h3>③ 训练：冻结 VLM，只训 drafter</h3>
+<ul><li><strong>两阶段</strong>：先让 AR VLM 适配空间响应格式（next-token 监督），然后冻结 VLM，只训 shallow 非因果 drafter。</li><li><strong>损失</strong>（加权交叉熵）：<code>L_prim = -Σ_j w_j log q_φ,j(a_j | H_θ(x), a_0, MASK^(B-1))</code>，所有位置 logit 一次前向算完（并行）。</li><li>primitive 位置用<strong>均匀权重</strong>（不像投机解码的衰减权重偏袒早期位置）。</li><li>关键：标签 a_j 来自<strong>标注坐标 / 渲染网格</strong>，而不是 target 的续写——优化的是空间精度，不是 token 一致。</li><li><strong>打包注意力</strong>（packed attention）：一个 batch 里多个样本、多个独立块互不干扰，但每个 primitive 内部保留注意力。</li></ul>
+<h3>④ 数据：一条"视觉 primitive"长什么样</h3>
+<table><tr><th>Primitive</th><th>Layout</th></tr><tr><td>边界框</td><td>&lt;box&gt; u1 v1 u2 v2 &lt;/&gt;</td></tr><tr><td>2D+3D 轨迹</td><td>&lt;2D&gt; (u v)×P &lt;/&gt; &lt;3D&gt; (x y z)×P &lt;/&gt;</td></tr><tr><td>稠密运动</td><td>&lt;Dense&gt; t1 t2 [k (s d1..d5)×3]×P &lt;/&gt;</td></tr></table>
+<ul><li><strong>特殊坐标 token</strong>（主模型）：每个坐标 1 个位置，从 1001 个专用 token（0–1000）里取；<strong>定宽数字字段</strong>（text-tokenized 目标如 Qwen）：符号 + 5 位数字，高位空位填 MASK。</li><li><strong>数据来源</strong>：2D 轨迹 ShareRobot-Bench + VABench-V；3D 轨迹 InternA1/AgiBot/MolmoBot；稠密运动 PointMotionBench（DAVIS/HOT3D/WorldTrack）；边界框 COCO + Dense200。</li></ul>
+<h3>④A 主结果对比（论文表 2–8、11、12）</h3>
+<p>视觉 primitive 预测（上游）：</p>
+<table><tr><th>任务</th><th>数据集</th><th>关键结果</th></tr><tr><td>2D 轨迹</td><td>ShareRobot-Bench, VABench-V</td><td>全 6 指标下降；HD −7%，DFD/RMSE −3~6%；VABench-V 相对最强基线 LoHo-Manip 再降 40%</td></tr><tr><td>边界框</td><td>COCO, Dense200</td><td>F1 均值持平，2.6–2.8× 吞吐；IoU 0.5 更高、0.95 略低</td></tr><tr><td>3D 轨迹</td><td>InternA1, AgiBot, MolmoBot</td><td>ADE −18~61%；AgiBot 5cm 准确率 50%→73%（3D）/ 40%→74%（2D+3D）</td></tr><tr><td>稠密 3D 运动</td><td>PointMotionBench</td><td>DAVIS ADE/FDE −27%/−19%；~25× 单次生成加速</td></tr></table>
+<p>下游应用：</p>
+<table><tr><th>应用</th><th>结果</th></tr><tr><td>MolmoSpaces 操作（WAM）</td><td><strong>70.2%</strong> vs baseline 62.6%、AR 计划 61.0%、最强公开模型 PrimeR0 60.3%；Pick&amp;Place +11.6、Close +12.8</td></tr><tr><td>LIBERO</td><td>LIBERO 93.4→94.2、LIBERO-Plus 60.7→62.6、<strong>LIBERO-PRO 40.2→47.0（+6.8）</strong></td></tr><tr><td>自动驾驶</td><td>NAVSIM/Waymo 竞争力持平 + 解码延迟大降</td></tr></table>
+<p>延迟（batch=1）：</p>
+<table><tr><th>平台</th><th>AR</th><th>VFlash</th><th>降幅</th></tr><tr><td>Jetson Thor</td><td>3552.7 ms</td><td>703.3 ms</td><td><strong>−80.2%</strong></td></tr><tr><td>DGX Spark</td><td>3356.5 ms</td><td>649.9 ms</td><td><strong>−80.6%</strong></td></tr></table>
+<p>解码阶段加速 12–42×，端到端机器人推理 ~5.1×，NAVSIM 推理 &gt;3×。</p>
+<h3>④B 核心消融（论文表 7，MolmoSpaces）</h3>
+<ul><li>VFlash 2D+3D 计划 <strong>70.2</strong> &gt; 3D-only 69.3 &gt; 图像上下文 63.7 &gt; AR 生成 2D+3D 61.0；</li><li><strong>视觉几何信息在语言之外提供了额外价值</strong>：用轨迹特征替代图像特征 +6.5pp；VFlash 计划 vs AR 计划 +9.2pp；</li><li>边界框 IoU 0.95 上 F1 反而不如 AR——直接接受在"结构有效但空间错"时没有 target 逐 token 兜底（靠 schema + 空间置信度粗校验）。</li></ul>
+<h3>⑤ 信息流（一次解码走一遍）</h3>
+<pre>图像 + 指令
+  → target VLM 前向（prefix，算一次）→ 特征 H_θ(x)
+  → drafter 以 16 位置 DFlash 块跑文本，直到 primitive 起始 token 被接受
+  → 解析 schema，确定块长 B(s)
+  → drafter 一次并行前向，预测 B(s)−1 个坐标（所有 logit 同时算）
+  → 每位置约束 + 跨位置规则，都在 logit 上做，不加神经计算
+  → 结构校验 A_s：schema 校验 + 边界框空间置信度守卫（LocateAnything）
+  → 接受 τ_dir=B(s)；拒绝保留前 r 个，其余约束 AR 回退
+  → target 一次前向更新 cache + 特征，吐下一个 token</pre>
+<p><strong>延迟公式</strong>：L_dir = (t_par + t_target) / B(s)，对比自回归每坐标一次 target 前向 t_target——次数不随 B(s) 增长，所以"更详细的计划不增加顺序解码步数"。</p>
+<h3>⑥ 例子：一条 10 航点 2D+3D 轨迹</h3>
+<ul><li><strong>AR 做法</strong>：10 航点 × (2D 2 坐标 + 3D 3 坐标) + 分隔符 ≈ 54 token，<strong>54 次 target 前向</strong>逐 token 生成。</li><li><strong>VFlash 做法</strong>：工具调用声明 P=10 → 布局确定（54 token 块）→ drafter <strong>1 次并行前向</strong>出整块 → 结构校验通过 → <strong>1 次 target 前向</strong>接受整块。</li><li>结果：54 次顺序前向 → 1 次 drafter 并行 + 1 次 target，解码从 3552.7ms 降到 703.3ms（Thor）。</li></ul>
+<h3>⑦ 实验与地位 / 局限</h3>
+<ul><li><strong>解码层革新</strong>：不训新 VLM 主体，只换解码器，与 harness（系统层）、action 表示（token 层）正交。</li><li><strong>"结构先验 + 直接接受" 是对投机解码的泛化</strong>：对几何输出，token 一致是错的优化目标，结构有效才是对的接受准则。</li><li><strong>局限</strong>：精度上限受 drafter 结构约束（IoU 0.95 回退）；需要标注 primitive 数据；文本/子任务仍走验证投机解码；结果以基准为主，真实环境待观察；稠密运动部分指标（WorldTrack FDE +15%）不如 AR。</li></ul></main>
+<footer>本页由论文精读笔记自动生成 · <a href="../index.html">返回论文库</a></footer>
+<button class="totop" aria-label="回到顶部" onclick="scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>addEventListener('scroll',function(){document.querySelector('.totop').classList.toggle('show',scrollY>600)},{passive:true})</script>
+</body></html>
