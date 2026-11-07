@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 242" width="900" height="242" font-family="PingFang SC, -apple-system, BlinkMacSystemFont, Microsoft YaHei, sans-serif">
+<rect width="900" height="242" fill="#ffffff"/>
+<rect x="0" y="0" width="900" height="50" fill="#1d4ed8"/>
+<text x="24" y="32" font-size="19" fill="#ffffff" font-weight="700" text-anchor="start">图 A4｜局限与不确定项</text>
+<text x="876" y="32" font-size="11" fill="#ffffff" font-weight="400" text-anchor="end" opacity="0.82">harnessbank · 以下均摘自本文</text>
+<rect x="24" y="68" width="852" height="54" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<circle cx="48" cy="95" r="12" fill="#1d4ed8" opacity="0.14"/>
+<text x="48" y="100" font-size="12" fill="#1d4ed8" font-weight="700" text-anchor="middle">1</text>
+<text x="72" y="92" font-size="12.5" fill="#334155" font-weight="400" text-anchor="start">代码"接受后开源"，尚未发布；</text>
+<rect x="24" y="132" width="852" height="54" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<circle cx="48" cy="159" r="12" fill="#1d4ed8" opacity="0.14"/>
+<text x="48" y="164" font-size="12" fill="#1d4ed8" font-weight="700" text-anchor="middle">2</text>
+<text x="72" y="156" font-size="12.5" fill="#334155" font-weight="400" text-anchor="start">错配变体只有 +0.2/+1.2）</text>
+<text x="24" y="224" font-size="11" fill="#94a3b8" font-weight="400" text-anchor="start">原文摘录；未补充原文没有的结论或风险判断</text>
+<rect x="0.5" y="0.5" width="899" height="241" fill="none" stroke="#e2e8f0"/>
+</svg>
