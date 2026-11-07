@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 236" width="900" height="236" font-family="PingFang SC, -apple-system, BlinkMacSystemFont, Microsoft YaHei, sans-serif">
+<rect width="900" height="236" fill="#ffffff"/>
+<rect x="0" y="0" width="900" height="50" fill="#7c3aed"/>
+<text x="24" y="32" font-size="19" fill="#ffffff" font-weight="700" text-anchor="start">图 A3｜本文可核验的数字</text>
+<text x="876" y="32" font-size="11" fill="#ffffff" font-weight="400" text-anchor="end" opacity="0.82">lwd · 摘自原文，口径见对应章节</text>
+<rect x="24" y="68" width="280" height="104" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="38" y="108" font-size="25" fill="#7c3aed" font-weight="700" text-anchor="start">8 个</text>
+<text x="38" y="130" font-size="11" fill="#475569" font-weight="400" text-anchor="start">LWD（Learning While Deploying）把“部署”从测试环</text>
+<rect x="312" y="68" width="280" height="104" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="326" y="108" font-size="25" fill="#7c3aed" font-weight="700" text-anchor="start">95%</text>
+<text x="326" y="130" font-size="11" fill="#475569" font-weight="400" text-anchor="start">LWD（Learning While Deploying）把“部署”从测试环</text>
+<text x="24" y="216" font-size="11" fill="#94a3b8" font-weight="400" text-anchor="start">仅摘录，不做单位换算、不跨基准比较</text>
+<rect x="0.5" y="0.5" width="899" height="235" fill="none" stroke="#e2e8f0"/>
+</svg>
