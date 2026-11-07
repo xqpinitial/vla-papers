@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 368" width="900" height="368" font-family="PingFang SC, -apple-system, BlinkMacSystemFont, Microsoft YaHei, sans-serif">
+<rect width="900" height="368" fill="#ffffff"/>
+<rect x="0" y="0" width="900" height="50" fill="#1d4ed8"/>
+<text x="24" y="32" font-size="19" fill="#ffffff" font-weight="700" text-anchor="start">图 A2｜一句话主张与速览</text>
+<text x="876" y="32" font-size="11" fill="#ffffff" font-weight="400" text-anchor="end" opacity="0.82">harnesspai · 字段均摘自本文</text>
+<rect x="24" y="68" width="852" height="92" rx="10" fill="#1d4ed8" opacity="0.07"/>
+<text x="40" y="92" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">一句话</text>
+<text x="40" y="116" font-size="15" fill="#0f172a" font-weight="500" text-anchor="start">模型/本体无关的 harness：代码是可执行、可演化的接口，把感知原语（SAM3/Molmo）、控制原语（OSC/PyRoki IK）和冻结模型原语（π0.5 VL</text>
+<text x="40" y="141" font-size="15" fill="#0f172a" font-weight="500" text-anchor="start">A、WorldDreamer WAM、GraspNet、PPO）组织成一个程序；rollout 内开环执行、跨 rollout 闭环进化</text>
+<rect x="24" y="176" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="38" y="197" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">冻结</text>
+<text x="38" y="216" font-size="12" fill="#334155" font-weight="400" text-anchor="start">全部底层动作模型（VLA/WAM/GraspNet/PPO 检查点）</text>
+<rect x="456" y="176" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="470" y="197" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">演化</text>
+<text x="470" y="216" font-size="12" fill="#334155" font-weight="400" text-anchor="start">任务程序代码库 + 节点中心技能库（唯一例外：收敛后单向给模型喂 SFT 数据）</text>
+<rect x="24" y="252" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="38" y="273" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">头部结果</text>
+<text x="38" y="292" font-size="12" fill="#334155" font-weight="400" text-anchor="start">robosuite 96.3、LIBERO 98.1、LIBERO-PRO 96.5；用收敛程序的轨迹 SFT π0.5：LIBERO-PR</text>
+<rect x="456" y="252" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="470" y="273" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">核心主张</text>
+<text x="470" y="292" font-size="12" fill="#334155" font-weight="400" text-anchor="start">"physical AI 不是 action model；它是被一份可执行计划捆在一起的感知+几何+动作，action model 只是其中</text>
+<text x="24" y="350" font-size="11" fill="#94a3b8" font-weight="400" text-anchor="start">字段与表述均摘自原文，未作补全或推断</text>
+<rect x="0.5" y="0.5" width="899" height="367" fill="none" stroke="#e2e8f0"/>
+</svg>
