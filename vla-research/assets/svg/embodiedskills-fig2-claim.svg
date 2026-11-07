@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 444" width="900" height="444" font-family="PingFang SC, -apple-system, BlinkMacSystemFont, Microsoft YaHei, sans-serif">
+<rect width="900" height="444" fill="#ffffff"/>
+<rect x="0" y="0" width="900" height="50" fill="#1d4ed8"/>
+<text x="24" y="32" font-size="19" fill="#ffffff" font-weight="700" text-anchor="start">图 A2｜一句话主张与速览</text>
+<text x="876" y="32" font-size="11" fill="#ffffff" font-weight="400" text-anchor="end" opacity="0.82">embodiedskills · 字段均摘自本文</text>
+<rect x="24" y="68" width="852" height="92" rx="10" fill="#1d4ed8" opacity="0.07"/>
+<text x="40" y="92" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">一句话</text>
+<text x="40" y="116" font-size="15" fill="#0f172a" font-weight="500" text-anchor="start">每个技能决策都是提案：guarded runtime 先查前置条件再执行、执行后用新观测验证——六阶段 AgentLoop（Observe/Plan/Preflight/Execu</text>
+<text x="40" y="141" font-size="15" fill="#0f172a" font-weight="500" text-anchor="start">te/Verify/Recover），低层 π₀.₅ 出有界 chunk；RoboTwin 2.0 86.20%、LIBERO 97.40%；去掉验证掉到 48.2%</text>
+<rect x="24" y="176" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="38" y="197" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">冻结/可换</text>
+<text x="38" y="216" font-size="12" fill="#334155" font-weight="400" text-anchor="start">低层 VLA（OpenPI/π₀.₅，可插拔可任务适配）；高层 Qwen3-VL + 组件 LoRA；AgentLoop 接口固定</text>
+<rect x="456" y="176" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="470" y="197" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">演化</text>
+<text x="470" y="216" font-size="12" fill="#334155" font-weight="400" text-anchor="start">统一 trajectory schema 记录规划/执行/验证/恢复事件，供组件级 SFT 与可选在线适应</text>
+<rect x="24" y="252" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="38" y="273" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">基准</text>
+<text x="38" y="292" font-size="12" fill="#334155" font-weight="400" text-anchor="start">RoboTwin 2.0（50 任务）、LIBERO 四套件、RMBench 四个记忆任务（12.5%——记忆仍是短板）</text>
+<rect x="456" y="252" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="470" y="273" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">论文</text>
+<text x="470" y="292" font-size="12" fill="#334155" font-weight="400" text-anchor="start">EmbodiedSkills: A Unified Framework for Orchestrating, Train</text>
+<rect x="24" y="328" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="38" y="349" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">arXiv</text>
+<text x="38" y="368" font-size="12" fill="#334155" font-weight="400" text-anchor="start">2609.01281</text>
+<rect x="456" y="328" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="470" y="349" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">机构</text>
+<text x="470" y="368" font-size="12" fill="#334155" font-weight="400" text-anchor="start">浙江大学（Wenqiao Zhang 通讯）· 南航 · Cornell · 云深处 Deep Robotics · N</text>
+<text x="24" y="426" font-size="11" fill="#94a3b8" font-weight="400" text-anchor="start">字段与表述均摘自原文，未作补全或推断</text>
+<rect x="0.5" y="0.5" width="899" height="443" fill="none" stroke="#e2e8f0"/>
+</svg>
