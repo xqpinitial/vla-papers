@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 434" width="900" height="434" font-family="PingFang SC, -apple-system, BlinkMacSystemFont, Microsoft YaHei, sans-serif">
+<rect width="900" height="434" fill="#ffffff"/>
+<rect x="0" y="0" width="900" height="50" fill="#c2410c"/>
+<text x="24" y="32" font-size="19" fill="#ffffff" font-weight="700" text-anchor="start">图 A4｜局限与不确定项</text>
+<text x="876" y="32" font-size="11" fill="#ffffff" font-weight="400" text-anchor="end" opacity="0.82">eva-client · 以下均摘自本文</text>
+<rect x="24" y="68" width="852" height="54" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<circle cx="48" cy="95" r="12" fill="#c2410c" opacity="0.14"/>
+<text x="48" y="100" font-size="12" fill="#c2410c" font-weight="700" text-anchor="middle">1</text>
+<text x="72" y="92" font-size="12.5" fill="#334155" font-weight="400" text-anchor="start">EVA-Client 不训练，所以没有训练配方表：章节没有给 GPU 数、优化器步数、有效 batch、学习率、warmup 或 EMA。它给的是运行时的进程划分。【章节】</text>
+<rect x="24" y="132" width="852" height="54" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<circle cx="48" cy="159" r="12" fill="#c2410c" opacity="0.14"/>
+<text x="48" y="164" font-size="12" fill="#c2410c" font-weight="700" text-anchor="middle">2</text>
+<text x="72" y="156" font-size="12.5" fill="#334155" font-weight="400" text-anchor="start">两进程可以同机，也可以分机：客户端在控制机，策略服务在 GPU 服务器。章节只给了这个形态，没有给任何一台机器的最小配置、显存占用或并发数。</text>
+<rect x="24" y="196" width="852" height="54" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<circle cx="48" cy="223" r="12" fill="#c2410c" opacity="0.14"/>
+<text x="48" y="228" font-size="12" fill="#c2410c" font-weight="700" text-anchor="middle">3</text>
+<text x="72" y="220" font-size="12.5" fill="#334155" font-weight="400" text-anchor="start">章节没有给任何成功率、显存或延迟数字——这些属于它连接的外部策略，不属于客户端</text>
+<rect x="24" y="260" width="852" height="54" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<circle cx="48" cy="287" r="12" fill="#c2410c" opacity="0.14"/>
+<text x="48" y="292" font-size="12" fill="#c2410c" font-weight="700" text-anchor="middle">4</text>
+<text x="72" y="284" font-size="12.5" fill="#334155" font-weight="400" text-anchor="start">权重 章节未给 客户端不含模型权重</text>
+<rect x="24" y="324" width="852" height="54" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<circle cx="48" cy="351" r="12" fill="#c2410c" opacity="0.14"/>
+<text x="48" y="356" font-size="12" fill="#c2410c" font-weight="700" text-anchor="middle">5</text>
+<text x="72" y="348" font-size="12.5" fill="#334155" font-weight="400" text-anchor="start">数据集 章节未给公开数据集 只给 LeRobot v2.1 导出格式</text>
+<text x="24" y="416" font-size="11" fill="#94a3b8" font-weight="400" text-anchor="start">原文摘录；未补充原文没有的结论或风险判断</text>
+<rect x="0.5" y="0.5" width="899" height="433" fill="none" stroke="#e2e8f0"/>
+</svg>
