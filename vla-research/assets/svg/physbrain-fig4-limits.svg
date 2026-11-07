@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 434" width="900" height="434" font-family="PingFang SC, -apple-system, BlinkMacSystemFont, Microsoft YaHei, sans-serif">
+<rect width="900" height="434" fill="#ffffff"/>
+<rect x="0" y="0" width="900" height="50" fill="#0d9488"/>
+<text x="24" y="32" font-size="19" fill="#ffffff" font-weight="700" text-anchor="start">图 A4｜局限与不确定项</text>
+<text x="876" y="32" font-size="11" fill="#ffffff" font-weight="400" text-anchor="end" opacity="0.82">physbrain · 以下均摘自本文</text>
+<rect x="24" y="68" width="852" height="54" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<circle cx="48" cy="95" r="12" fill="#0d9488" opacity="0.14"/>
+<text x="48" y="100" font-size="12" fill="#0d9488" font-weight="700" text-anchor="middle">1</text>
+<text x="72" y="92" font-size="12.5" fill="#334155" font-weight="400" text-anchor="start">数据来源 人类第一人称片段（Ego4D / BuildAI / EgoDex / EPIC / SEA-Small）+ 通用多模态数据 章节只给名称，未给规模与采样比例</text>
+<rect x="24" y="132" width="852" height="54" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<circle cx="48" cy="159" r="12" fill="#0d9488" opacity="0.14"/>
+<text x="48" y="164" font-size="12" fill="#0d9488" font-weight="700" text-anchor="middle">2</text>
+<text x="72" y="156" font-size="12.5" fill="#334155" font-weight="400" text-anchor="start">预训练目标 结构化物理 QA + 通用多模态数据混训 具体损失、配比未给</text>
+<rect x="24" y="196" width="852" height="54" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<circle cx="48" cy="223" r="12" fill="#0d9488" opacity="0.14"/>
+<text x="48" y="228" font-size="12" fill="#0d9488" font-weight="700" text-anchor="middle">3</text>
+<text x="72" y="220" font-size="12.5" fill="#334155" font-weight="400" text-anchor="start">数据过滤 视觉质量与相机运动质量过滤 章节在流程图中给出，未给阈值</text>
+<rect x="24" y="260" width="852" height="54" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<circle cx="48" cy="287" r="12" fill="#0d9488" opacity="0.14"/>
+<text x="48" y="292" font-size="12" fill="#0d9488" font-weight="700" text-anchor="middle">4</text>
+<text x="72" y="284" font-size="12.5" fill="#334155" font-weight="400" text-anchor="start">VLM 侧 PhysBrain base model 参数量、初始化权重未给</text>
+<rect x="24" y="324" width="852" height="54" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<circle cx="48" cy="351" r="12" fill="#0d9488" opacity="0.14"/>
+<text x="48" y="356" font-size="12" fill="#0d9488" font-weight="700" text-anchor="middle">5</text>
+<text x="72" y="348" font-size="12.5" fill="#334155" font-weight="400" text-anchor="start">冻结策略 左脑冻结，右脑可训练 具体层范围未给</text>
+<text x="24" y="416" font-size="11" fill="#94a3b8" font-weight="400" text-anchor="start">原文摘录；未补充原文没有的结论或风险判断</text>
+<rect x="0.5" y="0.5" width="899" height="433" fill="none" stroke="#e2e8f0"/>
+</svg>
