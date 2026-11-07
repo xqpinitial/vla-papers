@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 292" width="900" height="292" font-family="PingFang SC, -apple-system, BlinkMacSystemFont, Microsoft YaHei, sans-serif">
+<rect width="900" height="292" fill="#ffffff"/>
+<rect x="0" y="0" width="900" height="50" fill="#c2410c"/>
+<text x="24" y="32" font-size="19" fill="#ffffff" font-weight="700" text-anchor="start">图 A2｜一句话主张与速览</text>
+<text x="876" y="32" font-size="11" fill="#ffffff" font-weight="400" text-anchor="end" opacity="0.82">wall-x · 字段均摘自本文</text>
+<rect x="24" y="68" width="852" height="92" rx="10" fill="#c2410c" opacity="0.07"/>
+<text x="40" y="92" font-size="11" fill="#c2410c" font-weight="700" text-anchor="start">一句话</text>
+<text x="40" y="116" font-size="15" fill="#0f172a" font-weight="500" text-anchor="start">WALL-X 重新分配的是“复现工作的起点”——不是从论文方法读起，而是从 checkpoint、LeRobot 数据、YAML 配置、训练脚本和 policy serv</text>
+<text x="40" y="141" font-size="15" fill="#0f172a" font-weight="500" text-anchor="start">er 这条工程链路跑起。【章节】</text>
+<rect x="24" y="176" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="38" y="197" font-size="11" fill="#c2410c" font-weight="700" text-anchor="start">代码</text>
+<text x="38" y="216" font-size="12" fill="#334155" font-weight="400" text-anchor="start">https://github.com/X-Square-Robot/wall-x</text>
+<text x="24" y="274" font-size="11" fill="#94a3b8" font-weight="400" text-anchor="start">字段与表述均摘自原文，未作补全或推断</text>
+<rect x="0.5" y="0.5" width="899" height="291" fill="none" stroke="#e2e8f0"/>
+</svg>
