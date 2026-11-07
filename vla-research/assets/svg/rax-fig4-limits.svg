@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 370" width="900" height="370" font-family="PingFang SC, -apple-system, BlinkMacSystemFont, Microsoft YaHei, sans-serif">
+<rect width="900" height="370" fill="#ffffff"/>
+<rect x="0" y="0" width="900" height="50" fill="#1d4ed8"/>
+<text x="24" y="32" font-size="19" fill="#ffffff" font-weight="700" text-anchor="start">图 A4｜局限与不确定项</text>
+<text x="876" y="32" font-size="11" fill="#ffffff" font-weight="400" text-anchor="end" opacity="0.82">rax · 以下均摘自本文</text>
+<rect x="24" y="68" width="852" height="54" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<circle cx="48" cy="95" r="12" fill="#1d4ed8" opacity="0.14"/>
+<text x="48" y="100" font-size="12" fill="#1d4ed8" font-weight="700" text-anchor="middle">1</text>
+<text x="72" y="92" font-size="12.5" fill="#334155" font-weight="400" text-anchor="start">loco-manip 与域随机化需超大预算（make toast random 64eps 仅 47.2）</text>
+<rect x="24" y="132" width="852" height="54" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<circle cx="48" cy="159" r="12" fill="#1d4ed8" opacity="0.14"/>
+<text x="48" y="164" font-size="12" fill="#1d4ed8" font-weight="700" text-anchor="middle">2</text>
+<text x="72" y="156" font-size="12.5" fill="#334155" font-weight="400" text-anchor="start">真机每 episode 耗操作员时间。</text>
+<rect x="24" y="196" width="852" height="54" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<circle cx="48" cy="223" r="12" fill="#1d4ed8" opacity="0.14"/>
+<text x="48" y="228" font-size="12" fill="#1d4ed8" font-weight="700" text-anchor="middle">3</text>
+<text x="72" y="220" font-size="12.5" fill="#334155" font-weight="400" text-anchor="start">第三方读报（davidlxu）提醒：37.4 平均值混合了五种计分口径与任务子集；部分评测仍有 agent 在环或提供演示信息，解读"autonomous/无演示"要看细节。</text>
+<rect x="24" y="260" width="852" height="54" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<circle cx="48" cy="287" r="12" fill="#1d4ed8" opacity="0.14"/>
+<text x="48" y="292" font-size="12" fill="#1d4ed8" font-weight="700" text-anchor="middle">4</text>
+<text x="72" y="284" font-size="12.5" fill="#334155" font-weight="400" text-anchor="start">不确定时 raise Unsure() 把控制权交还 agent 演化</text>
+<text x="24" y="352" font-size="11" fill="#94a3b8" font-weight="400" text-anchor="start">原文摘录；未补充原文没有的结论或风险判断</text>
+<rect x="0.5" y="0.5" width="899" height="369" fill="none" stroke="#e2e8f0"/>
+</svg>
