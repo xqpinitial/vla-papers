@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="zh-CN" data-theme="light"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>OpenVLA 论文精读：开源 7B 级 VLA 的 LIBERO 复现基线</title>
-<meta name="description" content="说明：本文按 paper-deep-read 结构整理，唯一事实来源是本仓库 OpenVLA 导读（下称“本章程”）。口径分两种：章节记录＝章节给出的命令、日志、截图与显存数字；章节转述＝章节对架构的文字说明，未标论文出处。由于章节没有引用论文，本文无法区分“论文作者报告”与“章节作者转述”，凡架构">
-<meta property="og:title" content="OpenVLA 论文精读：开源 7B 级 VLA 的 LIBERO 复现基线"><meta property="og:type" content="website">
+<title>【VLA 精读 · 视觉 Backbone】OpenVLA：开源 7B 级 VLA 的 LIBERO 复现基线</title>
+<meta name="description" content="OpenVLA 的本地复现链路可以概括为：openvla-7b 权重 + 224×224 RGB 输入 + MLP projector + LLaMA-2/Vicuna/Mistral 主干 + 7 维连续动作头，配合 --center_crop True 在 LIBERO 上评测。章节记录的关键数">
+<meta property="og:title" content="【VLA 精读 · 视觉 Backbone】OpenVLA：开源 7B 级 VLA 的 LIBERO 复现基线"><meta property="og:type" content="website">
 <link rel="stylesheet" href="../../assets/style.css">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%234f46e5'/%3E%3Ctext x='16' y='22' font-size='16' text-anchor='middle' fill='white' font-family='serif'%3EV%3C/text%3E%3C/svg%3E">
 </head><body>
@@ -19,13 +19,32 @@
 <button class="searchbtn" data-search aria-label="搜索"><span>搜索</span><kbd>⌘K</kbd></button>
 <button class="iconbtn" id="themebtn" aria-label="切换明暗主题"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
 <button class="iconbtn" id="menubtn" aria-label="菜单"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
-</nav><header class="dochead"><div class="wrap"><div class="crumb"><a href="../../index.html">首页</a> / <a href="../../papers/index.html">论文</a> / <a href="../../papers/02-backbone/index.html">视觉 Backbone 与感知推理</a></div><h1>OpenVLA 论文精读：开源 7B 级 VLA 的 LIBERO 复现基线</h1><p class="lede">说明：本文按 paper-deep-read 结构整理，唯一事实来源是本仓库 OpenVLA 导读（下称“本章程”）。口径分两种：章节记录＝章节给出的命令、日志、截图与显存数字；章节转述＝章节对架构的文字说明，未标论文出处。由于章节没有引用论文，本文无法区分“论文作者报告”与“章节作者转述”，凡架构描述一律记为“章节转述”。整理日期 2026-11-01；章节未给论文版本与代码 commit，本文不虚构。</p><div class="chips"><a class="chip cat" href="../../papers/02-backbone/index.html">Backbone</a></div><div class="infobox"><div class="irow"><span class="ik">分类</span><span class="iv"><a href="../../papers/02-backbone/index.html">视觉 Backbone 与感知推理</a></span></div><div class="irow"><span class="ik">对应专题</span><span class="iv">§2 图像 backbone</span></div><div class="irow"><span class="ik">来源</span><span class="iv">VLA 六年演进（广域 22 篇）</span></div><div class="irow"><span class="ik">笔记</span><span class="iv">六站式深读 · 数字标「tex 已验」</span></div></div></div></header><div class="docgrid"><aside class="toc"><p class="t">本文目录</p><ul><li><a class="h2" href="#1-论文与官方资源">1. 论文与官方资源</a></li><li><a class="h2" href="#2-核心问题-把-vlm-的表征接到-7-维连续动作">2. 核心问题：把 VLM 的表征接到 7 维连续动作</a></li><li><a class="h2" href="#3-模型结构与张量流">3. 模型结构与张量流</a></li><li><a class="h3" href="#3-1-组件与维度">3.1 组件与维度</a></li><li><a class="h3" href="#3-2-动作头与-z-score-归一化">3.2 动作头与 Z-Score 归一化</a></li><li><a class="h3" href="#3-3-多模态序列布局与训练数据流">3.3 多模态序列布局与训练数据流</a></li><li><a class="h2" href="#4-实验结果">4. 实验结果</a></li><li><a class="h3" href="#4-1-libero-评测协议">4.1 LIBERO 评测协议</a></li><li><a class="h3" href="#4-2-章节记录的一次实际评测">4.2 章节记录的一次实际评测</a></li><li><a class="h2" href="#5-消融实验">5. 消融实验</a></li><li><a class="h2" href="#6-延迟与显存怎么读">6. 延迟与显存怎么读</a></li><li><a class="h2" href="#7-训练资源与卡数">7. 训练资源与卡数</a></li><li><a class="h2" href="#8-代码阅读顺序">8. 代码阅读顺序</a></li><li><a class="h2" href="#9-从-checkpoint-开始复现">9. 从 checkpoint 开始复现</a></li><li><a class="h3" href="#9-1-环境与依赖">9.1 环境与依赖</a></li><li><a class="h3" href="#9-2-下载四个微调权重">9.2 下载四个微调权重</a></li><li><a class="h3" href="#9-3-先做加载检查">9.3 先做加载检查</a></li><li><a class="h3" href="#9-4-评测一个-suite">9.4 评测一个 suite</a></li><li><a class="h3" href="#9-5-已知兼容性修复">9.5 已知兼容性修复</a></li><li><a class="h2" href="#10-如何用到自己的项目">10. 如何用到自己的项目</a></li></ul></aside><main class="prose"><p>OpenVLA 的本地复现链路可以概括为：<code>openvla-7b</code> 权重 + 224×224 RGB 输入 + MLP projector + LLaMA-2/Vicuna/Mistral 主干 + 7 维连续动作头，配合 <code>--center_crop True</code> 在 LIBERO 上评测。章节记录的关键数字有五个：权重仓库名带 <code>7b</code>、动作 7 维、图像输入 224×224、单次评测显存约 10321M（约 10.3GB）、checkpoint 分 4 个 shard 加载；此外评测默认每任务 50 trials。章节没有给四个 suite 的完整成功率，也没有给训练配方。</p>
+</nav><header class="dochead"><div class="wrap"><div class="crumb"><a href="../../index.html">首页</a> / <a href="../../papers/index.html">论文</a> / <a href="../../papers/02-backbone/index.html">视觉 Backbone 与感知推理</a></div><h1>【VLA 精读 · 视觉 Backbone】OpenVLA：开源 7B 级 VLA 的 LIBERO 复现基线</h1><p class="lede">OpenVLA 的本地复现链路可以概括为：openvla-7b 权重 + 224×224 RGB 输入 + MLP projector + LLaMA-2/Vicuna/Mistral 主干 + 7 维连续动作头，配合 --center_crop True 在 LIBERO 上评测。章节记录的关键数</p><div class="chips"><a class="chip cat" href="../../papers/02-backbone/index.html">Backbone</a></div><div class="infobox"><div class="irow"><span class="ik">分类</span><span class="iv"><a href="../../papers/02-backbone/index.html">视觉 Backbone 与感知推理</a></span></div><div class="irow"><span class="ik">对应专题</span><span class="iv">§2 图像 backbone</span></div><div class="irow"><span class="ik">来源</span><span class="iv">VLA 六年演进（广域 22 篇）</span></div><div class="irow"><span class="ik">笔记</span><span class="iv">六站式深读 · 数字标「tex 已验」</span></div></div></div></header><div class="docgrid"><aside class="toc"><p class="t">本文目录</p><ul><li><a class="h2" href="#①-论文与官方资源">① 论文与官方资源</a></li><li><a class="h2" href="#②-核心问题-把-vlm-的表征接到-7-维连续动作">② 核心问题：把 VLM 的表征接到 7 维连续动作</a></li><li><a class="h2" href="#③-模型结构与张量流">③ 模型结构与张量流</a></li><li><a class="h3" href="#3-1-组件与维度">3.1 组件与维度</a></li><li><a class="h3" href="#3-2-动作头与-z-score-归一化">3.2 动作头与 Z-Score 归一化</a></li><li><a class="h3" href="#3-3-多模态序列布局与训练数据流">3.3 多模态序列布局与训练数据流</a></li><li><a class="h2" href="#④-实验结果">④ 实验结果</a></li><li><a class="h3" href="#4-1-libero-评测协议">4.1 LIBERO 评测协议</a></li><li><a class="h3" href="#4-2-章节记录的一次实际评测">4.2 章节记录的一次实际评测</a></li><li><a class="h2" href="#⑤-消融实验">⑤ 消融实验</a></li><li><a class="h2" href="#⑥-延迟与显存怎么读">⑥ 延迟与显存怎么读</a></li><li><a class="h2" href="#⑦-训练资源与卡数">⑦ 训练资源与卡数</a></li><li><a class="h2" href="#⑧-代码阅读顺序">⑧ 代码阅读顺序</a></li><li><a class="h2" href="#⑨-从-checkpoint-开始复现">⑨ 从 checkpoint 开始复现</a></li><li><a class="h3" href="#9-1-环境与依赖">9.1 环境与依赖</a></li><li><a class="h3" href="#9-2-下载四个微调权重">9.2 下载四个微调权重</a></li><li><a class="h3" href="#9-3-先做加载检查">9.3 先做加载检查</a></li><li><a class="h3" href="#9-4-评测一个-suite">9.4 评测一个 suite</a></li><li><a class="h3" href="#9-5-已知兼容性修复">9.5 已知兼容性修复</a></li><li><a class="h2" href="#⑩-如何用到自己的项目">⑩ 如何用到自己的项目</a></li><li><a class="h2" href="#⑪-判断与局限">⑪ 判断与局限</a></li></ul></aside><main class="prose"><blockquote><strong>原题与资源</strong>：<a href="https://arxiv.org/abs/2406.09246" target="_blank" rel="noopener">arXiv:2406.09246</a> · <a href="https://github.com/openvla/openvla" target="_blank" rel="noopener">代码</a><br><strong>一句话</strong>：OpenVLA 的本地复现链路可以概括为：openvla-7b 权重 + 224×224 RGB 输入 + MLP projector + LLaMA-2/Vicuna/Mistral 主干 + 7 维连续动作头，配合 --center_crop True 在 LIBERO 上评测。章节记录的关键数<br><strong>阅读成本</strong>：正文约 10167 字 / 10 个章节 / 5 张图；目录按本文原有章节顺序排列，章节内容未改动。</blockquote>
+<p><strong>目录</strong>（点击跳到对应章节）：</p>
+<ol>
+<li><a href="#①-论文与官方资源">① 论文与官方资源</a></li>
+<li><a href="#②-核心问题-把-vlm-的表征接到-7-维连续动作">② 核心问题：把 VLM 的表征接到 7 维连续动作</a></li>
+<li><a href="#③-模型结构与张量流">③ 模型结构与张量流</a></li>
+<li><a href="#④-实验结果">④ 实验结果</a></li>
+<li><a href="#⑤-消融实验">⑤ 消融实验</a></li>
+<li><a href="#⑥-延迟与显存怎么读">⑥ 延迟与显存怎么读</a></li>
+<li><a href="#⑦-训练资源与卡数">⑦ 训练资源与卡数</a></li>
+<li><a href="#⑧-代码阅读顺序">⑧ 代码阅读顺序</a></li>
+<li><a href="#⑨-从-checkpoint-开始复现">⑨ 从 checkpoint 开始复现</a></li>
+<li><a href="#⑩-如何用到自己的项目">⑩ 如何用到自己的项目</a></li>
+<li><a href="#⑪-判断与局限">⑪ 判断与局限</a></li>
+</ol>
+<figure><img src="../../assets/svg/openvla-fig1-map.svg" alt="图 A1｜章节地图" loading="lazy"><figcaption>图 A1｜章节地图</figcaption></figure>
+<p class="figcap">图 A1：本文章节地图（节点即原文 h2 标题）。自绘，依据本文，不新增事实。</p>
+<p>OpenVLA 的本地复现链路可以概括为：<code>openvla-7b</code> 权重 + 224×224 RGB 输入 + MLP projector + LLaMA-2/Vicuna/Mistral 主干 + 7 维连续动作头，配合 <code>--center_crop True</code> 在 LIBERO 上评测。章节记录的关键数字有五个：权重仓库名带 <code>7b</code>、动作 7 维、图像输入 224×224、单次评测显存约 10321M（约 10.3GB）、checkpoint 分 4 个 shard 加载；此外评测默认每任务 50 trials。章节没有给四个 suite 的完整成功率，也没有给训练配方。</p>
 <blockquote>说明：本文按 <code>paper-deep-read</code> 结构整理，唯一事实来源是本仓库 <span class="deadref" title="原始 every-embodied 仓库引用，本归档未收录该文件">OpenVLA 导读</span>（下称“本章程”）。口径分两种：<strong>章节记录</strong>＝章节给出的命令、日志、截图与显存数字；<strong>章节转述</strong>＝章节对架构的文字说明，未标论文出处。由于章节没有引用论文，本文无法区分“论文作者报告”与“章节作者转述”，凡架构描述一律记为“章节转述”。整理日期 2026-11-01；章节未给论文版本与代码 commit，本文不虚构。</blockquote>
-<h2 id="1-论文与官方资源">1. 论文与官方资源</h2>
+<h2 id="①-论文与官方资源">① 论文与官方资源</h2>
 <div class="tbl"><table><thead><tr><th>资源</th><th>网页来源</th><th>说明</th></tr></thead><tbody><tr><td>论文</td><td><a href="https://arxiv.org/abs/2406.09246" target="_blank" rel="noopener">arXiv:2406.09246</a></td><td>公开入口*</td></tr><tr><td>源码</td><td><a href="https://github.com/openvla/openvla" target="_blank" rel="noopener">github.com/openvla/openvla</a></td><td>章节命令中的官方仓库；另有 <code>bgithub.xyz</code> 镜像</td></tr><tr><td>权重</td><td><a href="https://huggingface.co/openvla/openvla-7b" target="_blank" rel="noopener">openvla/openvla-7b</a>；微调版 <code>openvla-7b-finetuned-libero-{spatial,object,goal,10}</code></td><td>章节记录</td></tr><tr><td>项目页</td><td><a href="https://openvla.github.io/" target="_blank" rel="noopener">openvla.github.io</a></td><td>公开入口*</td></tr></tbody></table></div>
 <blockquote>* 公开入口未在本地章节核验；本地章节只用于事实核对。许可与再分发条款需自行确认。</blockquote>
 <p>论文：OpenVLA（章节写作 Open Vision-Language-Action）；arXiv：2406.09246（公开入口，未在本地章节核验）；版本：本地导读整理；代码 commit：章节未给。<strong>版本提示：</strong>本章程是按作者本机环境写的一次复现记录（Ubuntu 系、<code>/data1</code> 与 <code>/home/vipuser/...</code> 等本机路径），不是论文的官方版本说明。不同 CUDA / PyTorch / LIBERO 版本可能需要重新排错；引用本文数字时请带上“本地章节记录”这个口径。</p>
-<h2 id="2-核心问题-把-vlm-的表征接到-7-维连续动作">2. 核心问题：把 VLM 的表征接到 7 维连续动作</h2>
+<h2 id="②-核心问题-把-vlm-的表征接到-7-维连续动作">② 核心问题：把 VLM 的表征接到 7 维连续动作</h2>
+<figure><img src="../../assets/svg/openvla-fig2-claim.svg" alt="图 A2｜主张与速览" loading="lazy"><figcaption>图 A2｜主张与速览</figcaption></figure>
+<p class="figcap">图 A2：一句话主张与速览字段。自绘，依据本文，不新增事实。</p>
 <p>本章程给出的取舍是：视觉与语言仍由通用 VLM 处理，动作交给一个输出 7 维连续向量的头；训练时回归归一化动作，推理时按数据集统计量反归一化。章节没有描述动作 token 化或动作词表，动作走的是连续回归路径，而不是文本生成路径。</p>
 <figure><img src="../../assets/svg/openvla-architecture.svg" alt="OpenVLA 架构与动作流" loading="lazy"><figcaption>OpenVLA 架构与动作流</figcaption></figure>
 <p>图 1：OpenVLA 的视觉语言到 7 维连续动作信息流。自绘，依据本地导读；不是论文原图。</p>
@@ -35,7 +54,16 @@
 <li><strong>简化与代价</strong>：动作侧只有一个 7 维输出头与一次反归一化，接口窄、便于接 LIBERO；但章节没有对照实验，无法量化收益，动作精度与控制频率都要实测（§6）。</li>
 <li><strong>读者该学什么</strong>：先用一个 suite 跑通“权重 → 加载 → rollout → success 记录”，再谈扩展；跳过结果汇总只是“能跑”，不是“能复现”。</li>
 </ul>
-<h2 id="3-模型结构与张量流">3. 模型结构与张量流</h2>
+<h2 id="③-模型结构与张量流">③ 模型结构与张量流</h2>
+<figure><img src="../../assets/svg/openvla-fig3-nums.svg" alt="图 A3｜数字摘录" loading="lazy"><figcaption>图 A3｜数字摘录</figcaption></figure>
+<p class="figcap">图 A3：本文可核验的数字摘录。自绘，依据本文，不新增事实。</p>
+<p><strong>一个具体任务走一遍 · 本文形状与接口速查</strong>（以下均摘自原文，未作推算）：</p>
+<ul>
+<li>图像输入 ｜ RGB，resize 至 224×224 ｜ 224×224</li>
+<li>动作头 ｜ 7 维连续动作 ｜ <code>[x, y, z, rx, ry, rz, gripper]</code></li>
+<li>视觉编码 ｜ 224×224 输入、单/双编码器分支、patch 数与 <code>vision_dim</code> ｜ 需核对</li>
+<li>动作头 ｜ 7 维输出、归一化/反归一化、统计量加载 ｜ 需核对</li>
+</ul>
 <h3 id="3-1-组件与维度">3.1 组件与维度</h3>
 <div class="tbl"><table><thead><tr><th>组件</th><th>章节给出的设置</th><th>维度/形状</th><th>口径</th></tr></thead><tbody><tr><td>图像输入</td><td>RGB，resize 至 224×224</td><td>224×224</td><td>章节转述</td></tr><tr><td>视觉骨干</td><td>SigLIP / DINOv2 / CLIP；支持双编码器（如 DINOv2 + CLIP）</td><td>—</td><td>章节转述</td></tr><tr><td>patch 输出</td><td>视觉骨干输出图像 patch embeddings</td><td><code>[batch, num_patches, vision_dim]</code></td><td>章节转述</td></tr><tr><td>projector fc1</td><td>MLP 第一层（双编码器示例结构）</td><td><code>vision_dim → 4×vision_dim</code></td><td>章节转述</td></tr><tr><td>projector fc2</td><td>MLP 第二层</td><td><code>4×vision_dim → llm_dim</code></td><td>章节转述</td></tr><tr><td>projector fc3</td><td>MLP 第三层</td><td><code>llm_dim → llm_dim</code></td><td>章节转述</td></tr><tr><td>LLM 主干</td><td>LLaMA-2 / Vicuna / Mistral</td><td>—</td><td>章节转述</td></tr><tr><td>精度与注意力</td><td>BF16、Flash Attention 2</td><td>—</td><td>章节转述</td></tr><tr><td>动作头</td><td>7 维连续动作</td><td><code>[x, y, z, rx, ry, rz, gripper]</code></td><td>章节转述</td></tr></tbody></table></div>
 <p><code>vision_dim</code> 与 <code>llm_dim</code> 的具体数值章节未给；fc1–fc3 是章节为“双视觉编码器”给出的示例结构，不能当成所有配置的唯一实现。章节对双编码器的解释是：DINOv2 偏空间几何，CLIP 偏语义对齐。</p>
@@ -56,7 +84,7 @@
 <li><strong>数据与增强</strong>：标签是专家演示轨迹的 7 维动作向量；训练用 random crop + color jitter，推理用 center crop。</li>
 </ul>
 <p>训练与推理的裁剪策略不同，这是复现时最容易漏掉的一致性假设；动作标签直接取自演示轨迹，章节没有描述额外的动作重标注。</p>
-<h2 id="4-实验结果">4. 实验结果</h2>
+<h2 id="④-实验结果">④ 实验结果</h2>
 <h3 id="4-1-libero-评测协议">4.1 LIBERO 评测协议</h3>
 <p>LIBERO 在章节里的定位是：基于 RoboSuite + MuJoCo 的标准化评测流程，按任务套件逐个跑。</p>
 <div class="tbl"><table><thead><tr><th>项目</th><th>章节记录</th><th>说明</th></tr></thead><tbody><tr><td>任务套件</td><td><code>libero_spatial</code>、<code>libero_object</code>、<code>libero_goal</code>、<code>libero_10</code></td><td>对应 4 个 finetuned 权重</td></tr><tr><td>每任务 trials</td><td>默认 50</td><td><code>--num_trials_per_task</code> 可改，章节示例改为 10</td></tr><tr><td>任务数</td><td><code>libero_spatial</code> 10 个任务</td><td>章节伪代码注释；其余 suite 未给</td></tr><tr><td>初始状态</td><td><code>env.set_init_state(initial_states[episode])</code></td><td>固定初始状态，保证公平</td></tr><tr><td>图像预处理</td><td>center crop</td><td><code>--center_crop True</code></td></tr><tr><td>prompt 模板</td><td><code>What action should the robot take to {task_description}?</code></td><td>章节伪代码</td></tr><tr><td>反归一化键</td><td><code>unnorm_key=task_suite_name</code></td><td>按 suite 取统计量</td></tr><tr><td>终止条件</td><td><code>done</code> 或 <code>max_steps</code></td><td>章节伪代码</td></tr></tbody></table></div>
@@ -70,7 +98,7 @@ Saved rollout MP4 at path ./rollouts/...--success=True--task=....mp4
 Success: True</code></pre>
 <p><strong>读法：</strong><code>Success: True</code> 只说明这一条 rollout 成功，不能外推成 suite 成功率；<code>3.16 it/s</code> 是分片加载速率，不是推理帧率。四个 suite 必须分别跑完并各自汇总 <code>success/total</code>，不同 trials 设置的结果不能放在同一张表里比较。</p>
 <p>来源：本章程 §3–§4（评估命令、日志与显存截图）。</p>
-<h2 id="5-消融实验">5. 消融实验</h2>
+<h2 id="⑤-消融实验">⑤ 消融实验</h2>
 <p>本章程以环境、评估与原理为主，没有消融表，也没有给任何对照数字。从章节的结构描述里可以提出三组值得做的对照，每组都只能用同一套评测协议自测：</p>
 <ul>
 <li><strong>单编码器 vs 双编码器</strong>：章节支持 SigLIP / DINOv2 / CLIP，并给出 DINOv2 + CLIP 示例（空间几何 + 语义对齐）。测同 suite 成功率、视觉 token 数、显存与吞吐。</li>
@@ -78,11 +106,11 @@ Success: True</code></pre>
 <li><strong>裁剪与归一化一致性</strong>：训练 random crop、推理 center crop；统计量按 <code>unnorm_key</code> 取。测裁剪不一致、suite 与统计量错配时成功率与动作幅度的变化。</li>
 </ul>
 <p>前两组直接改变视觉 token 数量与显存，第三组主要影响可复现性；做消融时先把评测协议固定住，否则成功率差异无法归因。</p>
-<h2 id="6-延迟与显存怎么读">6. 延迟与显存怎么读</h2>
+<h2 id="⑥-延迟与显存怎么读">⑥ 延迟与显存怎么读</h2>
 <p>章节只给了一个显存数字。下表把“能用于选型”和“不能用于选型”的信息分开：</p>
 <div class="tbl"><table><thead><tr><th>项目</th><th>章节记录</th><th>能否用于部署选型</th></tr></thead><tbody><tr><td>推理显存（LIBERO 评测）</td><td>约 10321M</td><td>可以，说明单卡可跑</td></tr><tr><td>GPU 型号</td><td>章节未给</td><td>不能</td></tr><tr><td>单步推理延迟</td><td>章节未给</td><td>不能</td></tr><tr><td>端到端请求延迟</td><td>章节未给</td><td>不能</td></tr><tr><td>测量协议（热身/重复/中位数）</td><td>章节未给</td><td>不能</td></tr><tr><td>重规划间隔 / 控制频率</td><td>章节未给</td><td>不能</td></tr></tbody></table></div>
 <p><strong>结论：</strong><code>10321M</code> 只回答“单卡能不能装下”，回答不了“能不能进控制回路”。<code>1000 / 延迟</code> 算的是策略调用频率上限，不等于动作执行频率，也不等于端到端反馈频率；章节没有给重规划间隔，连调用频率都算不出来。要做部署判断，必须用自己的输入分辨率、batch 与精度重测，并分开记录裸模型延迟、含前后处理的请求延迟、两次重规划之间的间隔。</p>
-<h2 id="7-训练资源与卡数">7. 训练资源与卡数</h2>
+<h2 id="⑦-训练资源与卡数">⑦ 训练资源与卡数</h2>
 <p>本章程定位是“环境 + 评估 + 原理”，不含训练配方：没有 GPU 数、优化器步数、batch、学习率、warmup、数据配比，也没有说明是否做参数高效微调（章节全文未出现 LoRA）。与训练相关、可确认的事实只有三条：</p>
 <ul>
 <li>仓库提供 4 个按 suite 微调的权重（<code>-spatial</code> / <code>-object</code> / <code>-goal</code> / <code>-10</code>），说明存在按 suite 分别产出的微调结果。</li>
@@ -95,7 +123,7 @@ Success: True</code></pre>
 <li><strong>训练链路</strong>：少量数据、小 microbatch，验证损失、梯度与保存——章节未给入口，需按仓库 README 自行核对。</li>
 <li><strong>完整训练</strong>：保持采样、有效 batch、步数与评测协议——章节未给配方，不能在缺配方时声称复现了论文训练。</li>
 </ol>
-<h2 id="8-代码阅读顺序">8. 代码阅读顺序</h2>
+<h2 id="⑧-代码阅读顺序">⑧ 代码阅读顺序</h2>
 <p>官方仓库为 <code>openvla/openvla</code>。章节只显式给出了评测入口 <code>experiments/robot/libero/run_libero_eval.py</code>，以及日志里的模型类名 <code>OpenVLAForActionPrediction</code>；其余文件路径章节未给，下表按模块列出阅读顺序，具体路径需按固定 commit 核对。</p>
 <div class="tbl"><table><thead><tr><th>模块</th><th>阅读重点</th><th>路径状态</th></tr></thead><tbody><tr><td>评测入口</td><td><code>--task_suite_name</code>、<code>--num_trials_per_task</code>、<code>--center_crop</code>、<code>--pretrained_checkpoint</code> 如何被消费</td><td>章节给出 <code>experiments/robot/libero/run_libero_eval.py</code></td></tr><tr><td>模型类与加载</td><td>视觉 → projector → LLM → 动作头；<code>predict_action</code> 入参；dtype、Flash Attention、分片加载</td><td>类名来自日志，文件路径需核对</td></tr><tr><td>视觉编码</td><td>224×224 输入、单/双编码器分支、patch 数与 <code>vision_dim</code></td><td>需核对</td></tr><tr><td>projector</td><td><code>fc1/fc2/fc3</code> 的维度与激活</td><td>需核对</td></tr><tr><td>动作头</td><td>7 维输出、归一化/反归一化、统计量加载</td><td>需核对</td></tr><tr><td>LIBERO 适配</td><td>init states 加载、<code>unnorm_key</code> 与 suite 的映射</td><td>第三方 LIBERO 路径见 §9.5</td></tr></tbody></table></div>
 <p><strong>已知坑：</strong></p>
@@ -105,7 +133,7 @@ Success: True</code></pre>
 <li>章节用的是作者本机路径（<code>/data1</code>、<code>/home/vipuser/17robo/openvla</code>、<code>/data/17robo/LIBERO/...</code>），照抄会失败，必须替换。</li>
 <li>章节未固定 commit；不同 commit 的权重命名与接口可能不同，先固定再谈复现。</li>
 </ul>
-<h2 id="9-从-checkpoint-开始复现">9. 从 checkpoint 开始复现</h2>
+<h2 id="⑨-从-checkpoint-开始复现">⑨ 从 checkpoint 开始复现</h2>
 <p>以下命令与参数全部来自本章程 §2–§3，章节作者在其环境跑通；本文整理时未复跑（<strong>未在本机验证</strong>）。<code>/data1</code>、<code>/home/vipuser/...</code> 是作者本机路径，按自己的目录替换。</p>
 <h3 id="9-1-环境与依赖">9.1 环境与依赖</h3>
 <pre><code class="language-bash">sudo apt install nvidia-cuda-toolkit          # 系统依赖（Ubuntu 系）
@@ -152,10 +180,24 @@ init_states = torch.load(init_states_path, weights_only=False)              # �
 # 之后再执行 init_states = torch.load(init_states_path)</code></pre>
 <p><strong>（2）EGL Context Error。</strong> 报错含 <code>EGLError(err = EGL_NOT_INITIALIZED, ...)</code>，出现在 Robosuite/MuJoCo 销毁渲染上下文时，章节明确说不影响评估流程与结果生成，可忽略。</p>
 <p><strong>（3）路径与 trials 一致性。</strong> 四个 suite 分别跑完后各自汇总，不要混用不同 <code>num_trials_per_task</code> 的结果；每套都要记录 <code>success/total</code>，不要只留一条 <code>Success: True</code> 的 rollout。</p>
-<h2 id="10-如何用到自己的项目">10. 如何用到自己的项目</h2>
+<h2 id="⑩-如何用到自己的项目">⑩ 如何用到自己的项目</h2>
 <p>OpenVLA 在本仓库里的价值是：一条公开权重、能跑通的 LIBERO 评测链路，适合当复现基线与对照项，而不是终局部署方案——章节没有延迟与控制频率数据，无法判断它能否进控制回路。</p>
 <div class="tbl"><table><thead><tr><th>方向</th><th>加什么</th><th>测什么</th><th>代价/前提</th></tr></thead><tbody><tr><td>固定评测协议</td><td>把 suite / 50 trials / center crop / <code>unnorm_key</code> 固化成脚本参数</td><td>四个 suite 的 success/total 基线</td><td>总 rollout 数为 4 个 suite 的任务数 × 50，需预留完整评测时间</td></tr><tr><td>动作接口替换</td><td>把 7 维回归头换成 flow / RVQ 等其他动作接口</td><td>成功率、显存、延迟</td><td>章节未给训练代码与数据格式，需先核对仓库</td></tr><tr><td>双视觉编码器</td><td>启用 DINOv2 + CLIP 双分支</td><td>同 suite 成功率、视觉 token 数、显存</td><td>projector 有 4× 扩张；第二路视觉特征的显存与吞吐需实测</td></tr><tr><td>部署前测量</td><td>记录裸模型延迟、请求延迟、重规划间隔</td><td>能否满足目标控制频率</td><td>必须本机实测，章节只给显存</td></tr></tbody></table></div>
-<p>相关章节：<a href="../01-action/rt-2.html">RT-2</a>、<a href="../01-action/galaxea-g0-5.html">Galaxea G0.5</a>、<span class="deadref" title="原始 every-embodied 仓库引用，本归档未收录该文件">OpenVLA 导读</span>、<a href="../../survey/6yr/01-jishu-zhuanti.html">01 技术专题</a>。</p></main></div><div class="pager"><a class="prev" href="eventvla.html"><span class="dir">← 上一篇</span><span class="ttl">EventVLA 论文精读：把关键视觉证据存成原图，需要时再看一次</span></a><a class="next" href="visualthink-vla.html"><span class="dir">下一篇 →</span><span class="ttl">VisualThink-VLA 论文精读：用路由后的视觉证据替代文字 CoT</span></a></div><section class="related"><h2>同分类其他笔记</h2><div class="cards"><article class="pcard" data-cat="02-backbone" data-name="EventVLA 论文精读：把关键视觉证据存成原图，需要时再看一次" data-year="0" data-idx="6" data-hay="eventvla 论文精读：把关键视觉证据存成原图，需要时再看一次 eventvla 重新分配的是“历史信息存在哪里”这个接口——不是把历史压进模型隐状态，而是把少量原图关键帧存在 runtime 侧，等后续决策需要时再作为视觉输入看一次。【章节】 "><h3><a href="eventvla.html">EventVLA 论文精读：把关键视觉证据存成原图，需要时再看一次</a></h3><p class="sum">EventVLA 重新分配的是“历史信息存在哪里”这个接口——不是把历史压进模型隐状态，而是把少量原图关键帧存在 runtime 侧，等后续决策需要时再作为视觉输入看一次。【章节】</p><div class="foot"><span class="chip cat">Backbone</span></div></article><article class="pcard" data-cat="02-backbone" data-name="VisualThink-VLA 论文精读：用路由后的视觉证据替代文字 CoT" data-year="0" data-idx="8" data-hay="visualthink-vla 论文精读：用路由后的视觉证据替代文字 cot visualthink-vla 重新分配的是“中间推理的载体”——不生成自然语言 cot，而是从当前帧、上一帧和指令里提取视觉证据，由 router 每步只选需要的通道，再注入冻结 vla 预测动作。【章节】 "><h3><a href="visualthink-vla.html">VisualThink-VLA 论文精读：用路由后的视觉证据替代文字 CoT</a></h3><p class="sum">VisualThink-VLA 重新分配的是“中间推理的载体”——不生成自然语言 CoT，而是从当前帧、上一帧和指令里提取视觉证据，由 router 每步只选需要的通道，再注入冻结 VLA 预测动作。【章节】</p><div class="foot"><span class="chip cat">Backbone</span></div></article><article class="pcard" data-cat="02-backbone" data-name="WALL-OSS 论文精读：把预训练 VLM 接到可执行动作空间" data-year="0" data-idx="9" data-hay="wall-oss 论文精读：把预训练 vlm 接到可执行动作空间 wall-oss 重新分配的是“动作生成放在 vlm 的什么位置”——不是给 vlm 外接一个线性 action head，而是把 embodied reasoning、子任务分解和细粒度动作合成放进同一条紧耦合链路，再用两阶段训练把离散动作先验接到连续控制上。【章节】 "><h3><a href="wall-oss.html">WALL-OSS 论文精读：把预训练 VLM 接到可执行动作空间</a></h3><p class="sum">WALL-OSS 重新分配的是“动作生成放在 VLM 的什么位置”——不是给 VLM 外接一个线性 action head，而是把 embodied reasoning、子任务分解和细粒度动作合成放进同一条紧耦合链路，再用两阶段训练把离散动作先验接到连续控制上。【章节】</p><div class="foot"><span class="chip cat">Backbone</span></div></article></div></section><footer class="site"><div class="in">
+<p>相关章节：<a href="../01-action/rt-2.html">RT-2</a>、<a href="../01-action/galaxea-g0-5.html">Galaxea G0.5</a>、<span class="deadref" title="原始 every-embodied 仓库引用，本归档未收录该文件">OpenVLA 导读</span>、<a href="../../survey/6yr/01-jishu-zhuanti.html">01 技术专题</a>。</p>
+<hr>
+<h2 id="⑪-判断与局限">⑪ 判断与局限</h2>
+<p><strong>本文判断</strong>：OpenVLA 在本仓库里的价值是：一条公开权重、能跑通的 LIBERO 评测链路，适合当复现基线与对照项，而不是终局部署方案——章节没有延迟与控制频率数据，无法判断它能否进控制回路。</p>
+<p><strong>局限与不确定项</strong>（以下均摘自本文，未作推断）：</p>
+<ul>
+<li>训练链路：少量数据、小 microbatch，验证损失、梯度与保存——章节未给入口，需按仓库 README 自行核对。</li>
+<li>完整训练：保持采样、有效 batch、步数与评测协议——章节未给配方，不能在缺配方时声称复现了论文训练。</li>
+<li>章节没有给四个 suite 的完整成功率，也没有给训练配方</li>
+<li>由于章节没有引用论文，本文无法区分“论文作者报告”与“章节作者转述”，凡架构描述一律记为“章节转述”</li>
+<li>章节未给论文版本与代码 commit，本文不虚构</li>
+</ul>
+<figure><img src="../../assets/svg/openvla-fig4-limits.svg" alt="图 A4｜局限清单" loading="lazy"><figcaption>图 A4｜局限清单</figcaption></figure>
+<p class="figcap">图 A4：局限与不确定项摘录。自绘，依据本文，不新增事实。</p>
+<blockquote><strong>覆盖范围</strong>：本页新增的导读、目录、章节地图、数字卡与局限清单，均为原文信息的重排或摘录；正文、数据与实验结论未改动。</blockquote></main></div><div class="pager"><a class="prev" href="eventvla.html"><span class="dir">← 上一篇</span><span class="ttl">【VLA 精读 · 视觉 Backbone】EventVLA：把关键视觉证据存成原图，需要时再看一次</span></a><a class="next" href="visualthink-vla.html"><span class="dir">下一篇 →</span><span class="ttl">【VLA 精读 · 视觉 Backbone】VisualThink-VLA：用路由后的视觉证据替代文字 CoT</span></a></div><section class="related"><h2>同分类其他笔记</h2><div class="cards"><article class="pcard" data-cat="02-backbone" data-name="【VLA 精读 · 视觉 Backbone】EventVLA：把关键视觉证据存成原图，需要时再看一次" data-year="0" data-idx="6" data-hay="【vla 精读 · 视觉 backbone】eventvla：把关键视觉证据存成原图，需要时再看一次 eventvla 重新分配的是“历史信息存在哪里”这个接口——不是把历史压进模型隐状态，而是把少量原图关键帧存在 runtime 侧，等后续决策需要时再作为视觉输入看一次。【章节】 "><h3><a href="eventvla.html">【VLA 精读 · 视觉 Backbone】EventVLA：把关键视觉证据存成原图，需要时再看一次</a></h3><p class="sum">EventVLA 重新分配的是“历史信息存在哪里”这个接口——不是把历史压进模型隐状态，而是把少量原图关键帧存在 runtime 侧，等后续决策需要时再作为视觉输入看一次。【章节】</p><div class="foot"><span class="chip cat">Backbone</span></div></article><article class="pcard" data-cat="02-backbone" data-name="【VLA 精读 · 视觉 Backbone】VisualThink-VLA：用路由后的视觉证据替代文字 CoT" data-year="0" data-idx="8" data-hay="【vla 精读 · 视觉 backbone】visualthink-vla：用路由后的视觉证据替代文字 cot visualthink-vla 重新分配的是“中间推理的载体”——不生成自然语言 cot，而是从当前帧、上一帧和指令里提取视觉证据，由 router 每步只选需要的通道，再注入冻结 vla 预测动作。【章节】 "><h3><a href="visualthink-vla.html">【VLA 精读 · 视觉 Backbone】VisualThink-VLA：用路由后的视觉证据替代文字 CoT</a></h3><p class="sum">VisualThink-VLA 重新分配的是“中间推理的载体”——不生成自然语言 CoT，而是从当前帧、上一帧和指令里提取视觉证据，由 router 每步只选需要的通道，再注入冻结 VLA 预测动作。【章节】</p><div class="foot"><span class="chip cat">Backbone</span></div></article><article class="pcard" data-cat="02-backbone" data-name="【VLA 精读 · 视觉 Backbone】WALL-OSS：把预训练 VLM 接到可执行动作空间" data-year="0" data-idx="9" data-hay="【vla 精读 · 视觉 backbone】wall-oss：把预训练 vlm 接到可执行动作空间 wall-oss 重新分配的是“动作生成放在 vlm 的什么位置”——不是给 vlm 外接一个线性 action head，而是把 embodied reasoning、子任务分解和细粒度动作合成放进同一条紧耦合链路，再用两阶段训练把离散动作先验接到连续控制上。【章节】 "><h3><a href="wall-oss.html">【VLA 精读 · 视觉 Backbone】WALL-OSS：把预训练 VLM 接到可执行动作空间</a></h3><p class="sum">WALL-OSS 重新分配的是“动作生成放在 VLM 的什么位置”——不是给 VLM 外接一个线性 action head，而是把 embodied reasoning、子任务分解和细粒度动作合成放进同一条紧耦合链路，再用两阶段训练把离散动作先验接到连续控制上。【章节】</p><div class="foot"><span class="chip cat">Backbone</span></div></article></div></section><footer class="site"><div class="in">
 <div><b>VLA Research Hub</b> · 44 篇论文精读 + 7 篇综述 · 更新 2026-11-02</div>
 <div><a href="../../index.html">首页</a> · <a href="../../survey/index.html">综述</a> · <a href="../../papers/index.html">论文</a></div>
 </div></footer>
