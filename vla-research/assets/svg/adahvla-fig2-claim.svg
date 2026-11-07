@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 444" width="900" height="444" font-family="PingFang SC, -apple-system, BlinkMacSystemFont, Microsoft YaHei, sans-serif">
+<rect width="900" height="444" fill="#ffffff"/>
+<rect x="0" y="0" width="900" height="50" fill="#1d4ed8"/>
+<text x="24" y="32" font-size="19" fill="#ffffff" font-weight="700" text-anchor="start">图 A2｜一句话主张与速览</text>
+<text x="876" y="32" font-size="11" fill="#ffffff" font-weight="400" text-anchor="end" opacity="0.82">adahvla · 字段均摘自本文</text>
+<rect x="24" y="68" width="852" height="92" rx="10" fill="#1d4ed8" opacity="0.07"/>
+<text x="40" y="92" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">一句话</text>
+<text x="40" y="116" font-size="15" fill="#0f172a" font-weight="500" text-anchor="start">在任务级推理器与 VLA 之间加一段可编辑的协调代码，用机器人经验迭代修订它；解耦多 agent 适配（证据分析 / harness 修订 / 行为评估分</text>
+<text x="40" y="141" font-size="15" fill="#0f172a" font-weight="500" text-anchor="start">置于不同上下文）+ 有状态修订图把证据-假设-修订-效果连成图——NaVILA-LH 22.5%→57.5%，操纵任务跨三个 VLA 底座最高 +30.8pp</text>
+<rect x="24" y="176" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="38" y="197" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">冻结</text>
+<text x="38" y="216" font-size="12" fill="#334155" font-weight="400" text-anchor="start">VLA 底座（三个不同 backbone 均验证）</text>
+<rect x="456" y="176" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="470" y="197" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">演化</text>
+<text x="470" y="216" font-size="12" fill="#334155" font-weight="400" text-anchor="start">code-based 协调策略（harness 本体），由修订图管理多版本</text>
+<rect x="24" y="252" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="38" y="273" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">特点</text>
+<text x="38" y="292" font-size="12" fill="#334155" font-weight="400" text-anchor="start">时间线上最纯粹的"harness 依据执行证据自适应修订"</text>
+<rect x="456" y="252" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="470" y="273" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">论文</text>
+<text x="470" y="292" font-size="12" fill="#334155" font-weight="400" text-anchor="start">AdaHVLA: Adaptive Harnesses for Long-Horizon Vision-Language</text>
+<rect x="24" y="328" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="38" y="349" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">arXiv</text>
+<text x="38" y="368" font-size="12" fill="#334155" font-weight="400" text-anchor="start">2609.29204</text>
+<rect x="456" y="328" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="470" y="349" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">机构</text>
+<text x="470" y="368" font-size="12" fill="#334155" font-weight="400" text-anchor="start">UNC · USTC · HKUST · CUHK（Junyi Tang, Jie Peng, … Tianlong C</text>
+<text x="24" y="426" font-size="11" fill="#94a3b8" font-weight="400" text-anchor="start">字段与表述均摘自原文，未作补全或推断</text>
+<rect x="0.5" y="0.5" width="899" height="443" fill="none" stroke="#e2e8f0"/>
+</svg>
