@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 434" width="900" height="434" font-family="PingFang SC, -apple-system, BlinkMacSystemFont, Microsoft YaHei, sans-serif">
+<rect width="900" height="434" fill="#ffffff"/>
+<rect x="0" y="0" width="900" height="50" fill="#4f46e5"/>
+<text x="24" y="32" font-size="19" fill="#ffffff" font-weight="700" text-anchor="start">图 A4｜局限与不确定项</text>
+<text x="876" y="32" font-size="11" fill="#ffffff" font-weight="400" text-anchor="end" opacity="0.82">rt-2 · 以下均摘自本文</text>
+<rect x="24" y="68" width="852" height="54" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<circle cx="48" cy="95" r="12" fill="#4f46e5" opacity="0.14"/>
+<text x="48" y="100" font-size="12" fill="#4f46e5" font-weight="700" text-anchor="middle">1</text>
+<text x="72" y="92" font-size="12.5" fill="#334155" font-weight="400" text-anchor="start">章节没有给 RT-2 的训练硬件、优化器步数、batch、学习率、warmup、EMA 或数据配比，也没有给 RT-1 的训练配方。能确认的只有两点：</text>
+<rect x="24" y="132" width="852" height="54" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<circle cx="48" cy="159" r="12" fill="#4f46e5" opacity="0.14"/>
+<text x="48" y="164" font-size="12" fill="#4f46e5" font-weight="700" text-anchor="middle">2</text>
+<text x="72" y="156" font-size="12.5" fill="#334155" font-weight="400" text-anchor="start">因此本文不写“硬件/步数/有效 batch”级别的配方表，也不写梯度累积公式——这些量章节一个都没有给，按 55B 反推卡数只会得到猜测。三级复现的落点是：理</text>
+<text x="72" y="174" font-size="12.5" fill="#334155" font-weight="400" text-anchor="start">解级可以读导读和 OpenVLA；加载级与训练级在 RT-2 上没有入口</text>
+<rect x="24" y="196" width="852" height="54" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<circle cx="48" cy="223" r="12" fill="#4f46e5" opacity="0.14"/>
+<text x="48" y="228" font-size="12" fill="#4f46e5" font-weight="700" text-anchor="middle">3</text>
+<text x="72" y="220" font-size="12.5" fill="#334155" font-weight="400" text-anchor="start">本地章节没有给出 RT-2 的代码、权重、成功率或训练配方，因此本文按“范式阅读”写，不按“可复现”写</text>
+<rect x="24" y="260" width="852" height="54" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<circle cx="48" cy="287" r="12" fill="#4f46e5" opacity="0.14"/>
+<text x="48" y="292" font-size="12" fill="#4f46e5" font-weight="700" text-anchor="middle">4</text>
+<text x="72" y="284" font-size="12.5" fill="#334155" font-weight="400" text-anchor="start">章节未给论文节号/表号、完整成功率与训练配方</text>
+<rect x="24" y="324" width="852" height="54" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<circle cx="48" cy="351" r="12" fill="#4f46e5" opacity="0.14"/>
+<text x="48" y="356" font-size="12" fill="#4f46e5" font-weight="700" text-anchor="middle">5</text>
+<text x="72" y="348" font-size="12.5" fill="#334155" font-weight="400" text-anchor="start">公开入口未在本地章节核验</text>
+<text x="24" y="416" font-size="11" fill="#94a3b8" font-weight="400" text-anchor="start">原文摘录；未补充原文没有的结论或风险判断</text>
+<rect x="0.5" y="0.5" width="899" height="433" fill="none" stroke="#e2e8f0"/>
+</svg>
