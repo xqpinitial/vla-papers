@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 352" width="900" height="352" font-family="PingFang SC, -apple-system, BlinkMacSystemFont, Microsoft YaHei, sans-serif">
+<rect width="900" height="352" fill="#ffffff"/>
+<rect x="0" y="0" width="900" height="50" fill="#0891b2"/>
+<text x="24" y="32" font-size="19" fill="#ffffff" font-weight="700" text-anchor="start">图 A3｜本文可核验的数字</text>
+<text x="876" y="32" font-size="11" fill="#ffffff" font-weight="400" text-anchor="end" opacity="0.82">visualthink-vla · 摘自原文，口径见对应章节</text>
+<rect x="24" y="68" width="280" height="104" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="38" y="108" font-size="25" fill="#0891b2" font-weight="700" text-anchor="start">8.377s</text>
+<text x="38" y="130" font-size="11" fill="#475569" font-weight="400" text-anchor="start">VisualThink-VLA 把 VLA 的“先想再动”从自由文本 CoT</text>
+<rect x="312" y="68" width="280" height="104" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="326" y="108" font-size="25" fill="#0891b2" font-weight="700" text-anchor="start">0.367s</text>
+<text x="326" y="130" font-size="11" fill="#475569" font-weight="400" text-anchor="start">VisualThink-VLA 把 VLA 的“先想再动”从自由文本 CoT</text>
+<rect x="600" y="68" width="280" height="104" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="614" y="108" font-size="25" fill="#0891b2" font-weight="700" text-anchor="start">22.8x</text>
+<text x="614" y="130" font-size="11" fill="#475569" font-weight="400" text-anchor="start">VisualThink-VLA 把 VLA 的“先想再动”从自由文本 CoT</text>
+<rect x="24" y="184" width="280" height="104" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="38" y="224" font-size="25" fill="#0891b2" font-weight="700" text-anchor="start">89.49%</text>
+<text x="38" y="246" font-size="11" fill="#475569" font-weight="400" text-anchor="start">VisualThink-VLA 把 VLA 的“先想再动”从自由文本 CoT</text>
+<rect x="312" y="184" width="280" height="104" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="326" y="224" font-size="25" fill="#0891b2" font-weight="700" text-anchor="start">75.37%</text>
+<text x="326" y="246" font-size="11" fill="#475569" font-weight="400" text-anchor="start">VisualThink-VLA 把 VLA 的“先想再动”从自由文本 CoT</text>
+<rect x="600" y="184" width="280" height="104" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="614" y="224" font-size="25" fill="#0891b2" font-weight="700" text-anchor="start">85.09%</text>
+<text x="614" y="246" font-size="11" fill="#475569" font-weight="400" text-anchor="start">VisualThink-VLA 把 VLA 的“先想再动”从自由文本 CoT</text>
+<text x="24" y="332" font-size="11" fill="#94a3b8" font-weight="400" text-anchor="start">仅摘录，不做单位换算、不跨基准比较</text>
+<rect x="0.5" y="0.5" width="899" height="351" fill="none" stroke="#e2e8f0"/>
+</svg>
