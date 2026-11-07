@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="zh-CN" data-theme="light"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>LWD 论文精读：把部署变成机群 RL 数据飞轮</title>
+<title>【VLA 精读 · 训练范式】LWD：把部署变成机群 RL 数据飞轮</title>
 <meta name="description" content="LWD 重新分配的是“真机部署数据的用途”——不再只把部署当评测，而是把机群产生的成功、失败、恢复和接管轨迹变成离线到在线 RL 的训练信号，持续更新同一个通用策略。【章节】">
-<meta property="og:title" content="LWD 论文精读：把部署变成机群 RL 数据飞轮"><meta property="og:type" content="website">
+<meta property="og:title" content="【VLA 精读 · 训练范式】LWD：把部署变成机群 RL 数据飞轮"><meta property="og:type" content="website">
 <link rel="stylesheet" href="../../assets/style.css">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%234f46e5'/%3E%3Ctext x='16' y='22' font-size='16' text-anchor='middle' fill='white' font-family='serif'%3EV%3C/text%3E%3C/svg%3E">
 </head><body>
@@ -19,14 +19,33 @@
 <button class="searchbtn" data-search aria-label="搜索"><span>搜索</span><kbd>⌘K</kbd></button>
 <button class="iconbtn" id="themebtn" aria-label="切换明暗主题"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
 <button class="iconbtn" id="menubtn" aria-label="菜单"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
-</nav><header class="dochead"><div class="wrap"><div class="crumb"><a href="../../index.html">首页</a> / <a href="../../papers/index.html">论文</a> / <a href="../../papers/03-training/index.html">训练范式与在线强化学习</a></div><h1>LWD 论文精读：把部署变成机群 RL 数据飞轮</h1><p class="lede">LWD 重新分配的是“真机部署数据的用途”——不再只把部署当评测，而是把机群产生的成功、失败、恢复和接管轨迹变成离线到在线 RL 的训练信号，持续更新同一个通用策略。【章节】</p><div class="chips"><a class="chip cat" href="../../papers/03-training/index.html">训练范式</a></div><div class="infobox"><div class="irow"><span class="ik">分类</span><span class="iv"><a href="../../papers/03-training/index.html">训练范式与在线强化学习</a></span></div><div class="irow"><span class="ik">对应专题</span><span class="iv">§3 训练范式：SFT / RL / 在线适应</span></div><div class="irow"><span class="ik">来源</span><span class="iv">VLA 六年演进（广域 22 篇）</span></div><div class="irow"><span class="ik">笔记</span><span class="iv">六站式深读 · 数字标「tex 已验」</span></div></div></div></header><div class="docgrid"><aside class="toc"><p class="t">本文目录</p><ul><li><a class="h2" href="#1-论文与官方资源">1. 论文与官方资源</a></li><li><a class="h2" href="#2-核心问题-部署之后策略还能不能变强">2. 核心问题：部署之后策略还能不能变强</a></li><li><a class="h2" href="#3-模型结构与张量流">3. 模型结构与张量流</a></li><li><a class="h3" href="#3-1-机群-任务与策略">3.1 机群、任务与策略</a></li><li><a class="h3" href="#3-2-两个-buffer-离线经验与在线经验">3.2 两个 buffer：离线经验与在线经验</a></li><li><a class="h3" href="#3-3-divl-学回报分布-而不是一个标量">3.3 DIVL：学回报分布，而不是一个标量</a></li><li><a class="h3" href="#3-4-qam-把-critic-梯度变成-flow-轨迹上的局部目标">3.4 QAM：把 critic 梯度变成 flow 轨迹上的局部目标</a></li><li><a class="h2" href="#4-实验结果">4. 实验结果</a></li><li><a class="h2" href="#5-消融实验">5. 消融实验</a></li><li><a class="h2" href="#6-延迟与显存怎么读">6. 延迟与显存怎么读</a></li><li><a class="h2" href="#7-训练资源与卡数">7. 训练资源与卡数</a></li><li><a class="h2" href="#8-代码阅读顺序">8. 代码阅读顺序</a></li><li><a class="h2" href="#9-从-checkpoint-开始复现">9. 从 checkpoint 开始复现</a></li><li><a class="h3" href="#9-1-论文复盘">9.1 论文复盘</a></li><li><a class="h3" href="#9-2-仿真概念复刻">9.2 仿真概念复刻</a></li><li><a class="h3" href="#9-3-真机系统复刻的安全门槛">9.3 真机系统复刻的安全门槛</a></li><li><a class="h2" href="#10-如何用到自己的项目">10. 如何用到自己的项目</a></li></ul></aside><main class="prose"><p>LWD（Learning While Deploying）把“部署”从测试环节改成训练环节：一个共享的通用 VLA 在 16 台 AgiBot G1 双臂机器人、8 个真实操作任务上持续收集成功、失败、恢复和人类干预数据，用离线到在线 RL 更新后再部署。本地章节转述的头条数字是：离线数据 652.5h（专家示教 336.6h、成功 rollout 88.8h、失败 rollout 39.2h、play data 187.9h）；平均成功率 95%；长时程任务通常持续 3–5 分钟，且最大增益出现在长时程任务上。以上为章节转述的论文摘要与附录口径，未在本机复测；论文没有公开代码与权重。</p>
+</nav><header class="dochead"><div class="wrap"><div class="crumb"><a href="../../index.html">首页</a> / <a href="../../papers/index.html">论文</a> / <a href="../../papers/03-training/index.html">训练范式与在线强化学习</a></div><h1>【VLA 精读 · 训练范式】LWD：把部署变成机群 RL 数据飞轮</h1><p class="lede">LWD 重新分配的是“真机部署数据的用途”——不再只把部署当评测，而是把机群产生的成功、失败、恢复和接管轨迹变成离线到在线 RL 的训练信号，持续更新同一个通用策略。【章节】</p><div class="chips"><a class="chip cat" href="../../papers/03-training/index.html">训练范式</a></div><div class="infobox"><div class="irow"><span class="ik">分类</span><span class="iv"><a href="../../papers/03-training/index.html">训练范式与在线强化学习</a></span></div><div class="irow"><span class="ik">对应专题</span><span class="iv">§3 训练范式：SFT / RL / 在线适应</span></div><div class="irow"><span class="ik">来源</span><span class="iv">VLA 六年演进（广域 22 篇）</span></div><div class="irow"><span class="ik">笔记</span><span class="iv">六站式深读 · 数字标「tex 已验」</span></div></div></div></header><div class="docgrid"><aside class="toc"><p class="t">本文目录</p><ul><li><a class="h2" href="#①-论文与官方资源">① 论文与官方资源</a></li><li><a class="h2" href="#②-核心问题-部署之后策略还能不能变强">② 核心问题：部署之后策略还能不能变强</a></li><li><a class="h2" href="#③-模型结构与张量流">③ 模型结构与张量流</a></li><li><a class="h3" href="#3-1-机群-任务与策略">3.1 机群、任务与策略</a></li><li><a class="h3" href="#3-2-两个-buffer-离线经验与在线经验">3.2 两个 buffer：离线经验与在线经验</a></li><li><a class="h3" href="#3-3-divl-学回报分布-而不是一个标量">3.3 DIVL：学回报分布，而不是一个标量</a></li><li><a class="h3" href="#3-4-qam-把-critic-梯度变成-flow-轨迹上的局部目标">3.4 QAM：把 critic 梯度变成 flow 轨迹上的局部目标</a></li><li><a class="h2" href="#④-实验结果">④ 实验结果</a></li><li><a class="h2" href="#⑤-消融实验">⑤ 消融实验</a></li><li><a class="h2" href="#⑥-延迟与显存怎么读">⑥ 延迟与显存怎么读</a></li><li><a class="h2" href="#⑦-训练资源与卡数">⑦ 训练资源与卡数</a></li><li><a class="h2" href="#⑧-代码阅读顺序">⑧ 代码阅读顺序</a></li><li><a class="h2" href="#⑨-从-checkpoint-开始复现">⑨ 从 checkpoint 开始复现</a></li><li><a class="h3" href="#9-1-论文复盘">9.1 论文复盘</a></li><li><a class="h3" href="#9-2-仿真概念复刻">9.2 仿真概念复刻</a></li><li><a class="h3" href="#9-3-真机系统复刻的安全门槛">9.3 真机系统复刻的安全门槛</a></li><li><a class="h2" href="#⑩-如何用到自己的项目">⑩ 如何用到自己的项目</a></li><li><a class="h2" href="#⑪-判断与局限">⑪ 判断与局限</a></li></ul></aside><main class="prose"><blockquote><strong>原题与资源</strong>：Learning while Deploying: Fleet-Scale Reinforcement Learning for Generalist Robot Policies · <a href="https://arxiv.org/abs/2605.00416" target="_blank" rel="noopener">arXiv:2605.00416</a><br><strong>一句话</strong>：LWD 重新分配的是“真机部署数据的用途”——不再只把部署当评测，而是把机群产生的成功、失败、恢复和接管轨迹变成离线到在线 RL 的训练信号，持续更新同一个通用策略。【章节】<br><strong>阅读成本</strong>：正文约 8606 字 / 10 个章节 / 5 张图；目录按本文原有章节顺序排列，章节内容未改动。</blockquote>
+<p><strong>目录</strong>（点击跳到对应章节）：</p>
+<ol>
+<li><a href="#①-论文与官方资源">① 论文与官方资源</a></li>
+<li><a href="#②-核心问题-部署之后策略还能不能变强">② 核心问题：部署之后策略还能不能变强</a></li>
+<li><a href="#③-模型结构与张量流">③ 模型结构与张量流</a></li>
+<li><a href="#④-实验结果">④ 实验结果</a></li>
+<li><a href="#⑤-消融实验">⑤ 消融实验</a></li>
+<li><a href="#⑥-延迟与显存怎么读">⑥ 延迟与显存怎么读</a></li>
+<li><a href="#⑦-训练资源与卡数">⑦ 训练资源与卡数</a></li>
+<li><a href="#⑧-代码阅读顺序">⑧ 代码阅读顺序</a></li>
+<li><a href="#⑨-从-checkpoint-开始复现">⑨ 从 checkpoint 开始复现</a></li>
+<li><a href="#⑩-如何用到自己的项目">⑩ 如何用到自己的项目</a></li>
+<li><a href="#⑪-判断与局限">⑪ 判断与局限</a></li>
+</ol>
+<figure><img src="../../assets/svg/lwd-fig1-map.svg" alt="图 A1｜章节地图" loading="lazy"><figcaption>图 A1｜章节地图</figcaption></figure>
+<p class="figcap">图 A1：本文章节地图（节点即原文 h2 标题）。自绘，依据本文，不新增事实。</p>
+<p>LWD（Learning While Deploying）把“部署”从测试环节改成训练环节：一个共享的通用 VLA 在 16 台 AgiBot G1 双臂机器人、8 个真实操作任务上持续收集成功、失败、恢复和人类干预数据，用离线到在线 RL 更新后再部署。本地章节转述的头条数字是：离线数据 652.5h（专家示教 336.6h、成功 rollout 88.8h、失败 rollout 39.2h、play data 187.9h）；平均成功率 95%；长时程任务通常持续 3–5 分钟，且最大增益出现在长时程任务上。以上为章节转述的论文摘要与附录口径，未在本机复测；论文没有公开代码与权重。</p>
 <blockquote>来源约定：本文事实只取自本仓库 <span class="deadref" title="原始 every-embodied 仓库引用，本归档未收录该文件">LWD 导读</span>，没有用模型记忆补写论文细节。<br>标注约定：<code>【官方】</code> 指本地章节转述的论文/项目页作者报告；<code>【章节】</code> 指本地章节自己的归纳。<br>版本：arXiv <code>2605.00416v1</code>，2026-05-01 提交；项目页发布 2026-04-30；代码 commit：无公开代码；查阅日期 2026-11-01。</blockquote>
-<h2 id="1-论文与官方资源">1. 论文与官方资源</h2>
+<h2 id="①-论文与官方资源">① 论文与官方资源</h2>
 <div class="tbl"><table><thead><tr><th>资源</th><th>入口</th><th>说明</th></tr></thead><tbody><tr><td>论文</td><td><a href="https://arxiv.org/abs/2605.00416" target="_blank" rel="noopener">arXiv:2605.00416</a> / <a href="https://arxiv.org/html/2605.00416v1" target="_blank" rel="noopener">HTML</a> / <a href="https://finch-static.agibot.com/LWD/lwd-paper.pdf" target="_blank" rel="noopener">PDF</a></td><td>方法、机群实验、数据统计与训练细节</td></tr><tr><td>源码</td><td>章节未给</td><td>官方项目页当前未展示独立代码仓库入口</td></tr><tr><td>权重</td><td>章节未给</td><td>章节未给 checkpoint、模型卡或部署脚本</td></tr><tr><td>项目页</td><td><a href="https://finch.agibot.com/research/lwd" target="_blank" rel="noopener">AGIBOT Finch LWD</a></td><td>方法图、结果图与真机任务视频</td></tr><tr><td>数据集</td><td>章节未给</td><td>论文附录给 652.5h 离线数据统计，没有公开数据地址</td></tr><tr><td>前置方法</td><td><a href="https://arxiv.org/abs/2601.14234" target="_blank" rel="noopener">Q-learning with Adjoint Matching</a></td><td>LWD 采用的 flow policy 策略提取方法</td></tr></tbody></table></div>
 <p>论文题目：Learning while Deploying: Fleet-Scale Reinforcement Learning for Generalist Robot Policies；作者单位：Shanghai Innovation Institute、AGIBOT Finch、Columbia University；arXiv：<code>2605.00416v1</code>；版本：2026-05-01 提交；代码 commit：无公开代码；查阅日期：2026-11-01。</p>
 <p><strong>版本提示：</strong>项目页标注 2026-04-30 发布，arXiv 记录 2026-05-01 提交，章节把它们当作同一版工作；本文所有数字都按这一版读，不混用其他 release。章节没有给 v2 或后续版本。</p>
 <p><strong>开源边界：</strong>官方项目页公开了论文、图和真机视频，但没有代码仓库、模型权重或机器人侧部署脚本入口。因此本文只做方法、系统和复现设计层面的精读，不写“下载即训练”的教程。【章节】</p>
-<h2 id="2-核心问题-部署之后策略还能不能变强">2. 核心问题：部署之后策略还能不能变强</h2>
+<h2 id="②-核心问题-部署之后策略还能不能变强">② 核心问题：部署之后策略还能不能变强</h2>
+<figure><img src="../../assets/svg/lwd-fig2-claim.svg" alt="图 A2｜主张与速览" loading="lazy"><figcaption>图 A2｜主张与速览</figcaption></figure>
+<p class="figcap">图 A2：一句话主张与速览字段。自绘，依据本文，不新增事实。</p>
 <p>一句话：LWD 重新分配的是“真机部署数据的用途”——不再只把部署当评测，而是把机群产生的成功、失败、恢复和接管轨迹变成离线到在线 RL 的训练信号，持续更新同一个通用策略。【章节】</p>
 <figure><img src="../../assets/svg/lwd-architecture.svg" alt="LWD 机群数据飞轮" loading="lazy"><figcaption>LWD 机群数据飞轮</figcaption></figure>
 <p>图 1：LWD 的离线预训练、机群部署、在线 buffer 与 DIVL/QAM 更新闭环。自绘，依据本地导读；不是论文原图。</p>
@@ -37,7 +56,13 @@
 <li>代价是什么：需要多台真实机器人、部署调度、在线 replay、奖励定义、人类接管接口和安全门控；在线更新本身带来风险控制问题。</li>
 <li>读者该学什么：把“数据飞轮”当成系统设计问题——算法只是一半，另一半是能安全收集并回灌真机经验的部署基础设施。</li>
 </ul>
-<h2 id="3-模型结构与张量流">3. 模型结构与张量流</h2>
+<h2 id="③-模型结构与张量流">③ 模型结构与张量流</h2>
+<figure><img src="../../assets/svg/lwd-fig3-nums.svg" alt="图 A3｜数字摘录" loading="lazy"><figcaption>图 A3｜数字摘录</figcaption></figure>
+<p class="figcap">图 A3：本文可核验的数字摘录。自绘，依据本文，不新增事实。</p>
+<p><strong>一个具体任务走一遍 · 本文可核验数字与字段速查</strong>（以下均摘自原文，未作推算）：</p>
+<ul>
+<li>8 个 — LWD（Learning While Deploying）把“部署”从测试环</li>
+</ul>
 <h3 id="3-1-机群-任务与策略">3.1 机群、任务与策略</h3>
 <div class="tbl"><table><thead><tr><th>项目</th><th>章节给出的内容</th><th>说明</th></tr></thead><tbody><tr><td>机器人</td><td>16 台 AgiBot G1 双臂机器人【官方】</td><td>是部署机群规模，不等于训练 GPU 数</td></tr><tr><td>任务</td><td>8 个真实操作任务【官方】</td><td>商超补货、泡功夫茶、调鸡尾酒、榨果汁、打包鞋盒等</td></tr><tr><td>任务时程</td><td>长时程任务通常 3–5 分钟【官方】</td><td>解释了为什么长时程任务更需要价值传播</td></tr><tr><td>策略</td><td>一个共享 generalist VLA policy【官方】</td><td>不是每任务一个专家</td></tr><tr><td>动作生成</td><td>flow-based action generator，输出 action chunk【章节】</td><td>chunk 长度、去噪步数、动作维度章节未给</td></tr><tr><td>训练范式</td><td>fleet-scale offline-to-online RL【官方】</td><td>两阶段：离线 RL 预训练 + 混合 replay 持续后训练</td></tr></tbody></table></div>
 <p>章节强调 LWD 不是单任务 RL 算法，也不是“给每个任务训练一个专家策略”。它的对象是一个跨任务共享的通用策略，机群只是数据来源和部署载体。【章节】</p>
@@ -58,7 +83,7 @@
 <p>先纠正缩写：LWD 里的 QAM 是 <strong>Q-learning with Adjoint Matching</strong>，不是视觉模型里的 Query Attention Module，也不是“去掉 actor 换成一个 attention head”。actor 仍然存在，只是由通用 VLA 的 flow-based policy head 承担；QAM 做的是 policy extraction。【章节】</p>
 <div class="tbl"><table><thead><tr><th>方法</th><th>policy 形式</th><th>更新难点</th><th>LWD 的处理</th></tr></thead><tbody><tr><td>SAC / TD3 等 actor-critic</td><td>显式 actor 输出连续动作</td><td>对动作求梯度直接</td><td>不适合直接套到大 VLA flow policy</td></tr><tr><td>行为克隆</td><td>模仿专家 action</td><td>用不了失败与稀疏 reward 的价值信息</td><td>可做预训练，但部署数据利用不足</td></tr><tr><td>直接对 flow policy 反传 critic</td><td>多步生成式 action policy</td><td>要穿过完整生成过程反传，昂贵且不稳定</td><td>QAM 改成局部 adjoint matching</td></tr><tr><td>LWD</td><td>VLM-based policy + flow action head</td><td>从 critic 稳定改进生成式 action chunk</td><td>DIVL 学价值，QAM 做策略提取</td></tr></tbody></table></div>
 <p>为什么不能直接反传：flow policy 的最终动作是多步生成过程的结果，把 critic 梯度从最终 action chunk 反传到所有 flow steps 又慢又不稳。QAM 把最终动作上的改进方向通过 adjoint matching 变成每个局部 flow step 可回归的目标，使更新更像监督回归，而不是对完整 ODE 轨迹做高方差优化。【章节】章节没有给 adjoint matching 的推导、flow 步数或损失权重。</p>
-<h2 id="4-实验结果">4. 实验结果</h2>
+<h2 id="④-实验结果">④ 实验结果</h2>
 <p>章节只给总体结论，没有给逐任务成功率、每任务 trials、种子或置信区间。下表把“章节给出的结果”和“口径边界”放在一起。</p>
 <div class="tbl"><table><thead><tr><th>项目</th><th>章节给出的结果</th><th>口径 / 边界</th></tr></thead><tbody><tr><td>机群规模</td><td>16 台 AgiBot G1 双臂机器人【官方】</td><td>单机群、厂商自有硬件</td></tr><tr><td>任务数</td><td>8 个真实操作任务【官方】</td><td>任务清单章节只给例子，未给完整定义</td></tr><tr><td>平均成功率</td><td>95%【官方】</td><td>8 个任务的总体平均；逐任务数值未给</td></tr><tr><td>最大增益</td><td>出现在长时程任务上【官方】</td><td>增益幅度与 baseline 数值未给</td></tr><tr><td>cycle time</td><td>部分长时程任务平均 cycle time 下降【官方】</td><td>说明不是靠更慢更保守换成功率；数值未给</td></tr><tr><td>对比基线</td><td>“若干 post-training baseline”【官方】</td><td>基线名称、版本与调参预算未给</td></tr></tbody></table></div>
 <p>读法：</p>
@@ -69,7 +94,7 @@
 <li>平均成功率高不代表所有长时程操作都解决。章节列出的开放问题包括奖励设计、异常安全、跨硬件迁移、长时间稳定运行、数据隐私和在线更新风险控制。</li>
 </ul>
 <p>来源：本地 LWD 导读 §1、§8 转述论文摘要与项目页。</p>
-<h2 id="5-消融实验">5. 消融实验</h2>
+<h2 id="⑤-消融实验">⑤ 消融实验</h2>
 <p>章节没有给任何消融表，也没有给 DIVL、QAM、buffer 组成或机群规模的逐项对照。这里只能列出“论文声称的贡献”和“读者无法从章节验证的部分”：</p>
 <ul>
 <li>DIVL vs 标量 critic：未给对照，只能确认设计动机是 heterogeneous replay 与稀疏奖励。</li>
@@ -80,7 +105,7 @@
 </ul>
 <p>读者该不该复用：如果部署数据里失败和半成功占比高、任务时程长、奖励稀疏，DIVL + QAM 这套组合值得借鉴；如果只有干净的专家示教，行为克隆更简单。章节没有给“DIVL 比标量 critic 高多少”的数字，复现时必须在自己的数据上做 A/B，不能引用论文的 95% 当作方法收益。</p>
 <p>来源：本地 LWD 导读 §4、§6、§7。</p>
-<h2 id="6-延迟与显存怎么读">6. 延迟与显存怎么读</h2>
+<h2 id="⑥-延迟与显存怎么读">⑥ 延迟与显存怎么读</h2>
 <p>章节没有给策略推理延迟、推理显存、训练显存或控制频率，只给了任务时程与 cycle time 的方向性结论。因此不能从 flow policy 的生成步数推算控制频率。能确认的只有：长时程任务单 episode 约 3–5 分钟；部分长时程任务的 cycle time 下降；cycle time 是端到端任务耗时，不是单次推理延迟；控制频率与 action chunk 长度章节未给，无法把单次前向换算成闭环频率。</p>
 <p>读法：</p>
 <ul>
@@ -89,7 +114,7 @@
 <li>真机部署要分别记录观测、推理、通信、执行和安全检查五段耗时；章节没有给任何一段，需实测。</li>
 </ul>
 <p>来源：本地 LWD 导读 §8。</p>
-<h2 id="7-训练资源与卡数">7. 训练资源与卡数</h2>
+<h2 id="⑦-训练资源与卡数">⑦ 训练资源与卡数</h2>
 <p>章节没有给训练 GPU 数、优化器步数、有效 batch、每卡 microbatch、梯度累积、学习率、warmup、EMA 或冻结模块；它给的是部署机群规模与数据规模。两者不能互换：16 台机器人说明数据从哪来，不说明训练用了多少卡。</p>
 <div class="tbl"><table><thead><tr><th>训练项目</th><th>章节是否给出</th><th>内容</th></tr></thead><tbody><tr><td>部署机群</td><td>是</td><td>16 台 AgiBot G1 双臂机器人</td></tr><tr><td>训练 GPU 型号 / 卡数</td><td>否</td><td>章节未给</td></tr><tr><td>优化器步数</td><td>否</td><td>章节未给</td></tr><tr><td>有效 batch / microbatch / 梯度累积</td><td>否</td><td>无法用 <code>B_eff = N_GPU × B_micro × N_accum</code> 反推</td></tr><tr><td>学习率 / warmup / EMA</td><td>否</td><td>章节未给</td></tr><tr><td>离线数据量</td><td>是</td><td>652.5h，四类构成见 §3.2</td></tr><tr><td>在线数据量</td><td>否</td><td>online buffer 持续增长，时长未给</td></tr><tr><td>冻结模块</td><td>否</td><td>VLM backbone 是否冻结、flow head 是否全参更新未给</td></tr></tbody></table></div>
 <p>训练流程可以确认的是两阶段：先在离线 buffer 上做 RL 预训练，再用离线 buffer 与在线 buffer 的混合 replay 做持续后训练。【章节】章节没有给两阶段各自的步数、采样比例或切换条件。</p>
@@ -100,7 +125,7 @@
 <li><strong>完整训练</strong>：不可行。缺少真机机群、在线回灌系统与训练配方，不能声称可复现论文实验。</li>
 </ol>
 <p>来源：本地 LWD 导读 §4、§10。</p>
-<h2 id="8-代码阅读顺序">8. 代码阅读顺序</h2>
+<h2 id="⑧-代码阅读顺序">⑧ 代码阅读顺序</h2>
 <p>章节没有公开代码，因此不存在可核对的路径。下表按论文方法块列出“若后续开源应先读什么”，路径列全部是章节未给，不要当成官方目录。</p>
 <div class="tbl"><table><thead><tr><th>顺序</th><th>方法模块（章节描述）</th><th>阅读重点</th><th>官方路径</th></tr></thead><tbody><tr><td>1</td><td>offline buffer 构建</td><td>示教、成功/失败 rollout、play data 的字段与配比</td><td>章节未给</td></tr><tr><td>2</td><td>DIVL critic / value</td><td>分布参数化、quantile 选择、TD target 与 IQL 约束</td><td>章节未给</td></tr><tr><td>3</td><td>QAM policy extraction</td><td>adjoint matching 的局部目标如何从 critic 梯度构造</td><td>章节未给</td></tr><tr><td>4</td><td>flow-based action head</td><td>多步生成、action chunk、与 VLM backbone 的接口</td><td>章节未给</td></tr><tr><td>5</td><td>online buffer / 部署调度</td><td>机群数据回灌、policy version、intervention 标记</td><td>章节未给</td></tr><tr><td>6</td><td>reward / terminal 定义</td><td>成功判定、失败判定、partial progress 如何记</td><td>章节未给</td></tr></tbody></table></div>
 <p>坑（章节明确提示）：</p>
@@ -110,7 +135,7 @@
 <li>16 台是部署机群，不是训练卡数；把两者混写会误导资源估算。</li>
 <li>没有公开代码与权重，任何“clone 后运行”的命令都不成立。</li>
 </ul>
-<h2 id="9-从-checkpoint-开始复现">9. 从 checkpoint 开始复现</h2>
+<h2 id="⑨-从-checkpoint-开始复现">⑨ 从 checkpoint 开始复现</h2>
 <p>没有 checkpoint，也没有官方训练入口，所以严格复现不成立。可做的是按章节建议分三档。</p>
 <h3 id="9-1-论文复盘">9.1 论文复盘</h3>
 <p>先回答四个问题：offline / online buffer 各包含什么；DIVL 为什么比标量 value regression 更适合 heterogeneous replay；QAM 如何把 critic gradient 转成 flow policy 的局部监督；长时程任务里 RL 为什么比纯 BC 更能利用失败、恢复和 partial progress。</p>
@@ -126,14 +151,28 @@
 <h3 id="9-3-真机系统复刻的安全门槛">9.3 真机系统复刻的安全门槛</h3>
 <p>章节列出的条件包括：至少一台稳定可重复执行任务的机械臂平台；可中止的在线 rollout 机制；每 episode 的成功/失败 reward 定义；记录 image、state、action、instruction、policy version、intervention 标记和 terminal reward；离线/历史/在线数据混合采样；稳定的基础 VLA 或 flow action policy。</p>
 <p>真机复刻要先做安全门控，而不是直接开在线 RL：限制速度、力、工作空间、碰撞区域和失败恢复方式；在线更新后的 policy 先在离线 replay、仿真或 shadow mode 检查，再逐步上真机。【章节】这些是工程建议，不是论文验证过的安全协议。</p>
-<h2 id="10-如何用到自己的项目">10. 如何用到自己的项目</h2>
+<h2 id="⑩-如何用到自己的项目">⑩ 如何用到自己的项目</h2>
 <p>LWD 的价值是把“部署数据”从日志变成训练资产；可复用的是价值学习 + 策略提取 + 数据回灌这套结构，不是 16 台机器人或 95% 的数字。</p>
 <ul>
 <li><strong>失败数据进 critic</strong>：在现有 BC 策略上记录失败、恢复和人工接管，用分布型 critic 估计回报；测同一批数据下 BC 与 offline RL 的成功率、恢复率。代价是要定义 terminal reward 与 intervention 标记，标注成本高。</li>
 <li><strong>QAM 式策略提取</strong>：如果动作头是 flow / diffusion，不要直接反传整条生成轨迹，改用局部回归目标近似 critic 改进方向；测训练稳定性、生成步数与最终成功率。代价是要实现 adjoint matching，调参空间比 BC 大。</li>
 <li><strong>小规模数据飞轮</strong>：先用 1–2 台机器人或仿真环境做“部署 → 回灌 → 再训练”的周级循环，记录 policy version 与数据配比；测每轮增益与回退。代价是要有调度、存储与回滚机制，在线更新有安全风险。</li>
 </ul>
-<p>相关章节：<a href="prts.html">PRTS</a>、<a href="../01-action/dexora.html">Dexora</a>、<a href="../01-action/galaxea-g0-5.html">G0.5</a>、<span class="deadref" title="原始 every-embodied 仓库引用，本归档未收录该文件">LWD 导读</span>、<a href="../../survey/6yr/01-jishu-zhuanti.html">01 技术专题</a>。</p></main></div><div class="pager"><a class="prev" href="dexbotic-rlinf.html"><span class="dir">← 上一篇</span><span class="ttl">Dexbotic-RLinf 论文精读：把 VLA 模型入口接到分布式 RL 后训练</span></a><a class="next" href="prts.html"><span class="dir">下一篇 →</span><span class="ttl">PRTS 论文精读：把目标可达性对比 RL 放进 VLA 预训练</span></a></div><section class="related"><h2>同分类其他笔记</h2><div class="cards"><article class="pcard" data-cat="03-training" data-name="RT-X 论文精读：用 22 种机器人的数据换一个更强的单机策略" data-year="2023" data-idx="10" data-hay="rt-x 论文精读：用 22 种机器人的数据换一个更强的单机策略 rt-x 重新分配的是“本体差异”的处理位置——不在每个机器人上各训一个策略，而是先把动作对齐到共享 7-dof 空间，再用混合本体数据训练一个策略族。 "><h3><a href="rt-x.html">RT-X 论文精读：用 22 种机器人的数据换一个更强的单机策略</a></h3><p class="sum">RT-X 重新分配的是“本体差异”的处理位置——不在每个机器人上各训一个策略，而是先把动作对齐到共享 7-DoF 空间，再用混合本体数据训练一个策略族。</p><div class="foot"><span class="chip cat">训练范式</span><span class="yr">2023</span></div></article><article class="pcard" data-cat="03-training" data-name="Agentic-VLA 论文精读：给 OpenVLA-OFT 加一个会设计奖励、引导探索、复用权重的在线适应外环" data-year="0" data-idx="11" data-hay="agentic-vla 论文精读：给 openvla-oft 加一个会设计奖励、引导探索、复用权重的在线适应外环 agentic-vla 重新分配的是“部署后如何继续学习”的接口——不再只靠人工补示教或固定奖励，而是让 experience memory、vlm 探索 critic 和语言模型奖励分解共同调度一次在线 rl 适应。【章节】 "><h3><a href="agentic-vla.html">Agentic-VLA 论文精读：给 OpenVLA-OFT 加一个会设计奖励、引导探索、复用权重的在线适应外环</a></h3><p class="sum">Agentic-VLA 重新分配的是“部署后如何继续学习”的接口——不再只靠人工补示教或固定奖励，而是让 Experience Memory、VLM 探索 critic 和语言模型奖励分解共同调度一次在线 RL 适应。【章节】</p><div class="foot"><span class="chip cat">训练范式</span></div></article><article class="pcard" data-cat="03-training" data-name="Dexbotic-RLinf 论文精读：把 VLA 模型入口接到分布式 RL 后训练" data-year="0" data-idx="12" data-hay="dexbotic-rlinf 论文精读：把 vla 模型入口接到分布式 rl 后训练 dexbotic-rlinf 重新分配的是“模型开发”和“rl 训练系统”的边界——dexbotic 继续做 vla 用户入口，rlinf 做后端，两者通过 model registry 和薄 adapter 连接，而不是把模型代码复制进 rl 仓库，或让模型仓库重写一套 rl 系统。【章节】 "><h3><a href="dexbotic-rlinf.html">Dexbotic-RLinf 论文精读：把 VLA 模型入口接到分布式 RL 后训练</a></h3><p class="sum">Dexbotic-RLinf 重新分配的是“模型开发”和“RL 训练系统”的边界——Dexbotic 继续做 VLA 用户入口，RLinf 做后端，两者通过 model registry 和薄 adapter 连接，而不是把模型代码复制进 RL 仓库，或让模型仓库重写一套 RL 系统。【章节】</p><div class="foot"><span class="chip cat">训练范式</span></div></article></div></section><footer class="site"><div class="in">
+<p>相关章节：<a href="prts.html">PRTS</a>、<a href="../01-action/dexora.html">Dexora</a>、<a href="../01-action/galaxea-g0-5.html">G0.5</a>、<span class="deadref" title="原始 every-embodied 仓库引用，本归档未收录该文件">LWD 导读</span>、<a href="../../survey/6yr/01-jishu-zhuanti.html">01 技术专题</a>。</p>
+<hr>
+<h2 id="⑪-判断与局限">⑪ 判断与局限</h2>
+<p><strong>本文判断</strong>：LWD 的价值是把“部署数据”从日志变成训练资产；可复用的是价值学习 + 策略提取 + 数据回灌这套结构，不是 16 台机器人或 95% 的数字。</p>
+<p><strong>局限与不确定项</strong>（以下均摘自本文，未作推断）：</p>
+<ul>
+<li>章节没有给训练 GPU 数、优化器步数、有效 batch、每卡 microbatch、梯度累积、学习率、warmup、EMA 或冻结模块；它给的是部署机群规模与数据规模。两者不能互换：16 台机器人说明数据从哪来，不说明训练用了多少卡。</li>
+<li>训练 GPU 型号 / 卡数 否 章节未给</li>
+<li>优化器步数 否 章节未给</li>
+<li>学习率 / warmup / EMA 否 章节未给</li>
+<li>在线数据量 否 online buffer 持续增长，时长未给</li>
+</ul>
+<figure><img src="../../assets/svg/lwd-fig4-limits.svg" alt="图 A4｜局限清单" loading="lazy"><figcaption>图 A4｜局限清单</figcaption></figure>
+<p class="figcap">图 A4：局限与不确定项摘录。自绘，依据本文，不新增事实。</p>
+<blockquote><strong>覆盖范围</strong>：本页新增的导读、目录、章节地图、数字卡与局限清单，均为原文信息的重排或摘录；正文、数据与实验结论未改动。</blockquote></main></div><div class="pager"><a class="prev" href="dexbotic-rlinf.html"><span class="dir">← 上一篇</span><span class="ttl">【VLA 精读 · 训练范式】Dexbotic-RLinf：把 VLA 模型入口接到分布式 RL 后训练</span></a><a class="next" href="prts.html"><span class="dir">下一篇 →</span><span class="ttl">【VLA 精读 · 训练范式】PRTS：把目标可达性对比 RL 放进 VLA 预训练</span></a></div><section class="related"><h2>同分类其他笔记</h2><div class="cards"><article class="pcard" data-cat="03-training" data-name="【VLA 精读 · 训练范式】Agentic-VLA：给 OpenVLA-OFT 加一个会设计奖励、引导探索、复用权重的在线适应外环" data-year="0" data-idx="10" data-hay="【vla 精读 · 训练范式】agentic-vla：给 openvla-oft 加一个会设计奖励、引导探索、复用权重的在线适应外环 agentic-vla 重新分配的是“部署后如何继续学习”的接口——不再只靠人工补示教或固定奖励，而是让 experience memory、vlm 探索 critic 和语言模型奖励分解共同调度一次在线 rl 适应。【章节】 "><h3><a href="agentic-vla.html">【VLA 精读 · 训练范式】Agentic-VLA：给 OpenVLA-OFT 加一个会设计奖励、引导探索、复用权重的在线适应外环</a></h3><p class="sum">Agentic-VLA 重新分配的是“部署后如何继续学习”的接口——不再只靠人工补示教或固定奖励，而是让 Experience Memory、VLM 探索 critic 和语言模型奖励分解共同调度一次在线 RL 适应。【章节】</p><div class="foot"><span class="chip cat">训练范式</span></div></article><article class="pcard" data-cat="03-training" data-name="【VLA 精读 · 训练范式】Dexbotic-RLinf：把 VLA 模型入口接到分布式 RL 后训练" data-year="0" data-idx="11" data-hay="【vla 精读 · 训练范式】dexbotic-rlinf：把 vla 模型入口接到分布式 rl 后训练 dexbotic-rlinf 重新分配的是“模型开发”和“rl 训练系统”的边界——dexbotic 继续做 vla 用户入口，rlinf 做后端，两者通过 model registry 和薄 adapter 连接，而不是把模型代码复制进 rl 仓库，或让模型仓库重写一套 rl 系统。【章节】 "><h3><a href="dexbotic-rlinf.html">【VLA 精读 · 训练范式】Dexbotic-RLinf：把 VLA 模型入口接到分布式 RL 后训练</a></h3><p class="sum">Dexbotic-RLinf 重新分配的是“模型开发”和“RL 训练系统”的边界——Dexbotic 继续做 VLA 用户入口，RLinf 做后端，两者通过 model registry 和薄 adapter 连接，而不是把模型代码复制进 RL 仓库，或让模型仓库重写一套 RL 系统。【章节】</p><div class="foot"><span class="chip cat">训练范式</span></div></article><article class="pcard" data-cat="03-training" data-name="【VLA 精读 · 训练范式】PRTS：把目标可达性对比 RL 放进 VLA 预训练" data-year="0" data-idx="13" data-hay="【vla 精读 · 训练范式】prts：把目标可达性对比 rl 放进 vla 预训练 prts 重新分配的是 vla 的训练信号——不只让模型拟合“专家在这个状态下做了什么”，还让它显式估计“当前 state-action 距离语言目标还有多远”。【章节】 "><h3><a href="prts.html">【VLA 精读 · 训练范式】PRTS：把目标可达性对比 RL 放进 VLA 预训练</a></h3><p class="sum">PRTS 重新分配的是 VLA 的训练信号——不只让模型拟合“专家在这个状态下做了什么”，还让它显式估计“当前 state-action 距离语言目标还有多远”。【章节】</p><div class="foot"><span class="chip cat">训练范式</span></div></article></div></section><footer class="site"><div class="in">
 <div><b>VLA Research Hub</b> · 44 篇论文精读 + 7 篇综述 · 更新 2026-11-02</div>
 <div><a href="../../index.html">首页</a> · <a href="../../survey/index.html">综述</a> · <a href="../../papers/index.html">论文</a></div>
 </div></footer>
