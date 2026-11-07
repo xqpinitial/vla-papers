@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 368" width="900" height="368" font-family="PingFang SC, -apple-system, BlinkMacSystemFont, Microsoft YaHei, sans-serif">
+<rect width="900" height="368" fill="#ffffff"/>
+<rect x="0" y="0" width="900" height="50" fill="#1d4ed8"/>
+<text x="24" y="32" font-size="19" fill="#ffffff" font-weight="700" text-anchor="start">图 A2｜一句话主张与速览</text>
+<text x="876" y="32" font-size="11" fill="#ffffff" font-weight="400" text-anchor="end" opacity="0.82">aspire · 字段均摘自本文</text>
+<rect x="24" y="68" width="852" height="92" rx="10" fill="#1d4ed8" opacity="0.07"/>
+<text x="40" y="92" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">一句话</text>
+<text x="40" y="116" font-size="15" fill="#0f172a" font-weight="500" text-anchor="start">让 coding agent 当"机器人程序员"：写代码→跑→看 per-primitive 多模态 trace→定位 bug→改→把验证过的修复蒸馏成"失败签名→修复</text>
+<text x="40" y="141" font-size="15" fill="#0f172a" font-weight="500" text-anchor="start">动作"技能库；配进化搜索逃出局部修复环</text>
+<rect x="24" y="176" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="38" y="197" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">冻结</text>
+<text x="38" y="216" font-size="12" fill="#334155" font-weight="400" text-anchor="start">底座 LLM（Claude Code；消融 12 模型）与全部环境 API</text>
+<rect x="456" y="176" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="470" y="197" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">演化</text>
+<text x="470" y="216" font-size="12" fill="#334155" font-weight="400" text-anchor="start">技能库（90+ 技能 / 150+ 任务 / 18 类）</text>
+<rect x="24" y="252" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="38" y="273" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">头部结果</text>
+<text x="38" y="292" font-size="12" fill="#334155" font-weight="400" text-anchor="start">LIBERO-Pro 扰动超 CaP-X +77pp；Robosuite 双臂 +72pp；BEHAVIOR-1K +32pp；Opus 5</text>
+<rect x="456" y="252" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="470" y="273" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">最硬消融</text>
+<text x="470" y="292" font-size="12" fill="#334155" font-weight="400" text-anchor="start">把 rollout 级 0/1 reward 换成 per-primitive trace：LIBERO-Pro 14%→62%</text>
+<text x="24" y="350" font-size="11" fill="#94a3b8" font-weight="400" text-anchor="start">字段与表述均摘自原文，未作补全或推断</text>
+<rect x="0.5" y="0.5" width="899" height="367" fill="none" stroke="#e2e8f0"/>
+</svg>
