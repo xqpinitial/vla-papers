@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 469" width="900" height="469" font-family="PingFang SC, -apple-system, BlinkMacSystemFont, Microsoft YaHei, sans-serif">
+<rect width="900" height="469" fill="#ffffff"/>
+<rect x="0" y="0" width="900" height="50" fill="#1d4ed8"/>
+<text x="24" y="32" font-size="19" fill="#ffffff" font-weight="700" text-anchor="start">图 A2｜一句话主张与速览</text>
+<text x="876" y="32" font-size="11" fill="#ffffff" font-weight="400" text-anchor="end" opacity="0.82">orchestra · 字段均摘自本文</text>
+<rect x="24" y="68" width="852" height="117" rx="10" fill="#1d4ed8" opacity="0.07"/>
+<text x="40" y="92" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">一句话</text>
+<text x="40" y="116" font-size="15" fill="#0f172a" font-weight="500" text-anchor="start">把任务规划与执行管理从动作生成中分离的 agent harness：完整多模态指令 → 有序子任务分解 + 实体 grounding 更新 + 共享执行上下文；</text>
+<text x="40" y="141" font-size="15" fill="#0f172a" font-weight="500" text-anchor="start">动作策略管"怎么做"，独立训练的进度评估器管"什么时候算完成、何时进入下一步"——RMBench 九任务 68.22%（超 Mem-0 26.22pp）；RMBench</text>
+<text x="40" y="166" font-size="15" fill="#0f172a" font-weight="500" text-anchor="start">-Compose 的 ASL 达 7.35 个子任务 = HarnessVLA 的 2.46 倍</text>
+<rect x="24" y="201" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="38" y="222" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">冻结</text>
+<text x="38" y="241" font-size="12" fill="#334155" font-weight="400" text-anchor="start">动作策略（含 π₀.₅ 系） + 进度评估器为独立训练组件</text>
+<rect x="456" y="201" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="470" y="222" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">演化</text>
+<text x="470" y="241" font-size="12" fill="#334155" font-weight="400" text-anchor="start">无自进化；卖点是分工架构本身</text>
+<rect x="24" y="277" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="38" y="298" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">基准</text>
+<text x="38" y="317" font-size="12" fill="#334155" font-weight="400" text-anchor="start">RMBench（9 任务）+ 新基准 RMBench-Compose + 4 个真机多步任务</text>
+<rect x="456" y="277" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="470" y="298" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">论文</text>
+<text x="470" y="317" font-size="12" fill="#334155" font-weight="400" text-anchor="start">Orchestra: Let the Mind Conceive, Let the Hand Achieve (Foll</text>
+<rect x="24" y="353" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="38" y="374" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">arXiv</text>
+<text x="38" y="393" font-size="12" fill="#334155" font-weight="400" text-anchor="start">2610.18352</text>
+<rect x="456" y="353" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="470" y="374" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">机构</text>
+<text x="470" y="393" font-size="12" fill="#334155" font-weight="400" text-anchor="start">小米 · 国防科技大学（Gang Wang, Tianyu Huang, … Yunhui Liu 等）</text>
+<text x="24" y="451" font-size="11" fill="#94a3b8" font-weight="400" text-anchor="start">字段与表述均摘自原文，未作补全或推断</text>
+<rect x="0.5" y="0.5" width="899" height="468" fill="none" stroke="#e2e8f0"/>
+</svg>
