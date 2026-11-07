@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 444" width="900" height="444" font-family="PingFang SC, -apple-system, BlinkMacSystemFont, Microsoft YaHei, sans-serif">
+<rect width="900" height="444" fill="#ffffff"/>
+<rect x="0" y="0" width="900" height="50" fill="#1d4ed8"/>
+<text x="24" y="32" font-size="19" fill="#ffffff" font-weight="700" text-anchor="start">图 A2｜一句话主张与速览</text>
+<text x="876" y="32" font-size="11" fill="#ffffff" font-weight="400" text-anchor="end" opacity="0.82">harnesseval-w · 字段均摘自本文</text>
+<rect x="24" y="68" width="852" height="92" rx="10" fill="#1d4ed8" opacity="0.07"/>
+<text x="40" y="92" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">一句话</text>
+<text x="40" y="116" font-size="15" fill="#0f172a" font-weight="500" text-anchor="start">把 LLM 生态的 harness 范式接到世界模型评测：父 agent 解读案例→拆成可测子问题→调度带诊断工具的子 agent 取证→校验汇总成可审计证</text>
+<text x="40" y="141" font-size="15" fill="#0f172a" font-weight="500" text-anchor="start">据树——18 个世界模型 × 330 案例，Intentional 维与人类 Bradley–Terry 排序 Spearman ρ=0.93</text>
+<rect x="24" y="176" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="38" y="197" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">冻结</text>
+<text x="38" y="216" font-size="12" fill="#334155" font-weight="400" text-anchor="start">被评测的 18 个世界模型；评测管线本身开源（Apache-2.0，harnesseval CLI：eval/plan/generate/v</text>
+<rect x="456" y="176" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="470" y="197" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">演化</text>
+<text x="470" y="216" font-size="12" fill="#334155" font-weight="400" text-anchor="start">开放技能库与评测案例，邀请社区扩展（live benchmark）</text>
+<rect x="24" y="252" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="38" y="273" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">三轴</text>
+<text x="38" y="292" font-size="12" fill="#334155" font-weight="400" text-anchor="start">Render（观测质量）/ Transition（干预下状态转移）/ Persistence（长程世界持续性）</text>
+<rect x="456" y="252" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="470" y="273" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">论文</text>
+<text x="470" y="292" font-size="12" fill="#334155" font-weight="400" text-anchor="start">HarnessEval-W: Agentifying the Evaluation of Visual Worlds</text>
+<rect x="24" y="328" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="38" y="349" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">arXiv</text>
+<text x="38" y="368" font-size="12" fill="#334155" font-weight="400" text-anchor="start">2608.16859</text>
+<rect x="456" y="328" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="470" y="349" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">机构</text>
+<text x="470" y="368" font-size="12" fill="#334155" font-weight="400" text-anchor="start">MirroS（镜界）· NUS · NTU · Berkeley · MIT · NVIDIA 等（MirroS Tea</text>
+<text x="24" y="426" font-size="11" fill="#94a3b8" font-weight="400" text-anchor="start">字段与表述均摘自原文，未作补全或推断</text>
+<rect x="0.5" y="0.5" width="899" height="443" fill="none" stroke="#e2e8f0"/>
+</svg>
