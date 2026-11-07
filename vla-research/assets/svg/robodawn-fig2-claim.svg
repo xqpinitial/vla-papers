@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 444" width="900" height="444" font-family="PingFang SC, -apple-system, BlinkMacSystemFont, Microsoft YaHei, sans-serif">
+<rect width="900" height="444" fill="#ffffff"/>
+<rect x="0" y="0" width="900" height="50" fill="#1d4ed8"/>
+<text x="24" y="32" font-size="19" fill="#ffffff" font-weight="700" text-anchor="start">图 A2｜一句话主张与速览</text>
+<text x="876" y="32" font-size="11" fill="#ffffff" font-weight="400" text-anchor="end" opacity="0.82">robodawn · 字段均摘自本文</text>
+<rect x="24" y="68" width="852" height="92" rx="10" fill="#1d4ed8" opacity="0.07"/>
+<text x="40" y="92" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">一句话</text>
+<text x="40" y="116" font-size="15" fill="#0f172a" font-weight="500" text-anchor="start">冻结 agentic VLM + 人类直觉的离散语义命令（move/rotate/grip，GIP 双指尖中点为统一参考）+ 1 条任务演示 ICL，闭环控制双臂——零机</text>
+<text x="40" y="141" font-size="15" fill="#0f172a" font-weight="500" text-anchor="start">器人训练：RoboTwin 2.0 C2R 零样本 53.2% → 1-shot 73.6%，超 π₀.₅ 的 46.0%</text>
+<rect x="24" y="176" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="38" y="197" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">冻结</text>
+<text x="38" y="216" font-size="12" fill="#334155" font-weight="400" text-anchor="start">VLM 权重全程冻结（主实验 GPT-6 Astra）</text>
+<rect x="456" y="176" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="470" y="197" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">演化</text>
+<text x="470" y="216" font-size="12" fill="#334155" font-weight="400" text-anchor="start">无参数更新；ICL 上下文内适应（memory M_t 逐轮更新）</text>
+<rect x="24" y="252" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="38" y="273" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">真机</text>
+<text x="38" y="292" font-size="12" fill="#334155" font-weight="400" text-anchor="start">Franka：block-in-basket、block stacking</text>
+<rect x="456" y="252" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="470" y="273" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">论文</text>
+<text x="470" y="292" font-size="12" fill="#334155" font-weight="400" text-anchor="start">RoboDawn: Transferring the Intelligence of VLMs to Robotic C</text>
+<rect x="24" y="328" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="38" y="349" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">arXiv</text>
+<text x="38" y="368" font-size="12" fill="#334155" font-weight="400" text-anchor="start">2609.22966</text>
+<rect x="456" y="328" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="470" y="349" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">机构</text>
+<text x="470" y="368" font-size="12" fill="#334155" font-weight="400" text-anchor="start">清华大学 · 腾讯混元（Meng-Hao Guo, Yongming Rao, Shi-Min Hu 等）</text>
+<text x="24" y="426" font-size="11" fill="#94a3b8" font-weight="400" text-anchor="start">字段与表述均摘自原文，未作补全或推断</text>
+<rect x="0.5" y="0.5" width="899" height="443" fill="none" stroke="#e2e8f0"/>
+</svg>
