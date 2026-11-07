@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 306" width="900" height="306" font-family="PingFang SC, -apple-system, BlinkMacSystemFont, Microsoft YaHei, sans-serif">
+<rect width="900" height="306" fill="#ffffff"/>
+<rect x="0" y="0" width="900" height="50" fill="#1d4ed8"/>
+<text x="24" y="32" font-size="19" fill="#ffffff" font-weight="700" text-anchor="start">图 A4｜局限与不确定项</text>
+<text x="876" y="32" font-size="11" fill="#ffffff" font-weight="400" text-anchor="end" opacity="0.82">embodiedswe · 以下均摘自本文</text>
+<rect x="24" y="68" width="852" height="54" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<circle cx="48" cy="95" r="12" fill="#1d4ed8" opacity="0.14"/>
+<text x="48" y="100" font-size="12" fill="#1d4ed8" font-weight="700" text-anchor="middle">1</text>
+<text x="72" y="92" font-size="12.5" fill="#334155" font-weight="400" text-anchor="start">EMBODIEDSWE-GEN 把单个验证解法扩成多样化轨迹训 VLA——仅用 coding-agent 仿真数据微调的 VLA 完成了真机长程台灯拆解</text>
+<rect x="24" y="132" width="852" height="54" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<circle cx="48" cy="159" r="12" fill="#1d4ed8" opacity="0.14"/>
+<text x="48" y="164" font-size="12" fill="#1d4ed8" font-weight="700" text-anchor="middle">2</text>
+<text x="72" y="156" font-size="12.5" fill="#334155" font-weight="400" text-anchor="start">最强 agent 解题率（GPT-6 Astra，28 任务） 82%（GPT-5.6 Terra 仅 11%——随底座能力 scaling）</text>
+<rect x="24" y="196" width="852" height="54" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<circle cx="48" cy="223" r="12" fill="#1d4ed8" opacity="0.14"/>
+<text x="48" y="228" font-size="12" fill="#1d4ed8" font-weight="700" text-anchor="middle">3</text>
+<text x="72" y="220" font-size="12.5" fill="#334155" font-weight="400" text-anchor="start">真机 仅用 coding-agent 仿真演示微调的 VLA 完成台灯拆解长程任务（500 条轨迹）</text>
+<text x="24" y="288" font-size="11" fill="#94a3b8" font-weight="400" text-anchor="start">原文摘录；未补充原文没有的结论或风险判断</text>
+<rect x="0.5" y="0.5" width="899" height="305" fill="none" stroke="#e2e8f0"/>
+</svg>
