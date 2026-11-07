@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 444" width="900" height="444" font-family="PingFang SC, -apple-system, BlinkMacSystemFont, Microsoft YaHei, sans-serif">
+<rect width="900" height="444" fill="#ffffff"/>
+<rect x="0" y="0" width="900" height="50" fill="#1d4ed8"/>
+<text x="24" y="32" font-size="19" fill="#ffffff" font-weight="700" text-anchor="start">图 A2｜一句话主张与速览</text>
+<text x="876" y="32" font-size="11" fill="#ffffff" font-weight="400" text-anchor="end" opacity="0.82">capx · 字段均摘自本文</text>
+<rect x="24" y="68" width="852" height="92" rx="10" fill="#1d4ed8" opacity="0.07"/>
+<text x="40" y="92" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">一句话</text>
+<text x="40" y="116" font-size="15" fill="#0f172a" font-weight="500" text-anchor="start">Code-as-Policy 的"研究平台四件套"：CaP-Gym（187 任务交互环境）+ CaP-Bench（12 模型分层评测）+ CaP-Agent0（免训练 agentic 框架</text>
+<text x="40" y="141" font-size="15" fill="#0f172a" font-weight="500" text-anchor="start">）+ CaP-RL（可验证奖励 GRPO）</text>
+<rect x="24" y="176" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="38" y="197" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">角色</text>
+<text x="38" y="216" font-size="12" fill="#334155" font-weight="400" text-anchor="start">全簇的地基：RATs 拿 CaP-Agent0 当宿主与基线，ASPIRE 拿它当被超对象（+77pp），Harness VLA 拿 CaP</text>
+<rect x="456" y="176" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="470" y="197" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">核心发现</text>
+<text x="470" y="216" font-size="12" fill="#334155" font-weight="400" text-anchor="start">性能随人工抽象升高、随抽象撤除下降（设计者脚手架依赖）；但测试时计算 scaling（多轮交互/执行反馈/视觉差分/</text>
+<text x="470" y="232" font-size="12" fill="#334155" font-weight="400" text-anchor="start">技能合成/集成推理）能把</text>
+<rect x="24" y="252" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="38" y="273" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">头部结果</text>
+<text x="38" y="292" font-size="12" fill="#334155" font-weight="400" text-anchor="start">CaP-Agent0 多任务人类级；CaP-RL 把 Qwen2.5-Coder-7B 从 25/4/30 拉到 80/44/93（Lift</text>
+<rect x="456" y="252" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="470" y="273" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">论文</text>
+<text x="470" y="292" font-size="12" fill="#334155" font-weight="400" text-anchor="start">CaP-X: A Framework for Benchmarking and Improving Coding Age</text>
+<rect x="24" y="328" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="38" y="349" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">arXiv</text>
+<text x="38" y="368" font-size="12" fill="#334155" font-weight="400" text-anchor="start">2603.22435</text>
+<rect x="456" y="328" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="470" y="349" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">代码</text>
+<text x="470" y="368" font-size="12" fill="#334155" font-weight="400" text-anchor="start">https://github.com/capgym/cap-x</text>
+<text x="24" y="426" font-size="11" fill="#94a3b8" font-weight="400" text-anchor="start">字段与表述均摘自原文，未作补全或推断</text>
+<rect x="0.5" y="0.5" width="899" height="443" fill="none" stroke="#e2e8f0"/>
+</svg>
