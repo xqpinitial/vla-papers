@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 469" width="900" height="469" font-family="PingFang SC, -apple-system, BlinkMacSystemFont, Microsoft YaHei, sans-serif">
+<rect width="900" height="469" fill="#ffffff"/>
+<rect x="0" y="0" width="900" height="50" fill="#1d4ed8"/>
+<text x="24" y="32" font-size="19" fill="#ffffff" font-weight="700" text-anchor="start">图 A2｜一句话主张与速览</text>
+<text x="876" y="32" font-size="11" fill="#ffffff" font-weight="400" text-anchor="end" opacity="0.82">harness2 · 字段均摘自本文</text>
+<rect x="24" y="68" width="852" height="117" rx="10" fill="#1d4ed8" opacity="0.07"/>
+<text x="40" y="92" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">一句话</text>
+<text x="40" y="116" font-size="15" fill="#0f172a" font-weight="500" text-anchor="start">谷歌的递归 agent harnessing：任务级递归用"对比式 Propose–Probe–Compose"在没有真值验证器的开放世界可靠地改 harness；harnessin</text>
+<text x="40" y="141" font-size="15" fill="#0f172a" font-weight="500" text-anchor="start">g 级递归再把改法经验写进持续的"改进 harness"——改进当前任务，也改进"改进者本身"；一步即让 GLM-5 / Gemini 3.5 Flash 全面超越基座</text>
+<text x="40" y="166" font-size="15" fill="#0f172a" font-weight="500" text-anchor="start"> harness</text>
+<rect x="24" y="201" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="38" y="222" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">冻结</text>
+<text x="38" y="241" font-size="12" fill="#334155" font-weight="400" text-anchor="start">底座模型权重（GLM-5、Gemini 3.5 Flash）</text>
+<rect x="456" y="201" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="470" y="222" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">演化</text>
+<text x="470" y="241" font-size="12" fill="#334155" font-weight="400" text-anchor="start">可编辑面：系统提示、guardrails、记忆、工具指引、subagents、skills、scripts、plugins</text>
+<rect x="24" y="277" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="38" y="298" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">基准</text>
+<text x="38" y="317" font-size="12" fill="#334155" font-weight="400" text-anchor="start">WorkBuddy-Bench +11.5 分；JobBench +4.5 分；LAB 部分通过率 +11.8pp</text>
+<rect x="456" y="277" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="470" y="298" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">论文</text>
+<text x="470" y="317" font-size="12" fill="#334155" font-weight="400" text-anchor="start">Harness²: Recursive Agent Harnessing for an Open World</text>
+<rect x="24" y="353" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="38" y="374" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">arXiv</text>
+<text x="38" y="393" font-size="12" fill="#334155" font-weight="400" text-anchor="start">2610.14224</text>
+<rect x="456" y="353" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="470" y="374" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">机构</text>
+<text x="470" y="393" font-size="12" fill="#334155" font-weight="400" text-anchor="start">Google Research（Ruiyao Xu, Yanfei Chen, … Tomas Pfister）</text>
+<text x="24" y="451" font-size="11" fill="#94a3b8" font-weight="400" text-anchor="start">字段与表述均摘自原文，未作补全或推断</text>
+<rect x="0.5" y="0.5" width="899" height="468" fill="none" stroke="#e2e8f0"/>
+</svg>
