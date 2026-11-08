@@ -1,68 +1,88 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="430" viewBox="0 0 900 430">
-  <defs>
-    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-      <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
-    </marker>
-  </defs>
-  <rect width="900" height="430" fill="#ffffff"/>
-  <text x="24" y="34" font-family="Helvetica, Arial, sans-serif" font-size="21" font-weight="bold" fill="#0f172a">ACT：CVAE + 动作分块 Transformer</text>
-
-  <!-- inputs -->
-  <rect x="24" y="70" width="170" height="180" rx="8" fill="#eef4ff" stroke="#3b6fb6"/>
-  <text x="109" y="96" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#1f2937">输入 / 标签</text>
-  <text x="109" y="124" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">图像 3×256×256</text>
-  <text x="109" y="146" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">状态 6 维</text>
-  <text x="109" y="168" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">动作 10×7</text>
-  <text x="109" y="190" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">action_is_pad</text>
-  <text x="109" y="212" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">task（ACT 不用）</text>
-
-  <!-- vision -->
-  <rect x="220" y="70" width="160" height="86" rx="8" fill="#e8f7ee" stroke="#2f855a"/>
-  <text x="300" y="96" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">ResNet18</text>
-  <text x="300" y="118" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">layer4 (B,512,8,8)</text>
-  <text x="300" y="138" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">1×1 Conv → 64 token</text>
-
-  <!-- vae -->
-  <rect x="220" y="176" width="160" height="74" rx="8" fill="#e8f7ee" stroke="#2f855a"/>
-  <text x="300" y="200" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" fill="#1f2937">VAE Encoder ×4</text>
-  <text x="300" y="222" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">12 token → μ/log σ²</text>
-  <text x="300" y="242" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">z(32)，仅训练态</text>
-
-  <!-- transformer -->
-  <rect x="410" y="70" width="190" height="180" rx="8" fill="#e8f7ee" stroke="#2f855a"/>
-  <text x="505" y="96" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#1f2937">ACT Transformer</text>
-  <text x="505" y="122" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">encoder ×4</text>
-  <text x="505" y="144" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">66 token = 1 latent</text>
-  <text x="505" y="164" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">+ 1 state + 64 视觉</text>
-  <text x="505" y="190" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">decoder ×1</text>
-  <text x="505" y="212" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">10 个 query</text>
-  <text x="505" y="234" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">512 维 / 8 头 / FFN 3200</text>
-
-  <!-- head -->
-  <rect x="630" y="70" width="150" height="86" rx="8" fill="#fff7e6" stroke="#b7791f"/>
-  <text x="705" y="96" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">动作头</text>
-  <text x="705" y="118" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">Linear 512→7</text>
-  <text x="705" y="138" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">(B,10,7) 反归一化</text>
-
-  <!-- loss -->
-  <rect x="630" y="176" width="150" height="74" rx="8" fill="#fff7e6" stroke="#b7791f"/>
-  <text x="705" y="200" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" fill="#1f2937">损失 / 执行</text>
-  <text x="705" y="222" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">L1×¬pad + 10·KL</text>
-  <text x="705" y="242" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">队列 maxlen=10</text>
-
-  <!-- arrows -->
-  <line x1="194" y1="110" x2="220" y2="110" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
-  <line x1="194" y1="205" x2="220" y2="213" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
-  <line x1="380" y1="110" x2="410" y2="110" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
-  <line x1="380" y1="213" x2="410" y2="205" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
-  <line x1="600" y1="110" x2="630" y2="110" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
-  <line x1="705" y1="156" x2="705" y2="176" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
-  <polyline points="109,250 109,292 705,292 705,250" fill="none" stroke="#94a3b8" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#arrow)"/>
-
-  <text x="220" y="286" font-family="Helvetica, Arial, sans-serif" font-size="12" fill="#64748b">动作标签与 mask 直接进入 L1，不经过主干</text>
-
-  <text x="24" y="330" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#475569">关键数字：51,552,181 总参数；推理约 34.19M；encoder 66 token；decoder 10 query。</text>
-  <text x="24" y="352" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#475569">训练态：VAE encoder 4 层，cls + state + 10 action；推理态 latent 置零，跳过 VAE。</text>
-  <text x="24" y="374" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#475569">位置编码：latent/state 用 Embedding(2,512)，视觉用 2D 正弦；dropout 0.1。</text>
-  <text x="24" y="402" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#475569">图为自绘信息流，依据本地 ACT 导读；不是论文原图。</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1132" viewBox="0 0 1200 1132" role="img"><defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#185FA5" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect x="0" y="0" width="1200" height="1132" rx="0" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="1"/>
+<text x="118" y="46" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="21" font-weight="500" fill="#0C2B4A" text-anchor="start">ACT · CVAE 与动作分块的信息流（论文原文口径）</text>
+<text x="118" y="70" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="13" font-weight="400" fill="#5F6B7A" text-anchor="start">按 §IV.C Implementing ACT 的维度链；与本地 LeRobot 实现口径分列，不混用</text>
+<rect x="40" y="84" width="1120" height="1" rx="0" fill="#DDE3EC" stroke="#DDE3EC" stroke-width="0"/>
+<rect x="860" y="26" width="300" height="34" rx="8" fill="#F1EFE8" stroke="#DDE3EC" stroke-width="1"/>
+<text x="874" y="48" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F5E5A" text-anchor="start">arXiv:2304.13705 · §IV.B–C / Fig.4</text>
+<rect x="40" y="26" width="62" height="30" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="1"/>
+<text x="71" y="46" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="13" font-weight="500" fill="#0C447C" text-anchor="middle">图 1</text>
+<text x="40" y="100" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">阶段</text>
+<text x="186" y="100" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">处理环节</text>
+<text x="758" y="100" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">数据维度 · shape in → out</text>
+<rect x="40" y="120" width="130" height="138" rx="12" fill="#F1EFE8" stroke="#DDE3EC" stroke-width="1"/>
+<text x="105" y="158" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="middle">观测</text>
+<text x="105" y="192" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="20" font-weight="500" fill="#0C2B4A" text-anchor="middle">01</text>
+<rect x="186" y="120" width="548" height="138" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="186" y="120" width="5" height="138" rx="2" fill="#185FA5" stroke="#185FA5" stroke-width="0"/>
+<text x="208" y="156" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="16" font-weight="500" fill="#0C447C" text-anchor="start">4 视角 RGB + 双臂关节位置</text>
+<text x="208" y="180" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">动作空间为双臂绝对关节位置，14 维向量</text>
+<text x="208" y="198" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">CVAE encoder 训练时另接 k 步示教动作序列</text>
+<rect x="758" y="120" width="402" height="138" rx="12" fill="#F1EFE8" stroke="#888780" stroke-width="1"/>
+<text x="774" y="142" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="500" fill="#5F5E5A" text-anchor="start">数据维度</text>
+<text x="774" y="166" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" font-weight="400" fill="#5F5E5A" text-anchor="start">4 × 480 × 640 × 3</text>
+<text x="774" y="188" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" font-weight="400" fill="#5F5E5A" text-anchor="start">joints 7 + 7 = 14 DoF</text>
+<text x="774" y="210" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" font-weight="400" fill="#5F5E5A" text-anchor="start">action ∈ R^14</text>
+<text x="774" y="244" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">§IV.C Implementing ACT</text>
+<path d="M105 262 L105 296" fill="none" stroke="#185FA5" stroke-width="1.6" marker-end="url(#arrow)"/>
+<text x="470" y="285" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="12" font-weight="400" fill="#0C447C" text-anchor="middle">↓ 480×640×3 → 15×20×512</text>
+<rect x="40" y="302" width="130" height="138" rx="12" fill="#F1EFE8" stroke="#DDE3EC" stroke-width="1"/>
+<text x="105" y="340" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="middle">视觉编码</text>
+<text x="105" y="374" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="20" font-weight="500" fill="#0C2B4A" text-anchor="middle">02</text>
+<rect x="186" y="302" width="548" height="138" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="186" y="302" width="5" height="138" rx="2" fill="#0F6E56" stroke="#0F6E56" stroke-width="0"/>
+<text x="208" y="338" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="16" font-weight="500" fill="#085041" text-anchor="start">ResNet18 × 4（共享结构）</text>
+<text x="208" y="362" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">逐视角转特征图，flatten 后接 2D 正弦位置编码</text>
+<rect x="758" y="302" width="402" height="138" rx="12" fill="#F1EFE8" stroke="#888780" stroke-width="1"/>
+<text x="774" y="324" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="500" fill="#5F5E5A" text-anchor="start">数据维度</text>
+<text x="774" y="348" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" font-weight="400" fill="#5F5E5A" text-anchor="start">→ 15 × 20 × 512</text>
+<text x="774" y="370" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" font-weight="400" fill="#5F5E5A" text-anchor="start">→ flatten 300 × 512 / cam</text>
+<text x="774" y="392" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" font-weight="400" fill="#5F5E5A" text-anchor="start">×4 → 1200 × 512</text>
+<text x="774" y="426" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">§IV.C</text>
+<path d="M105 444 L105 478" fill="none" stroke="#185FA5" stroke-width="1.6" marker-end="url(#arrow)"/>
+<text x="470" y="467" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="12" font-weight="400" fill="#0C447C" text-anchor="middle">↓ 300×512 ×4 → 1200×512</text>
+<rect x="40" y="484" width="130" height="138" rx="12" fill="#F1EFE8" stroke="#DDE3EC" stroke-width="1"/>
+<text x="105" y="522" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="middle">条件拼接</text>
+<text x="105" y="556" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="20" font-weight="500" fill="#0C2B4A" text-anchor="middle">03</text>
+<rect x="186" y="484" width="548" height="138" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="186" y="484" width="5" height="138" rx="2" fill="#0F6E56" stroke="#0F6E56" stroke-width="0"/>
+<text x="208" y="520" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="16" font-weight="500" fill="#085041" text-anchor="start">Transformer encoder 输入</text>
+<text x="208" y="544" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">joint 与 style variable z 各自线性投影到 512 后拼接</text>
+<rect x="758" y="484" width="402" height="138" rx="12" fill="#F1EFE8" stroke="#888780" stroke-width="1"/>
+<text x="774" y="506" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="500" fill="#5F5E5A" text-anchor="start">数据维度</text>
+<text x="774" y="530" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" font-weight="400" fill="#5F5E5A" text-anchor="start">1200 + 1 + 1 = 1202 × 512</text>
+<text x="774" y="552" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" font-weight="400" fill="#5F5E5A" text-anchor="start">z ~ diagonal Gaussian（测试时置零）</text>
+<text x="774" y="608" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">§IV.B / §IV.C / Fig.4</text>
+<path d="M105 626 L105 660" fill="none" stroke="#185FA5" stroke-width="1.6" marker-end="url(#arrow)"/>
+<text x="470" y="649" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="12" font-weight="400" fill="#0C447C" text-anchor="middle">↓ 1200+2 → 1202×512</text>
+<rect x="40" y="666" width="130" height="138" rx="12" fill="#F1EFE8" stroke="#DDE3EC" stroke-width="1"/>
+<text x="105" y="704" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="middle">序列建模</text>
+<text x="105" y="738" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="20" font-weight="500" fill="#0C2B4A" text-anchor="middle">04</text>
+<rect x="186" y="666" width="548" height="138" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="186" y="666" width="5" height="138" rx="2" fill="#0F6E56" stroke="#0F6E56" stroke-width="0"/>
+<text x="208" y="702" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="16" font-weight="500" fill="#085041" text-anchor="start">Transformer encoder + decoder</text>
+<text x="208" y="726" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">decoder 以固定位置 embedding 为 query，经 cross-attention 取 encoder 输出</text>
+<rect x="758" y="666" width="402" height="138" rx="12" fill="#F1EFE8" stroke="#888780" stroke-width="1"/>
+<text x="774" y="688" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="500" fill="#5F5E5A" text-anchor="start">数据维度</text>
+<text x="774" y="712" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" font-weight="400" fill="#5F5E5A" text-anchor="start">query k × 512 → output k × 512</text>
+<text x="774" y="734" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" font-weight="400" fill="#5F5E5A" text-anchor="start">encoder [CLS]+joint+k actions = k+2</text>
+<text x="774" y="790" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">§IV.C</text>
+<path d="M105 808 L105 842" fill="none" stroke="#185FA5" stroke-width="1.6" marker-end="url(#arrow)"/>
+<text x="470" y="831" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="12" font-weight="400" fill="#0C447C" text-anchor="middle">↓ k×512 → k×14</text>
+<rect x="40" y="848" width="130" height="138" rx="12" fill="#F1EFE8" stroke="#DDE3EC" stroke-width="1"/>
+<text x="105" y="886" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="middle">动作输出</text>
+<text x="105" y="920" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="20" font-weight="500" fill="#0C2B4A" text-anchor="middle">05</text>
+<rect x="186" y="848" width="548" height="138" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="186" y="848" width="5" height="138" rx="2" fill="#854F0B" stroke="#854F0B" stroke-width="0"/>
+<text x="208" y="884" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="16" font-weight="500" fill="#633806" text-anchor="start">MLP 下投影 → k 步动作块</text>
+<text x="208" y="908" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">L1 重建损失 + β 加权的 KL 正则；消融中 k=100 最佳</text>
+<rect x="758" y="848" width="402" height="138" rx="12" fill="#F1EFE8" stroke="#888780" stroke-width="1"/>
+<text x="774" y="870" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="500" fill="#5F5E5A" text-anchor="start">数据维度</text>
+<text x="774" y="894" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" font-weight="400" fill="#5F5E5A" text-anchor="start">k × 512 → MLP → k × 14</text>
+<text x="774" y="916" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" font-weight="400" fill="#5F5E5A" text-anchor="start">k=1 → 1% ／ k=100 → 44% 成功率</text>
+<text x="774" y="972" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">§IV.B / §VI / Fig.8a</text>
+<rect x="40" y="1014" width="1120" height="1" rx="0" fill="#DDE3EC" stroke="#DDE3EC" stroke-width="0"/>
+<text x="40" y="1038" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">口径冲突已显式分列：本地笔记（LeRobot 实现）为 3×256×256 / 64 token / 66 token / 10×7 / 51.55M 参数；本图为论文原文口径 480×640 / 1200×512 / k×14。</text>
+<text x="40" y="1058" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">两套数字来自不同实现，不可互相换算或拼接；推广到 44 篇时会逐篇记录「论文口径 / 实现口径 / 原文未给」三种状态。</text>
+<text x="40" y="1078" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">论文未给 512 维 transformer 的层数、注意力头数与 FFN 宽度（这些数字来自本地 LeRobot 代码导读）。</text>
+<text x="40" y="1102" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">维度均标注出处；查不到的一律标「原文未给」，不臆造、不跨实现混用</text>
 </svg>
