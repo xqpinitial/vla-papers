@@ -1,56 +1,89 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="430" viewBox="0 0 900 430">
-  <defs>
-    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-      <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
-    </marker>
-  </defs>
-  <rect width="900" height="430" fill="#ffffff"/>
-  <text x="28" y="34" font-family="Helvetica, Arial, sans-serif" font-size="20" font-weight="bold" fill="#0f172a">RT-1：EfficientNet + FiLM + Token Learner → 256-bin 动作 token</text>
-
-  <!-- input -->
-  <rect x="24" y="72" width="190" height="86" rx="8" fill="#eef4ff" stroke="#3b6fb6"/>
-  <text x="119" y="100" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">RGB 图像 + 文本指令</text>
-  <text x="119" y="122" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">端到端输入</text>
-  <text x="119" y="143" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" fill="#475569">分辨率章节未给</text>
-
-  <!-- visual encoder + film -->
-  <rect x="250" y="72" width="210" height="86" rx="8" fill="#e8f7ee" stroke="#2f855a"/>
-  <text x="355" y="100" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">EfficientNet + FiLM</text>
-  <text x="355" y="122" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">视觉编码 + 语言调制</text>
-  <text x="355" y="143" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" fill="#475569">Feature-wise Linear Modulation</text>
-
-  <!-- token learner -->
-  <rect x="496" y="72" width="190" height="86" rx="8" fill="#e8f7ee" stroke="#2f855a"/>
-  <text x="591" y="100" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">Token Learner</text>
-  <text x="591" y="122" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">压缩视觉特征</text>
-  <text x="591" y="143" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" fill="#475569">token 数章节未给</text>
-
-  <!-- transformer -->
-  <rect x="496" y="218" width="190" height="86" rx="8" fill="#e8f7ee" stroke="#2f855a"/>
-  <text x="591" y="246" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">Transformer</text>
-  <text x="591" y="268" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">序列建模与动作预测</text>
-  <text x="591" y="289" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" fill="#475569">层数 / 宽度章节未给</text>
-
-  <!-- action tokens -->
-  <rect x="250" y="218" width="210" height="86" rx="8" fill="#fff7e6" stroke="#b7791f"/>
-  <text x="355" y="246" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">每维 256 bins</text>
-  <text x="355" y="268" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">0–255 动作 token</text>
-  <text x="355" y="289" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" fill="#475569">每维一个分类问题</text>
-
-  <!-- detokenize -->
-  <rect x="250" y="354" width="300" height="50" rx="8" fill="#f8fafc" stroke="#94a3b8"/>
-  <text x="400" y="384" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">反离散化 → 连续动作（~3Hz）</text>
-
-  <!-- arrows -->
-  <line x1="214" y1="115" x2="246" y2="115" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
-  <line x1="460" y1="115" x2="492" y2="115" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
-  <line x1="591" y1="158" x2="591" y2="214" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
-  <line x1="492" y1="261" x2="464" y2="261" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
-  <line x1="355" y1="304" x2="355" y2="350" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
-
-  <text x="700" y="240" font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#475569">35M 参数（章节概览）</text>
-  <text x="700" y="262" font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#475569">输出为离散动作 token</text>
-  <text x="700" y="284" font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#475569">未给 benchmark 成功率</text>
-  <text x="700" y="306" font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#475569">未给显存与测量协议</text>
-  <text x="24" y="422" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#475569">自绘，依据本地 RT 系列导读；不是论文原图。</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1132" viewBox="0 0 1200 1132" role="img"><defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#185FA5" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect x="0" y="0" width="1200" height="1132" rx="0" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="1"/>
+<text x="118" y="46" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="21" font-weight="500" fill="#0C2B4A" text-anchor="start">RT-1 · 从 6 帧图像到 256-bin 动作 token 的信息流</text>
+<text x="118" y="70" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="13" font-weight="400" fill="#5F6B7A" text-anchor="start">按论文 §5.1 的 top-to-bottom 顺序；每个环节标注可核验的张量形状与出处</text>
+<rect x="40" y="84" width="1120" height="1" rx="0" fill="#DDE3EC" stroke="#DDE3EC" stroke-width="0"/>
+<rect x="860" y="26" width="300" height="34" rx="8" fill="#F1EFE8" stroke="#DDE3EC" stroke-width="1"/>
+<text x="874" y="48" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F5E5A" text-anchor="start">arXiv:2212.06817v2 · §5.1 / Fig.3</text>
+<rect x="40" y="26" width="62" height="30" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="1"/>
+<text x="71" y="46" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="13" font-weight="500" fill="#0C447C" text-anchor="middle">图 1</text>
+<text x="40" y="100" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">阶段</text>
+<text x="186" y="100" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">处理环节</text>
+<text x="758" y="100" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">数据维度 · shape in → out</text>
+<rect x="40" y="120" width="130" height="138" rx="12" fill="#F1EFE8" stroke="#DDE3EC" stroke-width="1"/>
+<text x="105" y="158" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="middle">输入</text>
+<text x="105" y="192" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="20" font-weight="500" fill="#0C2B4A" text-anchor="middle">01</text>
+<rect x="186" y="120" width="548" height="138" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="186" y="120" width="5" height="138" rx="2" fill="#185FA5" stroke="#185FA5" stroke-width="0"/>
+<text x="208" y="156" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="16" font-weight="500" fill="#0C447C" text-anchor="start">6 帧历史图像 + 自然语言指令</text>
+<text x="208" y="180" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">图像经 Universal Sentence Encoder 生成指令 embedding</text>
+<text x="208" y="198" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">指令以 identity-initialized FiLM 注入视觉编码器</text>
+<rect x="758" y="120" width="402" height="138" rx="12" fill="#F1EFE8" stroke="#888780" stroke-width="1"/>
+<text x="774" y="142" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="500" fill="#5F5E5A" text-anchor="start">数据维度</text>
+<text x="774" y="166" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" font-weight="400" fill="#5F5E5A" text-anchor="start">6 × 300 × 300 × 3</text>
+<text x="774" y="188" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" font-weight="400" fill="#5F5E5A" text-anchor="start">USE embedding → FiLM(γ, β)</text>
+<text x="774" y="244" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">§5.1 Instruction and image tokenization</text>
+<path d="M105 262 L105 296" fill="none" stroke="#185FA5" stroke-width="1.6" marker-end="url(#arrow)"/>
+<text x="470" y="285" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="12" font-weight="400" fill="#0C447C" text-anchor="middle">↓ 300×300×3 → 9×9×512</text>
+<rect x="40" y="302" width="130" height="138" rx="12" fill="#F1EFE8" stroke="#DDE3EC" stroke-width="1"/>
+<text x="105" y="340" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="middle">视觉编码</text>
+<text x="105" y="374" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="20" font-weight="500" fill="#0C2B4A" text-anchor="middle">02</text>
+<rect x="186" y="302" width="548" height="138" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="186" y="302" width="5" height="138" rx="2" fill="#0F6E56" stroke="#0F6E56" stroke-width="0"/>
+<text x="208" y="338" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="16" font-weight="500" fill="#085041" text-anchor="start">FiLM EfficientNet-B3</text>
+<text x="208" y="362" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">ImageNet 预训练；26 层 MBConv + FiLM</text>
+<text x="208" y="380" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">不 patchify，直接 flatten 最后一层特征图</text>
+<rect x="758" y="302" width="402" height="138" rx="12" fill="#F1EFE8" stroke="#888780" stroke-width="1"/>
+<text x="774" y="324" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="500" fill="#5F5E5A" text-anchor="start">数据维度</text>
+<text x="774" y="348" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" font-weight="400" fill="#5F5E5A" text-anchor="start">→ 9 × 9 × 512 feature map</text>
+<text x="774" y="370" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" font-weight="400" fill="#5F5E5A" text-anchor="start">→ flatten 81 vision-language tokens</text>
+<text x="774" y="392" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" font-weight="400" fill="#5F5E5A" text-anchor="start">参数 16M</text>
+<text x="774" y="426" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">§5.1 / Fig.3</text>
+<path d="M105 444 L105 478" fill="none" stroke="#185FA5" stroke-width="1.6" marker-end="url(#arrow)"/>
+<text x="470" y="467" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="12" font-weight="400" fill="#0C447C" text-anchor="middle">↓ 81 tokens → 8 tokens / image</text>
+<rect x="40" y="484" width="130" height="138" rx="12" fill="#F1EFE8" stroke="#DDE3EC" stroke-width="1"/>
+<text x="105" y="522" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="middle">令牌压缩</text>
+<text x="105" y="556" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="20" font-weight="500" fill="#0C2B4A" text-anchor="middle">03</text>
+<rect x="186" y="484" width="548" height="138" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="186" y="484" width="5" height="138" rx="2" fill="#0F6E56" stroke="#0F6E56" stroke-width="0"/>
+<text x="208" y="520" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="16" font-weight="500" fill="#085041" text-anchor="start">TokenLearner</text>
+<text x="208" y="544" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">逐帧软选择重要 token 组合，降低 attention 开销</text>
+<rect x="758" y="484" width="402" height="138" rx="12" fill="#F1EFE8" stroke="#888780" stroke-width="1"/>
+<text x="774" y="506" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="500" fill="#5F5E5A" text-anchor="start">数据维度</text>
+<text x="774" y="530" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" font-weight="400" fill="#5F5E5A" text-anchor="start">81 → 8 tokens / image</text>
+<text x="774" y="552" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" font-weight="400" fill="#5F5E5A" text-anchor="start">6 × 8 = 48 tokens + position encoding</text>
+<text x="774" y="608" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">§5.1 TokenLearner / Transformer</text>
+<path d="M105 626 L105 660" fill="none" stroke="#185FA5" stroke-width="1.6" marker-end="url(#arrow)"/>
+<text x="470" y="649" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="12" font-weight="400" fill="#0C447C" text-anchor="middle">↓ 48 tokens → 8 层自注意力</text>
+<rect x="40" y="666" width="130" height="138" rx="12" fill="#F1EFE8" stroke="#DDE3EC" stroke-width="1"/>
+<text x="105" y="704" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="middle">序列建模</text>
+<text x="105" y="738" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="20" font-weight="500" fill="#0C2B4A" text-anchor="middle">04</text>
+<rect x="186" y="666" width="548" height="138" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="186" y="666" width="5" height="138" rx="2" fill="#0F6E56" stroke="#0F6E56" stroke-width="0"/>
+<text x="208" y="702" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="16" font-weight="500" fill="#085041" text-anchor="start">Decoder-only Transformer</text>
+<text x="208" y="726" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">causal masking + 标准 categorical cross-entropy</text>
+<rect x="758" y="666" width="402" height="138" rx="12" fill="#F1EFE8" stroke="#888780" stroke-width="1"/>
+<text x="774" y="688" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="500" fill="#5F5E5A" text-anchor="start">数据维度</text>
+<text x="774" y="712" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" font-weight="400" fill="#5F5E5A" text-anchor="start">48 tokens → action tokens</text>
+<text x="774" y="734" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" font-weight="400" fill="#5F5E5A" text-anchor="start">8 self-attention layers · 19M 参数</text>
+<text x="774" y="790" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">§5.1 Transformer / Loss</text>
+<path d="M105 808 L105 842" fill="none" stroke="#185FA5" stroke-width="1.6" marker-end="url(#arrow)"/>
+<text x="470" y="831" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="12" font-weight="400" fill="#0C447C" text-anchor="middle">↓ logits → 11 维 × 256 bins</text>
+<rect x="40" y="848" width="130" height="138" rx="12" fill="#F1EFE8" stroke="#DDE3EC" stroke-width="1"/>
+<text x="105" y="886" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="middle">动作输出</text>
+<text x="105" y="920" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="20" font-weight="500" fill="#0C2B4A" text-anchor="middle">05</text>
+<rect x="186" y="848" width="548" height="138" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="186" y="848" width="5" height="138" rx="2" fill="#854F0B" stroke="#854F0B" stroke-width="0"/>
+<text x="208" y="884" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="16" font-weight="500" fill="#633806" text-anchor="start">每维 256 bins 离散化 → 反离散化</text>
+<text x="208" y="908" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">7 手臂变量 + 3 底座变量 + 1 模式变量</text>
+<text x="208" y="926" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">bins 在各变量边界内均匀分布；控制频率 3 Hz</text>
+<rect x="758" y="848" width="402" height="138" rx="12" fill="#F1EFE8" stroke="#888780" stroke-width="1"/>
+<text x="774" y="870" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="500" fill="#5F5E5A" text-anchor="start">数据维度</text>
+<text x="774" y="894" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" font-weight="400" fill="#5F5E5A" text-anchor="start">11 维 × 256 bins</text>
+<text x="774" y="916" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" font-weight="400" fill="#5F5E5A" text-anchor="start">总参数 35M · 3 Hz</text>
+<text x="774" y="972" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">§5.1 Action tokenization / Abstract</text>
+<rect x="40" y="1014" width="1120" height="1" rx="0" fill="#DDE3EC" stroke="#DDE3EC" stroke-width="0"/>
+<text x="40" y="1038" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">补齐说明：旧图 5 处「章节未给」（分辨率 / token 数 / 层数 / 宽度 / 动作维度）已由论文 §5.1 逐项补齐。</text>
+<text x="40" y="1058" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">本地笔记中的「动作维度 章节未给」是导读口径；论文原文明确为 7+3+1 = 11 维，两者分列，不互相覆盖。</text>
+<text x="40" y="1078" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">35M / 3Hz 出自论文摘要与 §1，属概览数字，原文未给硬件与测量协议。</text>
+<text x="40" y="1102" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">维度均标注出处；查不到的一律标「原文未给」，不臆造、不跨实现混用</text>
 </svg>
