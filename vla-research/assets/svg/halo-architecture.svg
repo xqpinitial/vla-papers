@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1132" viewBox="0 0 1200 1132" role="img"><defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#185FA5" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect x="0" y="0" width="1200" height="1132" rx="0" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="1"/>
+<text x="118" y="46" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="21" font-weight="500" fill="#0C2B4A" text-anchor="start">HALO · 三层自主栈在线信息流（含可核验维度）</text>
+<text x="118" y="70" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="13" font-weight="400" fill="#5F6B7A" text-anchor="start">按论文 Fig.2：编排层 0.5Hz → 生成层 3Hz → 跟踪层 50Hz；每环节标注 shape 与出处</text>
+<rect x="40" y="84" width="1120" height="1" rx="0" fill="#DDE3EC" stroke="#DDE3EC" stroke-width="0"/>
+<rect x="860" y="26" width="300" height="34" rx="8" fill="#F1EFE8" stroke="#DDE3EC" stroke-width="1"/>
+<text x="874" y="48" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F5E5A" text-anchor="start">arXiv:2611.06908v1 · Fig.2 / §III / §IV-B</text>
+<rect x="40" y="26" width="62" height="30" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="1"/>
+<text x="71" y="46" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="13" font-weight="500" fill="#0C447C" text-anchor="middle">图 1</text>
+<text x="40" y="100" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">阶段</text>
+<text x="186" y="100" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">处理环节</text>
+<text x="758" y="100" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">数据维度 · shape in → out</text>
+<rect x="40" y="120" width="130" height="138" rx="12" fill="#F1EFE8" stroke="#DDE3EC" stroke-width="1"/>
+<text x="105" y="158" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="middle">输入</text>
+<text x="105" y="192" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="20" font-weight="500" fill="#0C2B4A" text-anchor="middle">01</text>
+<rect x="186" y="120" width="548" height="138" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="186" y="120" width="5" height="138" rx="2" fill="#185FA5" stroke="#185FA5" stroke-width="0"/>
+<text x="208" y="156" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="16" font-weight="500" fill="#0C447C" text-anchor="start">自然语言指令 + 第一视角视频流</text>
+<text x="208" y="180" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">OAK-1W 头戴相机：120° RGB 1280×800 @30fps</text>
+<text x="208" y="198" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">Mac mini M4 Pro 上的 VLM 每隔约 2s 取一帧</text>
+<rect x="758" y="120" width="402" height="138" rx="12" fill="#F1EFE8" stroke="#888780" stroke-width="1"/>
+<text x="774" y="142" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="500" fill="#5F5E5A" text-anchor="start">数据维度</text>
+<text x="774" y="166" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" font-weight="400" fill="#5F5E5A" text-anchor="start">RGB 1280×800×3 @30Hz</text>
+<text x="774" y="188" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" font-weight="400" fill="#5F5E5A" text-anchor="start">VLM 触发频率 ~0.5 Hz（每 2s 一次）</text>
+<text x="774" y="244" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">§IV-B System</text>
+<path d="M105 262 L105 296" fill="none" stroke="#185FA5" stroke-width="1.6" marker-end="url(#arrow)"/>
+<text x="470" y="285" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="12" font-weight="400" fill="#0C447C" text-anchor="middle">↓ 指令+RGB → 子任务序列</text>
+<rect x="40" y="302" width="130" height="138" rx="12" fill="#F1EFE8" stroke="#DDE3EC" stroke-width="1"/>
+<text x="105" y="340" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="middle">编排层</text>
+<text x="105" y="374" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="20" font-weight="500" fill="#0C2B4A" text-anchor="middle">02</text>
+<rect x="186" y="302" width="548" height="138" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="186" y="302" width="5" height="138" rx="2" fill="#0F6E56" stroke="#0F6E56" stroke-width="0"/>
+<text x="208" y="338" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="16" font-weight="500" fill="#085041" text-anchor="start">VLM 任务编排器</text>
+<text x="208" y="362" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">把自由语言指令解析为有序子任务序列</text>
+<text x="208" y="380" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">闭环监控：评估动作成败、推进或重试</text>
+<rect x="758" y="302" width="402" height="138" rx="12" fill="#F1EFE8" stroke="#888780" stroke-width="1"/>
+<text x="774" y="324" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="500" fill="#5F5E5A" text-anchor="start">数据维度</text>
+<text x="774" y="348" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" font-weight="400" fill="#5F5E5A" text-anchor="start">Qwen3.6-35B-A3B · 4-bit · MLX</text>
+<text x="774" y="370" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" font-weight="400" fill="#5F5E5A" text-anchor="start">输出：子任务序列（每次一个）</text>
+<text x="774" y="426" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">§III-D / 附录 D</text>
+<path d="M105 444 L105 478" fill="none" stroke="#185FA5" stroke-width="1.6" marker-end="url(#arrow)"/>
+<text x="470" y="467" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="12" font-weight="400" fill="#0C447C" text-anchor="middle">↓ 子任务+RGB → 150帧计划</text>
+<rect x="40" y="484" width="130" height="138" rx="12" fill="#F1EFE8" stroke="#DDE3EC" stroke-width="1"/>
+<text x="105" y="522" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="middle">生成层</text>
+<text x="105" y="556" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="20" font-weight="500" fill="#0C2B4A" text-anchor="middle">03</text>
+<rect x="186" y="484" width="548" height="138" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="186" y="484" width="5" height="138" rx="2" fill="#0F6E56" stroke="#0F6E56" stroke-width="0"/>
+<text x="208" y="520" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="16" font-weight="500" fill="#085041" text-anchor="start">运动生成器（异步运行）</text>
+<text x="208" y="544" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">冻结 Qwen3.5-2B VLM 编码器 + 从零训练 DiT</text>
+<text x="208" y="562" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">前 P=15 帧(0.5s)作干净前缀，去噪余下 135 帧</text>
+<rect x="758" y="484" width="402" height="138" rx="12" fill="#F1EFE8" stroke="#888780" stroke-width="1"/>
+<text x="774" y="506" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="500" fill="#5F5E5A" text-anchor="start">数据维度</text>
+<text x="774" y="530" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" font-weight="400" fill="#5F5E5A" text-anchor="start">输入：RGB + 子任务 → 5s 运动计划</text>
+<text x="774" y="552" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" font-weight="400" fill="#5F5E5A" text-anchor="start">H=150帧 × 36 值(29关节+3位移+4四元数)</text>
+<text x="774" y="608" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">§III-B Motion generator</text>
+<path d="M105 626 L105 660" fill="none" stroke="#185FA5" stroke-width="1.6" marker-end="url(#arrow)"/>
+<text x="470" y="649" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="12" font-weight="400" fill="#0C447C" text-anchor="middle">↓ 计划+深度 → 关节目标</text>
+<rect x="40" y="666" width="130" height="138" rx="12" fill="#F1EFE8" stroke="#DDE3EC" stroke-width="1"/>
+<text x="105" y="704" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="middle">跟踪层</text>
+<text x="105" y="738" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="20" font-weight="500" fill="#0C2B4A" text-anchor="middle">04</text>
+<rect x="186" y="666" width="548" height="138" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="186" y="666" width="5" height="138" rx="2" fill="#0F6E56" stroke="#0F6E56" stroke-width="0"/>
+<text x="208" y="702" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="16" font-weight="500" fill="#085041" text-anchor="start">运动跟踪器（RL）</text>
+<text x="208" y="726" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">三阶段：PPO 专家→多教师蒸馏→多 critic RL</text>
+<text x="208" y="744" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">只用机载：深度+本体+IMU，不读物体坐标</text>
+<rect x="758" y="666" width="402" height="138" rx="12" fill="#F1EFE8" stroke="#888780" stroke-width="1"/>
+<text x="774" y="688" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="500" fill="#5F5E5A" text-anchor="start">数据维度</text>
+<text x="774" y="712" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" font-weight="400" fill="#5F5E5A" text-anchor="start">输入：计划+深度(424×240)+本体+IMU</text>
+<text x="774" y="734" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" font-weight="400" fill="#5F5E5A" text-anchor="start">输出：29 关节位置目标 @50Hz</text>
+<text x="774" y="790" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">§III-C Motion tracker</text>
+<path d="M105 808 L105 842" fill="none" stroke="#185FA5" stroke-width="1.6" marker-end="url(#arrow)"/>
+<text x="470" y="831" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="12" font-weight="400" fill="#0C447C" text-anchor="middle">↓ 关节目标 → 50Hz 执行</text>
+<rect x="40" y="848" width="130" height="138" rx="12" fill="#F1EFE8" stroke="#DDE3EC" stroke-width="1"/>
+<text x="105" y="886" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="middle">执行</text>
+<text x="105" y="920" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="20" font-weight="500" fill="#0C2B4A" text-anchor="middle">05</text>
+<rect x="186" y="848" width="548" height="138" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="186" y="848" width="5" height="138" rx="2" fill="#854F0B" stroke="#854F0B" stroke-width="0"/>
+<text x="208" y="884" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="16" font-weight="500" fill="#633806" text-anchor="start">Unitree G1 真机执行</text>
+<text x="208" y="908" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">C++ 实时进程 @ PREEMPT_RT，锁无关三缓冲</text>
+<text x="208" y="926" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">Jetson Orin NX 跑跟踪器，TensorRT 立体匹配出深度</text>
+<rect x="758" y="848" width="402" height="138" rx="12" fill="#F1EFE8" stroke="#888780" stroke-width="1"/>
+<text x="774" y="870" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="500" fill="#5F5E5A" text-anchor="start">数据维度</text>
+<text x="774" y="894" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" font-weight="400" fill="#5F5E5A" text-anchor="start">29 关节 + 本体 + IMU</text>
+<text x="774" y="916" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" font-weight="400" fill="#5F5E5A" text-anchor="start">控制环 50 Hz，严格节拍</text>
+<text x="774" y="972" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">§IV-B System</text>
+<rect x="40" y="1014" width="1120" height="1" rx="0" fill="#DDE3EC" stroke="#DDE3EC" stroke-width="0"/>
+<text x="40" y="1038" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">维度来源：生成器 DiT 为 8 blocks / width 512 / 8 heads、flow matching、15 Euler 步推理（§III-B）；轨道器三阶段详见 §III-C。</text>
+<text x="40" y="1058" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">「原文未给」项：论文未给生成器 DiT 的层数/头数/FFN 宽度以外的超参、轨道器策略网络具体规模（仅给硬件与频率）；已显式标出，不臆造。</text>
+<text x="40" y="1078" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">异步生成：P=15 帧(0.5s)已承诺执行，作为干净 token 直入生成器，仅去噪余下 H−P=135 帧(4.5s)，连续性在训练时内化（§III-B）。</text>
+<text x="40" y="1102" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">维度均标注出处；查不到的一律标「原文未给」，不臆造、不跨实现混用</text>
+</svg>
