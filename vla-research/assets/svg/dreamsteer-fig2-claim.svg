@@ -1,30 +1,53 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 444" width="900" height="444" font-family="PingFang SC, -apple-system, BlinkMacSystemFont, Microsoft YaHei, sans-serif">
-<rect width="900" height="444" fill="#ffffff"/>
-<rect x="0" y="0" width="900" height="50" fill="#1d4ed8"/>
-<text x="24" y="32" font-size="19" fill="#ffffff" font-weight="700" text-anchor="start">图 A2｜一句话主张与速览</text>
-<text x="876" y="32" font-size="11" fill="#ffffff" font-weight="400" text-anchor="end" opacity="0.82">dreamsteer · 字段均摘自本文</text>
-<rect x="24" y="68" width="852" height="92" rx="10" fill="#1d4ed8" opacity="0.07"/>
-<text x="40" y="92" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">一句话</text>
-<text x="40" y="116" font-size="15" fill="#0f172a" font-weight="500" text-anchor="start">冻结 VLA 采样多候选动作块（外加预定义运动原语），潜变量世界模型"想象"每个候选的未来，语言条件价值模型排序，只执行最高分——真机 OO</text>
-<text x="40" y="141" font-size="15" fill="#0f172a" font-weight="500" text-anchor="start">D 成功率 23.75%→66.25%，指令遵循 38.75%→56.25%</text>
-<rect x="24" y="176" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
-<text x="38" y="197" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">冻结</text>
-<text x="38" y="216" font-size="12" fill="#334155" font-weight="400" text-anchor="start">VLA（π₀）、DINOv2 视觉编码器、世界模型、价值模型——全部组件冻结；不使用目标环境演示做任何适应</text>
-<rect x="456" y="176" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
-<text x="470" y="197" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">演化</text>
-<text x="470" y="216" font-size="12" fill="#334155" font-weight="400" text-anchor="start">无参数更新（纯推理时 steering）</text>
-<rect x="24" y="252" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
-<text x="38" y="273" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">定位</text>
-<text x="38" y="292" font-size="12" fill="#334155" font-weight="400" text-anchor="start">harness 谱系里的"世界模型预演排序"支线：harness 不是代码/技能，而是想象力</text>
-<rect x="456" y="252" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
-<text x="470" y="273" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">论文</text>
-<text x="470" y="292" font-size="12" fill="#334155" font-weight="400" text-anchor="start">DreamSteer: Latent World Models Can Steer VLA Policies Durin</text>
-<rect x="24" y="328" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
-<text x="38" y="349" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">arXiv</text>
-<text x="38" y="368" font-size="12" fill="#334155" font-weight="400" text-anchor="start">2607.02865</text>
-<rect x="456" y="328" width="420" height="66" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
-<text x="470" y="349" font-size="11" fill="#1d4ed8" font-weight="700" text-anchor="start">机构</text>
-<text x="470" y="368" font-size="12" fill="#334155" font-weight="400" text-anchor="start">Meta FAIR · University of Minnesota（Hanchen Cui, … Krishna M</text>
-<text x="24" y="426" font-size="11" fill="#94a3b8" font-weight="400" text-anchor="start">字段与表述均摘自原文，未作补全或推断</text>
-<rect x="0.5" y="0.5" width="899" height="443" fill="none" stroke="#e2e8f0"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="678" viewBox="0 0 1200 678" role="img"><defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#185FA5" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect x="0" y="0" width="1200" height="678" rx="0" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="1"/>
+<text x="118" y="46" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="21" font-weight="500" fill="#0C2B4A" text-anchor="start">dreamsteer · 一句话主张与速览</text>
+<text x="118" y="70" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="13" font-weight="400" fill="#5F6B7A" text-anchor="start">自绘，依据本地 dreamsteer.md 原文；图内文字均为原文摘录或重排，不新增事实</text>
+<rect x="40" y="84" width="1120" height="1" rx="0" fill="#DDE3EC" stroke="#DDE3EC" stroke-width="0"/>
+<rect x="860" y="26" width="300" height="34" rx="8" fill="#F1EFE8" stroke="#DDE3EC" stroke-width="1"/>
+<text x="874" y="48" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F5E5A" text-anchor="start">本地 dreamsteer.md 引用块</text>
+<rect x="40" y="26" width="62" height="30" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="1"/>
+<text x="71" y="46" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="13" font-weight="500" fill="#0C447C" text-anchor="middle">图 A2</text>
+<text x="40" y="104" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">一句话主张（原文摘录，未改写）</text>
+<rect x="40" y="124" width="1120" height="104" rx="14" fill="#E6F1FB" stroke="#185FA5" stroke-width="1"/>
+<rect x="40" y="124" width="5" height="104" rx="2" fill="#185FA5" stroke="#185FA5" stroke-width="0"/>
+<text x="64" y="162" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="16" font-weight="500" fill="#0C447C" text-anchor="start">冻结 VLA 采样多候选动作块（外加预定义运动原语），潜变量世界模型&quot;想象&quot;每个候选的未来，语言条件价值模型排序，只执行最高分——</text>
+<text x="64" y="188" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="16" font-weight="500" fill="#0C447C" text-anchor="start">真机 OOD 成功率 23.75%→66.25%，指令遵循 38.75%→56.25%</text>
+<text x="1140" y="212" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#185FA5" text-anchor="end">dreamsteer.md「一句话」引用块</text>
+<text x="40" y="258" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">速览字段（逐项标注来源，不做补全）</text>
+<rect x="40" y="272" width="360" height="132" rx="14" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="40" y="272" width="360" height="5" rx="2" fill="#0F6E56" stroke="#0F6E56" stroke-width="0"/>
+<text x="60" y="302" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="500" fill="#8A94A3" text-anchor="start">原题与资源</text>
+<text x="60" y="328" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="400" fill="#0C2B4A" text-anchor="start">DreamSteer: Latent World Models Can Ste</text>
+<text x="60" y="349" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="400" fill="#0C2B4A" text-anchor="start">er VLA Policies During Deployment Witho</text>
+<text x="60" y="384" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">来源：md 开头引用块</text>
+<rect x="420" y="272" width="360" height="132" rx="14" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="420" y="272" width="360" height="5" rx="2" fill="#888780" stroke="#888780" stroke-width="0"/>
+<text x="440" y="302" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="500" fill="#8A94A3" text-anchor="start">arXiv / 项目</text>
+<text x="440" y="328" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="400" fill="#0C2B4A" text-anchor="start">2607.02865</text>
+<text x="440" y="384" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">来源：md 开头引用块</text>
+<rect x="800" y="272" width="360" height="132" rx="14" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="800" y="272" width="360" height="5" rx="2" fill="#854F0B" stroke="#854F0B" stroke-width="0"/>
+<text x="820" y="302" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="500" fill="#8A94A3" text-anchor="start">代码入口</text>
+<text x="820" y="328" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="400" fill="#0C2B4A" text-anchor="start">原文未给</text>
+<text x="820" y="384" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">来源：md 链接</text>
+<rect x="40" y="424" width="360" height="132" rx="14" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="40" y="424" width="360" height="5" rx="2" fill="#0F6E56" stroke="#0F6E56" stroke-width="0"/>
+<text x="60" y="454" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="500" fill="#8A94A3" text-anchor="start">一句话</text>
+<text x="60" y="480" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="400" fill="#0C2B4A" text-anchor="start">冻结 VLA 采样多候选动作块（外加预定义运动原</text>
+<text x="60" y="501" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="400" fill="#0C2B4A" text-anchor="start">语），潜变量世界模型&quot;想象&quot;每个候选的未…</text>
+<text x="60" y="536" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">来源：md「一句话」</text>
+<rect x="420" y="424" width="360" height="132" rx="14" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="420" y="424" width="360" height="5" rx="2" fill="#888780" stroke="#888780" stroke-width="0"/>
+<text x="440" y="454" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="500" fill="#8A94A3" text-anchor="start">阅读成本</text>
+<text x="440" y="480" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="400" fill="#0C2B4A" text-anchor="start">正文约 2639 字 / 8 个章节 / 4 张图；目录按</text>
+<text x="440" y="501" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="400" fill="#0C2B4A" text-anchor="start">本文原有章节顺序排列，章节内容…</text>
+<text x="440" y="536" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">来源：md「阅读成本」</text>
+<rect x="800" y="424" width="360" height="132" rx="14" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="800" y="424" width="360" height="5" rx="2" fill="#854F0B" stroke="#854F0B" stroke-width="0"/>
+<text x="820" y="454" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="500" fill="#8A94A3" text-anchor="start">版本 / 来源约定</text>
+<text x="820" y="480" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="400" fill="#0C2B4A" text-anchor="start">原文未给</text>
+<text x="820" y="536" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">来源：md 引用块</text>
+<rect x="40" y="580" width="1120" height="1" rx="0" fill="#DDE3EC" stroke="#DDE3EC" stroke-width="0"/>
+<text x="40" y="604" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">主张逐字摘录原文；速览字段逐项标注来源，不再共用一句截断摘要。</text>
+<text x="40" y="624" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">抽取不到的字段标「原文未给」，不补全、不改写原始措辞。</text>
+<text x="40" y="648" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">维度均标注出处；查不到的一律标「原文未给」，不臆造、不跨实现混用</text>
 </svg>
