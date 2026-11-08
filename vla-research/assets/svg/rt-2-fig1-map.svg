@@ -1,56 +1,92 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 530" width="900" height="530" font-family="PingFang SC, -apple-system, BlinkMacSystemFont, Microsoft YaHei, sans-serif">
-<rect width="900" height="530" fill="#ffffff"/>
-<rect x="0" y="0" width="900" height="50" fill="#4f46e5"/>
-<text x="24" y="32" font-size="19" fill="#ffffff" font-weight="700" text-anchor="start">图 A1｜本文章节地图</text>
-<text x="876" y="32" font-size="11" fill="#ffffff" font-weight="400" text-anchor="end" opacity="0.82">rt-2 · 按原文标题顺序</text>
-<rect x="24" y="68" width="852" height="34" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
-<circle cx="48" cy="85" r="12" fill="#4f46e5" opacity="0.14"/>
-<text x="48" y="90" font-size="12" fill="#4f46e5" font-weight="700" text-anchor="middle">1</text>
-<text x="72" y="90" font-size="14" fill="#0f172a" font-weight="500" text-anchor="start">论文与官方资源</text>
-<path d="M48 102 L48 112" stroke="#cbd5e1" stroke-width="1.5"/>
-<rect x="24" y="112" width="852" height="34" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
-<circle cx="48" cy="129" r="12" fill="#4f46e5" opacity="0.14"/>
-<text x="48" y="134" font-size="12" fill="#4f46e5" font-weight="700" text-anchor="middle">2</text>
-<text x="72" y="134" font-size="14" fill="#0f172a" font-weight="500" text-anchor="start">核心问题：动作能不能直接当成语言</text>
-<path d="M48 146 L48 156" stroke="#cbd5e1" stroke-width="1.5"/>
-<rect x="24" y="156" width="852" height="34" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
-<circle cx="48" cy="173" r="12" fill="#4f46e5" opacity="0.14"/>
-<text x="48" y="178" font-size="12" fill="#4f46e5" font-weight="700" text-anchor="middle">3</text>
-<text x="72" y="178" font-size="14" fill="#0f172a" font-weight="500" text-anchor="start">模型结构与张量流</text>
-<path d="M48 190 L48 200" stroke="#cbd5e1" stroke-width="1.5"/>
-<rect x="24" y="200" width="852" height="34" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
-<circle cx="48" cy="217" r="12" fill="#4f46e5" opacity="0.14"/>
-<text x="48" y="222" font-size="12" fill="#4f46e5" font-weight="700" text-anchor="middle">4</text>
-<text x="72" y="222" font-size="14" fill="#0f172a" font-weight="500" text-anchor="start">实验结果</text>
-<path d="M48 234 L48 244" stroke="#cbd5e1" stroke-width="1.5"/>
-<rect x="24" y="244" width="852" height="34" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
-<circle cx="48" cy="261" r="12" fill="#4f46e5" opacity="0.14"/>
-<text x="48" y="266" font-size="12" fill="#4f46e5" font-weight="700" text-anchor="middle">5</text>
-<text x="72" y="266" font-size="14" fill="#0f172a" font-weight="500" text-anchor="start">消融实验</text>
-<path d="M48 278 L48 288" stroke="#cbd5e1" stroke-width="1.5"/>
-<rect x="24" y="288" width="852" height="34" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
-<circle cx="48" cy="305" r="12" fill="#4f46e5" opacity="0.14"/>
-<text x="48" y="310" font-size="12" fill="#4f46e5" font-weight="700" text-anchor="middle">6</text>
-<text x="72" y="310" font-size="14" fill="#0f172a" font-weight="500" text-anchor="start">延迟与显存怎么读</text>
-<path d="M48 322 L48 332" stroke="#cbd5e1" stroke-width="1.5"/>
-<rect x="24" y="332" width="852" height="34" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
-<circle cx="48" cy="349" r="12" fill="#4f46e5" opacity="0.14"/>
-<text x="48" y="354" font-size="12" fill="#4f46e5" font-weight="700" text-anchor="middle">7</text>
-<text x="72" y="354" font-size="14" fill="#0f172a" font-weight="500" text-anchor="start">训练资源与卡数</text>
-<path d="M48 366 L48 376" stroke="#cbd5e1" stroke-width="1.5"/>
-<rect x="24" y="376" width="852" height="34" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
-<circle cx="48" cy="393" r="12" fill="#4f46e5" opacity="0.14"/>
-<text x="48" y="398" font-size="12" fill="#4f46e5" font-weight="700" text-anchor="middle">8</text>
-<text x="72" y="398" font-size="14" fill="#0f172a" font-weight="500" text-anchor="start">代码阅读顺序</text>
-<path d="M48 410 L48 420" stroke="#cbd5e1" stroke-width="1.5"/>
-<rect x="24" y="420" width="852" height="34" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
-<circle cx="48" cy="437" r="12" fill="#4f46e5" opacity="0.14"/>
-<text x="48" y="442" font-size="12" fill="#4f46e5" font-weight="700" text-anchor="middle">9</text>
-<text x="72" y="442" font-size="14" fill="#0f172a" font-weight="500" text-anchor="start">从 checkpoint 开始复现</text>
-<path d="M48 454 L48 464" stroke="#cbd5e1" stroke-width="1.5"/>
-<rect x="24" y="464" width="852" height="34" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
-<circle cx="48" cy="481" r="12" fill="#4f46e5" opacity="0.14"/>
-<text x="48" y="486" font-size="12" fill="#4f46e5" font-weight="700" text-anchor="middle">10</text>
-<text x="72" y="486" font-size="14" fill="#0f172a" font-weight="500" text-anchor="start">如何用到自己的项目</text>
-<rect x="0.5" y="0.5" width="899" height="529" fill="none" stroke="#e2e8f0"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="966" viewBox="0 0 1200 966" role="img"><defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#185FA5" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect x="0" y="0" width="1200" height="966" rx="0" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="1"/>
+<text x="118" y="46" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="21" font-weight="500" fill="#0C2B4A" text-anchor="start">rt-2 · 章节地图</text>
+<text x="118" y="70" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="13" font-weight="400" fill="#5F6B7A" text-anchor="start">自绘，依据本地 rt-2.md 原文；图内文字均为原文摘录或重排，不新增事实</text>
+<rect x="40" y="84" width="1120" height="1" rx="0" fill="#DDE3EC" stroke="#DDE3EC" stroke-width="0"/>
+<rect x="860" y="26" width="300" height="34" rx="8" fill="#F1EFE8" stroke="#DDE3EC" stroke-width="1"/>
+<text x="874" y="48" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F5E5A" text-anchor="start">本地 rt-2.md 章节结构</text>
+<rect x="40" y="26" width="62" height="30" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="1"/>
+<text x="71" y="46" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="13" font-weight="500" fill="#0C447C" text-anchor="middle">图 A1</text>
+<text x="40" y="100" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">序号</text>
+<text x="108" y="100" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">原文二级标题（按出现顺序）</text>
+<text x="900" y="100" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">该章数据维度</text>
+<rect x="40" y="124" width="800" height="56" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<circle cx="72" cy="152" r="15" fill="#E6F1FB" stroke="#185FA5" stroke-width="1"/>
+<text x="72" y="157" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="500" fill="#0C447C" text-anchor="middle">1</text>
+<text x="108" y="158" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="500" fill="#0C2B4A" text-anchor="start">论文与官方资源</text>
+<rect x="860" y="134" width="300" height="36" rx="9" fill="#F1EFE8" stroke="#888780" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="1010" y="157" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F5E5A" text-anchor="middle">本章无数值维度</text>
+<path d="M72 180 L72 190" fill="none" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="40" y="190" width="800" height="56" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<circle cx="72" cy="218" r="15" fill="#E6F1FB" stroke="#185FA5" stroke-width="1"/>
+<text x="72" y="223" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="500" fill="#0C447C" text-anchor="middle">2</text>
+<text x="108" y="224" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="500" fill="#0C2B4A" text-anchor="start">核心问题：动作能不能直接当成语言</text>
+<rect x="860" y="200" width="300" height="36" rx="9" fill="#FAEEDA" stroke="#854F0B" stroke-width="1"/>
+<text x="1010" y="223" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#633806" text-anchor="middle">256 bins</text>
+<path d="M72 246 L72 256" fill="none" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="40" y="256" width="800" height="56" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<circle cx="72" cy="284" r="15" fill="#E6F1FB" stroke="#185FA5" stroke-width="1"/>
+<text x="72" y="289" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="500" fill="#0C447C" text-anchor="middle">3</text>
+<text x="108" y="290" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="500" fill="#0C2B4A" text-anchor="start">模型结构与张量流</text>
+<rect x="860" y="266" width="300" height="36" rx="9" fill="#FAEEDA" stroke="#854F0B" stroke-width="1"/>
+<text x="1010" y="289" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#633806" text-anchor="middle">55B</text>
+<path d="M72 312 L72 322" fill="none" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="40" y="322" width="800" height="56" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<circle cx="72" cy="350" r="15" fill="#E6F1FB" stroke="#185FA5" stroke-width="1"/>
+<text x="72" y="355" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="500" fill="#0C447C" text-anchor="middle">4</text>
+<text x="108" y="356" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="500" fill="#0C2B4A" text-anchor="start">实验结果</text>
+<rect x="860" y="332" width="300" height="36" rx="9" fill="#F1EFE8" stroke="#888780" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="1010" y="355" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F5E5A" text-anchor="middle">本章无数值维度</text>
+<path d="M72 378 L72 388" fill="none" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="40" y="388" width="800" height="56" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<circle cx="72" cy="416" r="15" fill="#E6F1FB" stroke="#185FA5" stroke-width="1"/>
+<text x="72" y="421" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="500" fill="#0C447C" text-anchor="middle">5</text>
+<text x="108" y="422" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="500" fill="#0C2B4A" text-anchor="start">消融实验</text>
+<rect x="860" y="398" width="300" height="36" rx="9" fill="#F1EFE8" stroke="#888780" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="1010" y="421" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F5E5A" text-anchor="middle">本章无数值维度</text>
+<path d="M72 444 L72 454" fill="none" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="40" y="454" width="800" height="56" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<circle cx="72" cy="482" r="15" fill="#E6F1FB" stroke="#185FA5" stroke-width="1"/>
+<text x="72" y="487" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="500" fill="#0C447C" text-anchor="middle">6</text>
+<text x="108" y="488" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="500" fill="#0C2B4A" text-anchor="start">延迟与显存怎么读</text>
+<rect x="860" y="464" width="300" height="36" rx="9" fill="#FAEEDA" stroke="#854F0B" stroke-width="1"/>
+<text x="1010" y="487" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#633806" text-anchor="middle">1Hz</text>
+<path d="M72 510 L72 520" fill="none" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="40" y="520" width="800" height="56" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<circle cx="72" cy="548" r="15" fill="#E6F1FB" stroke="#185FA5" stroke-width="1"/>
+<text x="72" y="553" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="500" fill="#0C447C" text-anchor="middle">7</text>
+<text x="108" y="554" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="500" fill="#0C2B4A" text-anchor="start">训练资源与卡数</text>
+<rect x="860" y="530" width="300" height="36" rx="9" fill="#FAEEDA" stroke="#854F0B" stroke-width="1"/>
+<text x="1010" y="553" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#633806" text-anchor="middle">55B</text>
+<path d="M72 576 L72 586" fill="none" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="40" y="586" width="800" height="56" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<circle cx="72" cy="614" r="15" fill="#E6F1FB" stroke="#185FA5" stroke-width="1"/>
+<text x="72" y="619" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="500" fill="#0C447C" text-anchor="middle">8</text>
+<text x="108" y="620" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="500" fill="#0C2B4A" text-anchor="start">代码阅读顺序</text>
+<rect x="860" y="596" width="300" height="36" rx="9" fill="#FAEEDA" stroke="#854F0B" stroke-width="1"/>
+<text x="1010" y="619" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#633806" text-anchor="middle">256 bins</text>
+<path d="M72 642 L72 652" fill="none" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="40" y="652" width="800" height="56" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<circle cx="72" cy="680" r="15" fill="#E6F1FB" stroke="#185FA5" stroke-width="1"/>
+<text x="72" y="685" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="500" fill="#0C447C" text-anchor="middle">9</text>
+<text x="108" y="686" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="500" fill="#0C2B4A" text-anchor="start">从 checkpoint 开始复现</text>
+<rect x="860" y="662" width="300" height="36" rx="9" fill="#F1EFE8" stroke="#888780" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="1010" y="685" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F5E5A" text-anchor="middle">本章无数值维度</text>
+<path d="M72 708 L72 718" fill="none" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="40" y="718" width="800" height="56" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<circle cx="72" cy="746" r="15" fill="#E6F1FB" stroke="#185FA5" stroke-width="1"/>
+<text x="72" y="751" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="500" fill="#0C447C" text-anchor="middle">10</text>
+<text x="108" y="752" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="500" fill="#0C2B4A" text-anchor="start">如何用到自己的项目</text>
+<rect x="860" y="728" width="300" height="36" rx="9" fill="#FAEEDA" stroke="#854F0B" stroke-width="1"/>
+<text x="1010" y="751" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#633806" text-anchor="middle">55B</text>
+<path d="M72 774 L72 784" fill="none" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="40" y="784" width="800" height="56" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<circle cx="72" cy="812" r="15" fill="#E6F1FB" stroke="#185FA5" stroke-width="1"/>
+<text x="72" y="817" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="500" fill="#0C447C" text-anchor="middle">11</text>
+<text x="108" y="818" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="500" fill="#0C2B4A" text-anchor="start">判断与局限</text>
+<rect x="860" y="794" width="300" height="36" rx="9" fill="#FAEEDA" stroke="#854F0B" stroke-width="1"/>
+<text x="1010" y="817" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#633806" text-anchor="middle">55B</text>
+<rect x="40" y="868" width="1120" height="1" rx="0" fill="#DDE3EC" stroke="#DDE3EC" stroke-width="0"/>
+<text x="40" y="892" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">右侧虚线 chip 表示该章没有可核验的数值维度，不补写、不推测。</text>
+<text x="40" y="912" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">章节标题按原文出现顺序；章节地图是导航图，维度细节见「图 1 信息流」与「图 A3 数字卡」。</text>
+<text x="40" y="936" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">维度均标注出处；查不到的一律标「原文未给」，不臆造、不跨实现混用</text>
 </svg>
