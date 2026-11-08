@@ -1,62 +1,59 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="500" viewBox="0 0 960 500">
-  <defs>
-    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-      <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
-    </marker>
-  </defs>
-  <rect width="960" height="500" fill="#ffffff"/>
-  <text x="28" y="36" font-family="Helvetica, Arial, sans-serif" font-size="22" font-weight="bold" fill="#0f172a">Galaxea G0.5：推理与动作放进一条自回归流</text>
-
-  <!-- inputs -->
-  <rect x="24" y="76" width="196" height="58" rx="8" fill="#eef4ff" stroke="#3b6fb6"/>
-  <text x="122" y="100" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">过去 5 秒 / 6 帧</text>
-  <text x="122" y="121" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">多视角 RGB</text>
-
-  <rect x="24" y="150" width="196" height="58" rx="8" fill="#eef4ff" stroke="#3b6fb6"/>
-  <text x="122" y="174" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">任务指令</text>
-  <text x="122" y="195" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" fill="#1f2937">embodiment ID / text</text>
-
-  <rect x="24" y="224" width="196" height="58" rx="8" fill="#eef4ff" stroke="#3b6fb6"/>
-  <text x="122" y="248" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">本体状态</text>
-  <text x="122" y="269" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" fill="#1f2937">proprioception</text>
-
-  <line x1="220" y1="105" x2="268" y2="150" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
-  <line x1="220" y1="179" x2="268" y2="179" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
-  <line x1="220" y1="253" x2="268" y2="210" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
-
-  <!-- decoder -->
-  <rect x="270" y="130" width="224" height="100" rx="8" fill="#e8f7ee" stroke="#2f855a"/>
-  <text x="382" y="164" font-family="Helvetica, Arial, sans-serif" font-size="16" text-anchor="middle" fill="#1f2937">Qwen3.5 2B</text>
-  <text x="382" y="188" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">自回归 decoder</text>
-  <text x="382" y="210" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">统一 token 序列</text>
-
-  <!-- reasoning branch -->
-  <line x1="494" y1="158" x2="542" y2="128" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
-  <rect x="544" y="84" width="204" height="82" rx="8" fill="#fff7e6" stroke="#b7791f"/>
-  <text x="646" y="110" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">可选 reasoning token</text>
-  <text x="646" y="133" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">Subtask / BBox /</text>
-  <text x="646" y="151" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">Trace / ActionHint</text>
-
-  <!-- action branch -->
-  <line x1="494" y1="200" x2="542" y2="230" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
-  <rect x="544" y="190" width="220" height="82" rx="8" fill="#fff7e6" stroke="#b7791f"/>
-  <text x="654" y="216" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">动作 token</text>
-  <text x="654" y="239" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">27 维 ActionCodec / RVQ</text>
-  <text x="654" y="258" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">只对 active motion groups</text>
-
-  <line x1="654" y1="272" x2="654" y2="316" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
-  <rect x="544" y="318" width="220" height="62" rx="8" fill="#eef4ff" stroke="#3b6fb6"/>
-  <text x="654" y="344" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">ActionCodec decoder</text>
-  <text x="654" y="366" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">token → 连续动作</text>
-
-  <line x1="654" y1="380" x2="654" y2="410" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
-  <rect x="544" y="412" width="220" height="58" rx="8" fill="#f8fafc" stroke="#94a3b8"/>
-  <text x="654" y="437" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">16-step 动作块</text>
-  <text x="654" y="458" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">闭环重规划 → 新观测</text>
-
-  <text x="24" y="330" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#475569">27 维动作空间：left_control 9 + left_gripper 1</text>
-  <text x="24" y="352" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#475569">+ right_control 9 + right_gripper 1 + lower_body 7。</text>
-  <text x="24" y="378" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#475569">记忆：5 秒 / 6 帧；factorized 时空注意力；</text>
-  <text x="24" y="400" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#475569">history-frame dropout；历史 token 在末层丢弃。</text>
-  <text x="24" y="440" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#475569">图为自绘信息流，依据本地 G0.5 导读；不是论文原图。</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="848" viewBox="0 0 1200 848" role="img"><defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#185FA5" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect x="0" y="0" width="1200" height="848" rx="0" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="1"/>
+<text x="118" y="46" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="21" font-weight="500" fill="#0C2B4A" text-anchor="start">galaxea-g0-5 · 信息流与数据维度</text>
+<text x="118" y="70" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="13" font-weight="400" fill="#5F6B7A" text-anchor="start">流程节点沿用本地导读原文；维度来自论文原文回查，逐条标注出处</text>
+<rect x="40" y="84" width="1120" height="1" rx="0" fill="#DDE3EC" stroke="#DDE3EC" stroke-width="0"/>
+<rect x="860" y="26" width="300" height="34" rx="8" fill="#F1EFE8" stroke="#DDE3EC" stroke-width="1"/>
+<text x="874" y="48" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F5E5A" text-anchor="start">Galaxea G0.5 项目 PDF（op…</text>
+<rect x="40" y="26" width="62" height="30" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="1"/>
+<text x="71" y="46" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="13" font-weight="500" fill="#0C447C" text-anchor="middle">图 1</text>
+<text x="40" y="100" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">阶段</text>
+<text x="186" y="100" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">处理环节</text>
+<text x="758" y="100" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">数据维度 · shape in → out</text>
+<rect x="40" y="120" width="130" height="138" rx="12" fill="#F1EFE8" stroke="#DDE3EC" stroke-width="1"/>
+<text x="105" y="158" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="middle">流程</text>
+<text x="105" y="192" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="20" font-weight="500" fill="#0C2B4A" text-anchor="middle">01</text>
+<rect x="186" y="120" width="548" height="138" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="186" y="120" width="5" height="138" rx="2" fill="#185FA5" stroke="#185FA5" stroke-width="0"/>
+<text x="208" y="156" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="16" font-weight="500" fill="#0C447C" text-anchor="start">可选 reasoning token</text>
+<text x="208" y="180" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">Subtask / BBox /</text>
+<text x="208" y="198" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">Trace / ActionHint</text>
+<rect x="758" y="120" width="402" height="138" rx="12" fill="#F1EFE8" stroke="#888780" stroke-width="1"/>
+<text x="774" y="142" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="500" fill="#5F5E5A" text-anchor="start">数据维度</text>
+<rect x="1032" y="134" width="112" height="26" rx="8" fill="#F8F8F6" stroke="#B4B2A9" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="1088" y="151" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#888780" text-anchor="middle">原文未给</text>
+<path d="M105 262 L105 296" fill="none" stroke="#185FA5" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="40" y="302" width="130" height="138" rx="12" fill="#F1EFE8" stroke="#DDE3EC" stroke-width="1"/>
+<text x="105" y="340" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="middle">流程</text>
+<text x="105" y="374" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="20" font-weight="500" fill="#0C2B4A" text-anchor="middle">02</text>
+<rect x="186" y="302" width="548" height="138" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="186" y="302" width="5" height="138" rx="2" fill="#0F6E56" stroke="#0F6E56" stroke-width="0"/>
+<text x="208" y="338" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="16" font-weight="500" fill="#085041" text-anchor="start">Qwen3.5 2B</text>
+<text x="208" y="362" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">自回归 decoder</text>
+<text x="208" y="380" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">统一 token 序列</text>
+<rect x="758" y="302" width="402" height="138" rx="12" fill="#F1EFE8" stroke="#888780" stroke-width="1"/>
+<text x="774" y="324" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="500" fill="#5F5E5A" text-anchor="start">数据维度</text>
+<rect x="1032" y="316" width="112" height="26" rx="8" fill="#F8F8F6" stroke="#B4B2A9" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="1088" y="333" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#888780" text-anchor="middle">原文未给</text>
+<path d="M105 444 L105 478" fill="none" stroke="#185FA5" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="40" y="484" width="130" height="138" rx="12" fill="#F1EFE8" stroke="#DDE3EC" stroke-width="1"/>
+<text x="105" y="522" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="middle">流程</text>
+<text x="105" y="556" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="20" font-weight="500" fill="#0C2B4A" text-anchor="middle">03</text>
+<rect x="186" y="484" width="548" height="138" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="186" y="484" width="5" height="138" rx="2" fill="#0F6E56" stroke="#0F6E56" stroke-width="0"/>
+<text x="208" y="520" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="16" font-weight="500" fill="#085041" text-anchor="start">动作 token</text>
+<text x="208" y="544" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">27 维 ActionCodec / RVQ</text>
+<text x="208" y="562" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">只对 active motion groups</text>
+<rect x="758" y="484" width="402" height="138" rx="12" fill="#F1EFE8" stroke="#888780" stroke-width="1"/>
+<text x="774" y="506" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="500" fill="#5F5E5A" text-anchor="start">数据维度</text>
+<text x="774" y="530" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" font-weight="400" fill="#5F5E5A" text-anchor="start">27 维 ActionCodec / RVQ</text>
+<text x="774" y="608" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">本地导读（旧图原文）</text>
+<rect x="40" y="650" width="1120" height="1" rx="0" fill="#DDE3EC" stroke="#DDE3EC" stroke-width="0"/>
+<text x="40" y="674" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">原文回查补充维度（Galaxea G0.5 项目 PDF（opengalaxea.github.io））：</text>
+<text x="40" y="694" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">· 单一冻结 codec：5-part 固定维度布局 → 统一 27-dim 动作表示 〔tokenizer 段落〕</text>
+<text x="40" y="714" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">· 对比 π0 把各机器人 pad 到 18-dim union 〔动作空间对齐〕</text>
+<text x="40" y="734" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">· 文本 / CoT 截断到 200 tokens 〔实现细节〕</text>
+<text x="40" y="754" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">· 微调 4 epochs / lr 4×10⁻⁵ / global batch 1024；另 100K steps / lr … 〔训练设置〕</text>
+<text x="40" y="774" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">· 50 小时桌面操作数据；64 次真机 trials / model 〔数据与评测〕</text>
+<text x="40" y="794" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">环节名称与说明摘自旧图原文，长文本按版式截断；维度不足处显式标注，不用推断补齐。</text>
+<text x="40" y="818" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">维度均标注出处；查不到的一律标「原文未给」，不臆造、不跨实现混用</text>
 </svg>
