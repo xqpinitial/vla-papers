@@ -1,59 +1,97 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="430" viewBox="0 0 900 430">
-  <defs>
-    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-      <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
-    </marker>
-  </defs>
-  <rect width="900" height="430" fill="#ffffff"/>
-  <text x="28" y="34" font-family="Helvetica, Arial, sans-serif" font-size="21" font-weight="bold" fill="#0f172a">PhysBrain 1.0：物理常识预训练 + 双脑 VLA 适配</text>
-
-  <!-- human video -->
-  <rect x="24" y="88" width="180" height="78" rx="8" fill="#eef4ff" stroke="#3b6fb6"/>
-  <text x="114" y="113" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">人类第一人称视频</text>
-  <text x="114" y="135" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" fill="#1f2937">Ego4D / BuildAI / EgoDex</text>
-  <text x="114" y="154" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" fill="#1f2937">EPIC / SEA-Small</text>
-
-  <line x1="204" y1="127" x2="230" y2="127" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
-
-  <!-- structured meta -->
-  <rect x="234" y="88" width="200" height="78" rx="8" fill="#fff7e6" stroke="#b7791f"/>
-  <text x="334" y="113" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">结构化物理元信息</text>
-  <text x="334" y="135" font-family="Helvetica, Arial, sans-serif" font-size="10.5" text-anchor="middle" fill="#1f2937">scene_elements / spatial_dynamics</text>
-  <text x="334" y="154" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" fill="#1f2937">action_execution / depth_info</text>
-
-  <line x1="434" y1="127" x2="460" y2="127" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
-
-  <!-- depth + QA -->
-  <rect x="464" y="88" width="180" height="78" rx="8" fill="#fff7e6" stroke="#b7791f"/>
-  <text x="554" y="113" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">深度增强 + 物理 QA</text>
-  <text x="554" y="135" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">Depth Anything v3</text>
-  <text x="554" y="154" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">4 类 QA family</text>
-
-  <line x1="644" y1="127" x2="670" y2="127" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
-
-  <!-- VLM -->
-  <rect x="674" y="88" width="202" height="78" rx="8" fill="#e8f7ee" stroke="#2f855a"/>
-  <text x="775" y="113" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="middle" fill="#1f2937">PhysBrain VLM</text>
-  <text x="775" y="135" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">物理常识预训练</text>
-  <text x="775" y="154" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" fill="#1f2937">混入通用多模态数据</text>
-
-  <line x1="775" y1="166" x2="775" y2="214" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
-
-  <!-- twin brain -->
-  <rect x="604" y="216" width="272" height="96" rx="8" fill="#e8f7ee" stroke="#2f855a"/>
-  <text x="740" y="242" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">TwinBrainVLA + LangForce</text>
-  <text x="740" y="264" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">冻结左脑 + 可训练右脑</text>
-  <text x="740" y="286" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" fill="#1f2937">log p(L|V,A) − sg log p(L|V)</text>
-
-  <line x1="604" y1="264" x2="532" y2="264" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
-
-  <!-- robot actions -->
-  <rect x="284" y="216" width="248" height="96" rx="8" fill="#eef4ff" stroke="#3b6fb6"/>
-  <text x="408" y="242" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">机器人动作</text>
-  <text x="408" y="264" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">SimplerEnv / LIBERO</text>
-  <text x="408" y="286" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">RoboCasa-GR1 / 真机 Franka</text>
-
-  <text x="24" y="364" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#475569">数据侧：人类视频先做质量过滤，再解析成 4 类字段，补深度后渲染成物理 QA。</text>
-  <text x="24" y="386" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#475569">适配侧：左脑冻结保留通用能力，右脑学动作；LangForce 用语言似然比抑制视觉捷径。</text>
-  <text x="24" y="408" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#475569">图为自绘信息流，依据本地 PhysBrain 导读；不是论文原图。</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1374" viewBox="0 0 1200 1374" role="img"><defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#185FA5" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect x="0" y="0" width="1200" height="1374" rx="0" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="1"/>
+<text x="118" y="46" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="21" font-weight="500" fill="#0C2B4A" text-anchor="start">physbrain · 信息流与数据维度</text>
+<text x="118" y="70" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="13" font-weight="400" fill="#5F6B7A" text-anchor="start">流程节点沿用本地导读原文；维度来自论文原文回查，逐条标注出处</text>
+<rect x="40" y="84" width="1120" height="1" rx="0" fill="#DDE3EC" stroke="#DDE3EC" stroke-width="0"/>
+<rect x="860" y="26" width="300" height="34" rx="8" fill="#F1EFE8" stroke="#DDE3EC" stroke-width="1"/>
+<text x="874" y="48" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F5E5A" text-anchor="start">arXiv:2605.15298</text>
+<rect x="40" y="26" width="62" height="30" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="1"/>
+<text x="71" y="46" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="13" font-weight="500" fill="#0C447C" text-anchor="middle">图 1</text>
+<text x="40" y="100" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">阶段</text>
+<text x="186" y="100" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">处理环节</text>
+<text x="758" y="100" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">数据维度 · shape in → out</text>
+<rect x="40" y="120" width="130" height="138" rx="12" fill="#F1EFE8" stroke="#DDE3EC" stroke-width="1"/>
+<text x="105" y="158" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="middle">流程</text>
+<text x="105" y="192" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="20" font-weight="500" fill="#0C2B4A" text-anchor="middle">01</text>
+<rect x="186" y="120" width="548" height="138" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="186" y="120" width="5" height="138" rx="2" fill="#185FA5" stroke="#185FA5" stroke-width="0"/>
+<text x="208" y="156" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="16" font-weight="500" fill="#0C447C" text-anchor="start">人类第一人称视频</text>
+<text x="208" y="180" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">Ego4D / BuildAI / EgoDex</text>
+<text x="208" y="198" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">EPIC / SEA-Small</text>
+<rect x="758" y="120" width="402" height="138" rx="12" fill="#F1EFE8" stroke="#888780" stroke-width="1"/>
+<text x="774" y="142" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="500" fill="#5F5E5A" text-anchor="start">数据维度</text>
+<rect x="1032" y="134" width="112" height="26" rx="8" fill="#F8F8F6" stroke="#B4B2A9" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="1088" y="151" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#888780" text-anchor="middle">原文未给</text>
+<path d="M105 262 L105 296" fill="none" stroke="#185FA5" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="40" y="302" width="130" height="138" rx="12" fill="#F1EFE8" stroke="#DDE3EC" stroke-width="1"/>
+<text x="105" y="340" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="middle">流程</text>
+<text x="105" y="374" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="20" font-weight="500" fill="#0C2B4A" text-anchor="middle">02</text>
+<rect x="186" y="302" width="548" height="138" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="186" y="302" width="5" height="138" rx="2" fill="#0F6E56" stroke="#0F6E56" stroke-width="0"/>
+<text x="208" y="338" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="16" font-weight="500" fill="#085041" text-anchor="start">结构化物理元信息</text>
+<text x="208" y="362" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">scene_elements / spatial_dynamics</text>
+<text x="208" y="380" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">action_execution / depth_info</text>
+<rect x="758" y="302" width="402" height="138" rx="12" fill="#F1EFE8" stroke="#888780" stroke-width="1"/>
+<text x="774" y="324" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="500" fill="#5F5E5A" text-anchor="start">数据维度</text>
+<rect x="1032" y="316" width="112" height="26" rx="8" fill="#F8F8F6" stroke="#B4B2A9" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="1088" y="333" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#888780" text-anchor="middle">原文未给</text>
+<path d="M105 444 L105 478" fill="none" stroke="#185FA5" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="40" y="484" width="130" height="138" rx="12" fill="#F1EFE8" stroke="#DDE3EC" stroke-width="1"/>
+<text x="105" y="522" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="middle">流程</text>
+<text x="105" y="556" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="20" font-weight="500" fill="#0C2B4A" text-anchor="middle">03</text>
+<rect x="186" y="484" width="548" height="138" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="186" y="484" width="5" height="138" rx="2" fill="#0F6E56" stroke="#0F6E56" stroke-width="0"/>
+<text x="208" y="520" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="16" font-weight="500" fill="#085041" text-anchor="start">深度增强 + 物理 QA</text>
+<text x="208" y="544" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">Depth Anything v3</text>
+<text x="208" y="562" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">4 类 QA family</text>
+<rect x="758" y="484" width="402" height="138" rx="12" fill="#F1EFE8" stroke="#888780" stroke-width="1"/>
+<text x="774" y="506" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="500" fill="#5F5E5A" text-anchor="start">数据维度</text>
+<rect x="1032" y="498" width="112" height="26" rx="8" fill="#F8F8F6" stroke="#B4B2A9" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="1088" y="515" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#888780" text-anchor="middle">原文未给</text>
+<path d="M105 626 L105 660" fill="none" stroke="#185FA5" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="40" y="666" width="130" height="138" rx="12" fill="#F1EFE8" stroke="#DDE3EC" stroke-width="1"/>
+<text x="105" y="704" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="middle">流程</text>
+<text x="105" y="738" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="20" font-weight="500" fill="#0C2B4A" text-anchor="middle">04</text>
+<rect x="186" y="666" width="548" height="138" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="186" y="666" width="5" height="138" rx="2" fill="#0F6E56" stroke="#0F6E56" stroke-width="0"/>
+<text x="208" y="702" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="16" font-weight="500" fill="#085041" text-anchor="start">PhysBrain VLM</text>
+<text x="208" y="726" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">物理常识预训练</text>
+<text x="208" y="744" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">混入通用多模态数据</text>
+<rect x="758" y="666" width="402" height="138" rx="12" fill="#F1EFE8" stroke="#888780" stroke-width="1"/>
+<text x="774" y="688" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="500" fill="#5F5E5A" text-anchor="start">数据维度</text>
+<rect x="1032" y="680" width="112" height="26" rx="8" fill="#F8F8F6" stroke="#B4B2A9" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="1088" y="697" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#888780" text-anchor="middle">原文未给</text>
+<path d="M105 808 L105 842" fill="none" stroke="#185FA5" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="40" y="848" width="130" height="138" rx="12" fill="#F1EFE8" stroke="#DDE3EC" stroke-width="1"/>
+<text x="105" y="886" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="middle">流程</text>
+<text x="105" y="920" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="20" font-weight="500" fill="#0C2B4A" text-anchor="middle">05</text>
+<rect x="186" y="848" width="548" height="138" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="186" y="848" width="5" height="138" rx="2" fill="#854F0B" stroke="#854F0B" stroke-width="0"/>
+<text x="208" y="884" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="16" font-weight="500" fill="#633806" text-anchor="start">TwinBrainVLA + LangForce</text>
+<text x="208" y="908" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">冻结左脑 + 可训练右脑</text>
+<text x="208" y="926" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">log p(LV,A) − sg log p(LV)</text>
+<rect x="758" y="848" width="402" height="138" rx="12" fill="#F1EFE8" stroke="#888780" stroke-width="1"/>
+<text x="774" y="870" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="500" fill="#5F5E5A" text-anchor="start">数据维度</text>
+<rect x="1032" y="862" width="112" height="26" rx="8" fill="#F8F8F6" stroke="#B4B2A9" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="1088" y="879" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#888780" text-anchor="middle">原文未给</text>
+<path d="M105 990 L105 1024" fill="none" stroke="#185FA5" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="40" y="1030" width="130" height="138" rx="12" fill="#F1EFE8" stroke="#DDE3EC" stroke-width="1"/>
+<text x="105" y="1068" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="middle">流程</text>
+<text x="105" y="1102" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="20" font-weight="500" fill="#0C2B4A" text-anchor="middle">06</text>
+<rect x="186" y="1030" width="548" height="138" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="186" y="1030" width="5" height="138" rx="2" fill="#854F0B" stroke="#854F0B" stroke-width="0"/>
+<text x="208" y="1066" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="16" font-weight="500" fill="#633806" text-anchor="start">机器人动作</text>
+<text x="208" y="1090" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">SimplerEnv / LIBERO</text>
+<text x="208" y="1108" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">RoboCasa-GR1 / 真机 Franka</text>
+<rect x="758" y="1030" width="402" height="138" rx="12" fill="#F1EFE8" stroke="#888780" stroke-width="1"/>
+<text x="774" y="1052" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="500" fill="#5F5E5A" text-anchor="start">数据维度</text>
+<rect x="1032" y="1044" width="112" height="26" rx="8" fill="#F8F8F6" stroke="#B4B2A9" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="1088" y="1061" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#888780" text-anchor="middle">原文未给</text>
+<rect x="40" y="1196" width="1120" height="1" rx="0" fill="#DDE3EC" stroke="#DDE3EC" stroke-width="0"/>
+<text x="40" y="1220" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">原文回查补充维度（arXiv:2605.15298）：</text>
+<text x="40" y="1240" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">· 24 个 tabletop 任务 / 24K GR1 遥操作仿真示教 〔RoboCasa-GR1 设置〕</text>
+<text x="40" y="1260" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">· 50 independent trials / task；RoboCasa-GR1 平均 64.5% 〔实验设置 / 表 4〕</text>
+<text x="40" y="1280" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">· 真机 450 trajectories / 9 类物体 〔真机数据〕</text>
+<text x="40" y="1300" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">· VLM 主干层数 / 视觉 token 数 / 动作维度 原文未给 〔—〕</text>
+<text x="40" y="1320" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">环节名称与说明摘自旧图原文，长文本按版式截断；维度不足处显式标注，不用推断补齐。</text>
+<text x="40" y="1344" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">维度均标注出处；查不到的一律标「原文未给」，不臆造、不跨实现混用</text>
 </svg>
