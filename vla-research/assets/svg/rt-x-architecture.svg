@@ -1,57 +1,82 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="430" viewBox="0 0 900 430">
-  <defs>
-    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-      <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
-    </marker>
-  </defs>
-  <rect width="900" height="430" fill="#ffffff"/>
-  <text x="28" y="34" font-family="Helvetica, Arial, sans-serif" font-size="20" font-weight="bold" fill="#0f172a">RT-X：22 种机器人 → 统一 7-DoF → 混合数据训练</text>
-
-  <!-- data -->
-  <rect x="24" y="72" width="190" height="94" rx="8" fill="#eef4ff" stroke="#3b6fb6"/>
-  <text x="119" y="100" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">Open X-Embodiment</text>
-  <text x="119" y="122" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">33 实验室 / 22 种机器人</text>
-  <text x="119" y="144" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" fill="#475569">Franka / UR5 / WidowX</text>
-
-  <!-- action space -->
-  <rect x="250" y="72" width="210" height="94" rx="8" fill="#e8f7ee" stroke="#2f855a"/>
-  <text x="355" y="100" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">统一动作空间</text>
-  <text x="355" y="123" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" fill="#1f2937">7-DoF</text>
-  <text x="355" y="145" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" fill="#475569">位置 3 + 姿态 3 + 夹爪 1</text>
-
-  <!-- mixed training -->
-  <rect x="496" y="72" width="190" height="94" rx="8" fill="#e8f7ee" stroke="#2f855a"/>
-  <text x="591" y="100" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">混合数据训练</text>
-  <text x="591" y="122" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" fill="#1f2937">RT-1 / RT-2 变体</text>
-  <text x="591" y="144" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" fill="#475569">参数量：多种规格</text>
-
-  <!-- policy -->
-  <rect x="496" y="224" width="190" height="94" rx="8" fill="#fff7e6" stroke="#b7791f"/>
-  <text x="591" y="252" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">RT-X 策略</text>
-  <text x="591" y="274" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" fill="#1f2937">图像 + 文本 + 机器人类型</text>
-  <text x="591" y="296" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" fill="#475569">输出离散动作 token</text>
-
-  <!-- target robot -->
-  <rect x="250" y="224" width="210" height="94" rx="8" fill="#eef4ff" stroke="#3b6fb6"/>
-  <text x="355" y="252" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" fill="#1f2937">目标机器人评测</text>
-  <text x="355" y="275" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" fill="#1f2937">Positive Transfer</text>
-  <text x="355" y="296" font-family="Helvetica, Arial, sans-serif" font-size="11" text-anchor="middle" fill="#475569">数据稀缺任务更明显</text>
-
-  <!-- caveat -->
-  <rect x="250" y="370" width="436" height="44" rx="8" fill="#f8fafc" stroke="#94a3b8"/>
-  <text x="468" y="397" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle" fill="#1f2937">章节未给成功率 / 数据规模 / 训练配方</text>
-
-  <!-- arrows -->
-  <line x1="214" y1="119" x2="246" y2="119" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
-  <line x1="460" y1="119" x2="492" y2="119" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
-  <line x1="591" y1="166" x2="591" y2="220" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
-  <line x1="492" y1="271" x2="464" y2="271" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
-  <line x1="355" y1="318" x2="355" y2="366" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
-
-  <text x="700" y="240" font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#475569">统一 7-DoF 是章节的</text>
-  <text x="700" y="258" font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#475569">核心工程</text>
-  <text x="700" y="280" font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#475569">未给姿态表示与归一化</text>
-  <text x="700" y="298" font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#475569">未给本体采样比例</text>
-  <text x="700" y="316" font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#475569">未给单本体 vs 混合对照</text>
-  <text x="24" y="422" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#475569">自绘，依据本地 RT 系列导读；不是论文原图。</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1152" viewBox="0 0 1200 1152" role="img"><defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#185FA5" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect x="0" y="0" width="1200" height="1152" rx="0" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="1"/>
+<text x="118" y="46" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="21" font-weight="500" fill="#0C2B4A" text-anchor="start">rt-x · 信息流与数据维度</text>
+<text x="118" y="70" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="13" font-weight="400" fill="#5F6B7A" text-anchor="start">流程节点沿用本地导读原文；维度来自论文原文回查，逐条标注出处</text>
+<rect x="40" y="84" width="1120" height="1" rx="0" fill="#DDE3EC" stroke="#DDE3EC" stroke-width="0"/>
+<rect x="860" y="26" width="300" height="34" rx="8" fill="#F1EFE8" stroke="#DDE3EC" stroke-width="1"/>
+<text x="874" y="48" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F5E5A" text-anchor="start">Open X-Embodiment 项目页（…</text>
+<rect x="40" y="26" width="62" height="30" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="1"/>
+<text x="71" y="46" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="13" font-weight="500" fill="#0C447C" text-anchor="middle">图 1</text>
+<text x="40" y="100" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">阶段</text>
+<text x="186" y="100" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">处理环节</text>
+<text x="758" y="100" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">数据维度 · shape in → out</text>
+<rect x="40" y="120" width="130" height="138" rx="12" fill="#F1EFE8" stroke="#DDE3EC" stroke-width="1"/>
+<text x="105" y="158" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="middle">流程</text>
+<text x="105" y="192" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="20" font-weight="500" fill="#0C2B4A" text-anchor="middle">01</text>
+<rect x="186" y="120" width="548" height="138" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="186" y="120" width="5" height="138" rx="2" fill="#185FA5" stroke="#185FA5" stroke-width="0"/>
+<text x="208" y="156" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="16" font-weight="500" fill="#0C447C" text-anchor="start">Open X-Embodiment</text>
+<text x="208" y="180" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">33 实验室 / 22 种机器人</text>
+<text x="208" y="198" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">Franka / UR5 / WidowX</text>
+<rect x="758" y="120" width="402" height="138" rx="12" fill="#F1EFE8" stroke="#888780" stroke-width="1"/>
+<text x="774" y="142" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="500" fill="#5F5E5A" text-anchor="start">数据维度</text>
+<rect x="1032" y="134" width="112" height="26" rx="8" fill="#F8F8F6" stroke="#B4B2A9" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="1088" y="151" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#888780" text-anchor="middle">原文未给</text>
+<path d="M105 262 L105 296" fill="none" stroke="#185FA5" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="40" y="302" width="130" height="138" rx="12" fill="#F1EFE8" stroke="#DDE3EC" stroke-width="1"/>
+<text x="105" y="340" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="middle">流程</text>
+<text x="105" y="374" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="20" font-weight="500" fill="#0C2B4A" text-anchor="middle">02</text>
+<rect x="186" y="302" width="548" height="138" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="186" y="302" width="5" height="138" rx="2" fill="#0F6E56" stroke="#0F6E56" stroke-width="0"/>
+<text x="208" y="338" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="16" font-weight="500" fill="#085041" text-anchor="start">统一动作空间</text>
+<text x="208" y="362" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">7-DoF</text>
+<text x="208" y="380" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">位置 3 + 姿态 3 + 夹爪 1</text>
+<rect x="758" y="302" width="402" height="138" rx="12" fill="#F1EFE8" stroke="#888780" stroke-width="1"/>
+<text x="774" y="324" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="500" fill="#5F5E5A" text-anchor="start">数据维度</text>
+<rect x="1032" y="316" width="112" height="26" rx="8" fill="#F8F8F6" stroke="#B4B2A9" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="1088" y="333" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#888780" text-anchor="middle">原文未给</text>
+<path d="M105 444 L105 478" fill="none" stroke="#185FA5" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="40" y="484" width="130" height="138" rx="12" fill="#F1EFE8" stroke="#DDE3EC" stroke-width="1"/>
+<text x="105" y="522" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="middle">流程</text>
+<text x="105" y="556" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="20" font-weight="500" fill="#0C2B4A" text-anchor="middle">03</text>
+<rect x="186" y="484" width="548" height="138" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="186" y="484" width="5" height="138" rx="2" fill="#0F6E56" stroke="#0F6E56" stroke-width="0"/>
+<text x="208" y="520" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="16" font-weight="500" fill="#085041" text-anchor="start">混合数据训练</text>
+<text x="208" y="544" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">RT-1 / RT-2 变体</text>
+<text x="208" y="562" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">参数量：多种规格</text>
+<rect x="758" y="484" width="402" height="138" rx="12" fill="#F1EFE8" stroke="#888780" stroke-width="1"/>
+<text x="774" y="506" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="500" fill="#5F5E5A" text-anchor="start">数据维度</text>
+<rect x="1032" y="498" width="112" height="26" rx="8" fill="#F8F8F6" stroke="#B4B2A9" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="1088" y="515" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#888780" text-anchor="middle">原文未给</text>
+<path d="M105 626 L105 660" fill="none" stroke="#185FA5" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="40" y="666" width="130" height="138" rx="12" fill="#F1EFE8" stroke="#DDE3EC" stroke-width="1"/>
+<text x="105" y="704" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="middle">流程</text>
+<text x="105" y="738" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="20" font-weight="500" fill="#0C2B4A" text-anchor="middle">04</text>
+<rect x="186" y="666" width="548" height="138" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="186" y="666" width="5" height="138" rx="2" fill="#0F6E56" stroke="#0F6E56" stroke-width="0"/>
+<text x="208" y="702" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="16" font-weight="500" fill="#085041" text-anchor="start">RT-X 策略</text>
+<text x="208" y="726" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">图像 + 文本 + 机器人类型</text>
+<text x="208" y="744" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">输出离散动作 token</text>
+<rect x="758" y="666" width="402" height="138" rx="12" fill="#F1EFE8" stroke="#888780" stroke-width="1"/>
+<text x="774" y="688" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="500" fill="#5F5E5A" text-anchor="start">数据维度</text>
+<rect x="1032" y="680" width="112" height="26" rx="8" fill="#F8F8F6" stroke="#B4B2A9" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="1088" y="697" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#888780" text-anchor="middle">原文未给</text>
+<path d="M105 808 L105 842" fill="none" stroke="#185FA5" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="40" y="848" width="130" height="138" rx="12" fill="#F1EFE8" stroke="#DDE3EC" stroke-width="1"/>
+<text x="105" y="886" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="middle">流程</text>
+<text x="105" y="920" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="20" font-weight="500" fill="#0C2B4A" text-anchor="middle">05</text>
+<rect x="186" y="848" width="548" height="138" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="186" y="848" width="5" height="138" rx="2" fill="#854F0B" stroke="#854F0B" stroke-width="0"/>
+<text x="208" y="884" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="16" font-weight="500" fill="#633806" text-anchor="start">目标机器人评测</text>
+<text x="208" y="908" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">Positive Transfer</text>
+<text x="208" y="926" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">数据稀缺任务更明显</text>
+<rect x="758" y="848" width="402" height="138" rx="12" fill="#F1EFE8" stroke="#888780" stroke-width="1"/>
+<text x="774" y="870" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="500" fill="#5F5E5A" text-anchor="start">数据维度</text>
+<rect x="1032" y="862" width="112" height="26" rx="8" fill="#F8F8F6" stroke="#B4B2A9" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="1088" y="879" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#888780" text-anchor="middle">原文未给</text>
+<rect x="40" y="1014" width="1120" height="1" rx="0" fill="#DDE3EC" stroke="#DDE3EC" stroke-width="0"/>
+<text x="40" y="1038" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">原文回查补充维度（Open X-Embodiment 项目页（PDF 未取得））：</text>
+<text x="40" y="1058" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">· 机器人动作为 7 维向量：x, y, z, roll, pitch, yaw, gripper（或其速率） 〔项目页〕</text>
+<text x="40" y="1078" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">· 数据集帧数 / token 数 / 模型层数 项目页未给 〔—〕</text>
+<text x="40" y="1098" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">环节名称与说明摘自旧图原文，长文本按版式截断；维度不足处显式标注，不用推断补齐。</text>
+<text x="40" y="1122" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">维度均标注出处；查不到的一律标「原文未给」，不臆造、不跨实现混用</text>
 </svg>
