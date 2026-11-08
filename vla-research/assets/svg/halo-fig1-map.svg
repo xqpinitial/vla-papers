@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="834" viewBox="0 0 1200 834" role="img"><defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#185FA5" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect x="0" y="0" width="1200" height="834" rx="0" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="1"/>
+<text x="118" y="46" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="21" font-weight="500" fill="#0C2B4A" text-anchor="start">HALO · 本文章节地图</text>
+<text x="118" y="70" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="13" font-weight="400" fill="#5F6B7A" text-anchor="start">节点即本文二级标题，按出现顺序；右侧标注该章可提取的数据维度</text>
+<rect x="40" y="84" width="1120" height="1" rx="0" fill="#DDE3EC" stroke="#DDE3EC" stroke-width="0"/>
+<rect x="860" y="26" width="300" height="34" rx="8" fill="#F1EFE8" stroke="#DDE3EC" stroke-width="1"/>
+<text x="874" y="48" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F5E5A" text-anchor="start">本地 halo.md 章节结构 · 自绘</text>
+<rect x="40" y="26" width="62" height="30" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="1"/>
+<text x="71" y="46" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="13" font-weight="500" fill="#0C447C" text-anchor="middle">图 A1</text>
+<text x="40" y="100" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">序号</text>
+<text x="108" y="100" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">原文二级标题（按出现顺序）</text>
+<text x="900" y="100" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">该章数据维度</text>
+<rect x="40" y="124" width="800" height="56" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<circle cx="72" cy="152" r="15" fill="#E6F1FB" stroke="#185FA5" stroke-width="1"/>
+<text x="72" y="157" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="500" fill="#0C447C" text-anchor="middle">1</text>
+<text x="108" y="158" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="500" fill="#0C2B4A" text-anchor="start">论文与官方资源</text>
+<rect x="860" y="134" width="300" height="36" rx="9" fill="#FAEEDA" stroke="#854F0B" stroke-width="1"/>
+<text x="1010" y="157" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#633806" text-anchor="middle">arXiv / 项目页 / 代码</text>
+<path d="M72 180 L72 190" fill="none" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="40" y="190" width="800" height="56" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<circle cx="72" cy="218" r="15" fill="#E6F1FB" stroke="#185FA5" stroke-width="1"/>
+<text x="72" y="223" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="500" fill="#0C447C" text-anchor="middle">2</text>
+<text x="108" y="224" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="500" fill="#0C2B4A" text-anchor="start">核心问题：数据瓶颈与零样本 sim-to-real</text>
+<rect x="860" y="200" width="300" height="36" rx="9" fill="#FAEEDA" stroke="#854F0B" stroke-width="1"/>
+<text x="1010" y="223" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#633806" text-anchor="middle">1000 户 / 300h / 91%</text>
+<path d="M72 246 L72 256" fill="none" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="40" y="256" width="800" height="56" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<circle cx="72" cy="284" r="15" fill="#E6F1FB" stroke="#185FA5" stroke-width="1"/>
+<text x="72" y="289" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="500" fill="#0C447C" text-anchor="middle">3</text>
+<text x="108" y="290" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="500" fill="#0C2B4A" text-anchor="start">系统架构：三层自主栈</text>
+<rect x="860" y="266" width="300" height="36" rx="9" fill="#FAEEDA" stroke="#854F0B" stroke-width="1"/>
+<text x="1010" y="289" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#633806" text-anchor="middle">0.5/3/50 Hz · 36 值</text>
+<path d="M72 312 L72 322" fill="none" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="40" y="322" width="800" height="56" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<circle cx="72" cy="350" r="15" fill="#E6F1FB" stroke="#185FA5" stroke-width="1"/>
+<text x="72" y="355" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="500" fill="#0C447C" text-anchor="middle">4</text>
+<text x="108" y="356" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="500" fill="#0C2B4A" text-anchor="start">仿真数据生成管线</text>
+<rect x="860" y="332" width="300" height="36" rx="9" fill="#FAEEDA" stroke="#854F0B" stroke-width="1"/>
+<text x="1010" y="355" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#633806" text-anchor="middle">INFINIGEN + KIMODO</text>
+<path d="M72 378 L72 388" fill="none" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="40" y="388" width="800" height="56" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<circle cx="72" cy="416" r="15" fill="#E6F1FB" stroke="#185FA5" stroke-width="1"/>
+<text x="72" y="421" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="500" fill="#0C447C" text-anchor="middle">5</text>
+<text x="108" y="422" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="500" fill="#0C2B4A" text-anchor="start">训练：生成器 / 跟踪器 / 编排器</text>
+<rect x="860" y="398" width="300" height="36" rx="9" fill="#FAEEDA" stroke="#854F0B" stroke-width="1"/>
+<text x="1010" y="421" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#633806" text-anchor="middle">DiT 8×512×8 · PPO</text>
+<path d="M72 444 L72 454" fill="none" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="40" y="454" width="800" height="56" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<circle cx="72" cy="482" r="15" fill="#E6F1FB" stroke="#185FA5" stroke-width="1"/>
+<text x="72" y="487" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="500" fill="#0C447C" text-anchor="middle">6</text>
+<text x="108" y="488" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="500" fill="#0C2B4A" text-anchor="start">硬件部署与实时链路</text>
+<rect x="860" y="464" width="300" height="36" rx="9" fill="#FAEEDA" stroke="#854F0B" stroke-width="1"/>
+<text x="1010" y="487" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#633806" text-anchor="middle">G1/M4 Pro/Jetson</text>
+<path d="M72 510 L72 520" fill="none" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="40" y="520" width="800" height="56" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<circle cx="72" cy="548" r="15" fill="#E6F1FB" stroke="#185FA5" stroke-width="1"/>
+<text x="72" y="553" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="500" fill="#0C447C" text-anchor="middle">7</text>
+<text x="108" y="554" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="500" fill="#0C2B4A" text-anchor="start">实验结果（单任务/多任务）</text>
+<rect x="860" y="530" width="300" height="36" rx="9" fill="#FAEEDA" stroke="#854F0B" stroke-width="1"/>
+<text x="1010" y="553" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#633806" text-anchor="middle">Table II</text>
+<path d="M72 576 L72 586" fill="none" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="40" y="586" width="800" height="56" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<circle cx="72" cy="614" r="15" fill="#E6F1FB" stroke="#185FA5" stroke-width="1"/>
+<text x="72" y="619" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="500" fill="#0C447C" text-anchor="middle">8</text>
+<text x="108" y="620" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="500" fill="#0C2B4A" text-anchor="start">消融（Table III）</text>
+<rect x="860" y="596" width="300" height="36" rx="9" fill="#FAEEDA" stroke="#854F0B" stroke-width="1"/>
+<text x="1010" y="619" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#633806" text-anchor="middle">场景数/RT/深度</text>
+<path d="M72 642 L72 652" fill="none" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="40" y="652" width="800" height="56" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<circle cx="72" cy="680" r="15" fill="#E6F1FB" stroke="#185FA5" stroke-width="1"/>
+<text x="72" y="685" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="500" fill="#0C447C" text-anchor="middle">9</text>
+<text x="108" y="686" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="500" fill="#0C2B4A" text-anchor="start">判断与局限</text>
+<rect x="860" y="662" width="300" height="36" rx="9" fill="#FAEEDA" stroke="#854F0B" stroke-width="1"/>
+<text x="1010" y="685" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#633806" text-anchor="middle">4 条结论局限</text>
+<rect x="40" y="736" width="1120" height="1" rx="0" fill="#DDE3EC" stroke="#DDE3EC" stroke-width="0"/>
+<text x="40" y="760" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">右侧虚线 chip 表示该章没有可核验的数值维度，不补写、不推测。</text>
+<text x="40" y="780" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">章节地图是导航图；维度细节见「图 1 信息流」与「图 A3 数字卡」。</text>
+<text x="40" y="804" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">维度均标注出处；查不到的一律标「原文未给」，不臆造、不跨实现混用</text>
+</svg>
