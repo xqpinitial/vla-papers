@@ -1,5 +1,18 @@
 [
   {
+    "slug": "vla-acceleration-survey",
+    "cat": "综述与横评",
+    "date": "2026-11-08",
+    "title": "VLA 加速模型全景调研（2026-11）：九类范式、100+ 模型与选型边界",
+    "oneliner": "加速不是单点技术：九类范式、代表模型、可叠加组合与评测陷阱。",
+    "metric": "9 类范式 · 100+ 模型 · 8 条评测陷阱",
+    "arxiv": "",
+    "org": "本系列",
+    "code": "",
+    "project": "https://xqpinitial.github.io/vla-papers/papers/vla-acceleration-survey.html",
+    "figs": 1
+  },
+  {
     "slug": "overview-timeline",
     "cat": "综述与横评",
     "date": "2026-10-31",
