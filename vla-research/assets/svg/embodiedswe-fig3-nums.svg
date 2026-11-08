@@ -1,26 +1,55 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 352" width="900" height="352" font-family="PingFang SC, -apple-system, BlinkMacSystemFont, Microsoft YaHei, sans-serif">
-<rect width="900" height="352" fill="#ffffff"/>
-<rect x="0" y="0" width="900" height="50" fill="#1d4ed8"/>
-<text x="24" y="32" font-size="19" fill="#ffffff" font-weight="700" text-anchor="start">图 A3｜本文可核验的数字</text>
-<text x="876" y="32" font-size="11" fill="#ffffff" font-weight="400" text-anchor="end" opacity="0.82">embodiedswe · 摘自原文，口径见对应章节</text>
-<rect x="24" y="68" width="280" height="104" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
-<text x="38" y="108" font-size="25" fill="#1d4ed8" font-weight="700" text-anchor="start">28 个</text>
-<text x="38" y="130" font-size="11" fill="#475569" font-weight="400" text-anchor="start">一句话 编程 agent 当"机器人工程师"：在仿真里写 Python 控制</text>
-<rect x="312" y="68" width="280" height="104" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
-<text x="326" y="108" font-size="25" fill="#1d4ed8" font-weight="700" text-anchor="start">82%</text>
-<text x="326" y="130" font-size="11" fill="#475569" font-weight="400" text-anchor="start">最强 agent 解题率（GPT-6 Astra，28 任务） 82%（GP</text>
-<rect x="600" y="68" width="280" height="104" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
-<text x="614" y="108" font-size="25" fill="#1d4ed8" font-weight="700" text-anchor="start">11%</text>
-<text x="614" y="130" font-size="11" fill="#475569" font-weight="400" text-anchor="start">最强 agent 解题率（GPT-6 Astra，28 任务） 82%（GP</text>
-<rect x="24" y="184" width="280" height="104" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
-<text x="38" y="224" font-size="25" fill="#1d4ed8" font-weight="700" text-anchor="start">10 条</text>
-<text x="38" y="246" font-size="11" fill="#475569" font-weight="400" text-anchor="start">VLA scaling（SmolVLA） 10 条演示 18% → 400</text>
-<rect x="312" y="184" width="280" height="104" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
-<text x="326" y="224" font-size="25" fill="#1d4ed8" font-weight="700" text-anchor="start">18%</text>
-<text x="326" y="246" font-size="11" fill="#475569" font-weight="400" text-anchor="start">VLA scaling（SmolVLA） 10 条演示 18% → 400</text>
-<rect x="600" y="184" width="280" height="104" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
-<text x="614" y="224" font-size="25" fill="#1d4ed8" font-weight="700" text-anchor="start">400 条</text>
-<text x="614" y="246" font-size="11" fill="#475569" font-weight="400" text-anchor="start">VLA scaling（SmolVLA） 10 条演示 18% → 400</text>
-<text x="24" y="332" font-size="11" fill="#94a3b8" font-weight="400" text-anchor="start">仅摘录，不做单位换算、不跨基准比较</text>
-<rect x="0.5" y="0.5" width="899" height="351" fill="none" stroke="#e2e8f0"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="586" viewBox="0 0 1200 586" role="img"><defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#185FA5" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect x="0" y="0" width="1200" height="586" rx="0" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="1"/>
+<text x="118" y="46" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="21" font-weight="500" fill="#0C2B4A" text-anchor="start">embodiedswe · 可核验数字</text>
+<text x="118" y="70" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="13" font-weight="400" fill="#5F6B7A" text-anchor="start">自绘，依据本地 embodiedswe.md 原文；图内文字均为原文摘录或重排，不新增事实</text>
+<rect x="40" y="84" width="1120" height="1" rx="0" fill="#DDE3EC" stroke="#DDE3EC" stroke-width="0"/>
+<rect x="860" y="26" width="300" height="34" rx="8" fill="#F1EFE8" stroke="#DDE3EC" stroke-width="1"/>
+<text x="874" y="48" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F5E5A" text-anchor="start">本地 embodiedswe.md 逐章抽取</text>
+<rect x="40" y="26" width="62" height="30" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="1"/>
+<text x="71" y="46" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="13" font-weight="500" fill="#0C447C" text-anchor="middle">图 A3</text>
+<rect x="40" y="124" width="360" height="158" rx="14" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="40" y="124" width="360" height="5" rx="2" fill="#185FA5" stroke="#185FA5" stroke-width="0"/>
+<text x="60" y="176" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="30" font-weight="500" fill="#0C447C" text-anchor="start">28 个</text>
+<text x="60" y="202" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="500" fill="#0C2B4A" text-anchor="start">计数</text>
+<text x="60" y="228" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">原句：一句话 编程 agent 当&quot;机器人工程师&quot;：在仿真里写…</text>
+<text x="60" y="252" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#5F6B7A" text-anchor="start">所在章节：速览</text>
+<text x="60" y="272" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">来源：本地 embodiedswe.md</text>
+<rect x="420" y="124" width="360" height="158" rx="14" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="420" y="124" width="360" height="5" rx="2" fill="#0F6E56" stroke="#0F6E56" stroke-width="0"/>
+<text x="440" y="176" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="30" font-weight="500" fill="#085041" text-anchor="start">82%</text>
+<text x="440" y="202" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="500" fill="#0C2B4A" text-anchor="start">频率 / 比率 / 时延</text>
+<text x="440" y="228" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">原句：82% — 最强 agent 解题率（GPT-6 Ast…</text>
+<text x="440" y="252" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#5F6B7A" text-anchor="start">所在章节：② 架构：Solvers + Data En…</text>
+<text x="440" y="272" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">来源：本地 embodiedswe.md</text>
+<rect x="800" y="124" width="360" height="158" rx="14" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="800" y="124" width="360" height="5" rx="2" fill="#854F0B" stroke="#854F0B" stroke-width="0"/>
+<text x="820" y="176" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="30" font-weight="500" fill="#633806" text-anchor="start">18%</text>
+<text x="820" y="202" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="500" fill="#0C2B4A" text-anchor="start">频率 / 比率 / 时延</text>
+<text x="820" y="228" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">原句：10 条 — VLA scaling（SmolVLA） …</text>
+<text x="820" y="252" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#5F6B7A" text-anchor="start">所在章节：② 架构：Solvers + Data En…</text>
+<text x="820" y="272" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">来源：本地 embodiedswe.md</text>
+<rect x="40" y="302" width="360" height="158" rx="14" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="40" y="302" width="360" height="5" rx="2" fill="#185FA5" stroke="#185FA5" stroke-width="0"/>
+<text x="60" y="354" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="30" font-weight="500" fill="#0C447C" text-anchor="start">500 条</text>
+<text x="60" y="380" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="500" fill="#0C2B4A" text-anchor="start">计数</text>
+<text x="60" y="406" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">原句：真机 仅用 coding-agent 仿真演示微调的 V…</text>
+<text x="60" y="430" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#5F6B7A" text-anchor="start">所在章节：③ 数据与结果</text>
+<text x="60" y="450" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">来源：本地 embodiedswe.md</text>
+<rect x="420" y="302" width="360" height="158" rx="14" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="420" y="302" width="360" height="5" rx="2" fill="#0F6E56" stroke="#0F6E56" stroke-width="0"/>
+<text x="440" y="354" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="30" font-weight="500" fill="#085041" text-anchor="start">0%</text>
+<text x="440" y="380" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="500" fill="#0C2B4A" text-anchor="start">频率 / 比率 / 时延</text>
+<text x="440" y="406" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">原句：按难度（平均分）： Easy 0.77 ± – → Me…</text>
+<text x="440" y="430" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#5F6B7A" text-anchor="start">所在章节：④ 信息流</text>
+<text x="440" y="450" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">来源：本地 embodiedswe.md</text>
+<rect x="800" y="302" width="360" height="158" rx="14" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<rect x="800" y="302" width="360" height="5" rx="2" fill="#854F0B" stroke="#854F0B" stroke-width="0"/>
+<text x="820" y="354" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="30" font-weight="500" fill="#633806" text-anchor="start">31%</text>
+<text x="820" y="380" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="500" fill="#0C2B4A" text-anchor="start">频率 / 比率 / 时延</text>
+<text x="820" y="406" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">原句：similar-task hint 0.60 ±0.05…</text>
+<text x="820" y="430" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#5F6B7A" text-anchor="start">所在章节：④ 信息流</text>
+<text x="820" y="450" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">来源：本地 embodiedswe.md</text>
+<rect x="40" y="488" width="1120" height="1" rx="0" fill="#DDE3EC" stroke="#DDE3EC" stroke-width="0"/>
+<text x="40" y="512" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">修复旧版缺陷：每个数字独立给出「数值 / 单位类型 / 原句 / 所属章节 / 出处」，不再共用一句截断摘要。</text>
+<text x="40" y="532" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">数值与其所在原句均摘自本地 md，未做单位换算或跨基准比较。</text>
+<text x="40" y="556" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">维度均标注出处；查不到的一律标「原文未给」，不臆造、不跨实现混用</text>
 </svg>
