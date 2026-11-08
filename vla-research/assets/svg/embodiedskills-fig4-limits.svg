@@ -1,25 +1,48 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 370" width="900" height="370" font-family="PingFang SC, -apple-system, BlinkMacSystemFont, Microsoft YaHei, sans-serif">
-<rect width="900" height="370" fill="#ffffff"/>
-<rect x="0" y="0" width="900" height="50" fill="#1d4ed8"/>
-<text x="24" y="32" font-size="19" fill="#ffffff" font-weight="700" text-anchor="start">图 A4｜局限与不确定项</text>
-<text x="876" y="32" font-size="11" fill="#ffffff" font-weight="400" text-anchor="end" opacity="0.82">embodiedskills · 以下均摘自本文</text>
-<rect x="24" y="68" width="852" height="54" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
-<circle cx="48" cy="95" r="12" fill="#1d4ed8" opacity="0.14"/>
-<text x="48" y="100" font-size="12" fill="#1d4ed8" font-weight="700" text-anchor="middle">1</text>
-<text x="72" y="92" font-size="12.5" fill="#334155" font-weight="400" text-anchor="start">与 Harness VLA：互补——Harness VLA 冻结原语+记忆，EmbodiedSkills 冻结接口+guarded runtime（外部读报原话："与 Harness VLA 的冻结原语路线互补</text>
-<text x="72" y="110" font-size="12.5" fill="#334155" font-weight="400" text-anchor="start">"）；</text>
-<rect x="24" y="132" width="852" height="54" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
-<circle cx="48" cy="159" r="12" fill="#1d4ed8" opacity="0.14"/>
-<text x="48" y="164" font-size="12" fill="#1d4ed8" font-weight="700" text-anchor="middle">2</text>
-<text x="72" y="156" font-size="12.5" fill="#334155" font-weight="400" text-anchor="start">低层任务适配策略：RoboTwin 2.0 五十任务均值 86.20%（&gt; 公开 π₀.₅ 参考 82.74%——注意口径为参考列非受控重跑）</text>
-<rect x="24" y="196" width="852" height="54" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
-<circle cx="48" cy="223" r="12" fill="#1d4ed8" opacity="0.14"/>
-<text x="48" y="228" font-size="12" fill="#1d4ed8" font-weight="700" text-anchor="middle">3</text>
-<text x="72" y="220" font-size="12.5" fill="#334155" font-weight="400" text-anchor="start">记忆短板：RMBench 四个记忆依赖任务仅 12.5%——每任务单独微调的 specialist 不解决跨回合记忆</text>
-<rect x="24" y="260" width="852" height="54" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
-<circle cx="48" cy="287" r="12" fill="#1d4ed8" opacity="0.14"/>
-<text x="48" y="292" font-size="12" fill="#1d4ed8" font-weight="700" text-anchor="middle">4</text>
-<text x="72" y="284" font-size="12.5" fill="#334155" font-weight="400" text-anchor="start">RoboTwin 2.0 五十任务均值：86.20%（π0.5 公开参考 82.74%，口径为参考列非受控重跑）</text>
-<text x="24" y="352" font-size="11" fill="#94a3b8" font-weight="400" text-anchor="start">原文摘录；未补充原文没有的结论或风险判断</text>
-<rect x="0.5" y="0.5" width="899" height="369" fill="none" stroke="#e2e8f0"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="718" viewBox="0 0 1200 718" role="img"><defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#185FA5" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect x="0" y="0" width="1200" height="718" rx="0" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="1"/>
+<text x="118" y="46" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="21" font-weight="500" fill="#0C2B4A" text-anchor="start">embodiedskills · 判断与局限</text>
+<text x="118" y="70" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="13" font-weight="400" fill="#5F6B7A" text-anchor="start">自绘，依据本地 embodiedskills.md 原文；图内文字均为原文摘录或重排，不新增事实</text>
+<rect x="40" y="84" width="1120" height="1" rx="0" fill="#DDE3EC" stroke="#DDE3EC" stroke-width="0"/>
+<rect x="860" y="26" width="300" height="34" rx="8" fill="#F1EFE8" stroke="#DDE3EC" stroke-width="1"/>
+<text x="874" y="48" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F5E5A" text-anchor="start">本地 embodiedskills.md 局…</text>
+<rect x="40" y="26" width="62" height="30" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="1"/>
+<text x="71" y="46" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="13" font-weight="500" fill="#0C447C" text-anchor="middle">图 A4</text>
+<text x="40" y="104" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">本文判断（原文摘录）</text>
+<rect x="40" y="124" width="1120" height="70" rx="14" fill="#E1F5EE" stroke="#0F6E56" stroke-width="1"/>
+<rect x="40" y="124" width="5" height="70" rx="2" fill="#0F6E56" stroke="#0F6E56" stroke-width="0"/>
+<text x="64" y="158" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="400" fill="#085041" text-anchor="start">基准：RoboTwin 2.0（50 任务）、LIBERO 四套件、RMBench 四个记忆任务（12.5%——记忆仍是短板）</text>
+<text x="40" y="224" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">局限与不确定项（均摘自本文，未作推断）</text>
+<rect x="40" y="238" width="1120" height="62" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<circle cx="70" cy="269" r="15" fill="#F1EFE8" stroke="#DDE3EC" stroke-width="1"/>
+<text x="70" y="274" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="500" fill="#0C2B4A" text-anchor="middle">1</text>
+<text x="100" y="275" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="400" fill="#0C2B4A" text-anchor="start">本文判断：基准：RoboTwin 2.0（50 任务）、LIBERO 四套件、RMBench 四…</text>
+<rect x="1000" y="253" width="160" height="32" rx="9" fill="#FAEEDA" stroke="#854F0B" stroke-width="1"/>
+<text x="1080" y="274" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#633806" text-anchor="middle">条件限制</text>
+<rect x="40" y="312" width="1120" height="62" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<circle cx="70" cy="343" r="15" fill="#F1EFE8" stroke="#DDE3EC" stroke-width="1"/>
+<text x="70" y="348" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="500" fill="#0C2B4A" text-anchor="middle">2</text>
+<text x="100" y="349" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="400" fill="#0C2B4A" text-anchor="start">与 Harness VLA：互补——Harness VLA 冻结原语+记忆，EmbodiedSk…</text>
+<rect x="1000" y="327" width="160" height="32" rx="9" fill="#FAEEDA" stroke="#854F0B" stroke-width="1"/>
+<text x="1080" y="348" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#633806" text-anchor="middle">条件限制</text>
+<rect x="40" y="386" width="1120" height="62" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<circle cx="70" cy="417" r="15" fill="#F1EFE8" stroke="#DDE3EC" stroke-width="1"/>
+<text x="70" y="422" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="500" fill="#0C2B4A" text-anchor="middle">3</text>
+<text x="100" y="423" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="400" fill="#0C2B4A" text-anchor="start">低层任务适配策略：RoboTwin 2.0 五十任务均值 86.20%（ 公开 π₀.₅ 参考 …</text>
+<rect x="1000" y="401" width="160" height="32" rx="9" fill="#FAEEDA" stroke="#854F0B" stroke-width="1"/>
+<text x="1080" y="422" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#633806" text-anchor="middle">条件限制</text>
+<rect x="40" y="460" width="1120" height="62" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<circle cx="70" cy="491" r="15" fill="#F1EFE8" stroke="#DDE3EC" stroke-width="1"/>
+<text x="70" y="496" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="500" fill="#0C2B4A" text-anchor="middle">4</text>
+<text x="100" y="497" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="400" fill="#0C2B4A" text-anchor="start">记忆短板：RMBench 四个记忆依赖任务仅 12.5%——每任务单独微调的 specialis…</text>
+<rect x="1000" y="475" width="160" height="32" rx="9" fill="#FAEEDA" stroke="#854F0B" stroke-width="1"/>
+<text x="1080" y="496" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#633806" text-anchor="middle">条件限制</text>
+<rect x="40" y="534" width="1120" height="62" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<circle cx="70" cy="565" r="15" fill="#F1EFE8" stroke="#DDE3EC" stroke-width="1"/>
+<text x="70" y="570" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="500" fill="#0C2B4A" text-anchor="middle">5</text>
+<text x="100" y="571" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="400" fill="#0C2B4A" text-anchor="start">RoboTwin 2.0 五十任务均值：86.20%（π0.5 公开参考 82.74%，口径为参…</text>
+<rect x="1000" y="549" width="160" height="32" rx="9" fill="#FAEEDA" stroke="#854F0B" stroke-width="1"/>
+<text x="1080" y="570" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#633806" text-anchor="middle">条件限制</text>
+<rect x="40" y="620" width="1120" height="1" rx="0" fill="#DDE3EC" stroke="#DDE3EC" stroke-width="0"/>
+<text x="40" y="644" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">灰色虚线标签表示该条是原文明确标注的「章节未给」，不是本图推断出的缺失。</text>
+<text x="40" y="664" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">本图不补充原文没有的结论或风险判断；判断与局限均摘自本地 md。</text>
+<text x="40" y="688" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">维度均标注出处；查不到的一律标「原文未给」，不臆造、不跨实现混用</text>
 </svg>
