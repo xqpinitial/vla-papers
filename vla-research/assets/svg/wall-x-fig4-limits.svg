@@ -1,28 +1,55 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 434" width="900" height="434" font-family="PingFang SC, -apple-system, BlinkMacSystemFont, Microsoft YaHei, sans-serif">
-<rect width="900" height="434" fill="#ffffff"/>
-<rect x="0" y="0" width="900" height="50" fill="#c2410c"/>
-<text x="24" y="32" font-size="19" fill="#ffffff" font-weight="700" text-anchor="start">图 A4｜局限与不确定项</text>
-<text x="876" y="32" font-size="11" fill="#ffffff" font-weight="400" text-anchor="end" opacity="0.82">wall-x · 以下均摘自本文</text>
-<rect x="24" y="68" width="852" height="54" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
-<circle cx="48" cy="95" r="12" fill="#c2410c" opacity="0.14"/>
-<text x="48" y="100" font-size="12" fill="#c2410c" font-weight="700" text-anchor="middle">1</text>
-<text x="72" y="92" font-size="12.5" fill="#334155" font-weight="400" text-anchor="start">章节没有给 GPU 数、学习率、warmup、EMA 或默认训练步数，也没有给损失或动作维度的公式；训练配置的核心是 YAML 字段。</text>
-<rect x="24" y="132" width="852" height="54" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
-<circle cx="48" cy="159" r="12" fill="#c2410c" opacity="0.14"/>
-<text x="48" y="164" font-size="12" fill="#c2410c" font-weight="700" text-anchor="middle">2</text>
-<text x="72" y="156" font-size="12.5" fill="#334155" font-weight="400" text-anchor="start">model.config_path 指向 WALL-OSS checkpoint 里的 config.json 未给</text>
-<rect x="24" y="196" width="852" height="54" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
-<circle cx="48" cy="223" r="12" fill="#c2410c" opacity="0.14"/>
-<text x="48" y="228" font-size="12" fill="#c2410c" font-weight="700" text-anchor="middle">3</text>
-<text x="72" y="220" font-size="12.5" fill="#334155" font-weight="400" text-anchor="start">model.processor_path 指向 Qwen2.5-VL processor 未给</text>
-<rect x="24" y="260" width="852" height="54" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
-<circle cx="48" cy="287" r="12" fill="#c2410c" opacity="0.14"/>
-<text x="48" y="292" font-size="12" fill="#c2410c" font-weight="700" text-anchor="middle">4</text>
-<text x="72" y="284" font-size="12.5" fill="#334155" font-weight="400" text-anchor="start">model.pretrained_path 指向预训练权重 未给</text>
-<rect x="24" y="324" width="852" height="54" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
-<circle cx="48" cy="351" r="12" fill="#c2410c" opacity="0.14"/>
-<text x="48" y="356" font-size="12" fill="#c2410c" font-weight="700" text-anchor="middle">5</text>
-<text x="72" y="348" font-size="12.5" fill="#334155" font-weight="400" text-anchor="start">dataset path 指向 LeRobot 格式数据 未给</text>
-<text x="24" y="416" font-size="11" fill="#94a3b8" font-weight="400" text-anchor="start">原文摘录；未补充原文没有的结论或风险判断</text>
-<rect x="0.5" y="0.5" width="899" height="433" fill="none" stroke="#e2e8f0"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="816" viewBox="0 0 1200 816" role="img"><defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#185FA5" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect x="0" y="0" width="1200" height="816" rx="0" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="1"/>
+<text x="118" y="46" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="21" font-weight="500" fill="#0C2B4A" text-anchor="start">wall-x · 判断与局限</text>
+<text x="118" y="70" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="13" font-weight="400" fill="#5F6B7A" text-anchor="start">自绘，依据本地 wall-x.md 原文；图内文字均为原文摘录或重排，不新增事实</text>
+<rect x="40" y="84" width="1120" height="1" rx="0" fill="#DDE3EC" stroke="#DDE3EC" stroke-width="0"/>
+<rect x="860" y="26" width="300" height="34" rx="8" fill="#F1EFE8" stroke="#DDE3EC" stroke-width="1"/>
+<text x="874" y="48" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F5E5A" text-anchor="start">本地 wall-x.md 局限章节</text>
+<rect x="40" y="26" width="62" height="30" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="1"/>
+<text x="71" y="46" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="13" font-weight="500" fill="#0C447C" text-anchor="middle">图 A4</text>
+<text x="40" y="104" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">本文判断（原文摘录）</text>
+<rect x="40" y="124" width="1120" height="94" rx="14" fill="#E1F5EE" stroke="#0F6E56" stroke-width="1"/>
+<rect x="40" y="124" width="5" height="94" rx="2" fill="#0F6E56" stroke="#0F6E56" stroke-width="0"/>
+<text x="64" y="158" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="400" fill="#085041" text-anchor="start">WALL-X 的价值是把“模型 → 数据 → 配置 → 训练 → 服务 → 评估”这条链路固定下来，让 WALL-OSS 可以被后训练和部署，而不是停留在论</text>
+<text x="64" y="182" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="400" fill="#085041" text-anchor="start">文权重。</text>
+<text x="40" y="248" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">局限与不确定项（均摘自本文，未作推断）</text>
+<rect x="40" y="262" width="1120" height="62" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<circle cx="70" cy="293" r="15" fill="#F1EFE8" stroke="#DDE3EC" stroke-width="1"/>
+<text x="70" y="298" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="500" fill="#0C2B4A" text-anchor="middle">1</text>
+<text x="100" y="299" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="400" fill="#0C2B4A" text-anchor="start">本文判断：WALL-X 的价值是把“模型 → 数据 → 配置 → 训练 → 服务 → 评估”这条…</text>
+<rect x="1000" y="277" width="160" height="32" rx="9" fill="#FAEEDA" stroke="#854F0B" stroke-width="1"/>
+<text x="1080" y="298" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#633806" text-anchor="middle">条件限制</text>
+<rect x="40" y="336" width="1120" height="62" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<circle cx="70" cy="367" r="15" fill="#F1EFE8" stroke="#DDE3EC" stroke-width="1"/>
+<text x="70" y="372" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="500" fill="#0C2B4A" text-anchor="middle">2</text>
+<text x="100" y="373" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="400" fill="#0C2B4A" text-anchor="start">章节没有给 GPU 数、学习率、warmup、EMA 或默认训练步数，也没有给损失或动作维度的公…</text>
+<rect x="1000" y="351" width="160" height="32" rx="9" fill="#F1EFE8" stroke="#888780" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="1080" y="372" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F5E5A" text-anchor="middle">章节未给</text>
+<rect x="40" y="410" width="1120" height="62" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<circle cx="70" cy="441" r="15" fill="#F1EFE8" stroke="#DDE3EC" stroke-width="1"/>
+<text x="70" y="446" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="500" fill="#0C2B4A" text-anchor="middle">3</text>
+<text x="100" y="447" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="400" fill="#0C2B4A" text-anchor="start">model.config_path 指向 WALL-OSS checkpoint 里的 conf…</text>
+<rect x="1000" y="425" width="160" height="32" rx="9" fill="#F1EFE8" stroke="#888780" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="1080" y="446" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F5E5A" text-anchor="middle">章节未给</text>
+<rect x="40" y="484" width="1120" height="62" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<circle cx="70" cy="515" r="15" fill="#F1EFE8" stroke="#DDE3EC" stroke-width="1"/>
+<text x="70" y="520" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="500" fill="#0C2B4A" text-anchor="middle">4</text>
+<text x="100" y="521" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="400" fill="#0C2B4A" text-anchor="start">model.processor_path 指向 Qwen2.5-VL processor 未给</text>
+<rect x="1000" y="499" width="160" height="32" rx="9" fill="#F1EFE8" stroke="#888780" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="1080" y="520" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F5E5A" text-anchor="middle">章节未给</text>
+<rect x="40" y="558" width="1120" height="62" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<circle cx="70" cy="589" r="15" fill="#F1EFE8" stroke="#DDE3EC" stroke-width="1"/>
+<text x="70" y="594" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="500" fill="#0C2B4A" text-anchor="middle">5</text>
+<text x="100" y="595" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="400" fill="#0C2B4A" text-anchor="start">model.pretrained_path 指向预训练权重 未给</text>
+<rect x="1000" y="573" width="160" height="32" rx="9" fill="#F1EFE8" stroke="#888780" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="1080" y="594" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F5E5A" text-anchor="middle">章节未给</text>
+<rect x="40" y="632" width="1120" height="62" rx="12" fill="#FFFFFF" stroke="#DDE3EC" stroke-width="1"/>
+<circle cx="70" cy="663" r="15" fill="#F1EFE8" stroke="#DDE3EC" stroke-width="1"/>
+<text x="70" y="668" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="500" fill="#0C2B4A" text-anchor="middle">6</text>
+<text x="100" y="669" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="14" font-weight="400" fill="#0C2B4A" text-anchor="start">dataset path 指向 LeRobot 格式数据 未给</text>
+<rect x="1000" y="647" width="160" height="32" rx="9" fill="#F1EFE8" stroke="#888780" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="1080" y="668" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F5E5A" text-anchor="middle">章节未给</text>
+<rect x="40" y="718" width="1120" height="1" rx="0" fill="#DDE3EC" stroke="#DDE3EC" stroke-width="0"/>
+<text x="40" y="742" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">灰色虚线标签表示该条是原文明确标注的「章节未给」，不是本图推断出的缺失。</text>
+<text x="40" y="762" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="12" font-weight="400" fill="#5F6B7A" text-anchor="start">本图不补充原文没有的结论或风险判断；判断与局限均摘自本地 md。</text>
+<text x="40" y="786" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif" font-size="11" font-weight="400" fill="#8A94A3" text-anchor="start">维度均标注出处；查不到的一律标「原文未给」，不臆造、不跨实现混用</text>
 </svg>
